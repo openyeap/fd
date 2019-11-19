@@ -1,0 +1,22 @@
+{
+ 
+	"name": "demo",
+"uage":"",
+	"type": "reader|writer",
+	"className": "com.daoshu.plugin.abc",
+	"url": "http://www.fdsa.ltd",
+	"developer": "zhumingwu@126.com",
+	"db": {
+		"name": "sql",
+		"url": "the url of db",
+		"driver": "db driver",
+		"user": "user name",
+		"password": "password",
+		"others": "other common settings"
+	},
+	"config": {
+		"sql": "the sql for reader or write",
+		"interval": "job interval",
+		"others": "other settings"
+	}
+}

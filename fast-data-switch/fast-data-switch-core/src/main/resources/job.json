@@ -1,0 +1,33 @@
+{
+	"name": "job name",
+	"description": "description",
+	"interval": "job interval",
+	"contents": [
+		{
+			"datasource": {
+				"name": "reader plugin name",
+				"increment": true,
+				"override": true,
+				"primarykey": "primary key",
+				"sql": "the sql for reader",
+				"others": "other settings"
+			},
+			"pipelines": [
+				{
+					"name": "pipe plugin name 1",
+					"others": "other settings"
+				},
+				{
+					"name": "pipe plugin name 2",
+					"others": "other settings"
+				}
+			],
+			"datatarget": {
+				"name": "writer plugin name",
+				"customsql": "custom sql for update or insert",
+				"table": "datatable",
+				"others": "other settings"
+			}
+		}
+	]
+}
