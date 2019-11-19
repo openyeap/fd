@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>c</artifactId>
+  <description>registrar for services and apis </description>
+	<parent>
+		<groupId>ltd.fdsa</groupId>
+		<artifactId>boot-starter</artifactId>
+		<version>3.0.0</version>
+	</parent>
+
+	<properties>
+		<!-- swagger -->
+		<swagger-platform.version>2.9.2</swagger-platform.version>
+	</properties>
+
+	<dependencies>
+		<!--Swagger Restful UI 集成依赖 -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${swagger-platform.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${swagger-platform.version}</version>
+		</dependency>
+	</dependencies>
+</project>

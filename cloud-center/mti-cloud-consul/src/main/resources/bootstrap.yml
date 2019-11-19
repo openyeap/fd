@@ -1,0 +1,13 @@
+server:
+  port: 9080
+spring:
+  application:
+    name: mti-cloud-api
+  profiles:
+    active: dev
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+
+ 
