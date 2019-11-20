@@ -1,4 +1,4 @@
-package com.daoshu.cloud.filter;
+package ltd.fdsa.cloud.filter;
  
 
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import org.springframework.web.server.ServerWebExchange;
 
-import com.daoshu.cloud.configure.DocumentationConfig; 
+import ltd.fdsa.cloud.config.DocumentationConfig; 
  
 @Component
 

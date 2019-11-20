@@ -1,4 +1,4 @@
-package com.daoshu.cloud.configure;
+package ltd.fdsa.cloud.config;
 
 import java.util.ArrayList;
 import java.util.List;

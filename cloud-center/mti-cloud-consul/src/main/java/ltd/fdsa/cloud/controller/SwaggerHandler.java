@@ -1,4 +1,4 @@
-package com.daoshu.cloud.controller;
+package ltd.fdsa.cloud.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
