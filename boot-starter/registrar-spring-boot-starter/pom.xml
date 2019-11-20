@@ -3,8 +3,10 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>c</artifactId>
-  <description>registrar for services and apis </description>
+	<artifactId>registrar-spring-boot-starter</artifactId>
+	<name>spring boot registrar starter</name>
+	<description>registrar starter for spring boot</description>
+	<packaging>jar</packaging>
 	<parent>
 		<groupId>ltd.fdsa</groupId>
 		<artifactId>boot-starter</artifactId>
@@ -17,6 +19,14 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-config</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.ecwid.consul</groupId>
+			<artifactId>consul-api</artifactId>
+		</dependency>
 		<!--Swagger Restful UI 集成依赖 -->
 		<dependency>
 			<groupId>io.springfox</groupId>

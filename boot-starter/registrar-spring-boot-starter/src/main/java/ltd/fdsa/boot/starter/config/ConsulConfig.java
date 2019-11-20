@@ -1,4 +1,4 @@
-package com.daoshu.cloud.configure;
+package ltd.fdsa.boot.starter.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
