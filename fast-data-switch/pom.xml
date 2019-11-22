@@ -6,7 +6,7 @@
 	<artifactId>fast-data-switch-parent</artifactId>
 	<version>3.0.0</version>
 	<packaging>pom</packaging>
-	<name>core parent</name>
+	<name>fast data switch parent</name>
 	<description>聚合和父模块，定义依赖包，插件版本，公共配置信息</description>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -18,12 +18,13 @@
 		<!--基本属性定义 -->
 		<encoding>UTF-8</encoding>
 		<java.version>1.8</java.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<!--主依赖版本定义 -->
+		<spring-boot.version>2.0.5.RELEASE</spring-boot.version>
 		<spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
-		<alibaba.druid.version>1.1.21</alibaba.druid.version>
-		<mybatis.starter.version>2.1.1</mybatis.starter.version>
-		<swagger-platform.version>2.9.2</swagger-platform.version>
-		<alibaba.druid.version>1.1.21</alibaba.druid.version>
 	</properties>
 
 	<dependencies>
@@ -129,6 +130,7 @@
 			</plugin>
 		</plugins>
 	</build>
+<!-- 
 	<repositories>
 		<repository>
 			<id>maven-public</id>
@@ -148,5 +150,5 @@
 			<url>http://10.168.4.75:8081/repository/maven-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
-
+ -->
 </project>

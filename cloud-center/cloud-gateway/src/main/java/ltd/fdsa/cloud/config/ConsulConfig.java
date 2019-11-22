@@ -3,9 +3,6 @@ package ltd.fdsa.cloud.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.ecwid.consul.transport.TLSConfig;
-import com.ecwid.consul.transport.TLSConfig.KeyStoreInstanceType;
 import com.ecwid.consul.v1.ConsulClient;
 
 @Configuration 
@@ -26,13 +23,10 @@ public class ConsulConfig {
 //	 String keyStorePassword;
 //		 
 
-	@Bean(name = "readDataSource")
+	@Bean(name = "consulClient")
 	//@ConfigurationProperties("spring.cloud.consul.host.port")  
     public ConsulClient createConsulClient() {
-	
 		 //TODO TLSConfig tlsConfig = new TLSConfig();
         return  new ConsulClient(this.agentHost, this.agentPort);
     }
- 
-
 }

@@ -6,7 +6,10 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.gateway.webflux.ProxyExchange;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -25,21 +28,25 @@ import ltd.fdsa.cloud.service.DynamicRouteService;
 public class HomeController {
 	@Autowired
 	private DiscoveryClient discoveryClient;
+
 	@Autowired
 	DynamicRouteService routeService;
 
 	@Autowired
 	ConsulClient consulClient;
-	@RequestMapping("/")
-	// @PreAuthorize("hasAuthority('BookList')")
+ 
+	@RequestMapping("/") 
 	public String home() {
 		return "Hello world";
 	}
+	@RequestMapping("/reload")
+	public String reload() {
+		routeService.notifyChanges();
+		return "Ok";
+	}
 
 	@PostMapping("/watch")
-	public Object watchChanges(
-			@RequestBody Object body,
-			@RequestHeader HttpHeaders header)
+	public Object watchChanges(@RequestBody Object body, @RequestHeader HttpHeaders header)
 			throws JsonProcessingException {
 		routeService.notifyChanges();
 		StringBuffer str = new StringBuffer();
@@ -47,7 +54,7 @@ public class HomeController {
 			str.append(body.toString());
 			log.info(body.toString());
 		}
-	
+
 		if (header != null) {
 			str.append(header.toString());
 			log.info(header.toString());
@@ -74,13 +81,7 @@ public class HomeController {
 		return list;
 	}
 
-	@RequestMapping("/reload")
-	public String reload() {
-		routeService.notifyChanges();
-		return "Ok";
-	}
-
-
+	
 	@RequestMapping("/register")
 	public Object registerService() {
 

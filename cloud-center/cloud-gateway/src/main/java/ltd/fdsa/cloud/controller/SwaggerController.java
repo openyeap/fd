@@ -22,7 +22,7 @@ import java.util.Optional;
 
 @RequestMapping("/swagger-resources")
 
-public class SwaggerHandler {
+public class SwaggerController {
 
 	@Autowired(required = false)
 
@@ -36,7 +36,7 @@ public class SwaggerHandler {
 
 	@Autowired
 
-	public SwaggerHandler(SwaggerResourcesProvider swaggerResources) {
+	public SwaggerController(SwaggerResourcesProvider swaggerResources) {
 
 		this.swaggerResources = swaggerResources;
 

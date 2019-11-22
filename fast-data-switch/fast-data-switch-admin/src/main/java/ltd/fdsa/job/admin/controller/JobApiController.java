@@ -3,7 +3,6 @@ package ltd.fdsa.job.admin.controller;
 import com.xxl.job.core.biz.AdminBiz;
 
 import ltd.fdsa.job.admin.controller.annotation.PermissionLimit;
-import ltd.fdsa.job.admin.core.conf.XxlJobScheduler;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Controller;
@@ -14,9 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Created by xuxueli on 17/5/10.
- */
 @Controller
 public class JobApiController implements InitializingBean {
 

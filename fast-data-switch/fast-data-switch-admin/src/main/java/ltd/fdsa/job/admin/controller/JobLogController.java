@@ -30,10 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * index controller
- * @author xuxueli 2015-12-19 16:13:16
- */
 @Controller
 @RequestMapping("/joblog")
 public class JobLogController {
