@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>jdbc-spring-boot-starter</artifactId>
+	<name>spring boot jdbc starter</name>
+	<description>jdbc database starter for spring boot</description>
+	<packaging>jar</packaging>
+	<parent>
+		<groupId>ltd.fdsa</groupId>
+		<artifactId>boot-starter</artifactId>
+		<version>3.0.0</version>
+	</parent>
+	<properties>
+		<!-- data -->
+		<alibaba.druid.version>1.1.10</alibaba.druid.version>
+		<tk.mybatis.version>2.1.5</tk.mybatis.version>
+		<mybatis.starter.version>2.1.0</mybatis.starter.version>
+		<mybatis.typehandlers.version>1.0.2</mybatis.typehandlers.version>
+		<mysql.connector.version>8.0.15</mysql.connector.version>
+		<postgresql.version>42.2.8</postgresql.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid-spring-boot-starter</artifactId>
+			<version>${alibaba.druid.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>${alibaba.druid.version}</version>
+		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>org.mybatis.spring.boot</groupId> -->
+		<!-- <artifactId>mybatis-spring-boot-starter</artifactId> -->
+		<!-- <version>${mybatis.starter.version}</version> -->
+		<!-- </dependency> -->
+		<dependency>
+			<groupId>tk.mybatis</groupId>
+			<artifactId>mapper-spring-boot-starter</artifactId>
+			<version>${tk.mybatis.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-typehandlers-jsr310</artifactId>
+			<version>${mybatis.typehandlers.version}</version>
+		</dependency>
+
+
+		<!-- apo -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
+</project>
