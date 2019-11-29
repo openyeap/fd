@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: mti-service-job
+  cloud:
+    config:
+      uri: http://localhost:8500 
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://10.168.4.172:5321/shanghai?currentSchema=shanghai
+    username: postgres
+    password: postgres
