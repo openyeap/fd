@@ -1,47 +1,22 @@
 package ltd.fdsa.fds.container;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CompletionService;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorCompletionService;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.alibaba.fastjson.JSON;
 import com.daoshu.plugin.PluginManager;
-import com.google.common.base.Throwables;
-import com.lmax.disruptor.BlockingWaitStrategy;
-import com.lmax.disruptor.WaitStrategy;
-import com.lmax.disruptor.dsl.Disruptor;
-import com.lmax.disruptor.dsl.ProducerType;
 
 import lombok.extern.slf4j.Slf4j;
-import ltd.fdsa.fds.constant.Constants;
 import ltd.fdsa.fds.core.DataPipeLine;
 import ltd.fdsa.fds.core.DataSource;
 import ltd.fdsa.fds.core.DataTarget;
 import ltd.fdsa.fds.core.JobContext;
 import ltd.fdsa.fds.core.JobStatus;
 import ltd.fdsa.fds.core.Metric;
-import ltd.fdsa.fds.core.Reader;
-import ltd.fdsa.fds.core.ReaderWorker;
 import ltd.fdsa.fds.core.RecordCollector;
-import ltd.fdsa.fds.core.Storage;
 import ltd.fdsa.fds.core.TaskContext;
-import ltd.fdsa.fds.core.Writer;
 import ltd.fdsa.fds.core.config.Configuration;
 import ltd.fdsa.fds.core.config.EngineConfig;
-import ltd.fdsa.fds.core.config.JobConfig;
 import ltd.fdsa.fds.implement.DefaultRecordCollector;
-import ltd.fdsa.fds.implement.DefaultStorage;
 import ltd.fdsa.fds.util.Utils;
 
 @Slf4j
@@ -61,7 +36,7 @@ public class FastDataSwitcher {
 		// pluginManager.addExternalJar(basePath);
 
 		// step 2 加载job配置
-		final JobConfig jobConfig = engineConfig.createJobConfig("job config from http input");
+		final Configuration jobConfig = engineConfig.merge(null, true);//("job config from http input");
 
 		// step 3 得到作业所有数据源
 		for (Configuration itemConfig : jobConfig.getListConfiguration("contents")) {
@@ -264,63 +239,63 @@ public class FastDataSwitcher {
 //		System.exit(exitCode);
 //	}
 
-	private boolean closeReaders(final Reader[] readers) {
-		ExecutorService es = Executors.newCachedThreadPool();
-		Callable<Boolean> callable = new Callable<Boolean>() {
-			@Override
-			public Boolean call() throws Exception {
-				Thread.currentThread().setContextClassLoader(readers[0].getClass().getClassLoader());
-				try {
-					for (Reader reader : readers) {
-						reader.close();
-					}
-
-					return true;
-				} catch (Exception e) {
-					log.error(Throwables.getStackTraceAsString(e));
-				}
-				return false;
-			}
-		};
-
-		Future<Boolean> future = es.submit(callable);
-		es.shutdown();
-
-		try {
-			return future.get();
-		} catch (InterruptedException | ExecutionException e) {
-			log.error(Throwables.getStackTraceAsString(e));
-			return false;
-		}
-	}
-
-	private boolean closeWriters(final Writer[] writers) {
-		ExecutorService es = Executors.newCachedThreadPool();
-		Callable<Boolean> callable = new Callable<Boolean>() {
-			@Override
-			public Boolean call() throws Exception {
-				Thread.currentThread().setContextClassLoader(writers[0].getClass().getClassLoader());
-				try {
-					for (Writer writer : writers) {
-						writer.close();
-					}
-
-					return true;
-				} catch (Exception e) {
-					log.error(Throwables.getStackTraceAsString(e));
-				}
-				return false;
-			}
-		};
-
-		Future<Boolean> future = es.submit(callable);
-		es.shutdown();
-
-		try {
-			return future.get();
-		} catch (InterruptedException | ExecutionException e) {
-			log.error(Throwables.getStackTraceAsString(e));
-			return false;
-		}
-	}
+//	private boolean closeReaders(final Reader[] readers) {
+//		ExecutorService es = Executors.newCachedThreadPool();
+//		Callable<Boolean> callable = new Callable<Boolean>() {
+//			@Override
+//			public Boolean call() throws Exception {
+//				Thread.currentThread().setContextClassLoader(readers[0].getClass().getClassLoader());
+//				try {
+//					for (Reader reader : readers) {
+//						reader.close();
+//					}
+//
+//					return true;
+//				} catch (Exception e) {
+//					log.error(Throwables.getStackTraceAsString(e));
+//				}
+//				return false;
+//			}
+//		};
+//
+//		Future<Boolean> future = es.submit(callable);
+//		es.shutdown();
+//
+//		try {
+//			return future.get();
+//		} catch (InterruptedException | ExecutionException e) {
+//			log.error(Throwables.getStackTraceAsString(e));
+//			return false;
+//		}
+//	}
+//
+//	private boolean closeWriters(final Writer[] writers) {
+//		ExecutorService es = Executors.newCachedThreadPool();
+//		Callable<Boolean> callable = new Callable<Boolean>() {
+//			@Override
+//			public Boolean call() throws Exception {
+//				Thread.currentThread().setContextClassLoader(writers[0].getClass().getClassLoader());
+//				try {
+//					for (Writer writer : writers) {
+//						writer.close();
+//					}
+//
+//					return true;
+//				} catch (Exception e) {
+//					log.error(Throwables.getStackTraceAsString(e));
+//				}
+//				return false;
+//			}
+//		};
+//
+//		Future<Boolean> future = es.submit(callable);
+//		es.shutdown();
+//
+//		try {
+//			return future.get();
+//		} catch (InterruptedException | ExecutionException e) {
+//			log.error(Throwables.getStackTraceAsString(e));
+//			return false;
+//		}
+//	}
 }

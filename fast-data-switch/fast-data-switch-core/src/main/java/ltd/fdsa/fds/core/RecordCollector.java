@@ -1,10 +1,10 @@
 package ltd.fdsa.fds.core;
 
-import ltd.fdsa.fds.model.Record;
+import java.util.Map;
 
-public interface RecordCollector extends Collector<Record> {
+public interface RecordCollector extends Collector<Map<String,Object>> {
 
-	public void send(Record record);
+	public void send(Map<String,Object> record);
 
-	public void send(Record[] records);
+	public void send(Map<String,Object>[] records);
 }

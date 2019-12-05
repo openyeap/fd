@@ -7,12 +7,11 @@ import lombok.extern.slf4j.Slf4j;
 import ltd.fdsa.fds.core.AbstractPlugin;
 import ltd.fdsa.fds.core.DataSource;
 import ltd.fdsa.fds.core.RecordCollector;
-import ltd.fdsa.fds.core.config.Configuration;
-import ltd.fdsa.fds.implement.DefaultRecord;
+import ltd.fdsa.fds.core.config.Configuration; 
 import ltd.fdsa.fds.model.Fields;
 
 @Slf4j
-public class JDBCSource extends AbstractPlugin implements DataSource {
+public class JdbcSource extends AbstractPlugin implements DataSource {
 	String dirver = "com.mysql.jdbc.Driver";
 	String url = "jdbc:mysql://localhost/test";
 	String user = "username";
@@ -108,7 +107,7 @@ public class JDBCSource extends AbstractPlugin implements DataSource {
 				for (int i = 1; i <= columnCount; i++) {
 					rowData.put(metaData.getColumnName(i), rs.getObject(i));// 获取键名及值
 				}
-				collector.send(new DefaultRecord(rowData));
+				collector.send(rowData);
 			}
 			// STEP 6: Clean-up environment
 			rs.close();

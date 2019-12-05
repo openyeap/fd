@@ -33,10 +33,6 @@ public class EngineConfig implements Configuration {
 			throw new FastDataSwitchException(e);
 		}
 	}
-	public JobConfig createJobConfig(String config) {
-		Configuration jobConfig = new JobConfig(config);
-		return (JobConfig) jobConfig.merge(this, true);
-	}
  
 	@Override
 	public String getNecessaryValue(String key) {

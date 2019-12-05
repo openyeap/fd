@@ -1,6 +1,6 @@
 package ltd.fdsa.fds.plugin.jdbc.implement;
 
-public class JDBCWriterProperties {
+public class JdbcTargetProperties {
 
     public static final String DRIVER = "driver";
     public static final String URL = "url";

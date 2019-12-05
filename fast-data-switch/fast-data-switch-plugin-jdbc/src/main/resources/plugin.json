@@ -21,7 +21,7 @@
 	"name": "jdbcwriter",
 	"type": "writer",
 	"className":"ltd.fdsa.fds.plugin.jdbc.implement.JDBCTarget",
-	 	"db": {
+	 "db": {
 		"name": "jdbc_datasource",
 		"url": "the url of db",
 		"driver": "db driver",

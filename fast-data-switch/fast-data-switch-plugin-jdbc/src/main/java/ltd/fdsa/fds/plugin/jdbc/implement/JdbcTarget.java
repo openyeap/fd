@@ -11,7 +11,7 @@ import ltd.fdsa.fds.core.DataTarget;
 import ltd.fdsa.fds.core.config.Configuration;
 
 @Slf4j
-public class JDBCTarget extends AbstractPlugin implements DataTarget {
+public class JdbcTarget extends AbstractPlugin implements DataTarget {
 	String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	String DB_URL = "jdbc:mysql://localhost/test";
 	String USER = "username";
