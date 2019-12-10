@@ -1,0 +1,1 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=ltd.fdsa.boot.starter.config.ConsulAutoConfiguration 

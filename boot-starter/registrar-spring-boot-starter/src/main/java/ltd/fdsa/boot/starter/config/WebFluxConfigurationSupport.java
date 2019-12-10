@@ -1,14 +1,12 @@
-package ltd.fdsa.boot.starter.config; 
-import java.util.Map;
+package ltd.fdsa.boot.starter.config;  
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
-import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.util.Assert; 
 
 import lombok.extern.slf4j.Slf4j;
-import ltd.fdsa.boot.starter.Application;
+
 @Slf4j
 public class WebFluxConfigurationSupport implements ApplicationContextAware {
 
@@ -19,7 +17,7 @@ public class WebFluxConfigurationSupport implements ApplicationContextAware {
 	@Override
 	public void setApplicationContext(@Nullable ApplicationContext applicationContext) {
 		
-		log.debug("test");
+		log.debug("applicationContext start");
 		
 		this.applicationContext = applicationContext;
 		if (applicationContext != null) {
@@ -28,7 +26,7 @@ public class WebFluxConfigurationSupport implements ApplicationContextAware {
 						"e.g. via @EnableWebMvc and @EnableWebFlux, in the same application.");
 		}
 		
-		log.debug("test");
+		log.debug("applicationContext end");
 	}
 
 	@Nullable

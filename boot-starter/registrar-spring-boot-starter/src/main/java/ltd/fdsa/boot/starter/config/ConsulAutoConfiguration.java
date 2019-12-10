@@ -5,6 +5,8 @@ import java.net.UnknownHostException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,8 +16,25 @@ import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.agent.model.NewService;
 import com.google.common.base.Strings;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+//@ConditionalOnClass(StarterService.class)
+//@EnableConfigurationProperties(StarterServiceProperties.class)
 @Configuration
-public class ConsulConfig {
+public class ConsulAutoConfiguration implements ApplicationListener<ApplicationStartedEvent> {
+
+	@Override
+	public void onApplicationEvent(ApplicationStartedEvent event) {
+		log.info("==========ApplicationStartedEvent ServiceRegister start===========");
+		try {
+			this.createConsulClient().agentServiceRegister(this.createNewService());
+		} catch (Exception ex) {
+			log.error(ex.getLocalizedMessage());
+		}
+		log.info("=========ApplicationStartedEvent ServiceRegister end===========");
+	}
+
 	@Value("${spring.cloud.consul.host:localhost}")
 	String agentHost;
 	@Value("${spring.cloud.consul.port:8500}")
@@ -35,7 +54,7 @@ public class ConsulConfig {
 	@Bean(name = "consulClient")
 	// @ConfigurationProperties("spring.cloud.consul.host.port")
 	public ConsulClient createConsulClient() {
-
+		log.debug("new Consul Client");
 		// TODO TLSConfig tlsConfig = new TLSConfig();
 		return new ConsulClient(this.agentHost, this.agentPort);
 	}
@@ -45,9 +64,8 @@ public class ConsulConfig {
 	@Value("${server.port:8080}")
 	int applicationPort;
 
-	@Bean(name = "newService")
-	public NewService createNewService() {
-
+	private NewService createNewService() {
+		log.debug("new service");
 		NewService service = new NewService();
 		service.setAddress(this.getHost());
 		service.setId(this.getHost());
