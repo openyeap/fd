@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +29,12 @@ public class ConsulAutoConfiguration implements ApplicationListener<ApplicationS
 	public void onApplicationEvent(ApplicationStartedEvent event) {
 		log.info("==========ApplicationStartedEvent ServiceRegister start===========");
 		try {
-			this.createConsulClient().agentServiceRegister(this.createNewService());
+			
+			
+			ConsulClient client= this.createConsulClient();
+			client.agentServiceRegister(this.createNewService());
+			
+			// TODO get all urls with role then update to consul kv store.
 		} catch (Exception ex) {
 			log.error(ex.getLocalizedMessage());
 		}
@@ -57,6 +63,67 @@ public class ConsulAutoConfiguration implements ApplicationListener<ApplicationS
 		log.debug("new Consul Client");
 		// TODO TLSConfig tlsConfig = new TLSConfig();
 		return new ConsulClient(this.agentHost, this.agentPort);
+	}
+
+	@Autowired
+	private ApplicationContext applicationContext;
+
+	// TODO
+	private Map<String, String> genRBU() {
+//		get all urls with role info 
+
+//		Map<String, Object> restControllers = applicationContext.getBeansWithAnnotation(RestController.class);
+//          if (restControllers == null || restControllers.isEmpty()) {
+//              return;
+//          }
+//
+//
+//          String path = "";
+//          RequestMapping requestMapping1 = entry.getValue().getClass().getAnnotation(RequestMapping.class);
+//          if (requestMapping1 != null && requestMapping1.value().length > 0) {
+//              path = requestMapping1.value()[0];
+//          }
+//
+//          Method[] methods = entry.getValue().getClass().getMethods();
+//          if (methods == null || methods.length == 0) {
+//              continue;
+//          }
+//
+//          for (Method method : methods) {
+//
+//              if (!method.isAnnotationPresent(PreAuthorize.class)) {
+//                  continue;
+//              }
+//
+//              String[] urls = null;
+//              RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
+//              if (requestMapping != null) {
+//                  log.info("requestMapping: {}", requestMapping.value());
+//                  urls = requestMapping.value();
+//
+//              }
+//
+//              PostMapping postMapping = method.getAnnotation(PostMapping.class);
+//              if (postMapping != null) {
+//                  log.info("postMapping: {}", postMapping.value());
+//                  urls = postMapping.value();
+//              }
+//
+//              GetMapping getMapping = method.getAnnotation(GetMapping.class);
+//              if (getMapping != null) {
+//                  log.info("getMapping: {}", getMapping.value());
+//                  urls = getMapping.value();
+//              }
+//
+//
+//              String[] roles = null;
+//              PreAuthorize preAuthorize = method.getAnnotation(PreAuthorize.class);
+//              if (preAuthorize != null) {
+//                  roles = preAuthorize.value();
+//              }
+
+		return null;
+
 	}
 
 	@Value("${spring.application.name:defalutapp}")
