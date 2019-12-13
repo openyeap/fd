@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.ecwid.consul.v1.Response;
+import com.ecwid.consul.v1.agent.model.Check;
+import ltd.fdsa.cloud.util.ConsulUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.context.annotation.Primary;
@@ -20,33 +23,39 @@ import springfox.documentation.swagger.web.SwaggerResourcesProvider;
 @Component
 @Primary
 public class DocumentationConfig implements SwaggerResourcesProvider {
-	public static final String API_URI = "/v2/api-docs";
+    public static final String API_URI = "/v2/api-docs";
 
-	@Autowired
-	ConsulClient consulClient;
+    @Autowired
+    ConsulClient consulClient;
 
-	@Override
-	public List<SwaggerResource> get() {
-		List<SwaggerResource> resources = new ArrayList<SwaggerResource>();
-		resources.add(swaggerResource("default", API_URI, "2.0"));
-		try {
-			Map<String, Service> list = this.consulClient.getAgentServices().getValue();
-			for (String key : list.keySet()) {
-				if (!key.contains("consul")) {
-					resources.add(swaggerResource(list.get(key).getService(), "/" + list.get(key).getService() + API_URI, "2.0"));
-				}
-			}
-		} catch (Exception e) {
-			log.error(e.getLocalizedMessage());
-		}
-		return resources;
-	}
+    @Override
+    public List<SwaggerResource> get() {
+        List<SwaggerResource> resources = new ArrayList<SwaggerResource>();
+//        resources.add(swaggerResource("default", API_URI, "2.0"));
+        try {
 
-	private SwaggerResource swaggerResource(String name, String location, String version) {
-		SwaggerResource swaggerResource = new SwaggerResource();
-		swaggerResource.setName(name);
-		swaggerResource.setLocation(location);
-		swaggerResource.setSwaggerVersion(version);
-		return swaggerResource;
-	}
+            Map<String, ArrayList<ConsulUtil.ServiceInfo>> map = ConsulUtil.getInstance().getHealthServices(consulClient);
+            if (map == null) {
+                return resources;
+            }
+            for (Map.Entry<String, ArrayList<ConsulUtil.ServiceInfo>> entry : map.entrySet()) {
+                if (entry.getValue() == null || entry.getValue().size() == 0) {
+                    continue;
+                }
+                ConsulUtil.ServiceInfo serviceInfo = entry.getValue().get(0);
+                resources.add(swaggerResource(serviceInfo.getServiceName(), "/" + serviceInfo.getServiceName() + API_URI, "2.0"));
+            }
+        } catch (Exception e) {
+            log.error(e.getLocalizedMessage());
+        }
+        return resources;
+    }
+
+    private SwaggerResource swaggerResource(String name, String location, String version) {
+        SwaggerResource swaggerResource = new SwaggerResource();
+        swaggerResource.setName(name);
+        swaggerResource.setLocation(location);
+        swaggerResource.setSwaggerVersion(version);
+        return swaggerResource;
+    }
 }

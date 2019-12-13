@@ -5,21 +5,23 @@ spring:
     name: mti-cloud-api
   profiles:
     active: dev
-  cloud: 
-    # consul: 
-    #   host: localhost
-    #   port: 8500
-    gateway: 
-      routes:
-      - id: mti_route
-        uri: http://localhost:8080
-        predicates:
-          - Path=/mti-service-job/**
-        filters: 
-        - StripPrefix=1
-      - id: 163
-        uri: http://localhost:8080
-        predicates:
-          - Path=/163/**
-        filters: 
-        - StripPrefix=1
+#  cloud:
+##    consul:
+##      host: localhost
+##      port: 8500
+#    gateway:
+#      routes:
+#      - id: module1
+#        uri: http://localhost:8001
+#        predicates:
+#        - Path=/module1/**
+#        filters:
+#        - SwaggerHeaderFilter
+#        - StripPrefix=1
+#      - id: module2
+#        uri: http://localhost:8002
+#        predicates:
+#        - Path=/module2/**
+#        filters:
+#        - SwaggerHeaderFilter
+#        - StripPrefix=1

@@ -1,7 +1,9 @@
 package ltd.fdsa.cloud.service;
 
+import ltd.fdsa.cloud.util.ConsulUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
+import org.springframework.cloud.gateway.filter.FilterDefinition;
 import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionRepository;
@@ -29,58 +31,63 @@ import java.util.Map;
 @Slf4j
 public class DynamicRouteService implements ApplicationEventPublisherAware, RouteDefinitionRepository {
 
-	@Autowired
-	ConsulClient consulClient;
-	private ApplicationEventPublisher publisher;
+    @Autowired
+    ConsulClient consulClient;
+    private ApplicationEventPublisher publisher;
 
-	@Override
-	public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-		this.publisher = applicationEventPublisher;
-	}
+    @Override
+    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+        this.publisher = applicationEventPublisher;
+    }
 
-	public void notifyChanges() {
-		this.publisher.publishEvent(new RefreshRoutesEvent(this));
-	}
+    public void notifyChanges() {
+        this.publisher.publishEvent(new RefreshRoutesEvent(this));
+    }
 
-	@Override
-	public Flux<RouteDefinition> getRouteDefinitions() {
-		List<RouteDefinition> routeDefinitions = new ArrayList<>();
-		QueryParams query = QueryParams.Builder.builder().build();
-		Map<String, List<String>> services = consulClient.getCatalogServices(query).getValue();
+    @Override
+    public Flux<RouteDefinition> getRouteDefinitions() {
+        List<RouteDefinition> routeDefinitions = new ArrayList<>();
+        Map<String, ArrayList<ConsulUtil.ServiceInfo>> map = ConsulUtil.getInstance().getHealthServices(consulClient);
+        if (map == null) {
+            return Flux.fromIterable(routeDefinitions);
+        }
+        for (Map.Entry<String, ArrayList<ConsulUtil.ServiceInfo>> entry : map.entrySet()) {
+            if (entry.getValue() == null || entry.getValue().size() == 0) {
+                continue;
+            }
+            RouteDefinition routeDefinition = new RouteDefinition();
+            String serviceName = entry.getKey();
+            ArrayList<ConsulUtil.ServiceInfo> serviceList = entry.getValue();
+            routeDefinition.setId(serviceName);
+            for (ConsulUtil.ServiceInfo serviceInfo : serviceList) {
+                routeDefinition.setUri(UriComponentsBuilder.fromHttpUrl(serviceInfo.getServiceUrl()).build().toUri());
+                //定义断言
+                PredicateDefinition predicate = new PredicateDefinition();
+                predicate.setName("Path");
+                Map<String, String> predicateParams = new HashMap<>(8);
+                predicateParams.put("_genkey_0", "/" + serviceName + "/**");
+                predicate.setArgs(predicateParams);
+                routeDefinition.setPredicates(Arrays.asList(predicate));
+                //定义filter
+				List<FilterDefinition> filterDefinitions = new ArrayList<>();
+				FilterDefinition filterDefinition = new FilterDefinition("SwaggerHeaderFilter");
+				filterDefinitions.add(filterDefinition);
+                filterDefinition = new FilterDefinition("StripPrefix=1");
+                filterDefinitions.add(filterDefinition);
+                routeDefinition.setFilters(filterDefinitions);
+            }
+            routeDefinitions.add(routeDefinition);
+        }
+        return Flux.fromIterable(routeDefinitions);
+    }
 
-		for (String serviceName : services.keySet()) {
-			if (serviceName.equals("consul")) {
-				continue;
-			}
-			RouteDefinition definition = new RouteDefinition();
-			definition.setId(serviceName);
-			log.debug(serviceName);
+    @Override
+    public Mono<Void> save(Mono<RouteDefinition> route) {
+        return null;
+    }
 
-			for (CatalogService service : consulClient.getCatalogService(serviceName, query).getValue()) {
-				String url = "http://" + service.getServiceAddress() + ":" + service.getServicePort();
-				log.debug(url.toString());
-				URI uri = UriComponentsBuilder.fromHttpUrl(url).build().toUri();
-				definition.setUri(uri);
-				// 定义第一个断言
-				PredicateDefinition predicate = new PredicateDefinition();
-				predicate.setName("Path");
-				Map<String, String> predicateParams = new HashMap<>(8);
-				predicateParams.put("_genkey_0","/"+ service.getServiceName()+"/**");
-				predicate.setArgs(predicateParams);
-				log.debug(predicateParams.toString());
-				definition.setPredicates(Arrays.asList(predicate));
-			}
-		}
-		return Flux.fromIterable(routeDefinitions);
-	}
-
-	@Override
-	public Mono<Void> save(Mono<RouteDefinition> route) {
-		return null;
-	}
-
-	@Override
-	public Mono<Void> delete(Mono<String> routeId) {
-		return null;
-	}
+    @Override
+    public Mono<Void> delete(Mono<String> routeId) {
+        return null;
+    }
 }
