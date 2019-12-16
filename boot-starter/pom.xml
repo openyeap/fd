@@ -17,8 +17,9 @@
 	<modules>
 		<module>registrar-spring-boot-starter</module>
 		<module>log-spring-boot-starter</module>
-		<module>postgresql-spring-boot-starter</module>
-	</modules>
+		<module>jdbc-spring-boot-starter</module>
+        <module>demo</module>
+    </modules>
 
 	<properties>
 		<!--基本属性定义 -->
