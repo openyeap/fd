@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Map;
 
+import com.ecwid.consul.v1.health.model.Check;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -26,26 +27,26 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 public class ConsulAutoConfiguration implements ApplicationListener<ApplicationStartedEvent> {
 
-	@Override
-	public void onApplicationEvent(ApplicationStartedEvent event) {
-		log.info("==========ApplicationStartedEvent ServiceRegister start===========");
-		try {
-			
-			
-			ConsulClient client= this.createConsulClient();
-			client.agentServiceRegister(this.createNewService());
-			
-			// TODO get all urls with role then update to consul kv store.
-		} catch (Exception ex) {
-			log.error(ex.getLocalizedMessage());
-		}
-		log.info("=========ApplicationStartedEvent ServiceRegister end===========");
-	}
+    @Override
+    public void onApplicationEvent(ApplicationStartedEvent event) {
+        log.info("==========ApplicationStartedEvent ServiceRegister start===========");
+        try {
 
-	@Value("${spring.cloud.consul.host:localhost}")
-	String agentHost;
-	@Value("${spring.cloud.consul.port:8500}")
-	int agentPort;
+
+            ConsulClient client = this.createConsulClient();
+            client.agentServiceRegister(this.createNewService());
+
+            // TODO get all urls with role then update to consul kv store.
+        } catch (Exception ex) {
+            log.error(ex.getLocalizedMessage());
+        }
+        log.info("=========ApplicationStartedEvent ServiceRegister end===========");
+    }
+
+    @Value("${spring.cloud.consul.host:localhost}")
+    String agentHost;
+    @Value("${spring.cloud.consul.port:8500}")
+    int agentPort;
 //	@Value("${spring.cloud.consul.tls.type:8500}")
 //	KeyStoreInstanceType keyStoreInstanceType;
 //	@Value("${spring.cloud.consul.tls.certificatePath}")
@@ -58,19 +59,19 @@ public class ConsulAutoConfiguration implements ApplicationListener<ApplicationS
 //	 String keyStorePassword;
 //		 
 
-	@Bean(name = "consulClient")
-	// @ConfigurationProperties("spring.cloud.consul.host.port")
-	public ConsulClient createConsulClient() {
-		log.debug("new Consul Client");
-		// TODO TLSConfig tlsConfig = new TLSConfig();
-		return new ConsulClient(this.agentHost, this.agentPort);
-	}
+    @Bean(name = "consulClient")
+    // @ConfigurationProperties("spring.cloud.consul.host.port")
+    public ConsulClient createConsulClient() {
+        log.debug("new Consul Client");
+        // TODO TLSConfig tlsConfig = new TLSConfig();
+        return new ConsulClient(this.agentHost, this.agentPort);
+    }
 
-	@Autowired
-	private ApplicationContext applicationContext;
+    @Autowired
+    private ApplicationContext applicationContext;
 
-	// TODO
-	private Map<String, String> genRBU() {
+    // TODO
+    private Map<String, String> genRBU() {
 //		get all urls with role info 
 
 //		Map<String, Object> restControllers = applicationContext.getBeansWithAnnotation(RestController.class);
@@ -123,36 +124,42 @@ public class ConsulAutoConfiguration implements ApplicationListener<ApplicationS
 //                  roles = preAuthorize.value();
 //              }
 
-		return null;
+        return null;
 
-	}
+    }
 
-	@Value("${spring.application.name:defalutapp}")
-	String applicationName;
-	@Value("${server.port:8080}")
-	int applicationPort;
+    @Value("${spring.application.name:defalutapp}")
+    String applicationName;
+    @Value("${server.port:8080}")
+    int applicationPort;
 
-	private NewService createNewService() {
-		log.debug("new service");
-		NewService service = new NewService();
-		service.setAddress(this.getHost());
-		service.setId(this.getHost());
-		service.setName(this.applicationName);
-		service.setPort(this.applicationPort);
-		return service;
-	}
+    private NewService createNewService() {
+        log.debug("new service");
+        NewService service = new NewService();
+        service.setAddress(this.getHost());
+        service.setId(this.getHost());
+        service.setName(this.applicationName);
+        service.setPort(this.applicationPort);
+        NewService.Check check = new NewService.Check();
+        check.setHttp("http://" + host + ":" + applicationPort + "/actuator/info");
+        check.setMethod("GET");
+        check.setInterval("10s");
+        check.setTimeout("1s");
+        service.setCheck(check);
+        return service;
+    }
 
-	private String host;
+    private String host;
 
-	public String getHost() {
-		if (Strings.isNullOrEmpty(host)) {
-			try {
-				InetAddress address = InetAddress.getLocalHost();
-				this.host = address.getHostAddress();
-			} catch (UnknownHostException e) {
-				this.host = "localhost";
-			}
-		}
-		return host;
-	}
+    public String getHost() {
+        if (Strings.isNullOrEmpty(host)) {
+            try {
+                InetAddress address = InetAddress.getLocalHost();
+                this.host = address.getHostAddress();
+            } catch (UnknownHostException e) {
+                this.host = "localhost";
+            }
+        }
+        return host;
+    }
 }

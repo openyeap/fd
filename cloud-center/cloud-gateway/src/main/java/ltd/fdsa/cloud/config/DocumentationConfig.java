@@ -43,7 +43,7 @@ public class DocumentationConfig implements SwaggerResourcesProvider {
                     continue;
                 }
                 ConsulUtil.ServiceInfo serviceInfo = entry.getValue().get(0);
-                resources.add(swaggerResource(serviceInfo.getServiceName(), "/" + serviceInfo.getServiceName() + API_URI, "2.0"));
+                resources.add(swaggerResource(serviceInfo.getServiceName(), "/" + serviceInfo.getServiceName() + API_URI + "?group=" + serviceInfo.getServiceName(), "2.0"));
             }
         } catch (Exception e) {
             log.error(e.getLocalizedMessage());

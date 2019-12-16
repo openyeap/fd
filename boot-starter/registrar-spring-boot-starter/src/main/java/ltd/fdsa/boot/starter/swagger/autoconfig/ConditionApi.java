@@ -20,10 +20,6 @@ public class ConditionApi implements Condition {
             String enabled = environment.getProperty("spring.swagger.enabled");
             if ("true".equals(enabled)) {
                 return true;
-            } else if ("false".equals(enabled)) {
-                return false;
-            } else if (environment.acceptsProfiles("api")) {
-                return true;
             }
         }
         return false;

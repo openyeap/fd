@@ -1,3 +1,3 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=ltd.fdsa.boot.starter.config.ConsulAutoConfiguration,\
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=ltd.fdsa.boot.starter.consul.autoconfig.ConsulAutoConfiguration,\
   ltd.fdsa.boot.starter.swagger.autoconfig.SwaggerAutoConfiguration,\
   ltd.fdsa.boot.starter.config.GatewayAutoConfiguration

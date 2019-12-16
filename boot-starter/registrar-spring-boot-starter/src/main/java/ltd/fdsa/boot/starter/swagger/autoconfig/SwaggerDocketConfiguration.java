@@ -41,10 +41,12 @@ public class SwaggerDocketConfiguration implements BeanFactoryPostProcessor, Env
         this.environment = environment;
     }
 
+    private final String DEFAULT_APPLICATION_NAME = "Default";
+
     private SwaggerProperties getSwaggerProperties() {
         applicationName = environment.getProperty("spring.application.name");
         if (applicationName == null || "".equals(applicationName)) {
-            applicationName = UUID.randomUUID().toString();
+            applicationName = DEFAULT_APPLICATION_NAME;
         }
         return initSwaggerProperties();
     }
