@@ -20,6 +20,7 @@ public class ConsulProperties {
 
     private int port = 8500;
 
+    @Override
     public String toString() {
         return "ConsulProperties{" +
                 "host='" + host + '\'' +

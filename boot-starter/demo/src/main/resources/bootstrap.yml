@@ -3,3 +3,9 @@ spring:
     enabled: true
   application:
     name: demo1
+  cloud:
+    consul:
+      port: 8500
+      host: localhost
+      health:
+        enabled: true
