@@ -2,8 +2,8 @@ package ltd.fdsa.boot.starter.consul.autoconfig;
 
 import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.agent.model.NewService;
-import com.sun.xml.internal.bind.v2.TODO;
 import lombok.extern.log4j.Log4j2;
+import ltd.fdsa.boot.starter.annotation.AuthRole;
 import ltd.fdsa.boot.starter.consul.properties.ConsulAuthProperties;
 import ltd.fdsa.boot.starter.consul.properties.ConsulHealthCheckProperties;
 import ltd.fdsa.boot.starter.consul.properties.ConsulProperties;
@@ -213,7 +213,11 @@ public class ConsulAutoConfiguration implements ApplicationListener<ApplicationS
             for (Method method : methods) {
                 //1、获取权限注解
                 //TODO:实现获取权限注解
-                String role = "admin,user";
+                String role = "";
+                AuthRole authRole = method.getAnnotation(AuthRole.class);
+                if(authRole != null) {
+                    role = authRole.value();
+                }
 
                 //2、获取方法路径
                 String[] urlMethods = null;
