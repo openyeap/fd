@@ -33,11 +33,6 @@ import java.util.Set;
 import org.apache.el.parser.TokenMgrError;
 import org.assertj.core.util.Strings;
 
-import ltd.fdsa.fdsql.parser.ast.ComparisonOperator;
-import ltd.fdsa.fdsql.parser.ast.Node;
-import ltd.fdsa.fdsql.parser.ast.NodesFactory;
-import ltd.fdsa.fdsql.parser.ast.RSQLOperators;
-
 /**
  * Parser of the RDML
  *
@@ -48,7 +43,7 @@ import ltd.fdsa.fdsql.parser.ast.RSQLOperators;
  * query=field.opt.value;field.opt.value,(field.opt.value;field.opt.value)
  * order=field.desc,field.asc page=0-n size=1-N
  */
-public final class RDMLParser {
+public final class RdmlParser {
 
 	public String parseSelect(String input) {
 		if (Strings.isNullOrEmpty(input)) {
