@@ -1,4 +1,4 @@
-package ltd.fdsa.fdsql.web;
+package ltd.fdsa.fdsql.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -7,15 +7,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecwid.consul.v1.ConsulClient;
-
-@SpringBootApplication(scanBasePackages = {"ltd.fdsa.*"})
-@RestController
+ 
+@RestController("/")
 public class Application {
 
 	@Autowired
 	ConsulClient consulClient;
 
-	@RequestMapping("/")
+	@RequestMapping("/home")
 	public String home() {
 		return "Hello World!";
 	}
@@ -25,9 +24,4 @@ public class Application {
 		Object result = consulClient.getAgentServices().getValue();
 		return result;
 	}
-
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
-
 }

@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ltd.fdsa</groupId>
-	<artifactId>fast-data-manipulation</artifactId>
+	<artifactId>fast-data-manipulation-jdbc</artifactId>
 	<version>1.0.0</version>
 	<name>RESTful data manipulation language</name>
 	<description>fast data manipulation is a project for RESTful api to operate database</description>
@@ -23,7 +23,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.test.skip>true</maven.test.skip>
- 	</properties>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

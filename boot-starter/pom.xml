@@ -18,8 +18,8 @@
 		<module>registrar-spring-boot-starter</module>
 		<module>log-spring-boot-starter</module>
 		<module>jdbc-spring-boot-starter</module>
-        <module>demo</module>
-    </modules>
+	        <module>demo</module>
+	</modules>
 
 	<properties>
 		<!--基本属性定义 -->
@@ -37,6 +37,16 @@
 		<commons.lang.version>2.6</commons.lang.version>
 	</properties>
 	<dependencies>
+		<!-- 主要配合IDE使用 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure</artifactId>
+		</dependency>
 		<!--精简代码 -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
