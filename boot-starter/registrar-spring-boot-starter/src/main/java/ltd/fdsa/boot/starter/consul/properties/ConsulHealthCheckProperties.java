@@ -19,4 +19,5 @@ public class ConsulHealthCheckProperties {
     private String healthCheckPath = "/actuator/health";
     private String healthCheckInterval = "10s";
     private String healthCheckTimeout = "1s";
+    private String deRegisterCriticalServiceAfter = "30s";
 }

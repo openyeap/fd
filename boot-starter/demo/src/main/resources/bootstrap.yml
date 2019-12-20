@@ -9,3 +9,5 @@ spring:
       host: localhost
       health:
         enabled: true
+server:
+  port: 8080
