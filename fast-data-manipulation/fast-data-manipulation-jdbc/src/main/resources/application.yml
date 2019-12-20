@@ -12,3 +12,8 @@ spring:
     url: jdbc:postgresql://10.168.4.172:5321/shanghai?currentSchema=shanghai
     username: postgres
     password: postgres
+ 
+context: 
+  listener: 
+    classes: ltd.fdsa.fdsql.web.ApplicationEventListener
+ 

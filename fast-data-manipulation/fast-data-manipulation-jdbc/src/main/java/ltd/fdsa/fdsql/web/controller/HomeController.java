@@ -1,4 +1,4 @@
-package ltd.fdsa.fdsql.web;
+package ltd.fdsa.fdsql.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -7,15 +7,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecwid.consul.v1.ConsulClient;
-
-@SpringBootApplication(scanBasePackages = {"ltd.fdsa.*"})
-@RestController
-public class Application {
+ 
+@RestController("/v2")
+public class HomeController {
 
 	@Autowired
 	ConsulClient consulClient;
 
-	@RequestMapping("/")
+	@RequestMapping("/home")
 	public String home() {
 		return "Hello World!";
 	}
@@ -25,9 +24,13 @@ public class Application {
 		Object result = consulClient.getAgentServices().getValue();
 		return result;
 	}
-
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
-
+	
+	@RequestMapping("/api-docs")
+	public Object getApiDocs() {
+		// TODO get all tables and views from jdbc source
+		// refer to https://blog.csdn.net/smily_tk/article/details/82663106
+		// then generate api-docs for swagger ui
+		Object result = null;//
+		return result;
+	} 
 }
