@@ -16,4 +16,13 @@ spring:
 context: 
   listener: 
     classes: ltd.fdsa.fdsql.web.ApplicationEventListener
- 
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "zhumingwu,prometheus"
+  endpoint:
+    health:
+      show-details: always 
