@@ -9,10 +9,20 @@ spring:
       uri: http://localhost:8500 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://10.168.4.172:5321/shanghai?currentSchema=shanghai
+    url: jdbc:postgresql://10.168.4.22:5321/mti_test?currentSchema=public
     username: postgres
     password: postgres
- 
+  daoshu:
+    tables:
+      prefix-matches:
+      - sys
+      - cus
+      suffix-matches:
+      - user
+      - customer
+      containers:
+      - user
+
 context: 
   listener: 
     classes: ltd.fdsa.fdsql.web.ApplicationEventListener

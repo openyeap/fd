@@ -98,6 +98,7 @@ public class ConsulAutoConfiguration implements ApplicationListener<ApplicationS
     private final String DEFAULT_HEALTH_CHECK_PATH = "/actuator/health";
     private final String DEFAULT_HEALTH_CHECK_INTERVAL = "10s";
     private final String DEFAULT_HEALTH_CHECK_TIMEOUT = "1s";
+    private final String DEFAULT_DE_REGISTER_CRITICAL_SERVICE_AFTER = "30s";
 
     private ConsulHealthCheckProperties getConsulHealthCheckProperties() {
         ConsulHealthCheckProperties consulHealthCheckProperties;
@@ -121,6 +122,9 @@ public class ConsulAutoConfiguration implements ApplicationListener<ApplicationS
         }
         if (StringUtils.isEmpty(consulHealthCheckProperties.getHealthCheckTimeout())) {
             consulHealthCheckProperties.setHealthCheckTimeout(DEFAULT_HEALTH_CHECK_TIMEOUT);
+        }
+        if(StringUtils.isEmpty(consulHealthCheckProperties.getDeRegisterCriticalServiceAfter())) {
+            consulHealthCheckProperties.setDeRegisterCriticalServiceAfter(DEFAULT_DE_REGISTER_CRITICAL_SERVICE_AFTER);
         }
         return consulHealthCheckProperties;
     }
@@ -162,6 +166,7 @@ public class ConsulAutoConfiguration implements ApplicationListener<ApplicationS
             check.setMethod("GET");
             check.setInterval(consulHealthCheckProperties.getHealthCheckInterval());
             check.setTimeout(consulHealthCheckProperties.getHealthCheckTimeout());
+            check.setDeregisterCriticalServiceAfter(consulHealthCheckProperties.getDeRegisterCriticalServiceAfter());
             service.setCheck(check);
         }
         return service;

@@ -71,7 +71,9 @@ public class DynamicRouteService implements ApplicationEventPublisherAware, Rout
                 //定义filter
 				List<FilterDefinition> filterDefinitions = new ArrayList<>();
 				FilterDefinition filterDefinition = new FilterDefinition("SwaggerHeaderFilter");
-				filterDefinitions.add(filterDefinition);
+//				filterDefinitions.add(filterDefinition);
+//				filterDefinition = new FilterDefinition("AuthorizeFilter");
+                filterDefinitions.add(filterDefinition);
                 filterDefinition = new FilterDefinition("StripPrefix=1");
                 filterDefinitions.add(filterDefinition);
                 routeDefinition.setFilters(filterDefinitions);

@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ltd.fdsa.fdsql.parser.RdmlParser;
 import ltd.fdsa.fdsql.web.repository.Repository;
  
-@RestController("/")
+@RestController
+@RequestMapping("/v2")
 public class ApiController {
 	@Autowired
 	private Repository repository;
