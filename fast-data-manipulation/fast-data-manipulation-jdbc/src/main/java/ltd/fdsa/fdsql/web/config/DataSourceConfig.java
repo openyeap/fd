@@ -20,7 +20,7 @@ public class DataSourceConfig {
 		DataSource dataSource = DataSourceBuilder
 				.create()
 				.driverClassName("org.postgresql.Driver")
-				.url("jdbc:postgresql://10.168.4.22:5321/mti_test?currentSchema=mti_test")
+				.url("jdbc:postgresql://10.168.4.22:5321/landplan?currentSchema=landplan")
 				.username("postgres")
 				.password("postgres")
 				.build();

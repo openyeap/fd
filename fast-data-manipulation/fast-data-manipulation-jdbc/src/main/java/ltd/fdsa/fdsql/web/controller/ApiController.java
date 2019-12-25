@@ -21,7 +21,8 @@ import ltd.fdsa.fdsql.web.repository.Repository;
 public class ApiController {
 	@Autowired
 	private Repository repository;
-	@RequestMapping(value = "/{table}", method = RequestMethod.PUT, produces = "application/json")
+	@RequestMapping(value = "/{t" +
+			"able}", method = RequestMethod.PUT, produces = "application/json")
 	public String create(@PathVariable String table, @RequestBody Map<String, Object> data) {
 		
 		// TODO insert data into table;

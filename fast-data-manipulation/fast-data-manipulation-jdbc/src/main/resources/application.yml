@@ -15,13 +15,17 @@ spring:
   daoshu:
     tables:
       prefix-matches:
-      - sys
-      - cus
-      suffix-matches:
-      - user
-      - customer
-      containers:
-      - user
+      - s*_
+      - t*_
+      - us*_
+    changes:
+      append:
+      - t_: {prefix: 'test_', suffix: '_result'} #以t_开头的表，前增test_，后增_result
+      - s_: {suffix: '_test'} #以s开头的表，后增_test
+      - us_: {prefix: 'user_'} #以us_开头的表，前增user_
+      remove:
+      - _ #移除 _
+      replace: {land: 'plan', jiefang: 'liberate'}
 
 context: 
   listener: 

@@ -1,12 +1,9 @@
 package ltd.fdsa.fdsql.web.controller;
 
+import ltd.fdsa.fdsql.web.config.ChangesFilterConfig;
 import ltd.fdsa.fdsql.web.config.TablesFilterConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ecwid.consul.v1.ConsulClient;
 
@@ -19,6 +16,9 @@ public class HomeController {
 
     @Autowired
     TablesFilterConfig tablesFilterConfig;
+
+    @Autowired
+    ChangesFilterConfig changesFilterConfig;
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String home() {
@@ -43,6 +43,24 @@ public class HomeController {
     @RequestMapping(value = "/tables", method = RequestMethod.GET, produces = "application/json")
     public Object getTables() {
         Object obj = tablesFilterConfig.queryTables();
+        return obj;
+    }
+
+    @RequestMapping(value = "/tables1", method = RequestMethod.GET, produces = "application/json")
+    public Object getChangeTables() {
+        Object obj = changesFilterConfig.queryTables();
+        return obj;
+    }
+
+    @RequestMapping(value = "/tables2", method = RequestMethod.GET, produces = "application/json")
+    public Object getChangeTablesDZ() {
+        Object obj = changesFilterConfig.getTablesChangeList();
+        return obj;
+    }
+
+    @RequestMapping(value = "/column/{name}", method = RequestMethod.GET, produces = "application/json")
+    public Object getColumns(@PathVariable String name) {
+        Object obj = changesFilterConfig.getColumnsList(name);
         return obj;
     }
 }
