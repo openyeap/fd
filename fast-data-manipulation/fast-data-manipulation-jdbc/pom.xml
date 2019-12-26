@@ -23,6 +23,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.test.skip>true</maven.test.skip>
+		<commons.lang.version>2.6</commons.lang.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -65,6 +66,11 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>${commons.lang.version}</version>
 		</dependency>
 	</dependencies>
 

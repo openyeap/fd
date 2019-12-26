@@ -2,7 +2,7 @@ package ltd.fdsa.fdsql.web.config;
 
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.boot.context.properties.ConfigurationProperties;
