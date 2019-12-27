@@ -2,17 +2,22 @@ package ltd.fdsa.fdsql.web.controller;
 
 import ltd.fdsa.fdsql.web.config.ChangesFilterConfig;
 import ltd.fdsa.fdsql.web.config.TablesFilterConfig;
+import ltd.fdsa.fdsql.web.repository.JdbcService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.ecwid.consul.v1.ConsulClient;
 
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v2")
 public class HomeController {
 
     @Autowired
     ConsulClient consulClient;
+
+    @Autowired
+    JdbcService jdbcService;
 
     @Autowired
     TablesFilterConfig tablesFilterConfig;
@@ -33,10 +38,7 @@ public class HomeController {
 
     @RequestMapping("/api-docs")
     public Object getApiDocs() {
-        // TODO get all tables and views from jdbc source
-        // refer to https://blog.csdn.net/smily_tk/article/details/82663106
-        // then generate api-docs for swagger ui
-        Object result = null;//
+        Object result = jdbcService.listAllTablesFields();
         return result;
     }
 

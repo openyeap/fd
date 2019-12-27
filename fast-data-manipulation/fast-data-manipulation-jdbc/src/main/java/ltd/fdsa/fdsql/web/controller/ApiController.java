@@ -17,12 +17,11 @@ import ltd.fdsa.fdsql.parser.RdmlParser;
 import ltd.fdsa.fdsql.web.repository.Repository;
  
 @RestController
-@RequestMapping("/v2")
+@RequestMapping("/api")
 public class ApiController {
 	@Autowired
 	private Repository repository;
-	@RequestMapping(value = "/{t" +
-			"able}", method = RequestMethod.PUT, produces = "application/json")
+	@RequestMapping(value = "/{table}", method = RequestMethod.PUT, produces = "application/json")
 	public String create(@PathVariable String table, @RequestBody Map<String, Object> data) {
 		
 		// TODO insert data into table;

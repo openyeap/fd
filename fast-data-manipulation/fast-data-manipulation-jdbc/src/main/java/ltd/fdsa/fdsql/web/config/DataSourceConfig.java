@@ -17,15 +17,21 @@ public class DataSourceConfig {
 	@Bean
 	public JdbcTemplate primaryTemplate() {
 
+		return new JdbcTemplate(this.getDataSource());
+	}
+
+	private DataSource getDataSource() {
 		DataSource dataSource = DataSourceBuilder
 				.create()
 				.driverClassName("org.postgresql.Driver")
-				.url("jdbc:postgresql://10.168.4.22:5321/landplan?currentSchema=landplan")
+				.url("jdbc:postgresql://10.168.4.22:5321/mti_test?currentSchema=mti_test")
 				.username("postgres")
 				.password("postgres")
 				.build();
-
-		return new JdbcTemplate(dataSource);
 	}
 
+	@Bean
+	public Connection getConnection() throws SQLException {
+		return this.getDataSource().getConnection();
+	}
 }
