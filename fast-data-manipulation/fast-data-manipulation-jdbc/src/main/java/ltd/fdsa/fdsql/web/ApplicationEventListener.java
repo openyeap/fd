@@ -14,9 +14,8 @@ public class ApplicationEventListener implements ApplicationListener {
     public void onApplicationEvent(ApplicationEvent event) {
         // 在这里可以监听到Spring Boot的生命周期
     	
-    	log.info("=====================================ApplicationListener ApplicationEvent=========================================");
-    	
-       	log.info(event.getClass().getName());
+//    	log.info("=====================================ApplicationListener ApplicationEvent=========================================");
+//     	log.info(event.getClass().getName());
 //        if (event instanceof ApplicationEnvironmentPreparedEvent) { // 初始化环境变量 }
 //        else if (event instanceof ApplicationPreparedEvent) { // 初始化完成 }
 //        else if (event instanceof ContextRefreshedEvent) { // 应用刷新 }
