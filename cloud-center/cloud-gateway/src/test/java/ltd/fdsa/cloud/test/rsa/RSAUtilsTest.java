@@ -2,9 +2,12 @@ package ltd.fdsa.cloud.test.rsa;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Base64;
 import java.util.Map;
 
+import org.aspectj.util.FileUtil;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -65,7 +68,9 @@ public class RSAUtilsTest {
 		try {
 			kp = RSAUtils.genKeyPair();
 			String privateKey = RSAUtils.getPrivateKey(kp);
+			log.info("privateKey: " + privateKey);
 			String publicKey = RSAUtils.getPublicKey(kp);
+			log.info("publicKey: " + publicKey);
 			String machineCode = LicenseUtils.getMachineCode();
 			log.info("MachineCode: " + machineCode);
 
@@ -80,6 +85,20 @@ public class RSAUtilsTest {
 			fail(e.getLocalizedMessage());
 		}
 
+	}
+
+	@Test
+	public void testFile() {
+		String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+		log.info(path);
+
+		String fileName = "D:\\cert\\demo1\\demo1-public.pem";
+		try {
+			String publicKey = FileUtil.readAsString(new File(fileName));
+			log.info(publicKey);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

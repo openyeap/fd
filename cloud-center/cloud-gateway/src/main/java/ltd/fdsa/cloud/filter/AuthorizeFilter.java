@@ -82,7 +82,11 @@
 package ltd.fdsa.cloud.filter;
 
 import lombok.extern.log4j.Log4j2;
+import ltd.fdsa.cloud.config.CertConfig;
 import ltd.fdsa.cloud.util.ConsulServerUtil;
+import ltd.fdsa.cloud.util.LicenseUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -99,17 +103,47 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
 
     private static final String prefix = "auth";
 
+    @Autowired
+    private CertConfig certConfig;
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
         String path = request.getPath().pathWithinApplication().value();
+        if(StringUtils.isEmpty(path)) {
+            return chain.filter(exchange);
+        }
+        //证书校验
+        String path1 = path.substring(1);
+        String serverName = path1.substring(0, path1.indexOf("/"));
+        if(!ConsulServerUtil.getInstance().needCertCheck(serverName)) {
+            return chain.filter(exchange);
+        }
+        if(certConfig.needCheck(serverName)) {
+            try {
+                if(!certConfig.checkCert(serverName)) {
+                    response.setStatusCode(HttpStatus.UNAUTHORIZED);
+                    return response.setComplete();
+                }
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                try {
+                    log.info(LicenseUtils.getMachineCode());
+                } catch (Exception e1) {
+                    log.error(e1.getMessage());
+                }
+                response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
+                return response.setComplete();
+            }
+        }
+
+        //权限校验
         String authKey = prefix + path;
-        log.info(authKey);
         String val = ConsulServerUtil.getInstance().getALLConsulKV().get(authKey);
         if (val == null) {
-            response.setStatusCode(HttpStatus.FORBIDDEN);
-            return response.setComplete();
+//            response.setStatusCode(HttpStatus.FORBIDDEN);
+//            return response.setComplete();
         } else if (!"".equals(val)) {
             //TODO 校验token，暂时先不做，直接从header里面拿一个字符串，暂时不做校验
             String roles = request.getHeaders().getFirst("token");

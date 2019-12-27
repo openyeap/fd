@@ -140,6 +140,26 @@ public class ConsulServerUtil {
         return consulServer;
     }
 
+    /**
+     * 校验url截取处理的服务名，是否在consul里面存在
+     * @param serverName
+     * @return
+     */
+    public boolean needCertCheck(String serverName) {
+        if(serverName == null || "".equals(serverName)) {
+            return false;
+        }
+        if(consulServer == null) {
+            return false;
+        }
+        for(ConcurrentHashMap.Entry<String, ServerInfo> concurrentHashMap : consulServer.entrySet()) {
+            if(serverName.equals(concurrentHashMap.getValue().getService())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Data
     public static class ServerInfo {
         private String id;
