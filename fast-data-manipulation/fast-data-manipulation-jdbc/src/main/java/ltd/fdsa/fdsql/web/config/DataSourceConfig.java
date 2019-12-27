@@ -28,6 +28,8 @@ public class DataSourceConfig {
 				.username("postgres")
 				.password("postgres")
 				.build();
+		
+		return dataSource;
 	}
 
 	@Bean
