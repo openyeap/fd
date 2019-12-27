@@ -1,18 +1,24 @@
 package ltd.fdsa.fdsql.web.config;
-
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value; 
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
-import java.sql.*;
-import java.util.Map;
+import java.sql.*; 
 
 import javax.sql.DataSource;
 
 @Configuration
 public class DataSourceConfig {
+	@Value("${spring.datasource.driver-class-name:org.postgresql.Driver}")
+	String driverClassName;
+	@Value("${spring.datasource.url:url}")
+	String url;
+
+	@Value("${spring.datasource.username:postgres}")
+	String username;
+	@Value("${spring.datasource.password:postgres}")
+	String password;
 
 	@Bean
 	public JdbcTemplate primaryTemplate() {
@@ -23,10 +29,10 @@ public class DataSourceConfig {
 	private DataSource getDataSource() {
 		DataSource dataSource = DataSourceBuilder
 				.create()
-				.driverClassName("org.postgresql.Driver")
-				.url("jdbc:postgresql://10.168.4.22:5321/mti_test?currentSchema=mti_test")
-				.username("postgres")
-				.password("postgres")
+				.driverClassName(driverClassName)
+				.url(url)
+				.username(username)
+				.password(password)
 				.build();
 		
 		return dataSource;
