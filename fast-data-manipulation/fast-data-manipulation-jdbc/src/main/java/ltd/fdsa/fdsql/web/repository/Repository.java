@@ -9,41 +9,39 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
+import java.util.List;
 import java.util.Map;
+
 @Service
 public class Repository {
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
-	public Object query(String sql) {
-		return jdbcTemplate.query(sql,   new RowDataMapper()); 
-	}
- 	public Object create(String table, final Map<String, Object> row) {
-		final String sql = "insert into users(name,email) values(?,?)";
+    public Object query(String sql) {
+        return jdbcTemplate.query(sql, new RowDataMapper());
+    }
 
-		KeyHolder holder = new GeneratedKeyHolder();
+    public Object create(String sql, String[] data) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 
-		jdbcTemplate.update(new PreparedStatementCreator() {
+                PreparedStatement ps = jdbcTemplate.getDataSource()
+                        .getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                for (int j = 0; j < data.length; j++) {
+                    ps.setString(j + 1, data[j]);
+                }
+                return ps;
+            }
+        }, keyHolder);
+        return keyHolder.getKeyList().get(0);
+    }
 
-			@Override
-			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-//                ps.setArray(parameterIndex, x);(1, row.get(key));
-
-				return ps;
-			}
-		}, holder);
-
-		Number newId = holder.getKey();
-		return newId;
-	}
-
-	public void delete(String table, final Integer id) {
-		final String sql = "delete from users where id=?";
-		jdbcTemplate.update(sql, new Object[] { id }, new int[] { java.sql.Types.INTEGER });
-	}
-
-	public void update(final Map<String, Object> row) {
-		jdbcTemplate.update("update users set name=?,email=? where id=?", new Object[] { row.get("1"), row.get("2") });
-	}
+    public int update(String sql, List<Object> list) {
+        if (list == null || list.size() == 0) {
+            return jdbcTemplate.update(sql);
+        }
+        return jdbcTemplate.update(sql, list.toArray());
+    }
 }
