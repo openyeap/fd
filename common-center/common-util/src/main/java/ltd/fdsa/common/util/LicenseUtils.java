@@ -1,4 +1,4 @@
-package ltd.fdsa.cloud.util;
+package ltd.fdsa.common.util;
 
 import java.net.NetworkInterface;
 import java.util.Calendar;
@@ -7,25 +7,27 @@ import java.util.Properties;
 
 import com.google.common.base.Strings;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+ 
 
 /**
  * java获取机器码，注册码的实现
  * 
  */
 
-@Slf4j
+//@Slf4j
 public class LicenseUtils {
 	private static final int SPLITLENGTH = 4;
 
-	public static String getMachineCode() throws Exception {
+	public static String getMachineCode(String salt)   {
 		StringBuffer result = new StringBuffer();
 		String mac = getMac();
 		result.append("mac: ");
 		result.append(mac);
+		
 		Properties props = System.getProperties();
 		String javaVersion = props.getProperty("java.version");
-
 		result.append("java.version: ");
 		result.append(javaVersion);
 		String javaVMVersion = props.getProperty("java.vm.version");
@@ -34,19 +36,21 @@ public class LicenseUtils {
 		String osVersion = props.getProperty("os.version");
 		result.append("os.version: ");
 		result.append(osVersion);
-
+		
+		result.append("salt: ");
+		result.append(salt);
 //		String code = RSAUtils.sign(result.toString().getBytes(), privateKey);
 		String code = CheckSum(result.toString());
 		return getSplitString(code, "-", SPLITLENGTH);
 	}
+	@SneakyThrows
+	public static boolean verifySerialNumber(String publicKey, String serialNumber,String salt)  {
 
-	public static boolean verifySerialNumber(String publicKey, String serialNumber) throws Exception {
-
-		String machineCode = getMachineCode().replace("-", "");
-		String body  = serialNumber.substring(0, 16);
+		String machineCode = getMachineCode(salt).replace("-", "");
+		String body = serialNumber.substring(0, 16);
 		String sign = serialNumber.substring(16);
 //		log.info("sign ：" +sign);
-		 
+
 		if (!sign.equals(CheckSum(body + machineCode, sign, publicKey))) {
 			return false;
 		}
@@ -60,29 +64,13 @@ public class LicenseUtils {
 		return true;
 	}
 
-	public static String generateSerialNumber(String machineCode, String privateKey, int hours) throws Exception {
-		machineCode = machineCode.replace("-", "");
-		// 得到过期时间
-		Calendar rightNow = Calendar.getInstance();
-		rightNow.add(Calendar.HOUR, hours);
-		long expried = rightNow.getTimeInMillis() * 1000;
 
-		String code = String.format("%X", expried);
-		while (code.length() < 16) {
-			code = "0" + code;
-		}
-		String body = code;
-		// 与机器码一起生成签名
-		String checkSum = CheckSum(body + machineCode, privateKey, "");
-		return  body + checkSum;
-	}
-
-	private static String CheckSum(String input, String privateKey, String publicKey) throws Exception {
+	public static String CheckSum(String input, String privateKey, String publicKey)  {
 //		log.info("data ：" + input);
-		
+
 		if (!Strings.isNullOrEmpty(publicKey)) {
 //			log.info("sign ：" + privateKey);
-			
+
 			if (RSAUtils.verify(input, publicKey, privateKey)) {
 				return privateKey;
 			}
@@ -92,7 +80,7 @@ public class LicenseUtils {
 
 	}
 
-	private static String CheckSum(String input) {
+	public static String CheckSum(String input) {
 		Long h = 0l;
 		for (char item : input.toCharArray()) {
 			// h = 31 * h + item;

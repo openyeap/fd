@@ -1,6 +1,5 @@
 package ltd.fdsa.cloud.config;
-
-import ltd.fdsa.cloud.util.ConsulServerUtil;
+ 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +28,6 @@ public class ConsulConfig {
     public ConsulClient createConsulClient() {
 		 //TODO TLSConfig tlsConfig = new TLSConfig();
 		ConsulClient consulClient = new ConsulClient(this.agentHost, this.agentPort);
-		ConsulServerUtil.getInstance().init(consulClient);
         return consulClient;
     }
 }

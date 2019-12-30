@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: mti-service-job
+    name: rest-data
   cloud:
     config:
       uri: http://localhost:8500 
@@ -36,7 +36,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: "zhumingwu,prometheus"
+        include: "zhumingwu,prometheus,health"
   endpoint:
     health:
       show-details: always 

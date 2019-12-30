@@ -11,9 +11,9 @@ import org.aspectj.util.FileUtil;
 import org.junit.Before;
 import org.junit.Test;
 
-import lombok.extern.slf4j.Slf4j; 
-import ltd.fdsa.cloud.util.LicenseUtils;
-import ltd.fdsa.cloud.util.RSAUtils;
+import lombok.extern.slf4j.Slf4j;
+import ltd.fdsa.common.util.LicenseUtils;
+import ltd.fdsa.common.util.RSAUtils;  
 
 @Slf4j
 public class RSAUtilsTest {
@@ -59,33 +59,7 @@ public class RSAUtilsTest {
 			log.error(e.getLocalizedMessage());
 			fail(e.getLocalizedMessage());
 		}
-	}
-
-	@Test
-	public void testM() {
-
-		Map<String, Object> kp;
-		try {
-			kp = RSAUtils.genKeyPair();
-			String privateKey = RSAUtils.getPrivateKey(kp);
-			log.info("privateKey: " + privateKey);
-			String publicKey = RSAUtils.getPublicKey(kp);
-			log.info("publicKey: " + publicKey);
-			String machineCode = LicenseUtils.getMachineCode();
-			log.info("MachineCode: " + machineCode);
-
-			String serialNumber = LicenseUtils.generateSerialNumber( machineCode, privateKey, 1);
-			log.info("SerialNumber: " + serialNumber);
-			boolean result = LicenseUtils.verifySerialNumber(publicKey, serialNumber);
-			log.info("result: " + String.valueOf(result));
-			assertTrue(result);
-
-		} catch (Exception e) {
-			log.error(e.getLocalizedMessage());
-			fail(e.getLocalizedMessage());
-		}
-
-	}
+	} 
 
 	@Test
 	public void testFile() {
