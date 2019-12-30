@@ -5,8 +5,10 @@ spring:
   application:
     name: rest-data
   cloud:
-    config:
-      uri: http://localhost:8500 
+    consul:
+      port: 8500
+      host: localhost
+
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://10.168.4.22:5321/mti_test?currentSchema=public
@@ -26,6 +28,15 @@ spring:
       remove:
       - _ #移除 _
       replace: {land: 'plan', jiefang: 'liberate'}
+    swagger:
+      info:
+        version: 1.0
+        title: "test Document"
+        description: "test Document"
+        contact:
+          name: gaojin
+          email: 562914557@qq.com
+          url: https://github.com/bzway/fast-data
 
 context: 
   listener: 

@@ -38,7 +38,7 @@ public class HomeController {
 
     @RequestMapping("/api-docs")
     public Object getApiDocs() {
-        Object result = jdbcService.listAllTablesFields();
+        Object result = jdbcService.createTablesController("localhost:9080/mti-service-job", "");
         return result;
     }
 

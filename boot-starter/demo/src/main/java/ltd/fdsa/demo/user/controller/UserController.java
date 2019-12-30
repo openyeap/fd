@@ -3,6 +3,8 @@ package ltd.fdsa.demo.user.controller;
 import ltd.fdsa.boot.starter.annotation.AuthRole;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * @Classname UserController
  * @Description TODO
@@ -14,26 +16,35 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @AuthRole("admin,user")
-    @PostMapping("/add")
-    public String addUser() {
-        return "我是新增用户";
+    @PutMapping
+    public String addUser(@RequestBody Map<String, Object> data) {
+        return "我是新增用户" + data;
+    }
+
+    @DeleteMapping("/{table}")
+    public String delUser(@PathVariable String table, @RequestParam(defaultValue = "") String where) {
+        return "删除用户" + table;
     }
 
     @AuthRole("admin")
-    @RequestMapping(value = "/upd", method = RequestMethod.POST)
-    public String updUser() {
-        return "我是修改用户";
+    @PostMapping("/{table}")
+    public String updUser(@PathVariable String table, @RequestParam(defaultValue = "") String where, @RequestBody Map<String, Object> data) {
+        return "修改用户" + table;
     }
 
     @AuthRole("admin,user")
-    @GetMapping("/list")
-    public String getUserList() {
-        return "我是用户列表";
+    @GetMapping
+    public String getUserList(@PathVariable String table, @RequestParam(defaultValue = "*") String select,
+                              @RequestParam(defaultValue = "") String query, @RequestParam(defaultValue = "") String order,
+                              @RequestParam(defaultValue = "") String group, @RequestParam(defaultValue = "") String having,
+                              @RequestParam(required = false, defaultValue = "0") int page,
+                              @RequestParam(required = false, defaultValue = "20") int size) {
+        return "查询用户列表" + page;
     }
 
     @AuthRole("admin,user")
-    @RequestMapping(value = "/info", method = RequestMethod.GET)
-    public String getUserInfo() {
-        return "我是用户详情";
+    @GetMapping("/{id}")
+    public String getUserInfo(@RequestParam int id) {
+        return "查询用户" + id;
     }
 }
