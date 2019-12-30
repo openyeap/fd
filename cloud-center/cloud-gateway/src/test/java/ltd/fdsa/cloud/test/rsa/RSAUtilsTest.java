@@ -74,7 +74,7 @@ public class RSAUtilsTest {
 			String machineCode = LicenseUtils.getMachineCode();
 			log.info("MachineCode: " + machineCode);
 
-			String serialNumber = LicenseUtils.generateSerialNumber( machineCode, privateKey, 1);
+			String serialNumber = LicenseUtils.generateSerialNumber( machineCode, privateKey, 365*24);
 			log.info("SerialNumber: " + serialNumber);
 			boolean result = LicenseUtils.verifySerialNumber(publicKey, serialNumber);
 			log.info("result: " + String.valueOf(result));

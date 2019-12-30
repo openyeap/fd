@@ -29,17 +29,15 @@ public class ApiController {
 		return "Hello World!";
 	}
 
-	@RequestMapping(value = "/{table}/{id}", method = RequestMethod.DELETE, produces = "application/json")
-	public String delete(@PathVariable String table, @RequestParam(defaultValue = "") String where,
-			@PathVariable String id) {
+	@RequestMapping(value = "/{table}", method = RequestMethod.DELETE, produces = "application/json")
+	public String delete(@PathVariable String table, @RequestParam(defaultValue = "") String where) {
 
 		// TODO delete data from table;
 		return "Hello World!";
 	}
 
-	@RequestMapping(value = "/{table}/{id}", method = RequestMethod.POST, produces = "application/json")
-	public String update(@PathVariable String table, @RequestParam(defaultValue = "") String where,
-			@PathVariable String id) {
+	@RequestMapping(value = "/{table}", method = RequestMethod.POST, produces = "application/json")
+	public String update(@PathVariable String table, @RequestParam(defaultValue = "") String where, @RequestBody Map<String, Object> data) {
 		// TODO update data in table;
 		return "Hello World!";
 	}
