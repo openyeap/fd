@@ -3,9 +3,7 @@ package ltd.fdsa.job.admin.core.route;
 import ltd.fdsa.job.admin.core.route.strategy.*;
 import ltd.fdsa.job.admin.core.util.I18nUtil;
 
-/**
- * Created by xuxueli on 17/3/10.
- */
+
 public enum ExecutorRouteStrategyEnum {
 
     FIRST(I18nUtil.getString("jobconf_route_first"), new ExecutorRouteFirst()),

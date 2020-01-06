@@ -1,11 +1,11 @@
 package ltd.fdsa.job.admin.core.thread;
 
-import com.xxl.job.core.biz.model.ReturnT;
+import ltd.fdsa.job.core.biz.model.ReturnT;
 
-import ltd.fdsa.job.admin.core.conf.XxlJobAdminConfig;
-import ltd.fdsa.job.admin.core.model.XxlJobGroup;
-import ltd.fdsa.job.admin.core.model.XxlJobInfo;
-import ltd.fdsa.job.admin.core.model.XxlJobLog;
+import ltd.fdsa.job.admin.core.conf.JobAdminConfig;
+import ltd.fdsa.job.admin.core.model.JobGroup;
+import ltd.fdsa.job.admin.core.model.JobInfo;
+import ltd.fdsa.job.admin.core.model.JobLog;
 import ltd.fdsa.job.admin.core.trigger.TriggerTypeEnum;
 import ltd.fdsa.job.admin.core.util.I18nUtil;
 
@@ -24,7 +24,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * job monitor instance
  *
- * @author xuxueli 2015-9-1 18:05:56
  */
 public class JobFailMonitorHelper {
 	private static Logger logger = LoggerFactory.getLogger(JobFailMonitorHelper.class);
@@ -48,24 +47,24 @@ public class JobFailMonitorHelper {
 				while (!toStop) {
 					try {
 
-						List<Long> failLogIds = XxlJobAdminConfig.getAdminConfig().getXxlJobLogDao().findFailJobLogIds(1000);
+						List<Long> failLogIds = JobAdminConfig.getAdminConfig().getJobLogDao().findFailJobLogIds(1000);
 						if (failLogIds!=null && !failLogIds.isEmpty()) {
 							for (long failLogId: failLogIds) {
 
 								// lock log
-								int lockRet = XxlJobAdminConfig.getAdminConfig().getXxlJobLogDao().updateAlarmStatus(failLogId, 0, -1);
+								int lockRet = JobAdminConfig.getAdminConfig().getJobLogDao().updateAlarmStatus(failLogId, 0, -1);
 								if (lockRet < 1) {
 									continue;
 								}
-								XxlJobLog log = XxlJobAdminConfig.getAdminConfig().getXxlJobLogDao().load(failLogId);
-								XxlJobInfo info = XxlJobAdminConfig.getAdminConfig().getXxlJobInfoDao().loadById(log.getJobId());
+								JobLog log = JobAdminConfig.getAdminConfig().getJobLogDao().load(failLogId);
+								JobInfo info = JobAdminConfig.getAdminConfig().getJobInfoDao().loadById(log.getJobId());
 
 								// 1、fail retry monitor
 								if (log.getExecutorFailRetryCount() > 0) {
 									JobTriggerPoolHelper.trigger(log.getJobId(), TriggerTypeEnum.RETRY, (log.getExecutorFailRetryCount()-1), log.getExecutorShardingParam(), log.getExecutorParam());
 									String retryMsg = "<br><br><span style=\"color:#F39C12;\" > >>>>>>>>>>>"+ I18nUtil.getString("jobconf_trigger_type_retry") +"<<<<<<<<<<< </span><br>";
 									log.setTriggerMsg(log.getTriggerMsg() + retryMsg);
-									XxlJobAdminConfig.getAdminConfig().getXxlJobLogDao().updateTriggerInfo(log);
+									JobAdminConfig.getAdminConfig().getJobLogDao().updateTriggerInfo(log);
 								}
 
 								// 2、fail alarm monitor
@@ -83,24 +82,29 @@ public class JobFailMonitorHelper {
 									newAlarmStatus = 1;
 								}
 
-								XxlJobAdminConfig.getAdminConfig().getXxlJobLogDao().updateAlarmStatus(failLogId, -1, newAlarmStatus);
+								JobAdminConfig.getAdminConfig().getJobLogDao().updateAlarmStatus(failLogId, -1, newAlarmStatus);
 							}
 						}
 
-						TimeUnit.SECONDS.sleep(10);
 					} catch (Exception e) {
 						if (!toStop) {
-							logger.error(">>>>>>>>>>> xxl-job, job fail monitor thread error:{}", e);
 						}
 					}
-				}
 
-				logger.info(">>>>>>>>>>> xxl-job, job fail monitor thread stop");
+                    try {
+                        TimeUnit.SECONDS.sleep(10);
+                    } catch (Exception e) {
+                        if (!toStop) {
+                            logger.error(e.getMessage(), e);
+                        }
+                    }
+
+                }
+
 
 			}
 		});
 		monitorThread.setDaemon(true);
-		monitorThread.setName("xxl-job, admin JobFailMonitorHelper");
 		monitorThread.start();
 	}
 
@@ -146,7 +150,7 @@ public class JobFailMonitorHelper {
 	 *
 	 * @param jobLog
 	 */
-	private boolean failAlarm(XxlJobInfo info, XxlJobLog jobLog){
+	private boolean failAlarm(JobInfo info, JobLog jobLog){
 		boolean alarmResult = true;
 
 		// send monitor email
@@ -162,7 +166,7 @@ public class JobFailMonitorHelper {
 			}
 
 			// email info
-			XxlJobGroup group = XxlJobAdminConfig.getAdminConfig().getXxlJobGroupDao().load(Integer.valueOf(info.getJobGroup()));
+			JobGroup group = JobAdminConfig.getAdminConfig().getJobGroupDao().load(Integer.valueOf(info.getJobGroup()));
 			String personal = I18nUtil.getString("admin_name_full");
 			String title = I18nUtil.getString("jobconf_monitor");
 			String content = MessageFormat.format(mailBodyTemplate,
@@ -176,17 +180,16 @@ public class JobFailMonitorHelper {
 
 				// make mail
 				try {
-					MimeMessage mimeMessage = XxlJobAdminConfig.getAdminConfig().getMailSender().createMimeMessage();
+					MimeMessage mimeMessage = JobAdminConfig.getAdminConfig().getMailSender().createMimeMessage();
 
 					MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-					helper.setFrom(XxlJobAdminConfig.getAdminConfig().getEmailUserName(), personal);
+					helper.setFrom(JobAdminConfig.getAdminConfig().getEmailUserName(), personal);
 					helper.setTo(email);
 					helper.setSubject(title);
 					helper.setText(content, true);
 
-					XxlJobAdminConfig.getAdminConfig().getMailSender().send(mimeMessage);
+					JobAdminConfig.getAdminConfig().getMailSender().send(mimeMessage);
 				} catch (Exception e) {
-					logger.error(">>>>>>>>>>> xxl-job, job fail alarm email send error, JobLogId:{}", jobLog.getId(), e);
 
 					alarmResult = false;
 				}

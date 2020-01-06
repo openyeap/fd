@@ -1,45 +1,44 @@
 package ltd.fdsa.job.admin.service.impl;
 
-import com.xxl.job.core.biz.AdminBiz;
-import com.xxl.job.core.biz.model.HandleCallbackParam;
-import com.xxl.job.core.biz.model.RegistryParam;
-import com.xxl.job.core.biz.model.ReturnT;
-import com.xxl.job.core.handler.IJobHandler;
+import ltd.fdsa.job.core.biz.AdminBiz;
+import ltd.fdsa.job.core.biz.model.HandleCallbackParam;
+import ltd.fdsa.job.core.biz.model.RegistryParam;
+import ltd.fdsa.job.core.biz.model.ReturnT;
+import ltd.fdsa.job.core.handler.IJobHandler;
 
-import ltd.fdsa.job.admin.core.model.XxlJobInfo;
-import ltd.fdsa.job.admin.core.model.XxlJobLog;
+import ltd.fdsa.job.admin.core.model.JobInfo;
+import ltd.fdsa.job.admin.core.model.JobLog;
 import ltd.fdsa.job.admin.core.thread.JobTriggerPoolHelper;
 import ltd.fdsa.job.admin.core.trigger.TriggerTypeEnum;
 import ltd.fdsa.job.admin.core.util.I18nUtil;
-import ltd.fdsa.job.admin.dao.XxlJobGroupDao;
-import ltd.fdsa.job.admin.dao.XxlJobInfoDao;
-import ltd.fdsa.job.admin.dao.XxlJobLogDao;
-import ltd.fdsa.job.admin.dao.XxlJobRegistryDao;
+import ltd.fdsa.job.admin.dao.JobGroupDao;
+import ltd.fdsa.job.admin.dao.JobInfoDao;
+import ltd.fdsa.job.admin.dao.JobLogDao;
+import ltd.fdsa.job.admin.dao.JobRegistryDao;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
-/**
- * @author xuxueli 2017-07-27 21:54:20
- */
+
 @Service
 public class AdminBizImpl implements AdminBiz {
     private static Logger logger = LoggerFactory.getLogger(AdminBizImpl.class);
 
     @Resource
-    public XxlJobLogDao xxlJobLogDao;
+    public JobLogDao JobLogDao;
     @Resource
-    private XxlJobInfoDao xxlJobInfoDao;
+    private JobInfoDao JobInfoDao;
     @Resource
-    private XxlJobRegistryDao xxlJobRegistryDao;
+    private JobRegistryDao JobRegistryDao;
     @Resource
-    private XxlJobGroupDao xxlJobGroupDao;
+    private JobGroupDao JobGroupDao;
 
 
     @Override
@@ -55,7 +54,7 @@ public class AdminBizImpl implements AdminBiz {
 
     private ReturnT<String> callback(HandleCallbackParam handleCallbackParam) {
         // valid log item
-        XxlJobLog log = xxlJobLogDao.load(handleCallbackParam.getLogId());
+        JobLog log = JobLogDao.load(handleCallbackParam.getLogId());
         if (log == null) {
             return new ReturnT<String>(ReturnT.FAIL_CODE, "log item not found.");
         }
@@ -66,11 +65,11 @@ public class AdminBizImpl implements AdminBiz {
         // trigger success, to trigger child job
         String callbackMsg = null;
         if (IJobHandler.SUCCESS.getCode() == handleCallbackParam.getExecuteResult().getCode()) {
-            XxlJobInfo xxlJobInfo = xxlJobInfoDao.loadById(log.getJobId());
-            if (xxlJobInfo!=null && xxlJobInfo.getChildJobId()!=null && xxlJobInfo.getChildJobId().trim().length()>0) {
+            JobInfo JobInfo = JobInfoDao.loadById(log.getJobId());
+            if (JobInfo!=null && JobInfo.getChildJobId()!=null && JobInfo.getChildJobId().trim().length()>0) {
                 callbackMsg = "<br><br><span style=\"color:#00c0ef;\" > >>>>>>>>>>>"+ I18nUtil.getString("jobconf_trigger_child_run") +"<<<<<<<<<<< </span><br>";
 
-                String[] childJobIds = xxlJobInfo.getChildJobId().split(",");
+                String[] childJobIds = JobInfo.getChildJobId().split(",");
                 for (int i = 0; i < childJobIds.length; i++) {
                     int childJobId = (childJobIds[i]!=null && childJobIds[i].trim().length()>0 && isNumeric(childJobIds[i]))?Integer.valueOf(childJobIds[i]):-1;
                     if (childJobId > 0) {
@@ -112,7 +111,7 @@ public class AdminBizImpl implements AdminBiz {
         log.setHandleTime(new Date());
         log.setHandleCode(handleCallbackParam.getExecuteResult().getCode());
         log.setHandleMsg(handleMsg.toString());
-        xxlJobLogDao.updateHandleInfo(log);
+        JobLogDao.updateHandleInfo(log);
 
         return ReturnT.SUCCESS;
     }
@@ -128,9 +127,17 @@ public class AdminBizImpl implements AdminBiz {
 
     @Override
     public ReturnT<String> registry(RegistryParam registryParam) {
-        int ret = xxlJobRegistryDao.registryUpdate(registryParam.getRegistGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue());
+
+        // valid
+        if (!StringUtils.hasText(registryParam.getRegistryGroup())
+                || !StringUtils.hasText(registryParam.getRegistryKey())
+                || !StringUtils.hasText(registryParam.getRegistryValue())) {
+            return new ReturnT<String>(ReturnT.FAIL_CODE, "Illegal Argument.");
+        }
+
+        int ret = JobRegistryDao.registryUpdate(registryParam.getRegistryGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue(), new Date());
         if (ret < 1) {
-            xxlJobRegistryDao.registrySave(registryParam.getRegistGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue());
+            JobRegistryDao.registrySave(registryParam.getRegistryGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue(), new Date());
 
             // fresh
             freshGroupRegistryInfo(registryParam);
@@ -140,7 +147,15 @@ public class AdminBizImpl implements AdminBiz {
 
     @Override
     public ReturnT<String> registryRemove(RegistryParam registryParam) {
-        int ret = xxlJobRegistryDao.registryDelete(registryParam.getRegistGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue());
+
+        // valid
+        if (!StringUtils.hasText(registryParam.getRegistryGroup())
+                || !StringUtils.hasText(registryParam.getRegistryKey())
+                || !StringUtils.hasText(registryParam.getRegistryValue())) {
+            return new ReturnT<String>(ReturnT.FAIL_CODE, "Illegal Argument.");
+        }
+
+        int ret = JobRegistryDao.registryDelete(registryParam.getRegistryGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue());
         if (ret > 0) {
 
             // fresh

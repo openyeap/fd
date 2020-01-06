@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xxl.job.admin.dao.XxlJobUserDao">
+<mapper namespace="ltd.fdsa.job.admin.dao.JobUserDao">
 
-	<resultMap id="XxlJobUser" type="com.xxl.job.admin.core.model.XxlJobUser" >
+	<resultMap id="JobUser" type="ltd.fdsa.job.admin.core.model.JobUser" >
 		<result column="id" property="id" />
 		<result column="username" property="username" />
 	    <result column="password" property="password" />
@@ -19,7 +19,7 @@
 		t.permission
 	</sql>
 
-	<select id="pageList" parameterType="java.util.HashMap" resultMap="XxlJobUser">
+	<select id="pageList" parameterType="java.util.HashMap" resultMap="JobUser">
 		SELECT <include refid="Base_Column_List" />
 		FROM xxl_job_user AS t
 		<trim prefix="WHERE" prefixOverrides="AND | OR" >
@@ -47,13 +47,13 @@
 		</trim>
 	</select>
 
-	<select id="loadByUserName" parameterType="java.util.HashMap" resultMap="XxlJobUser">
+	<select id="loadByUserName" parameterType="java.util.HashMap" resultMap="JobUser">
 		SELECT <include refid="Base_Column_List" />
 		FROM xxl_job_user AS t
 		WHERE t.username = #{username}
 	</select>
 
-	<insert id="save" parameterType="com.xxl.job.admin.core.model.XxlJobUser" useGeneratedKeys="true" keyProperty="id" >
+	<insert id="save" parameterType="ltd.fdsa.job.admin.core.model.JobUser" useGeneratedKeys="true" keyProperty="id" >
 		INSERT INTO xxl_job_user (
 			username,
 			password,
@@ -67,7 +67,7 @@
 		);
 	</insert>
 
-	<update id="update" parameterType="com.xxl.job.admin.core.model.XxlJobUser" >
+	<update id="update" parameterType="ltd.fdsa.job.admin.core.model.JobUser" >
 		UPDATE xxl_job_user
 		SET
 			<if test="password != null and password != ''">

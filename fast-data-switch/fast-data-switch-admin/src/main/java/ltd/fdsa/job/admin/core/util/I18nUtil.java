@@ -7,7 +7,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
-import ltd.fdsa.job.admin.core.conf.XxlJobAdminConfig;
+import ltd.fdsa.job.admin.core.conf.JobAdminConfig;
 
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -18,7 +18,6 @@ import java.util.Properties;
 /**
  * i18n util
  *
- * @author xuxueli 2018-01-17 20:39:06
  */
 public class I18nUtil {
     private static Logger logger = LoggerFactory.getLogger(I18nUtil.class);
@@ -30,7 +29,7 @@ public class I18nUtil {
         }
         try {
             // build i18n prop
-            String i18n = XxlJobAdminConfig.getAdminConfig().getI18n();
+            String i18n = JobAdminConfig.getAdminConfig().getI18n();
             i18n = (i18n!=null && i18n.trim().length()>0)?("_"+i18n):i18n;
             String i18nFile = MessageFormat.format("i18n/message{0}.properties", i18n);
 

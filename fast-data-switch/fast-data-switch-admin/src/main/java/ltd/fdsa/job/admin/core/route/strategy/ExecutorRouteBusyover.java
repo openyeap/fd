@@ -1,18 +1,16 @@
 package ltd.fdsa.job.admin.core.route.strategy;
 
-import com.xxl.job.core.biz.ExecutorBiz;
-import com.xxl.job.core.biz.model.ReturnT;
-import com.xxl.job.core.biz.model.TriggerParam;
+import ltd.fdsa.job.core.biz.ExecutorBiz;
+import ltd.fdsa.job.core.biz.model.ReturnT;
+import ltd.fdsa.job.core.biz.model.TriggerParam;
 
-import ltd.fdsa.job.admin.core.conf.XxlJobScheduler;
 import ltd.fdsa.job.admin.core.route.ExecutorRouter;
+import ltd.fdsa.job.admin.core.scheduler.JobScheduler;
 import ltd.fdsa.job.admin.core.util.I18nUtil;
 
 import java.util.List;
 
-/**
- * Created by xuxueli on 17/3/10.
- */
+
 public class ExecutorRouteBusyover extends ExecutorRouter {
 
     @Override
@@ -22,7 +20,7 @@ public class ExecutorRouteBusyover extends ExecutorRouter {
             // beat
             ReturnT<String> idleBeatResult = null;
             try {
-                ExecutorBiz executorBiz = XxlJobScheduler.getExecutorBiz(address);
+                ExecutorBiz executorBiz = JobScheduler.getExecutorBiz(address);
                 idleBeatResult = executorBiz.idleBeat(triggerParam.getJobId());
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);

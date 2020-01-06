@@ -1,16 +1,14 @@
 package ltd.fdsa.job.admin.core.route.strategy;
 
-import com.xxl.job.core.biz.model.ReturnT;
-import com.xxl.job.core.biz.model.TriggerParam;
+import ltd.fdsa.job.core.biz.model.ReturnT;
+import ltd.fdsa.job.core.biz.model.TriggerParam;
 
 import ltd.fdsa.job.admin.core.route.ExecutorRouter;
 
 import java.util.List;
 import java.util.Random;
 
-/**
- * Created by xuxueli on 17/3/10.
- */
+
 public class ExecutorRouteRandom extends ExecutorRouter {
 
     private static Random localRandom = new Random();

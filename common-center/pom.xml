@@ -15,8 +15,8 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<modules>
-	<module>common-tool</module>
-	<module>common-util</module>
+		<module>common-tool</module>
+		<module>common-util</module>
 	</modules>
 	<properties>
 		<!--基本属性定义 -->
@@ -32,6 +32,11 @@
 	</properties>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
 		<!-- 主要配合IDE使用 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -47,7 +52,7 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
-		</dependency> 
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

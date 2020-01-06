@@ -3,8 +3,9 @@ package ltd.fdsa.job.admin.core.thread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ltd.fdsa.job.admin.core.conf.JobAdminConfig;
 import ltd.fdsa.job.admin.core.trigger.TriggerTypeEnum;
-import ltd.fdsa.job.admin.core.trigger.XxlJobTrigger;
+import ltd.fdsa.job.admin.core.trigger.JobTrigger;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -12,7 +13,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * job trigger thread pool helper
  *
- * @author xuxueli 2018-07-03 21:08:07
  */
 public class JobTriggerPoolHelper {
     private static Logger logger = LoggerFactory.getLogger(JobTriggerPoolHelper.class);
@@ -21,31 +21,43 @@ public class JobTriggerPoolHelper {
     // ---------------------- trigger pool ----------------------
 
     // fast/slow thread pool
-    private ThreadPoolExecutor fastTriggerPool = new ThreadPoolExecutor(
-            50,
-            200,
-            60L,
-            TimeUnit.SECONDS,
-            new LinkedBlockingQueue<Runnable>(1000),
-            new ThreadFactory() {
-                @Override
-                public Thread newThread(Runnable r) {
-                    return new Thread(r, "xxl-job, admin JobTriggerPoolHelper-fastTriggerPool-" + r.hashCode());
-                }
-            });
+    private ThreadPoolExecutor fastTriggerPool = null;
+    private ThreadPoolExecutor slowTriggerPool = null;
 
-    private ThreadPoolExecutor slowTriggerPool = new ThreadPoolExecutor(
-            10,
-            100,
-            60L,
-            TimeUnit.SECONDS,
-            new LinkedBlockingQueue<Runnable>(2000),
-            new ThreadFactory() {
-                @Override
-                public Thread newThread(Runnable r) {
-                    return new Thread(r, "xxl-job, admin JobTriggerPoolHelper-slowTriggerPool-" + r.hashCode());
-                }
-            });
+    public void start(){
+        fastTriggerPool = new ThreadPoolExecutor(
+                10,
+                JobAdminConfig.getAdminConfig().getTriggerPoolFastMax(),
+                60L,
+                TimeUnit.SECONDS,
+                new LinkedBlockingQueue<Runnable>(1000),
+                new ThreadFactory() {
+                    @Override
+                    public Thread newThread(Runnable r) {
+						return null;
+                    }
+                });
+
+        slowTriggerPool = new ThreadPoolExecutor(
+                10,
+                JobAdminConfig.getAdminConfig().getTriggerPoolSlowMax(),
+                60L,
+                TimeUnit.SECONDS,
+                new LinkedBlockingQueue<Runnable>(2000),
+                new ThreadFactory() {
+                    @Override
+                    public Thread newThread(Runnable r) {
+						return null;
+                    }
+                });
+    }
+
+
+    public void stop() {
+        //triggerPool.shutdown();
+        fastTriggerPool.shutdownNow();
+        slowTriggerPool.shutdownNow();
+    }
 
 
     // job timeout count
@@ -74,7 +86,7 @@ public class JobTriggerPoolHelper {
 
                 try {
                     // do trigger
-                    XxlJobTrigger.trigger(jobId, triggerType, failRetryCount, executorShardingParam, executorParam);
+                    JobTrigger.trigger(jobId, triggerType, failRetryCount, executorShardingParam, executorParam);
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
                 } finally {
@@ -101,16 +113,18 @@ public class JobTriggerPoolHelper {
         });
     }
 
-    public void stop() {
-        //triggerPool.shutdown();
-        fastTriggerPool.shutdownNow();
-        slowTriggerPool.shutdownNow();
-        logger.info(">>>>>>>>> xxl-job trigger thread pool shutdown success.");
-    }
+
 
     // ---------------------- helper ----------------------
 
     private static JobTriggerPoolHelper helper = new JobTriggerPoolHelper();
+
+    public static void toStart() {
+        helper.start();
+    }
+    public static void toStop() {
+        helper.stop();
+    }
 
     /**
      * @param jobId
@@ -125,10 +139,6 @@ public class JobTriggerPoolHelper {
      */
     public static void trigger(int jobId, TriggerTypeEnum triggerType, int failRetryCount, String executorShardingParam, String executorParam) {
         helper.addTrigger(jobId, triggerType, failRetryCount, executorShardingParam, executorParam);
-    }
-
-    public static void toStop() {
-        helper.stop();
     }
 
 }

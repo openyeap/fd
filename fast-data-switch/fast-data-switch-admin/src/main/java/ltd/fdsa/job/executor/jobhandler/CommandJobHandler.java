@@ -1,18 +1,14 @@
 package ltd.fdsa.job.executor.jobhandler;
 
-import com.xxl.job.core.biz.model.ReturnT;
-import com.xxl.job.core.handler.IJobHandler;
-import com.xxl.job.core.log.XxlJobLogger;
-
+ 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-/**
- * 命令行任务
- *
- * @author xuxueli 2018-09-16 03:48:34
- */
+import ltd.fdsa.job.core.biz.model.ReturnT;
+import ltd.fdsa.job.core.handler.IJobHandler;
+import ltd.fdsa.job.core.log.JobLogger;
+
 public class CommandJobHandler extends IJobHandler {
 
     @Override
@@ -30,14 +26,14 @@ public class CommandJobHandler extends IJobHandler {
             // command log
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                XxlJobLogger.log(line);
+                JobLogger.log(line);
             }
 
             // command exit
             process.waitFor();
             exitValue = process.exitValue();
         } catch (Exception e) {
-            XxlJobLogger.log(e);
+            JobLogger.log(e);
         } finally {
             if (bufferedReader != null) {
                 bufferedReader.close();

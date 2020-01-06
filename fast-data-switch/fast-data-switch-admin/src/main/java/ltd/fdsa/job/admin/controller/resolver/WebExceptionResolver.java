@@ -1,8 +1,8 @@
 package ltd.fdsa.job.admin.controller.resolver;
 
-import com.xxl.job.core.biz.model.ReturnT;
+import ltd.fdsa.job.core.biz.model.ReturnT;
 
-import ltd.fdsa.job.admin.core.exception.XxlJobException;
+import ltd.fdsa.job.admin.core.exception.JobException;
 import ltd.fdsa.job.admin.core.util.JacksonUtil;
 
 import org.slf4j.Logger;
@@ -20,7 +20,6 @@ import java.io.IOException;
 /**
  * common exception resolver
  *
- * @author xuxueli 2016-1-6 19:22:18
  */
 @Component
 public class WebExceptionResolver implements HandlerExceptionResolver {
@@ -30,7 +29,7 @@ public class WebExceptionResolver implements HandlerExceptionResolver {
 	public ModelAndView resolveException(HttpServletRequest request,
 			HttpServletResponse response, Object handler, Exception ex) {
 
-		if (!(ex instanceof XxlJobException)) {
+		if (!(ex instanceof JobException)) {
 			logger.error("WebExceptionResolver:{}", ex);
 		}
 

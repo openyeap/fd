@@ -1,7 +1,7 @@
 package ltd.fdsa.job.admin.core.route.strategy;
 
-import com.xxl.job.core.biz.model.ReturnT;
-import com.xxl.job.core.biz.model.TriggerParam;
+import ltd.fdsa.job.core.biz.model.ReturnT;
+import ltd.fdsa.job.core.biz.model.TriggerParam;
 
 import ltd.fdsa.job.admin.core.route.ExecutorRouter;
 
@@ -14,7 +14,6 @@ import java.util.concurrent.ConcurrentMap;
  *      a(*)、LFU(Least Frequently Used)：最不经常使用，频率/次数
  *      b、LRU(Least Recently Used)：最近最久未使用，时间
  *
- * Created by xuxueli on 17/3/10.
  */
 public class ExecutorRouteLFU extends ExecutorRouter {
 

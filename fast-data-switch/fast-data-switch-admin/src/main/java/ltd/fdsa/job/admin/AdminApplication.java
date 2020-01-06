@@ -6,7 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import lombok.extern.slf4j.Slf4j;
-import ltd.fdsa.job.executor.config.FrameLessXxlJobConfig;
+import ltd.fdsa.job.executor.config.FrameLessJobConfig;
 
 @SpringBootApplication
 @Slf4j
@@ -15,7 +15,7 @@ public class AdminApplication {
 	public static void main(String[] args) {
 		try {
 			// start
-			// FrameLessXxlJobConfig.getInstance().initXxlJobExecutor();
+			// FrameLessJobConfig.getInstance().initJobExecutor();
 			SpringApplication.run(AdminApplication.class, args);
 //	            while (true) {
 //	                TimeUnit.HOURS.sleep(1);
@@ -24,7 +24,7 @@ public class AdminApplication {
 			log.error(e.getMessage());
 		} finally {
 			// destory
-			FrameLessXxlJobConfig.getInstance().destoryXxlJobExecutor();
+			FrameLessJobConfig.getInstance().destoryJobExecutor();
 		}
 
 	}

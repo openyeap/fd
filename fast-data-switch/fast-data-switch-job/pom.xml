@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>fast-data-switch-job</artifactId>
+	<name>fast data switch job</name>
+	<description>fast data switch job provides a job function for data exchanging</description>
+	<packaging>jar</packaging>
+	<parent>
+		<groupId>ltd.fdsa</groupId>
+		<artifactId>fast-data-switch-parent</artifactId>
+		<version>3.0.0</version>
+		<relativePath>../</relativePath>
+	</parent>
+
+	<properties>
+		<xxl-rpc.version>1.5.0</xxl-rpc.version>
+	</properties>
+
+	<dependencies>
+
+		<!-- xxl-rpc-core -->
+		<dependency>
+			<groupId>com.xuxueli</groupId>
+			<artifactId>xxl-rpc-core</artifactId>
+			<version>${xxl-rpc.version}</version>
+		</dependency>
+
+		<!-- groovy-all -->
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy</artifactId>
+		</dependency>
+
+		<!-- spring-context -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>5.2.2.RELEASE</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+</project>

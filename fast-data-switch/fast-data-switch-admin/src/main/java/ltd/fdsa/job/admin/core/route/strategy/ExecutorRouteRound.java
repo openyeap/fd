@@ -1,7 +1,7 @@
 package ltd.fdsa.job.admin.core.route.strategy;
 
-import com.xxl.job.core.biz.model.ReturnT;
-import com.xxl.job.core.biz.model.TriggerParam;
+import ltd.fdsa.job.core.biz.model.ReturnT;
+import ltd.fdsa.job.core.biz.model.TriggerParam;
 
 import ltd.fdsa.job.admin.core.route.ExecutorRouter;
 
@@ -10,9 +10,7 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-/**
- * Created by xuxueli on 17/3/10.
- */
+
 public class ExecutorRouteRound extends ExecutorRouter {
 
     private static ConcurrentMap<Integer, Integer> routeCountEachJob = new ConcurrentHashMap<Integer, Integer>();

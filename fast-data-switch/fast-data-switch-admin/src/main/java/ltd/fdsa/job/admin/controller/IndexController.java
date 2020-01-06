@@ -1,10 +1,10 @@
 package ltd.fdsa.job.admin.controller;
-
-import com.xxl.job.core.biz.model.ReturnT;
+ 
 
 import ltd.fdsa.job.admin.controller.annotation.PermissionLimit;
 import ltd.fdsa.job.admin.service.LoginService;
-import ltd.fdsa.job.admin.service.XxlJobService;
+import ltd.fdsa.job.admin.service.JobService;
+import ltd.fdsa.job.core.biz.model.ReturnT;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -24,13 +24,12 @@ import java.util.Map;
 
 /**
  * index controller
- * @author xuxueli 2015-12-19 16:13:16
  */
 @Controller
 public class IndexController {
 
 	@Resource
-	private XxlJobService xxlJobService;
+	private JobService JobService;
 	@Resource
 	private LoginService loginService;
 
@@ -38,7 +37,7 @@ public class IndexController {
 	@RequestMapping("/")
 	public String index(Model model) {
 
-		Map<String, Object> dashboardMap = xxlJobService.dashboardInfo();
+		Map<String, Object> dashboardMap = JobService.dashboardInfo();
 		model.addAllAttributes(dashboardMap);
 
 		return "index";
@@ -47,7 +46,7 @@ public class IndexController {
     @RequestMapping("/chartInfo")
 	@ResponseBody
 	public ReturnT<Map<String, Object>> chartInfo(Date startDate, Date endDate) {
-        ReturnT<Map<String, Object>> chartInfo = xxlJobService.chartInfo(startDate, endDate);
+        ReturnT<Map<String, Object>> chartInfo = JobService.chartInfo(startDate, endDate);
         return chartInfo;
     }
 	

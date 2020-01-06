@@ -5,7 +5,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import ltd.fdsa.job.admin.controller.annotation.PermissionLimit;
-import ltd.fdsa.job.admin.core.model.XxlJobUser;
+import ltd.fdsa.job.admin.core.model.JobUser;
 import ltd.fdsa.job.admin.core.util.I18nUtil;
 import ltd.fdsa.job.admin.service.LoginService;
 
@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 权限拦截
  *
- * @author xuxueli 2015-12-12 18:09:04
  */
 @Component
 public class PermissionInterceptor extends HandlerInterceptorAdapter {
@@ -42,7 +41,7 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 		}
 
 		if (needLogin) {
-			XxlJobUser loginUser = loginService.ifLogin(request, response);
+			JobUser loginUser = loginService.ifLogin(request, response);
 			if (loginUser == null) {
 				response.sendRedirect(request.getContextPath() + "/toLogin");
 				//request.getRequestDispatcher("/toLogin").forward(request, response);

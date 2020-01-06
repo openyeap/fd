@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * local cache tool
  *
- * @author xuxueli 2018-01-22 21:37:34
+ * @author  2018-01-22 21:37:34
  */
 public class LocalCacheUtil {
 
@@ -62,7 +62,7 @@ public class LocalCacheUtil {
     public static boolean set(String key, Object val, long cacheTime){
 
         // clean timeout cache, before set new cache (avoid cache too much)
-        cleanTimeutCache();
+        cleanTimeoutCache();
 
         // set new cache
         if (key==null || key.trim().length()==0) {
@@ -118,7 +118,7 @@ public class LocalCacheUtil {
      *
      * @return
      */
-    public static boolean cleanTimeutCache(){
+    public static boolean cleanTimeoutCache(){
         if (!cacheRepository.keySet().isEmpty()) {
             for (String key: cacheRepository.keySet()) {
                 LocalCacheData localCacheData = cacheRepository.get(key);

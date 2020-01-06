@@ -1,19 +1,18 @@
-package ltd.fdsa.job.admin.controller;
+package ltd.fdsa.job.admin.controller; 
 
-import com.xxl.job.core.biz.ExecutorBiz;
-import com.xxl.job.core.biz.model.LogResult;
-import com.xxl.job.core.biz.model.ReturnT;
-import com.xxl.job.core.util.DateUtil;
-
-import ltd.fdsa.job.admin.core.conf.XxlJobScheduler;
-import ltd.fdsa.job.admin.core.exception.XxlJobException;
-import ltd.fdsa.job.admin.core.model.XxlJobGroup;
-import ltd.fdsa.job.admin.core.model.XxlJobInfo;
-import ltd.fdsa.job.admin.core.model.XxlJobLog;
+import ltd.fdsa.job.admin.core.exception.JobException;
+import ltd.fdsa.job.admin.core.model.JobGroup;
+import ltd.fdsa.job.admin.core.model.JobInfo;
+import ltd.fdsa.job.admin.core.model.JobLog;
+import ltd.fdsa.job.admin.core.scheduler.JobScheduler;
 import ltd.fdsa.job.admin.core.util.I18nUtil;
-import ltd.fdsa.job.admin.dao.XxlJobGroupDao;
-import ltd.fdsa.job.admin.dao.XxlJobInfoDao;
-import ltd.fdsa.job.admin.dao.XxlJobLogDao;
+import ltd.fdsa.job.admin.dao.JobGroupDao;
+import ltd.fdsa.job.admin.dao.JobInfoDao;
+import ltd.fdsa.job.admin.dao.JobLogDao;
+import ltd.fdsa.job.core.biz.ExecutorBiz;
+import ltd.fdsa.job.core.biz.model.LogResult;
+import ltd.fdsa.job.core.biz.model.ReturnT;
+import ltd.fdsa.job.core.util.DateUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,35 +29,38 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * index controller
+ */
 @Controller
 @RequestMapping("/joblog")
 public class JobLogController {
 	private static Logger logger = LoggerFactory.getLogger(JobLogController.class);
 
 	@Resource
-	private XxlJobGroupDao xxlJobGroupDao;
+	private JobGroupDao JobGroupDao;
 	@Resource
-	public XxlJobInfoDao xxlJobInfoDao;
+	public JobInfoDao JobInfoDao;
 	@Resource
-	public XxlJobLogDao xxlJobLogDao;
+	public JobLogDao JobLogDao;
 
 	@RequestMapping
 	public String index(HttpServletRequest request, Model model, @RequestParam(required = false, defaultValue = "0") Integer jobId) {
 
 		// 执行器列表
-		List<XxlJobGroup> jobGroupList_all =  xxlJobGroupDao.findAll();
+		List<JobGroup> jobGroupList_all =  JobGroupDao.findAll();
 
 		// filter group
-		List<XxlJobGroup> jobGroupList = JobInfoController.filterJobGroupByRole(request, jobGroupList_all);
+		List<JobGroup> jobGroupList = JobInfoController.filterJobGroupByRole(request, jobGroupList_all);
 		if (jobGroupList==null || jobGroupList.size()==0) {
-			throw new XxlJobException(I18nUtil.getString("jobgroup_empty"));
+			throw new JobException(I18nUtil.getString("jobgroup_empty"));
 		}
 
 		model.addAttribute("JobGroupList", jobGroupList);
 
 		// 任务
 		if (jobId > 0) {
-			XxlJobInfo jobInfo = xxlJobInfoDao.loadById(jobId);
+			JobInfo jobInfo = JobInfoDao.loadById(jobId);
 			if (jobInfo == null) {
 				throw new RuntimeException(I18nUtil.getString("jobinfo_field_id") + I18nUtil.getString("system_unvalid"));
 			}
@@ -74,9 +76,9 @@ public class JobLogController {
 
 	@RequestMapping("/getJobsByGroup")
 	@ResponseBody
-	public ReturnT<List<XxlJobInfo>> getJobsByGroup(int jobGroup){
-		List<XxlJobInfo> list = xxlJobInfoDao.getJobsByGroup(jobGroup);
-		return new ReturnT<List<XxlJobInfo>>(list);
+	public ReturnT<List<JobInfo>> getJobsByGroup(int jobGroup){
+		List<JobInfo> list = JobInfoDao.getJobsByGroup(jobGroup);
+		return new ReturnT<List<JobInfo>>(list);
 	}
 	
 	@RequestMapping("/pageList")
@@ -94,15 +96,15 @@ public class JobLogController {
 		Date triggerTimeEnd = null;
 		if (filterTime!=null && filterTime.trim().length()>0) {
 			String[] temp = filterTime.split(" - ");
-			if (temp!=null && temp.length == 2) {
+			if (temp.length == 2) {
 				triggerTimeStart = DateUtil.parseDateTime(temp[0]);
 				triggerTimeEnd = DateUtil.parseDateTime(temp[1]);
 			}
 		}
 		
 		// page query
-		List<XxlJobLog> list = xxlJobLogDao.pageList(start, length, jobGroup, jobId, triggerTimeStart, triggerTimeEnd, logStatus);
-		int list_count = xxlJobLogDao.pageListCount(start, length, jobGroup, jobId, triggerTimeStart, triggerTimeEnd, logStatus);
+		List<JobLog> list = JobLogDao.pageList(start, length, jobGroup, jobId, triggerTimeStart, triggerTimeEnd, logStatus);
+		int list_count = JobLogDao.pageListCount(start, length, jobGroup, jobId, triggerTimeStart, triggerTimeEnd, logStatus);
 		
 		// package result
 		Map<String, Object> maps = new HashMap<String, Object>();
@@ -117,7 +119,7 @@ public class JobLogController {
 
 		// base check
 		ReturnT<String> logStatue = ReturnT.SUCCESS;
-		XxlJobLog jobLog = xxlJobLogDao.load(id);
+		JobLog jobLog = JobLogDao.load(id);
 		if (jobLog == null) {
             throw new RuntimeException(I18nUtil.getString("joblog_logid_unvalid"));
 		}
@@ -134,12 +136,12 @@ public class JobLogController {
 	@ResponseBody
 	public ReturnT<LogResult> logDetailCat(String executorAddress, long triggerTime, long logId, int fromLineNum){
 		try {
-			ExecutorBiz executorBiz = XxlJobScheduler.getExecutorBiz(executorAddress);
+			ExecutorBiz executorBiz = JobScheduler.getExecutorBiz(executorAddress);
 			ReturnT<LogResult> logResult = executorBiz.log(triggerTime, logId, fromLineNum);
 
 			// is end
             if (logResult.getContent()!=null && logResult.getContent().getFromLineNum() > logResult.getContent().getToLineNum()) {
-                XxlJobLog jobLog = xxlJobLogDao.load(logId);
+                JobLog jobLog = JobLogDao.load(logId);
                 if (jobLog.getHandleCode() > 0) {
                     logResult.getContent().setEnd(true);
                 }
@@ -156,8 +158,8 @@ public class JobLogController {
 	@ResponseBody
 	public ReturnT<String> logKill(int id){
 		// base check
-		XxlJobLog log = xxlJobLogDao.load(id);
-		XxlJobInfo jobInfo = xxlJobInfoDao.loadById(log.getJobId());
+		JobLog log = JobLogDao.load(id);
+		JobInfo jobInfo = JobInfoDao.loadById(log.getJobId());
 		if (jobInfo==null) {
 			return new ReturnT<String>(500, I18nUtil.getString("jobinfo_glue_jobid_unvalid"));
 		}
@@ -168,7 +170,7 @@ public class JobLogController {
 		// request of kill
 		ReturnT<String> runResult = null;
 		try {
-			ExecutorBiz executorBiz = XxlJobScheduler.getExecutorBiz(log.getExecutorAddress());
+			ExecutorBiz executorBiz = JobScheduler.getExecutorBiz(log.getExecutorAddress());
 			runResult = executorBiz.kill(jobInfo.getId());
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -179,7 +181,7 @@ public class JobLogController {
 			log.setHandleCode(ReturnT.FAIL_CODE);
 			log.setHandleMsg( I18nUtil.getString("joblog_kill_log_byman")+":" + (runResult.getMsg()!=null?runResult.getMsg():""));
 			log.setHandleTime(new Date());
-			xxlJobLogDao.updateHandleInfo(log);
+			JobLogDao.updateHandleInfo(log);
 			return new ReturnT<String>(runResult.getMsg());
 		} else {
 			return new ReturnT<String>(500, runResult.getMsg());
@@ -214,7 +216,14 @@ public class JobLogController {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, I18nUtil.getString("joblog_clean_type_unvalid"));
 		}
 
-		xxlJobLogDao.clearLog(jobGroup, jobId, clearBeforeTime, clearBeforeNum);
+		List<Long> logIds = null;
+		do {
+			logIds = JobLogDao.findClearLogIds(jobGroup, jobId, clearBeforeTime, clearBeforeNum, 1000);
+			if (logIds!=null && logIds.size()>0) {
+				JobLogDao.clearLog(logIds);
+			}
+		} while (logIds!=null && logIds.size()>0);
+
 		return ReturnT.SUCCESS;
 	}
 

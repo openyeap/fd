@@ -1,19 +1,15 @@
 package ltd.fdsa.job.executor.jobhandler;
-
-import com.xxl.job.core.biz.model.ReturnT;
-import com.xxl.job.core.handler.IJobHandler;
-import com.xxl.job.core.log.XxlJobLogger;
-
+ 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * 跨平台Http任务
- *
- * @author xuxueli 2018-09-16 03:48:34
- */
+import ltd.fdsa.job.core.biz.model.ReturnT;
+import ltd.fdsa.job.core.handler.IJobHandler;
+import ltd.fdsa.job.core.log.JobLogger;
+
+
 public class HttpJobHandler extends IJobHandler {
 
 	@Override
@@ -21,7 +17,7 @@ public class HttpJobHandler extends IJobHandler {
 
 		// valid
 		if (param==null || param.trim().length()==0) {
-			XxlJobLogger.log("URL Empty");
+			JobLogger.log("URL Empty");
 			return FAIL;
 		}
 
@@ -64,10 +60,10 @@ public class HttpJobHandler extends IJobHandler {
 			}
 			String responseMsg = result.toString();
 
-			XxlJobLogger.log(responseMsg);
+			JobLogger.log(responseMsg);
 			return SUCCESS;
 		} catch (Exception e) {
-			XxlJobLogger.log(e);
+			JobLogger.log(e);
 			return FAIL;
 		} finally {
 			try {
@@ -78,7 +74,7 @@ public class HttpJobHandler extends IJobHandler {
 					connection.disconnect();
 				}
 			} catch (Exception e2) {
-				XxlJobLogger.log(e2);
+				JobLogger.log(e2);
 			}
 		}
 
