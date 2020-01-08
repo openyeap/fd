@@ -30,55 +30,54 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
         String path = request.getPath().pathWithinApplication().value();
-        if(StringUtils.isEmpty(path)) {
+        if (StringUtils.isEmpty(path)) {
             return chain.filter(exchange);
         }
         //证书校验
-        String[] paths = path.split( "/");
-        if(paths.length>=2)
-        {
-        	String serverName = paths[1];
-           if(!certConfig.checkServiceAuth(serverName)) {
-        	   response.setStatusCode(HttpStatus.PAYMENT_REQUIRED);
-               log.info(LicenseUtils.getMachineCode(serverName));
-               return response.setComplete();
-           }
-        }
-        //权限校验
-        String authKey = prefix + path;
-        String val = certConfig.getAuthConfig().get(authKey);
-        if (val == null) {
-//            response.setStatusCode(HttpStatus.FORBIDDEN);
-//            return response.setComplete();
-        } else if (!"".equals(val)) {
-            //TODO 校验token，暂时先不做，直接从header里面拿一个字符串，暂时不做校验
-            String roles = request.getHeaders().getFirst("token");
-            if(roles == null || "".equals(roles)) {
-                response.setStatusCode(HttpStatus.PROXY_AUTHENTICATION_REQUIRED);
-                return response.setComplete();
-            }
-            String[] roleArr = roles.split(",");
-            boolean flag = false;
-            String[] urlNeedRoles = val.split(",");
-            for(String role : roleArr) {
-                if("".equals(role)) {
-                    continue;
-                }
-                for(String urlRole : urlNeedRoles) {
-                    if(role.equals(urlRole)) {
-                        flag = true;
-                        break;
-                    }
-                }
-                if(flag) {
-                    break;
-                }
-            }
-            if(!flag) {
-                response.setStatusCode(HttpStatus.PROXY_AUTHENTICATION_REQUIRED);
+        String[] paths = path.split("/");
+        if (paths.length >= 2) {
+            String serverName = paths[1];
+            if (!certConfig.checkServiceAuth(serverName)) {
+                response.setStatusCode(HttpStatus.PAYMENT_REQUIRED);
+                log.info(LicenseUtils.getMachineCode(serverName));
                 return response.setComplete();
             }
         }
+//        //权限校验
+//        String authKey = prefix + path;
+//        String val = certConfig.getAuthConfig().get(authKey);
+//        if (val == null) {
+////            response.setStatusCode(HttpStatus.FORBIDDEN);
+////            return response.setComplete();
+//        } else if (!"".equals(val)) {
+//            //TODO 校验token，暂时先不做，直接从header里面拿一个字符串，暂时不做校验
+//            String roles = request.getHeaders().getFirst("token");
+//            if (roles == null || "".equals(roles)) {
+//                response.setStatusCode(HttpStatus.PROXY_AUTHENTICATION_REQUIRED);
+//                return response.setComplete();
+//            }
+//            String[] roleArr = roles.split(",");
+//            boolean flag = false;
+//            String[] urlNeedRoles = val.split(",");
+//            for (String role : roleArr) {
+//                if ("".equals(role)) {
+//                    continue;
+//                }
+//                for (String urlRole : urlNeedRoles) {
+//                    if (role.equals(urlRole)) {
+//                        flag = true;
+//                        break;
+//                    }
+//                }
+//                if (flag) {
+//                    break;
+//                }
+//            }
+//            if (!flag) {
+//                response.setStatusCode(HttpStatus.PROXY_AUTHENTICATION_REQUIRED);
+//                return response.setComplete();
+//            }
+//        }
         return chain.filter(exchange);
     }
 

@@ -3,9 +3,8 @@ package ltd.fdsa.fds.container;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.daoshu.plugin.PluginManager;
-
 import lombok.extern.slf4j.Slf4j;
+import ltd.fdsa.common.plugin.PluginManager;
 import ltd.fdsa.fds.core.DataPipeLine;
 import ltd.fdsa.fds.core.DataSource;
 import ltd.fdsa.fds.core.DataTarget;

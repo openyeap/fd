@@ -58,8 +58,8 @@
 			<artifactId>fastjson</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.daoshu</groupId>
-			<artifactId>core-plugin</artifactId>
+			<groupId>ltd.fdsa</groupId>
+			<artifactId>common-util</artifactId>
 			<version>3.0.0</version>
 		</dependency>
 	</dependencies>

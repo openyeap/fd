@@ -11,7 +11,7 @@ import java.util.Map;
  * @Date 2019/12/17 14:06
  * @Author 高进
  */
-@RestController
+//@RestController
 @RequestMapping("/user")
 public class UserController {
 
@@ -21,13 +21,13 @@ public class UserController {
         return "我是新增用户" + data;
     }
 
-    @DeleteMapping("/{table}")
+//    @DeleteMapping("/{table}")
     public String delUser(@PathVariable String table, @RequestParam(defaultValue = "") String where) {
         return "删除用户" + table;
     }
 
     @AuthRole("admin")
-    @PostMapping("/{table}")
+//    @PostMapping("/{table}")
     public String updUser(@PathVariable String table, @RequestParam(defaultValue = "") String where, @RequestBody Map<String, Object> data) {
         return "修改用户" + table;
     }

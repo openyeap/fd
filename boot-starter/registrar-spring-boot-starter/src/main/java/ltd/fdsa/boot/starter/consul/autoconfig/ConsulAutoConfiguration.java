@@ -45,13 +45,13 @@ public class ConsulAutoConfiguration implements ApplicationListener<ApplicationS
             ConsulClient client = this.createConsulClient();
             client.agentServiceRegister(this.createNewService());
             // TODO get all urls with role then update to consul kv store.
-            ConsulAuthProperties consulAuthProperties = getConsulAuthProperties();
-            if (consulAuthProperties.getEnabled()) {
-                Map<String, String> urlRoles = createAuthKV();
-                for (Map.Entry<String, String> entry : urlRoles.entrySet()) {
-                    client.setKVValue(entry.getKey(), entry.getValue());
-                }
-            }
+//            ConsulAuthProperties consulAuthProperties = getConsulAuthProperties();
+//            if (consulAuthProperties.getEnabled()) {
+//                Map<String, String> urlRoles = createAuthKV();
+//                for (Map.Entry<String, String> entry : urlRoles.entrySet()) {
+//                    client.setKVValue(entry.getKey(), entry.getValue());
+//                }
+//            }
         } catch (Exception ex) {
             log.error(ex.getLocalizedMessage());
         }

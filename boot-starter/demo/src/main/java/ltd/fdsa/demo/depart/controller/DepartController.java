@@ -12,22 +12,27 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping({"/depart", "/dep"})
 public class DepartController {
 
-    @GetMapping("/list")
+    @GetMapping
     public String getDepartList() {
         return "我是部门列表";
     }
 
-    @RequestMapping(value = "/info", method = RequestMethod.GET)
-    public String getDepartInfo() {
-        return "我是部门详情";
+    @PutMapping
+    public String createDepart() {
+        return "我是新增部门";
     }
 
-    @PostMapping("/delete")
+    @RequestMapping(value = "/{departId}", method = RequestMethod.GET)
+    public String getDepartInfo(@PathVariable(value = "departId") int departId) {
+        return "我是部门详情" + departId;
+    }
+
+    @DeleteMapping
     public String delDepartInfo() {
         return "我是删除部门";
     }
 
-    @RequestMapping(value = "upd", method = RequestMethod.POST)
+    @PostMapping
     public String updDepartInfo() {
         return "我是修改部门";
     }
