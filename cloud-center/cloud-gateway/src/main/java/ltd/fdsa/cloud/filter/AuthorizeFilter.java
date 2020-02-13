@@ -3,7 +3,6 @@ package ltd.fdsa.cloud.filter;
 import lombok.extern.log4j.Log4j2;
 import ltd.fdsa.cloud.service.ConsulService;
 import ltd.fdsa.common.util.LicenseUtils;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;

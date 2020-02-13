@@ -3,24 +3,17 @@ package ltd.fdsa.cloud.service.impl;
 import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.Response;
 import com.ecwid.consul.v1.agent.model.Check;
-
 import com.ecwid.consul.v1.agent.model.Service;
-
 import com.ecwid.consul.v1.kv.model.GetValue;
 import lombok.extern.slf4j.Slf4j;
 import ltd.fdsa.cloud.model.ServerInfo;
 import ltd.fdsa.cloud.service.ConsulService;
 import ltd.fdsa.cloud.util.Base64Util;
 import ltd.fdsa.common.util.LicenseUtils;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +61,7 @@ public class ConsulServiceImpl implements ConsulService {
 		if (!needCheck(serverName)) {
 			return true;
 		}
-		String snPath = certPath + serverName + "/" + "sn.pem";
+		String snPath = certPath + "/" + serverName + "/" + "sn.pem";
 		if (!checkPathExist(snPath)) {
 			return false;
 		}
@@ -77,8 +70,8 @@ public class ConsulServiceImpl implements ConsulService {
 
 		if (checkPathExist(certPath + "/" + "public.pem")) {
 			publicKey = readFile(certPath + "/" + "public.pem");
-		} else if (checkPathExist(certPath + serverName + "/" + "public.pem")) {
-			publicKey = readFile(certPath + serverName + "/" + "public.pem");
+		} else if (checkPathExist(certPath + "/" + serverName + "/" + "public.pem")) {
+			publicKey = readFile(certPath + "/" + serverName + "/" + "public.pem");
 		} else {
 			return false;
 		}
@@ -99,6 +92,11 @@ public class ConsulServiceImpl implements ConsulService {
 		return checkFlag;
 	}
 
+	/**
+	 * server need check
+	 * @param serverName
+	 * @return true 需要check  false 不需要check
+	 */
 	private boolean needCheck(String serverName) {
 
 		if (!consulServer.containsKey(serverName)) {
@@ -175,7 +173,7 @@ public class ConsulServiceImpl implements ConsulService {
 				serverInfo.setAddress(entry.getValue().getAddress());
 				serverInfo.setPort(entry.getValue().getPort());
 				serverInfo.setUrl("http://" + serverInfo.getAddress() + ":" + serverInfo.getPort());
-				consulServer.put(serverInfo.getId(), serverInfo);
+				consulServer.put(serverInfo.getService(), serverInfo);
 			}
 		}
 		Response<Map<String, Check>> agentChecks = consulClient.getAgentChecks();
@@ -185,9 +183,9 @@ public class ConsulServiceImpl implements ConsulService {
 					continue;
 				}
 				if (entry.getValue().getStatus() == Check.CheckStatus.PASSING) {
-					consulServer.get(entry.getValue().getServiceId()).setStatus("1");
+					consulServer.get(entry.getValue().getServiceName()).setStatus("1");
 				} else {
-					consulServer.get(entry.getValue().getServiceId()).setStatus("0");
+					consulServer.get(entry.getValue().getServiceName()).setStatus("0");
 				}
 			}
 		}
