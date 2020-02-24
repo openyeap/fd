@@ -27,4 +27,17 @@
 			<version>3.0.0</version>
 		</dependency>
 	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<!-- 指定该Main Class为全局的唯一入口 -->
+					<mainClass>ltd.fdsa.common.tool.Application</mainClass>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
 </project>
