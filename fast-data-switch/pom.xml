@@ -1,18 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>ltd.fdsa</groupId>
 	<artifactId>fast-data-switch-parent</artifactId>
-	<version>3.0.0</version>
-	<packaging>pom</packaging>
 	<name>fast data switch parent</name>
 	<description>聚合和父模块，定义依赖包，插件版本，公共配置信息</description>
+	<packaging>pom</packaging>
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.2.0.RELEASE</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<groupId>ltd.fdsa</groupId>
+		<artifactId>fast-data-parent</artifactId>
+		<version>1.0.0.RELEASE</version>
 	</parent>
 	
 	<modules>
@@ -23,14 +21,6 @@
 	<properties>
 		<!--基本属性定义 -->
 		<encoding>UTF-8</encoding>
-		<java.version>1.8</java.version>
-		<project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
-		<maven.compiler.source>${java.version}</maven.compiler.source>
-		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<!--主依赖版本定义 -->
-		<spring-boot.version>2.0.5.RELEASE</spring-boot.version>
-		<spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
 	</properties>
 
 	<dependencies>
@@ -78,21 +68,11 @@
 				<groupId>io.springfox</groupId>
 				<artifactId>springfox-swagger2</artifactId>
 				<version>${swagger-platform.version}</version>
-			</dependency>
-
-			<!-- 常用jar -->
-			<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>fastjson</artifactId>
-				<version>1.2.62</version>
-			</dependency>
-
-
+			</dependency> 
 			<!--kafka依赖 -->
 			<dependency>
 				<groupId>org.apache.kafka</groupId>
 				<artifactId>kafka-clients</artifactId>
-				<version>0.10.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>io.searchbox</groupId>
@@ -102,59 +82,5 @@
 
 		</dependencies>
 	</dependencyManagement>
-	<licenses>
-		<license>
-			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
 
-	<developers>
-		<developer>
-			<name>zhumingwu</name>
-			<email>zhumingwu@126.com</email>
-			<url>https://blog.zhumingwu.cn</url>
-		</developer>
-	</developers>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<skipTests>true</skipTests>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-<!-- 
-	<repositories>
-		<repository>
-			<id>maven-public</id>
-			<name>maven-public</name>
-			<url>http://10.168.4.75:8081/repository/maven-public/</url>
-		</repository>
-	</repositories>
-	<distributionManagement>
-		<repository>
-			<id>maven-releases</id>
-			<name>maven-releases</name>
-			<url>http://10.168.4.75:8081/repository/mti-core/</url>
-		</repository>
-		<snapshotRepository>
-			<id>maven-snapshots</id>
-			<name>maven-snapshots</name>
-			<url>http://10.168.4.75:8081/repository/maven-snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement>
- -->
 </project>

@@ -10,8 +10,7 @@
 	<parent>
 		<groupId>ltd.fdsa</groupId>
 		<artifactId>fast-data-switch-parent</artifactId>
-		<version>3.0.0</version>
-		<relativePath>../</relativePath>
+		<version>1.0.0.RELEASE</version>
 	</parent>
 
 	<dependencies>
@@ -50,7 +49,6 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>23.0</version>
 		</dependency>
 
 		<dependency>
@@ -60,7 +58,7 @@
 		<dependency>
 			<groupId>ltd.fdsa</groupId>
 			<artifactId>common-util</artifactId>
-			<version>3.0.0</version>
+			<version>${fast-data.version}</version>
 		</dependency>
 	</dependencies>
 	<distributionManagement>

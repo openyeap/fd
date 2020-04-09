@@ -7,10 +7,9 @@
 	<description>fast data switch admin is a web ui for admin data switch job</description>
 	<packaging>jar</packaging>
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.2.0.RELEASE</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<groupId>ltd.fdsa</groupId>
+		<artifactId>fast-data-switch-parent</artifactId>
+		<version>1.0.0.RELEASE</version>
 	</parent>
 	<dependencies>
 		<dependency>
@@ -24,12 +23,12 @@
 		<dependency>
 			<groupId>ltd.fdsa</groupId>
 			<artifactId>fast-data-switch-job</artifactId>
-			<version>3.0.0</version>
+			<version>1.0.0.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>ltd.fdsa</groupId>
 			<artifactId>fast-data-switch-core</artifactId>
-			<version>3.0.0</version>
+			<version>1.0.0.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -64,7 +63,6 @@
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
-			<version>2.1.1</version>
 		</dependency>
 
 		<dependency>
@@ -74,21 +72,7 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
-			<version>1.2.47</version>
-		</dependency>
-
-		<!--精简代码 -->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-configuration-processor</artifactId>
-			<optional>true</optional>
-		</dependency>
-
+ 		</dependency>
 	</dependencies>
 
 	<build>

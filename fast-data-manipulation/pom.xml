@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>fast-data-manipulation</artifactId>
+	<name>fast data manipulation</name>
+	<description>聚合和父模块，定义依赖包，插件版本，公共配置信息</description>
+	<packaging>pom</packaging>
+	<parent>
+		<groupId>ltd.fdsa</groupId>
+		<artifactId>fast-data-parent</artifactId>
+		<version>1.0.0.RELEASE</version>
+	</parent>
+	<modules>
+		<module>fast-data-manipulation-jdbc</module>
+	</modules> 
+</project>

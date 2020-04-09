@@ -4,14 +4,23 @@ server:
 spring:
   application:
     name: rest-data
+  profiles:
+    active: dev
   cloud:
     consul:
+      host: 10.168.4.14
       port: 8500
-      host: localhost
-
+      discovery:
+        prefer-ip-address: true
+        register: false
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://10.168.4.22:5321/mti_test?currentSchema=public
+    url: jdbc:postgresql://10.168.4.172:5321/shanghai?currentSchema=public
     username: postgres
     password: postgres
   daoshu:

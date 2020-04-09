@@ -1,0 +1,21 @@
+server:
+  port: 8099
+
+spring:
+  application:
+    name: demo
+  profiles:
+    active: dev
+  cloud:
+    consul:
+      host: 10.168.4.14
+      port: 8500
+      discovery:
+        prefer-ip-address: true
+        register: false
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+ 

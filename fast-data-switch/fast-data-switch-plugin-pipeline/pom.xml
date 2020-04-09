@@ -9,9 +9,8 @@
 	<packaging>jar</packaging>
 	<parent>
 		<groupId>ltd.fdsa</groupId>
-		<artifactId>core-parent</artifactId>
-		<version>3.0.0</version>
-		<relativePath>../</relativePath>
+		<artifactId>fast-data-switch-parent</artifactId>
+		<version>1.0.0.RELEASE</version>
 	</parent>
 
 	<dependencies>
@@ -37,7 +36,7 @@
 		<dependency>
 			<groupId>ltd.fdsa</groupId>
 			<artifactId>fast-data-switch-core</artifactId>
-			<version>3.0.0</version>
+			<version>1.0.0.RELEASE</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>fast-data-demo</artifactId>
+	<name>fdsa data demo</name>
+	<description>fdsa data demo</description>
+	<packaging>jar</packaging>
+	<parent>
+		<groupId>ltd.fdsa</groupId>
+		<artifactId>fast-data-parent</artifactId>
+		<version>1.0.0.RELEASE</version>
+	</parent>
+
+	<properties>
+
+		<!-- swagger -->
+		<swagger-platform.version>2.9.2</swagger-platform.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>ltd.fdsa</groupId>
+			<artifactId>registrar-spring-boot-starter</artifactId>
+			<version>${fast-data.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ltd.fdsa</groupId>
+			<artifactId>log-spring-boot-starter</artifactId>
+			<version>${fast-data.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>  <!--执行器 mvn package -->
+					<execution>
+						<id>make-zip</id><!--名字任意 -->
+						<phase>package</phase><!-- 绑定到package生命周期阶段上 -->
+						<goals>
+							<goal>single</goal><!-- 只运行一次 -->
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/resources/assembly.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
