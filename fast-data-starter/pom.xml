@@ -16,7 +16,7 @@
 		<module>fast-data-starter-register</module>
 		<module>fast-data-starter-logger</module>
 		<module>fast-data-starter-jdbc</module>
-		<module>fast-data-starter-minitor</module>
+		<module>fast-data-starter-monitor</module>
 	</modules>
 
 	<properties>

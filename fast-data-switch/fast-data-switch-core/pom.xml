@@ -57,7 +57,7 @@
 		</dependency>
 		<dependency>
 			<groupId>ltd.fdsa</groupId>
-			<artifactId>common-util</artifactId>
+			<artifactId>fast-data-common-util</artifactId>
 			<version>${fast-data.version}</version>
 		</dependency>
 	</dependencies>

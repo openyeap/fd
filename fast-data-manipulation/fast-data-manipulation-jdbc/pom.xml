@@ -1,15 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8" ?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>fast-data-manipulation-jdbc</artifactId>
-	<name>RESTful data manipulation language</name>
+	<name>fast data manipulation language</name>
 	<description>fast data manipulation is a project for RESTful api to operate database</description>
 	<packaging>jar</packaging>
 	<parent>
 		<groupId>ltd.fdsa</groupId>
-		<artifactId>fast-data-parent</artifactId>
+		<artifactId>fast-data-manipulation</artifactId>
 		<version>1.0.0.RELEASE</version>
 	</parent>
 	<properties>
@@ -31,13 +29,13 @@
 		</dependency>
 		<dependency>
 			<groupId>ltd.fdsa</groupId>
-			<artifactId>registrar-spring-boot-starter</artifactId>
-			<version>1.0.0.RELEASE</version>
+			<artifactId>fast-data-starter-register</artifactId>
+			<version>${fast-data.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>ltd.fdsa</groupId>
-			<artifactId>prometheus-spring-boot-starter</artifactId>
-			<version>1.0.0.RELEASE</version>
+			<artifactId>fast-data-starter-monitor</artifactId>
+			<version>${fast-data.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -53,28 +51,29 @@
 			<artifactId>commons-lang</artifactId>
 			<version>${commons.lang.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<plugins>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<executions>  <!--执行器 mvn package -->
+				<executions>
+					<!--执行器 mvn package -->
 					<execution>
-						<id>make-zip</id><!--名字任意 -->
-						<phase>package</phase><!-- 绑定到package生命周期阶段上 -->
+						<id>make-zip</id> <!--名字任意 -->
+						<phase>package</phase> <!-- 绑定到package生命周期阶段上 -->
 						<goals>
-							<goal>single</goal><!-- 只运行一次 -->
+							<goal>single</goal> <!-- 只运行一次 -->
 						</goals>
 						<configuration>
 							<descriptors>

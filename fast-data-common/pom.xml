@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>fast-data-common</artifactId>
-	<name>fast data</name>
+	<name>fast data common</name>
 	<description>聚合和父模块，定义依赖包，插件版本，公共配置信息</description>
 	<packaging>pom</packaging>
 	<parent>
@@ -13,7 +13,7 @@
 		<version>1.0.0.RELEASE</version>
 	</parent>
 	<modules>
-		<module>common-util</module>
-		<module>common-tool</module>
+		<module>fast-data-common-util</module>
+		<module>fast-data-common-tool</module>
 	</modules> 
 </project>

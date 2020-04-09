@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>fast-data-starter-jdbc</artifactId>
-	<name>spring boot jdbc starter</name>
+	<name>fast data jdbc starter</name>
 	<description>jdbc database starter for spring boot</description>
 	<packaging>jar</packaging>
 	<parent>

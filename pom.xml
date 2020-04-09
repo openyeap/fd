@@ -10,9 +10,10 @@
 	<modules>
 		<module>fast-data-common</module>
 		<module>fast-data-starter</module>
+		<module>fast-data-cloud</module>
 		<module>fast-data-switch</module>
 		<module>fast-data-manipulation</module>
-		<module>fast-data-cloud</module>
+		<module>fast-data-visualization</module>
 		<module>fast-data-demo</module>
 	</modules>
 	<properties>

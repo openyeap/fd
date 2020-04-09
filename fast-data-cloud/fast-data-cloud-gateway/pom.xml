@@ -3,25 +3,21 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>cloud-gateway</artifactId>
-	<name>cloud gateway</name>
+	<artifactId>fast-data-cloud-gateway</artifactId>
+	<name>fast data cloud gateway</name>
 	<description>cloud gateway project for Spring Boot</description>
 	<packaging>jar</packaging>
 	<parent>
 		<groupId>ltd.fdsa</groupId>
-		<artifactId>fast-data-parent</artifactId>
+		<artifactId>fast-data-cloud</artifactId>
 		<version>1.0.0.RELEASE</version>
 	</parent>
-
 	<properties>
- 
-	 
 	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>ltd.fdsa</groupId>
-			<artifactId>common-util</artifactId>
+			<artifactId>fast-data-common-util</artifactId>
 			<version>${fast-data.version}</version>
 		</dependency>
 		<dependency>
