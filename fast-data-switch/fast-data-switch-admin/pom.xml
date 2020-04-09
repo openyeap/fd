@@ -73,19 +73,28 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
  		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-
-				<executions>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>  <!--执行器 mvn package -->
 					<execution>
+						<id>make-zip</id><!--名字任意 -->
+						<phase>package</phase><!-- 绑定到package生命周期阶段上 -->
 						<goals>
-							<goal>repackage</goal>
+							<goal>single</goal><!-- 只运行一次 -->
 						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/resources/assembly.xml</descriptor>
+							</descriptors>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
