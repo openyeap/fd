@@ -1,32 +1,41 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
 	<contextName>${APP_NAME}</contextName>
-	<springProperty name="APP_NAME" scope="context"
-		source="spring.application.name" />
-	<springProperty name="LOG_PATH" scope="context"
-		source="logging.path" defaultValue="logs" />
-	<springProperty name="LOG_FILE" scope="context"
-		source="logging.file" defaultValue="logs/${APP_NAME}" />
-	<springProperty name="LOG_MAXFILESIZE" scope="context"
-		source="logback.filesize" defaultValue="50MB" />
-	<springProperty name="LOG_FILEMAXDAY" scope="context"
-		source="logback.filemaxday" defaultValue="7" />
-	<springProperty name="LOG_STASH_ADDRESS" scope="context"
-		source="logstash.address" defaultValue="7" />
-	<include
-		resource="org/springframework/boot/logging/logback/defaults.xml" />
-	<include
-		resource="org/springframework/boot/logging/logback/console-appender.xml" />
-	<include
-		resource="org/springframework/boot/logging/logback/file-appender.xml" />
+	<springProperty name="APP_NAME" scope="context" source="spring.application.name" />
+	<springProperty name="LOG_PATH" scope="context" source="logging.path" defaultValue="logs" />
+	<springProperty name="LOG_FILE" scope="context" source="logging.file" defaultValue="logs/${APP_NAME}" />
+	<springProperty name="LOG_MAXFILESIZE" scope="context" source="logback.filesize" defaultValue="50MB" />
+	<springProperty name="LOG_FILEMAXDAY" scope="context" source="logback.filemaxday" defaultValue="7" />
+	<springProperty name="LOG_STASH_ADDRESS" scope="context" source="logstash.address" defaultValue="10.168.4.19:4567" />
+	<include resource="org/springframework/boot/logging/logback/defaults.xml" />
+	<include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+	<include resource="org/springframework/boot/logging/logback/file-appender.xml" />
 
-	<appender name="Logstash"
-		class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+	<appender name="Logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
 		<destination>${LOG_STASH_ADDRESS}</destination>
 		<reconnectionDelay>10 second</reconnectionDelay>
-		<encoder charset="UTF-8"
-			class="net.logstash.logback.encoder.LogstashEncoder">
-			<customFields>{"AppName":"${APP_NAME}"}</customFields>
+		<encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder">
+			<!-- <customFields>{"AppName":"${APP_NAME}"}</customFields> -->
+			<providers>
+                <timestamp>
+                    <timeZone>UTC</timeZone>
+                </timestamp>
+                <pattern>
+                    <pattern>
+                        {
+                        "l_level": "%level",
+                        "l_service": "${springAppName:-}",
+                        "l_trace": "%X{X-B3-TraceId:-}",
+                        "l_span": "%X{X-B3-SpanId:-}",
+                        "l_export": "%X{X-Span-Export:-}",
+                        "l_pid": "${PID:-}",
+                        "l_thread": "%thread",
+                        "l_logger": "%logger{40}",
+                        "l_message": "%message"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
 		</encoder>
 	</appender>
 
@@ -38,9 +47,9 @@
 	</root>
 	<logger name="jdbc" level="ON" />
 	<logger name="jdbc.sqltiming" level="ERROR" />
-	<logger name="ltd.fdsa" level="DEBUG">
-		<appender-ref ref="CONSOLE" />
-		<appender-ref ref="FILE" />
-		<appender-ref ref="Logstash" />
-	</logger>
+<!-- 	<logger name="ltd.fdsa" level="DEBUG"> -->
+<!-- 		<appender-ref ref="CONSOLE" /> -->
+<!-- 		<appender-ref ref="FILE" /> -->
+<!-- 		<appender-ref ref="Logstash" /> -->
+<!-- 	</logger> -->
 </configuration>

@@ -26,8 +26,21 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>mysql</groupId> -->
+<!-- 			<artifactId>mysql-connector-java</artifactId> -->
+<!-- 		</dependency> -->
+		<dependency>
 			<groupId>ltd.fdsa</groupId>
 			<artifactId>fast-data-starter-register</artifactId>
+			<version>${fast-data.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ltd.fdsa</groupId>
+			<artifactId>fast-data-starter-jdbc</artifactId>
 			<version>${fast-data.version}</version>
 		</dependency>
 		<dependency>
