@@ -10,10 +10,9 @@ jdbc:
     dbType: POSTGRE_SQL
     table:
     - s_user
-      s_role
+    - s_role
     tablePrefix:
-    - s_
-      t_
-      bo_
-      r_
-   
+      - s_
+      - t_
+      - bo_
+      - r_

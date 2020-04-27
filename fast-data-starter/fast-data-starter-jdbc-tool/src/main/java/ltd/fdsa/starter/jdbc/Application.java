@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import lombok.extern.slf4j.Slf4j;
 import ltd.fdsa.starter.jdbc.config.JdbcProperty; 
-import ltd.fdsa.starter.jdbc.service.CodeService;
+import ltd.fdsa.starter.jdbc.service.CodeGenerator;
 
 /**
  * @author zhumingwu
@@ -27,7 +27,7 @@ public class Application {
 	protected JdbcProperty property;
 
 	@Autowired
-	private CodeService service;
+	private CodeGenerator service;
 
 	@PostConstruct
 	public void test() {

@@ -28,49 +28,47 @@ import ltd.fdsa.starter.jdbc.config.JdbcProperty;
 
 @Slf4j
 @Service
-public class CodeService {
+public class CodeGenerator {
 
 	@Autowired
 	protected JdbcProperty property;
 
 	@SneakyThrows
-	public Object generate() {
+	public void generate() {
 
 		String projectPath = System.getProperty("user.dir") + "/src/main/java";
 
+		// 数据源配置
+		DataSourceConfig dsc = getDataSourceConfig();
 		String pn = this.property.getPackageName();
 		String[] tbs = this.property.getTable();
-		log.info("======================");
-		log.info(this.property.toString());
-		log.info("======================");
-
-		generateReader(pn, tbs, getDataSourceConfig());
-		generateWriter(pn, tbs, getDataSourceConfig());
-//		for (File file : find(projectPath)) {
-//			String path = file.getCanonicalPath();
-//			if (path.contains("readMappers")) {
-//				System.out.println(path);
-//				path = path.substring(0, path.length() - 11).concat("Reader.java");
-//				System.out.println(path);
-//				File dest = new File(path);
-//				file.renameTo(dest);
-//			}
-//			if (path.contains("writeMappers")) {
-//				System.out.println(path);
-//				path = path.substring(0, path.length() - 11).concat("Writer.java");
-//				System.out.println(path);
-//				File dest = new File(path);
-//				file.renameTo(dest);
-//			}
-//		}
-
-		return "OK";
+		tbs = "s_user,s_role,s_group,r_group_role,s_permission,r_user_group,r_group_role".split(",");
+		generateReader(pn, tbs, dsc);
+		generateWriter(pn, tbs, dsc);
+		for (File file : find(projectPath)) {
+			String path = file.getCanonicalPath();
+			log.info(path);
+			if (path.contains("readMappers")) {
+				System.out.println(path);
+				path = path.substring(0, path.length() - 11).concat("Reader.java");
+				System.out.println(path);
+				File dest = new File(path);
+				file.renameTo(dest);
+			}
+			if (path.contains("writeMappers")) {
+				System.out.println(path);
+				path = path.substring(0, path.length() - 11).concat("Writer.java");
+				System.out.println(path);
+				File dest = new File(path);
+				file.renameTo(dest);
+			}
+		}
 	}
 
-	DataSourceConfig getDataSourceConfig() {// 数据源配置
+	private DataSourceConfig getDataSourceConfig() {// 数据源配置
 
 		DataSourceConfig dsc = new DataSourceConfig();
-		dsc.setUrl(this.property.getURL());
+		dsc.setUrl(this.property.getUrl());
 		dsc.setSchemaName(this.property.getSchemaName());
 		dsc.setDriverName(this.property.getDriver());
 		dsc.setUsername(this.property.getUserName());
@@ -80,7 +78,7 @@ public class CodeService {
 	}
 
 	@SneakyThrows
-	List<File> find(String pathName) {
+	private List<File> find(String pathName) {
 
 		List<File> result = new ArrayList<File>();
 		File dirFile = new File(pathName);
@@ -98,7 +96,7 @@ public class CodeService {
 	}
 
 	@SneakyThrows
-	void generateReader(String pn, String[] tbs, DataSourceConfig dsc) {
+	private void generateReader(String pn, String[] tbs, DataSourceConfig dsc) {
 
 		// 代码生成器
 		AutoGenerator mpg = new AutoGenerator();
@@ -106,8 +104,6 @@ public class CodeService {
 		GlobalConfig gc = new GlobalConfig();
 		String projectPath = System.getProperty("user.dir");
 		gc.setOutputDir(projectPath + "/src/main/java");
-
-		log.info("========={}=========", projectPath + "/src/main/java");
 		gc.setAuthor("system");
 		gc.setOpen(false);
 		mpg.setGlobalConfig(gc);
@@ -195,7 +191,7 @@ public class CodeService {
 		mpg.execute();
 	}
 
-	void generateWriter(String pn, String[] tbs, DataSourceConfig dsc) {
+	private void generateWriter(String pn, String[] tbs, DataSourceConfig dsc) {
 
 		// 代码生成器
 		AutoGenerator mpg = new AutoGenerator();
@@ -287,36 +283,5 @@ public class CodeService {
 		// mpg.setTemplateEngine(new
 		// com.baomidou.mybatisplus.generator.engine.BeetlTemplateEngine());
 		mpg.execute();
-	}
-
-	String[] getTableList() {
-		try (Scanner scanner = new Scanner(System.in);) {
-			StringBuilder help = new StringBuilder();
-			help.append("请输入表名：");
-			List<String> list = new ArrayList<String>(1000);
-			while (true) {
-				System.out.println(help.toString());
-				String ipt = scanner.next();
-				if ("exit".equals(ipt)) {
-					String[] toBeStored = list.toArray(new String[list.size()]);
-					return toBeStored;
-				}
-				list.addAll(Arrays.asList(ipt.split(",")));
-			}
-		}
-	}
-}
-
-class myFileFilter implements FileFilter {
-
-	public myFileFilter() {
-
-	}
-
-	public boolean accept(File pathname) {
-
-		if (pathname.getName().endsWith("Mapper.java"))
-			return true;
-		return false;
 	}
 }

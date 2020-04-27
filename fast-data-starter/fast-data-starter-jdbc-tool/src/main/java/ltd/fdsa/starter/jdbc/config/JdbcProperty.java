@@ -10,7 +10,7 @@ import lombok.ToString;
 public class JdbcProperty {
 
 	private String driver;
-	private String URL;
+	private String url;
 	private String parantName;
 	private String userName;
 	private String password;
