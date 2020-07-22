@@ -1,125 +1,154 @@
 package ltd.fdsa.cloud.controller;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import reactor.core.publisher.Mono;
+import com.ecwid.consul.v1.ConsulClient;
+import com.google.common.base.Strings;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import ltd.fdsa.cloud.service.MinioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.gateway.route.RouteDefinitionLocator;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.codec.multipart.FilePart;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import reactor.core.publisher.Mono;
 
-import com.ecwid.consul.v1.ConsulClient;
-import com.google.api.client.util.Strings;
-
-import lombok.extern.slf4j.Slf4j;
-import ltd.fdsa.cloud.service.MinioService;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @Slf4j
 public class HomeController {
-	@Autowired
-	private DiscoveryClient discoveryClient;
+  @Autowired private DiscoveryClient discoveryClient;
 
-	@Autowired
-	RouteDefinitionLocator routeService;
+  @Autowired RouteDefinitionLocator routeService;
 
-	@Autowired
-	MinioService minioService;
-	 
-	@Autowired
-	private ConsulClient consulClient;
+  @Autowired MinioService minioService;
 
-	@GetMapping(value = "/")
-	public Mono<ResponseEntity<String>> echo() {
+  @Autowired private ConsulClient consulClient;
 
-		HttpHeaders headers = new HttpHeaders();
+  @GetMapping(value = "/")
+  public Mono<ResponseEntity<String>> echo() {
+    HttpHeaders headers = new HttpHeaders();
+    headers.add("Content-Encode", "UTF-8");
+    headers.add("Location", "/swagger-ui.html");
+    ResponseEntity<String> response =
+        new ResponseEntity<String>("", headers, HttpStatus.TEMPORARY_REDIRECT);
 
-		headers.add("Content-Encode", "UTF-8");
-		headers.add("Location", "/swagger-ui.html");
-		ResponseEntity<String> response = new ResponseEntity<String>("", headers, HttpStatus.TEMPORARY_REDIRECT);
+    return Mono.just(response);
+  }
 
-		return Mono.just(response);
+  @GetMapping(value = "/csrf")
+  public String csrf() {
+    return "{}";
+  }
 
-	}
+  @RequestMapping(value = "/routes", method = RequestMethod.GET)
+  public Object listRoute() {
+    List<Object> list = new ArrayList<Object>();
+    routeService
+        .getRouteDefinitions()
+        .subscribe(
+            r -> {
+              list.add(r);
+            });
+    //		list.add(this.routeService);
+    return list;
+  }
 
-	@GetMapping(value = "/csrf")
-	public String csrf() {
-		return "{}";
-	}
- 
-	@RequestMapping(value = "/routes", method = RequestMethod.GET)
-	public Object listRoute() {
-		List<Object> list = new ArrayList<Object>();
-		routeService.getRouteDefinitions().subscribe(r -> {
-			list.add(r);
-		});
-//		list.add(this.routeService);
-		return list;
-	}
-	@PostMapping("/watch")
-	public Object watchChanges(@RequestBody Object body, @RequestHeader HttpHeaders header) {
-	 
-		StringBuffer str = new StringBuffer();
-		if (body != null) {
-			str.append(body.toString());
-		}
+  @PostMapping("/watch")
+  public Object watchChanges(@RequestBody Object body, @RequestHeader HttpHeaders header) {
 
-		if (header != null) {
-			str.append(header.toString());
-		}
-		return str;
-	}
+    StringBuffer str = new StringBuffer();
+    if (body != null) {
+      str.append(body.toString());
+    }
 
-	@RequestMapping("/services")
-	public Object serviceUrl() {
-		List<Object> list = new ArrayList<Object>();
-		for (String item : this.discoveryClient.getServices()) {
-			list.addAll(this.discoveryClient.getInstances(item));
-		}
+    if (header != null) {
+      str.append(header.toString());
+    }
+    return str;
+  }
 
-		return list;
-	}
+  @RequestMapping("/services")
+  public Object serviceUrl() {
+    List<Object> list = new ArrayList<Object>();
+    for (String item : this.discoveryClient.getServices()) {
+      list.addAll(this.discoveryClient.getInstances(item));
+    }
 
-	@RequestMapping(value = "/configs", method = RequestMethod.GET)
-	public Object getConsulConfig(@RequestParam(required = false) String key) {
-		if (Strings.isNullOrEmpty(key)) {
-			return this.consulClient.getKVKeysOnly("").getValue();
-		}
-		return this.consulClient.getKVValue(key).getValue();
-	}
+    return list;
+  }
 
-	@RequestMapping(value = "/file", method = RequestMethod.POST)
-	public void upload(@RequestParam("file") MultipartFile data, String bucketName, String path) throws IOException {
-		String objectName = data.getOriginalFilename();
-		String contentType = data.getContentType();
-		InputStream stream = data.getInputStream();
-		long size = data.getSize();
-		minioService.putObject(bucketName, objectName, stream, size, contentType);
-	}
+  @RequestMapping(value = "/configs", method = RequestMethod.GET)
+  public Object getConsulConfig(@RequestParam(required = false) String key) {
+    if (Strings.isNullOrEmpty(key)) {
+      return this.consulClient.getKVKeysOnly("").getValue();
+    }
+    return this.consulClient.getKVValue(key).getValue();
+  }
 
-	@RequestMapping(value = "/file", method = RequestMethod.GET)
-	public Mono<ResponseEntity<byte[]>> file(String bucketName, String path) {
-		String objectName = path;
-		try (InputStream inputStream = this.minioService.getObject(bucketName, objectName)) {
-			byte[] body = new byte[inputStream.available()];
-			inputStream.read(body);
-			String fileName = java.net.URLEncoder.encode(objectName, "UTF-8");
-			HttpHeaders headers = new HttpHeaders();
-			headers.add("Content-Disposition", "attachment;filename=" + fileName);
-			headers.add("Content-Type", "application/force-download");
-			headers.add("Content-Encode", "UTF-8");
-			ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(body, headers, HttpStatus.OK);
-			return Mono.just(response);
-		} catch (Exception e) {
-			log.error("文件读取异常", e);
-			return Mono.just(new ResponseEntity<byte[]>(new byte[0], HttpStatus.INTERNAL_SERVER_ERROR));
-		}
-	}
+  @RequestMapping(value = "/file", method = RequestMethod.POST)
+  @SneakyThrows
+  public void upload(
+      @RequestPart("file") FilePart filePart,
+      @RequestPart("bucketName") String bucketName,
+      @RequestPart("path") String path) {
 
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    DataBufferUtils.write(filePart.content(), outputStream)
+        .doOnComplete(
+            () -> {
+              String objectName = filePart.filename();
+              String contentType = filePart.headers().getContentType().toString();
+              InputStream stream = new ByteArrayInputStream(outputStream.toByteArray());
+              try {
+                long size = stream.available();
+                minioService.putObject(bucketName, objectName, stream, size, contentType);
+              } catch (Exception ex) {
+                log.error(ex.getMessage());
+              }
+            })
+        .subscribe();
+  }
+
+  @RequestMapping(
+      value = {"/file/{bucket}/{path}", "/file/{bucket}/**/{path}"},
+      method = RequestMethod.GET)
+  public Mono<ResponseEntity> file(
+      @PathVariable(value = "bucket") String bucketName,
+      @PathVariable(value = "path") String fileName,
+      ServerHttpRequest request) {
+
+    final String objectName = request.getURI().getPath().substring(bucketName.length() + 7);
+    return Mono.fromCallable(
+        () -> {
+          try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(
+                "Content-Disposition",
+                "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+            headers.add("Content-Encode", "UTF-8");
+            InputStream inputStream = this.minioService.getObject(bucketName, objectName);
+            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+            return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(inputStreamResource);
+          } catch (Exception e) {
+            log.error("文件读取异常", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+          }
+        });
+  }
 }

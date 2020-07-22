@@ -17,4 +17,8 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
- 
+  minio:
+    endpoint: http://10.168.4.14:9000
+    accessKey: admin
+    secretKey: admin@daoshu
+    region: default

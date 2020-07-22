@@ -1,0 +1,33 @@
+server:
+  port: 8096
+spring:
+  devtools:
+    add-properties: false
+  application:
+    name: system-search
+  profiles:
+    active: dev
+  cloud:
+    consul:
+      enabled: true
+      port: 8500
+      host: 10.168.4.14
+      health:
+        enabled: true
+    swagger:
+      enabled: true
+      basePackage: com.daoshu
+
+
+# mybatis ??
+mybatis:
+  mapperLocations: classpath:mybatisMappers/*.xml
+  config-location: classpath:mybatis-config.xml
+
+logging: 
+  level:
+    web: DEBUG
+
+
+
+    

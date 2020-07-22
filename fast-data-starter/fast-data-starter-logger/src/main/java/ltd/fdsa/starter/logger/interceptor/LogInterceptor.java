@@ -11,8 +11,9 @@ public class LogInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 		String traceId = request.getHeader("TRACE_ID");
 		if (!StringUtils.isEmpty(traceId)) {
-			 MDC.put("TRACE_ID", traceId);
+			MDC.put("TRACE_ID", traceId);
 		}
+		MDC.put("TRACE_ID", "traceId");
 		return true;
 	}
 }

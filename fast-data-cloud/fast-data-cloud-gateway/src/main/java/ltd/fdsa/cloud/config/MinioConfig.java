@@ -26,16 +26,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MinioConfig {
 
-	@Value("${spring.Minio.endpoint:localhost}")
+	@Value("${spring.minio.endpoint:localhost}")
 	private String endpoint;
 
-	@Value("${spring.Minio.accessKey:localhost}")
+	@Value("${spring.minio.accessKey:localhost}")
 	private String accessKey;
 
-	@Value("${spring.Minio.secretKey:secretKey}")
+	@Value("${spring.minio.secretKey:secretKey}")
 	private String secretKey;
 
-	@Value("${spring.Minio.String region:8500}")
+	@Value("${spring.minio.region:8500}")
 	private String region;
 
 	@Bean(name = "minioClient")
