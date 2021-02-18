@@ -14,7 +14,7 @@
     </parent>
     <properties>
         <es.version>7.3.2</es.version>
-        <jackjson.version>2.10.2</jackjson.version>
+        <jackjson.version>2.12.1</jackjson.version>
     </properties>
     <dependencies>
 
