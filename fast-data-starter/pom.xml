@@ -22,7 +22,7 @@
 	<properties>
 		<!-- 常用jar -->
 		<fastjson.version>1.2.62</fastjson.version>
-		<guava.version>25.0-jre</guava.version>
+		<guava.version>29.0-jre</guava.version>
 	</properties>
 	<dependencies>
 		<!-- 主要配合IDE使用 -->
