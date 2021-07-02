@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: gateWay
+inner:
+  name: test
+  age: 18
+  delay: P10dT10s

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <contextName>${APP_NAME}</contextName>
+    <springProperty name="APP_NAME" scope="context" source="spring.application.name" defaultValue="spring"/>
+    <springProperty name="LOG_FILE" scope="context" source="logging.path" defaultValue="/var/log/${APP_NAME}/spring.log" />
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <include resource="org/springframework/boot/logging/logback/file-appender.xml"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%X{TRACE_ID}, %X{REQUEST_ID} %-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
+        </encoder>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+<!--        <appender-ref ref="STDOUT"></appender-ref>-->
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>

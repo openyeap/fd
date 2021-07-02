@@ -2,12 +2,6 @@ package ltd.fdsa.cloud.model;
 
 import lombok.Data;
 
-/**
- * @Classname ServiceEmpower
- * @Description TODO
- * @Date 2020/3/18 9:12
- * @Author 高进
- */
 @Data
 public class ServiceAuthorize {
     /**

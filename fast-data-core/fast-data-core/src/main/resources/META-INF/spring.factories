@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    ltd.fdsa.core.config.ProjectAutoConfiguration
+
+org.springframework.context.ApplicationContextInitializer=\
+    ltd.fdsa.core.context.DefaultApplicationContextAware

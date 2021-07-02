@@ -1,0 +1,48 @@
+package ltd.fdsa.koffer;
+
+import ltd.fdsa.koffer.boot.XBootDecryptor;
+import ltd.fdsa.koffer.jar.KofferDecryptor;
+import ltd.fdsa.koffer.key.XKey;
+import org.apache.commons.compress.archivers.jar.JarArchiveEntry;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
+
+/**
+ * 智能解密器
+ */
+public class XSmartDecryptor extends XEntryDecryptor<JarArchiveEntry>
+        implements XDecryptor, XConstants {
+
+    public XSmartDecryptor(XDecryptor xDecryptor) {
+        super(xDecryptor);
+    }
+
+    public XSmartDecryptor(XDecryptor xDecryptor, XEntryFilter<JarArchiveEntry> filter) {
+        super(xDecryptor, filter);
+    }
+
+    @Override
+    public void decrypt(XKey key, File src, File dest) throws IOException {
+        try (JarFile jar = new JarFile(src, false)) {
+            Manifest manifest = jar.getManifest();
+            Attributes attributes = manifest.getMainAttributes();
+            String version = attributes.getValue("Spring-Boot-Version");
+            XDecryptor decryptor =
+                    version != null
+                            ? new XBootDecryptor(xDecryptor, filter)
+                            : new KofferDecryptor(xDecryptor, filter);
+            decryptor.decrypt(key, src, dest);
+        }
+    }
+
+    @Override
+    public void decrypt(XKey key, InputStream in, OutputStream out) throws IOException {
+        throw new UnsupportedOperationException();
+    }
+}

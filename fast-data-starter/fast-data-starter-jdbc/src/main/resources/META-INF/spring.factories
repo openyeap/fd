@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    ltd.fdsa.starter.jdbc.config.DataSource4WriteConfig,\
-    ltd.fdsa.starter.jdbc.config.DataSource4ReadConfig

@@ -1,15 +1,8 @@
 package ltd.fdsa.job.executor;
 
-import ltd.fdsa.job.core.biz.ExecutorBiz;
-import ltd.fdsa.job.core.biz.model.ReturnT;
-import ltd.fdsa.job.core.biz.model.TriggerParam;
-import ltd.fdsa.job.core.enums.ExecutorBlockStrategyEnum;
+import ltd.fdsa.switcher.core.job.model.TriggerParam;
+import ltd.fdsa.switcher.core.job.enums.ExecutorBlockStrategyEnum;
 import ltd.fdsa.job.core.glue.GlueTypeEnum;
-import com.xxl.rpc.remoting.invoker.XxlRpcInvokerFactory;
-import com.xxl.rpc.remoting.invoker.call.CallType;
-import com.xxl.rpc.remoting.invoker.reference.XxlRpcReferenceBean;
-import com.xxl.rpc.remoting.invoker.route.LoadBalance;
-import com.xxl.rpc.serialize.Serializer;
 
 public class ExecutorBizTest {
 
@@ -39,27 +32,8 @@ public class ExecutorBizTest {
         triggerParam.setGlueSource(null);
         triggerParam.setGlueUpdatetime(System.currentTimeMillis());
         triggerParam.setLogId(1);
-        triggerParam.setLogDateTim(System.currentTimeMillis());
 
         // do remote trigger
         String accessToken = null;
-        ExecutorBiz executorBiz = (ExecutorBiz) new XxlRpcReferenceBean(
-                NetEnum.NETTY_HTTP,
-                Serializer.SerializeEnum.HESSIAN.getSerializer(),
-                CallType.SYNC,
-                LoadBalance.ROUND,
-                ExecutorBiz.class,
-                null,
-                3000,
-                "127.0.0.1:9999",
-                null,
-                null,
-                null).getObject();
-
-        ReturnT<String> runResult = executorBiz.run(triggerParam);
-
-        System.out.println(runResult);
-        XxlRpcInvokerFactory.getInstance().stop();
     }
-
 }

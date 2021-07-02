@@ -1,24 +1,20 @@
 package ltd.fdsa.job.admin.controller;
 
- 
-
-import ltd.fdsa.job.admin.core.cron.CronExpression;
-import ltd.fdsa.job.admin.core.exception.JobException;
-import ltd.fdsa.job.admin.core.model.JobGroup;
-import ltd.fdsa.job.admin.core.model.JobInfo;
-import ltd.fdsa.job.admin.core.model.JobUser;
-import ltd.fdsa.job.admin.core.route.ExecutorRouteStrategyEnum;
-import ltd.fdsa.job.admin.core.thread.JobTriggerPoolHelper;
-import ltd.fdsa.job.admin.core.trigger.TriggerTypeEnum;
-import ltd.fdsa.job.admin.core.util.I18nUtil;
-import ltd.fdsa.job.admin.dao.JobGroupDao;
-import ltd.fdsa.job.admin.service.LoginService;
+import ltd.fdsa.job.admin.route.ExecutorRouteStrategyEnum;
+import ltd.fdsa.job.admin.thread.JobTriggerPoolHelper;
+import ltd.fdsa.job.admin.trigger.TriggerTypeEnum;
+import ltd.fdsa.job.admin.jpa.entity.JobGroup;
+import ltd.fdsa.job.admin.jpa.entity.JobInfo;
+import ltd.fdsa.job.admin.jpa.entity.JobUser;
+import ltd.fdsa.job.admin.jpa.service.JobGroupService;
 import ltd.fdsa.job.admin.service.JobService;
-import ltd.fdsa.job.core.biz.model.ReturnT;
-import ltd.fdsa.job.core.enums.ExecutorBlockStrategyEnum;
-import ltd.fdsa.job.core.glue.GlueTypeEnum;
-import ltd.fdsa.job.core.util.DateUtil;
-
+import ltd.fdsa.job.admin.jpa.service.impl.JobUserServiceImpl;
+import ltd.fdsa.switcher.core.exception.FastDataSwitchException;
+import ltd.fdsa.switcher.core.job.cron.CronExpression;
+import ltd.fdsa.switcher.core.job.enums.ExecutorBlockStrategyEnum;
+import ltd.fdsa.job.admin.util.DateUtil;
+import ltd.fdsa.job.admin.util.I18nUtil;
+import ltd.fdsa.web.view.Result;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,132 +33,146 @@ import java.util.*;
 @RequestMapping("/jobinfo")
 public class JobInfoController {
 
-	@Resource
-	private JobGroupDao JobGroupDao;
-	@Resource
-	private JobService JobService;
-	
-	@RequestMapping
-	public String index(HttpServletRequest request, Model model, @RequestParam(required = false, defaultValue = "-1") int jobGroup) {
+    @Resource
+    private JobGroupService JobGroupDao;
+    @Resource
+    private JobService JobService;
 
-		// 枚举-字典
-		model.addAttribute("ExecutorRouteStrategyEnum", ExecutorRouteStrategyEnum.values());	    // 路由策略-列表
-		model.addAttribute("GlueTypeEnum", GlueTypeEnum.values());								// Glue类型-字典
-		model.addAttribute("ExecutorBlockStrategyEnum", ExecutorBlockStrategyEnum.values());	    // 阻塞处理策略-字典
+    public static List<JobGroup> filterJobGroupByRole(
+            HttpServletRequest request, List<JobGroup> jobGroupList_all) {
+        List<JobGroup> jobGroupList = new ArrayList<>();
+        if (jobGroupList_all != null && jobGroupList_all.size() > 0) {
+            JobUser loginUser = (JobUser) request.getAttribute(JobUserServiceImpl.LOGIN_IDENTITY_KEY);
+            if (loginUser.getRole() == 1) {
+                jobGroupList = jobGroupList_all;
+            } else {
+                List<String> groupIdStrs = new ArrayList<>();
+                if (loginUser.getPermission() != null && loginUser.getPermission().trim().length() > 0) {
+                    groupIdStrs = Arrays.asList(loginUser.getPermission().trim().split(","));
+                }
+                for (JobGroup groupItem : jobGroupList_all) {
+                    if (groupIdStrs.contains(String.valueOf(groupItem.getId()))) {
+                        jobGroupList.add(groupItem);
+                    }
+                }
+            }
+        }
+        return jobGroupList;
+    }
 
-		// 执行器列表
-		List<JobGroup> jobGroupList_all =  JobGroupDao.findAll();
+    public static void validPermission(HttpServletRequest request, int jobGroup) {
+        JobUser loginUser = (JobUser) request.getAttribute(JobUserServiceImpl.LOGIN_IDENTITY_KEY);
+        if (!loginUser.validPermission(jobGroup)) {
+            throw new RuntimeException(
+                    I18nUtil.getString("system_permission_limit")
+                            + "[username="
+                            + loginUser.getUsername()
+                            + "]");
+        }
+    }
 
-		// filter group
-		List<JobGroup> jobGroupList = filterJobGroupByRole(request, jobGroupList_all);
-		if (jobGroupList==null || jobGroupList.size()==0) {
-			throw new JobException(I18nUtil.getString("jobgroup_empty"));
-		}
+    @RequestMapping
+    public String index(
+            HttpServletRequest request,
+            Model model,
+            @RequestParam(required = false, defaultValue = "-1") int jobGroup) {
 
-		model.addAttribute("JobGroupList", jobGroupList);
-		model.addAttribute("jobGroup", jobGroup);
+        // 枚举-字典
+        model.addAttribute("ExecutorRouteStrategyEnum", ExecutorRouteStrategyEnum.values()); // 路由策略-列表
+        model.addAttribute(
+                "ExecutorBlockStrategyEnum", ExecutorBlockStrategyEnum.values()); // 阻塞处理策略-字典
 
-		return "jobinfo/jobinfo.index";
-	}
+        // 执行器列表
+        List<JobGroup> jobGroupList_all = JobGroupDao.findAll();
 
-	public static List<JobGroup> filterJobGroupByRole(HttpServletRequest request, List<JobGroup> jobGroupList_all){
-		List<JobGroup> jobGroupList = new ArrayList<>();
-		if (jobGroupList_all!=null && jobGroupList_all.size()>0) {
-			JobUser loginUser = (JobUser) request.getAttribute(LoginService.LOGIN_IDENTITY_KEY);
-			if (loginUser.getRole() == 1) {
-				jobGroupList = jobGroupList_all;
-			} else {
-				List<String> groupIdStrs = new ArrayList<>();
-				if (loginUser.getPermission()!=null && loginUser.getPermission().trim().length()>0) {
-					groupIdStrs = Arrays.asList(loginUser.getPermission().trim().split(","));
-				}
-				for (JobGroup groupItem:jobGroupList_all) {
-					if (groupIdStrs.contains(String.valueOf(groupItem.getId()))) {
-						jobGroupList.add(groupItem);
-					}
-				}
-			}
-		}
-		return jobGroupList;
-	}
-	public static void validPermission(HttpServletRequest request, int jobGroup) {
-		JobUser loginUser = (JobUser) request.getAttribute(LoginService.LOGIN_IDENTITY_KEY);
-		if (!loginUser.validPermission(jobGroup)) {
-			throw new RuntimeException(I18nUtil.getString("system_permission_limit") + "[username="+ loginUser.getUsername() +"]");
-		}
-	}
-	
-	@RequestMapping("/pageList")
-	@ResponseBody
-	public Map<String, Object> pageList(@RequestParam(required = false, defaultValue = "0") int start,  
-			@RequestParam(required = false, defaultValue = "10") int length,
-			int jobGroup, int triggerStatus, String jobDesc, String executorHandler, String author) {
-		
-		return JobService.pageList(start, length, jobGroup, triggerStatus, jobDesc, executorHandler, author);
-	}
-	
-	@RequestMapping("/add")
-	@ResponseBody
-	public ReturnT<String> add(JobInfo jobInfo) {
-		return JobService.add(jobInfo);
-	}
-	
-	@RequestMapping("/update")
-	@ResponseBody
-	public ReturnT<String> update(JobInfo jobInfo) {
-		return JobService.update(jobInfo);
-	}
-	
-	@RequestMapping("/remove")
-	@ResponseBody
-	public ReturnT<String> remove(int id) {
-		return JobService.remove(id);
-	}
-	
-	@RequestMapping("/stop")
-	@ResponseBody
-	public ReturnT<String> pause(int id) {
-		return JobService.stop(id);
-	}
-	
-	@RequestMapping("/start")
-	@ResponseBody
-	public ReturnT<String> start(int id) {
-		return JobService.start(id);
-	}
-	
-	@RequestMapping("/trigger")
-	@ResponseBody
-	//@PermissionLimit(limit = false)
-	public ReturnT<String> triggerJob(int id, String executorParam) {
-		// force cover job param
-		if (executorParam == null) {
-			executorParam = "";
-		}
+        // filter group
+        List<JobGroup> jobGroupList = filterJobGroupByRole(request, jobGroupList_all);
+        if (jobGroupList == null || jobGroupList.size() == 0) {
+            throw new FastDataSwitchException(I18nUtil.getString("jobgroup_empty"));
+        }
 
-		JobTriggerPoolHelper.trigger(id, TriggerTypeEnum.MANUAL, -1, null, executorParam);
-		return ReturnT.SUCCESS;
-	}
+        model.addAttribute("JobGroupList", jobGroupList);
+        model.addAttribute("jobGroup", jobGroup);
 
-	@RequestMapping("/nextTriggerTime")
-	@ResponseBody
-	public ReturnT<List<String>> nextTriggerTime(String cron) {
-		List<String> result = new ArrayList<>();
-		try {
-			CronExpression cronExpression = new CronExpression(cron);
-			Date lastTime = new Date();
-			for (int i = 0; i < 5; i++) {
-				lastTime = cronExpression.getNextValidTimeAfter(lastTime);
-				if (lastTime != null) {
-					result.add(DateUtil.formatDateTime(lastTime));
-				} else {
-					break;
-				}
-			}
-		} catch (ParseException e) {
-			return new ReturnT<List<String>>(ReturnT.FAIL_CODE, I18nUtil.getString("jobinfo_field_cron_unvalid"));
-		}
-		return new ReturnT<List<String>>(result);
-	}
-	
+        return "jobinfo/jobinfo.index";
+    }
+
+    @RequestMapping("/pageList")
+    @ResponseBody
+    public Map<String, Object> pageList(
+            @RequestParam(required = false, defaultValue = "0") int start,
+            @RequestParam(required = false, defaultValue = "10") int length,
+            int jobGroup,
+            int triggerStatus,
+            String jobDesc,
+            String executorHandler,
+            String author) {
+
+        return JobService.pageList(
+                start, length, jobGroup, triggerStatus, jobDesc, executorHandler, author);
+    }
+
+    @RequestMapping("/add")
+    @ResponseBody
+    public Result<String> add(JobInfo jobInfo) {
+        return JobService.add(jobInfo);
+    }
+
+    @RequestMapping("/update")
+    @ResponseBody
+    public Result<String> update(JobInfo jobInfo) {
+        return JobService.update(jobInfo);
+    }
+
+    @RequestMapping("/remove")
+    @ResponseBody
+    public Result<String> remove(int id) {
+        return JobService.remove(id);
+    }
+
+    @RequestMapping("/stop")
+    @ResponseBody
+    public Result<String> pause(int id) {
+        return JobService.stop(id);
+    }
+
+    @RequestMapping("/start")
+    @ResponseBody
+    public Result<String> start(int id) {
+        return JobService.start(id);
+    }
+
+    @RequestMapping("/trigger")
+    @ResponseBody
+    // @PermissionLimit(limit = false)
+    public Result<String> triggerJob(int id, String executorParam) {
+        // force cover job param
+        if (executorParam == null) {
+            executorParam = "";
+        }
+
+        JobTriggerPoolHelper.trigger(id, TriggerTypeEnum.MANUAL, -1, null, executorParam);
+        return Result.success();
+    }
+
+    @RequestMapping("/nextTriggerTime")
+    @ResponseBody
+    public Result<List<String>> nextTriggerTime(String cron) {
+        List<String> result = new ArrayList<>();
+        try {
+            CronExpression cronExpression = new CronExpression(cron);
+            Date lastTime = new Date();
+            for (int i = 0; i < 5; i++) {
+                lastTime = cronExpression.getNextValidTimeAfter(lastTime);
+                if (lastTime != null) {
+                    result.add(DateUtil.formatDateTime(lastTime));
+                } else {
+                    break;
+                }
+            }
+        } catch (ParseException e) {
+            return Result.fail(500, I18nUtil.getString("jobinfo_field_cron_unvalid"));
+        }
+        return Result.success(result);
+    }
 }

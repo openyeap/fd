@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    ltd.fdsa.database.config.DataSourceConfig

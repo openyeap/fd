@@ -1,0 +1,70 @@
+server:
+  port: 9080
+spring:
+  freemarker.templateLoaderPath: classpath:/templates/
+  freemarker.suffix: .ftl
+  freemarker.charset: UTF-8
+  freemarker.request-context-attribute: request
+  freemarker.settings.number_format: 0.##########
+  mvc:
+    static-path-pattern: /static/**
+  resources:
+    static-locations: classpath:/static/
+  application:
+    name: gateway
+  profiles:
+    active: dev
+
+
+  jpa:
+    database-platform: org.hibernate.dialect.SQLiteDialect
+    generate-ddl: true
+    show-sql: false
+
+  datasource:
+    master:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: org.sqlite.JDBC
+      url: ${database.master.url}
+      username: ${database.master.username}
+      password: ${database.master.password}
+      maxActive: 20
+      maxWait: 10000
+      max-wait: 10000
+      min-idle: 5
+      initial-size: 5
+      filters: stat,slf4j
+      timeBetweenLogStatsMillis: 5000
+      druid:
+        maxWait: 60000
+        filter:
+          stat:
+            enabled: true
+  cloud:
+    consul:
+      host: 10.168.4.14
+      port: 8500
+      discovery:
+        prefer-ip-address: true
+        register: false
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+  mail.host: smtp.qq.com
+  mail.port: 25
+  mail.username: xxx@qq.com
+  mail.password: xxx
+  mail.properties.mail.smtp.auth: true
+  mail.properties.mail.smtp.starttls.enable: true
+  mail.properties.mail.smtp.starttls.required: true
+  mail.properties.mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
+
+hibernate.dialect: org.hibernate.dialect.SQLiteDialect
+
+  ### , access token
+project.job.accessToken: 
+### , i18n (default empty as chinese, "en" as english)
+project.job.i18n: 

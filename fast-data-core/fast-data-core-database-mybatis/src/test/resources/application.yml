@@ -1,0 +1,14 @@
+server:
+  port: 9080
+spring:
+  application:
+    name: test
+  profiles:
+    active: dev
+logging:
+  path: /var/log/${spring.application.name}-${server.port}
+  level:
+    web: DEBUG
+    ltd.fdsa: DEBUG
+  pattern:
+    console: '%msg%n'

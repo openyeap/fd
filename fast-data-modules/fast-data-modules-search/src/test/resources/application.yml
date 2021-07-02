@@ -1,0 +1,12 @@
+server:
+  port: 8096
+spring:
+  application:
+    name: system-search
+  profiles:
+    active: dev
+  data:
+    neo4j:
+      uri: bolt://neo4j:7687
+      username: neo4j
+      password: qwe123!@#

@@ -1,14 +1,12 @@
 package ltd.fdsa.job.admin.dao;
 
+import lombok.var;
+import ltd.fdsa.job.admin.jpa.entity.JobGroup;
+import ltd.fdsa.job.admin.jpa.service.JobGroupService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import ltd.fdsa.job.admin.core.model.JobGroup;
-import ltd.fdsa.job.admin.dao.JobGroupDao;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -18,33 +16,32 @@ import java.util.List;
 public class JobGroupDaoTest {
 
     @Resource
-    private JobGroupDao JobGroupDao;
+    private JobGroupService JobGroupDao;
 
     @Test
-    public void test(){
+    public void test() {
         List<JobGroup> list = JobGroupDao.findAll();
 
         List<JobGroup> list2 = JobGroupDao.findByAddressType(0);
 
         JobGroup group = new JobGroup();
-        group.setAppName("setAppName");
+        group.setName("setAppName");
         group.setTitle("setTitle");
-        group.setOrder(1);
-        group.setAddressType(0);
+
+        group.setType((byte) 0);
         group.setAddressList("setAddressList");
 
-        int ret = JobGroupDao.save(group);
+        var ret = JobGroupDao.update(group);
 
-        JobGroup group2 = JobGroupDao.load(group.getId());
-        group2.setAppName("setAppName2");
+        JobGroup group2 = JobGroupDao.findById(group.getId()).get();
+        group2.setName("setAppName2");
         group2.setTitle("setTitle2");
-        group2.setOrder(2);
-        group2.setAddressType(2);
+
+        group2.setType((byte) 2);
         group2.setAddressList("setAddressList2");
 
-        int ret2 = JobGroupDao.update(group2);
+        var  ret2 = JobGroupDao.update(group2);
 
-        int ret3 = JobGroupDao.remove(group.getId());
+         JobGroupDao.deleteById(group.getId());
     }
-
 }

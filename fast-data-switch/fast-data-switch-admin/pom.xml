@@ -1,122 +1,78 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<artifactId>fast-data-switch-admin</artifactId>
-	<name>fast data switch admin</name>
-	<description>fast data switch admin is a web ui for admin data switch job</description>
-	<packaging>jar</packaging>
-	<parent>
-		<groupId>ltd.fdsa</groupId>
-		<artifactId>fast-data-switch-parent</artifactId>
-		<version>1.0.0.RELEASE</version>
-	</parent>
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>ltd.fdsa</groupId>
-			<artifactId>fast-data-switch-job</artifactId>
-			<version>1.0.0.RELEASE</version>
-		</dependency>
-		<dependency>
-			<groupId>ltd.fdsa</groupId>
-			<artifactId>fast-data-switch-core</artifactId>
-			<version>1.0.0.RELEASE</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<!-- freemarker-starter -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-freemarker</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.googlecode.aviator</groupId>
-			<artifactId>aviator</artifactId>
-			<version>4.2.5</version>
-		</dependency>
-		<!-- mail-starter -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-mail</artifactId>
-		</dependency>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>fast-data-switch-admin</artifactId>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-redis</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-		</dependency>
+    <description>fast data switch admin is a web ui for admin data switch job</description>
+    <packaging>jar</packaging>
+    <parent>
+        <groupId>ltd.fdsa</groupId>
+        <artifactId>fast-data-switch</artifactId>
+        <version>2.1.5-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <dependencies>
+        <dependency>
+            <groupId>ltd.fdsa</groupId>
+            <artifactId>fast-data-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.fdsa</groupId>
+            <artifactId>fast-data-core-web</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>org.mybatis.spring.boot</groupId>
-			<artifactId>mybatis-spring-boot-starter</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>ltd.fdsa</groupId>
+            <artifactId>fast-data-core-database-jpa</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
- 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
 
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<executions>  <!--执行器 mvn package -->
-					<execution>
-						<id>make-zip</id><!--名字任意 -->
-						<phase>package</phase><!-- 绑定到package生命周期阶段上 -->
-						<goals>
-							<goal>single</goal><!-- 只运行一次 -->
-						</goals>
-						<configuration>
-							<descriptors>
-								<descriptor>src/main/resources/assembly.xml</descriptor>
-							</descriptors>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<!-- docker -->
-			<plugin>
-				<groupId>com.spotify</groupId>
-				<artifactId>docker-maven-plugin</artifactId>
-				<version>0.4.13</version>
-				<configuration>
-					<!-- made of '[a-z0-9-_.]' -->
-					<imageName>${project.artifactId}:${project.version}</imageName>
-					<dockerDirectory>${project.basedir}</dockerDirectory>
-					<resources>
-						<resource>
-							<targetPath>/</targetPath>
-							<directory>${project.build.directory}</directory>
-							<include>${project.build.finalName}.jar</include>
-						</resource>
-					</resources>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+        <!-- freemarker-starter -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.aviator</groupId>
+            <artifactId>aviator</artifactId>
+            <version>4.2.5</version>
+        </dependency>
+        <!-- mail-starter -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.fdsa</groupId>
+            <artifactId>fast-data-switch-core</artifactId>
+        </dependency>
+
+
+    </dependencies>
 
 </project>

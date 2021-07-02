@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    ltd.fdsa.database.jpa.config.WriterConfig,\
+    ltd.fdsa.database.jpa.config.ReaderConfig

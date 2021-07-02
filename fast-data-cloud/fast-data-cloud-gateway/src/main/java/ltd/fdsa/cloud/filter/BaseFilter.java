@@ -1,9 +1,7 @@
 package ltd.fdsa.cloud.filter;
 
-
 import lombok.extern.slf4j.Slf4j;
-import ltd.fdsa.common.model.view.ResponseResult;
-
+import ltd.fdsa.web.view.Result;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -17,7 +15,7 @@ import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 
-@Slf4j 
+@Slf4j
 public abstract class BaseFilter implements GlobalFilter, Ordered {
 
     /**
@@ -28,6 +26,8 @@ public abstract class BaseFilter implements GlobalFilter, Ordered {
      * 访问服务名{spring.application.name}
      */
     protected String serviceName = "";
+
+    protected ServerHttpRequest newRequest = null;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -48,13 +48,22 @@ public abstract class BaseFilter implements GlobalFilter, Ordered {
             byte[] bits = errorBody().toString().getBytes(StandardCharsets.UTF_8);
             DataBuffer buffer = response.bufferFactory().wrap(bits);
             response.setStatusCode(errorStatus());
-            //指定编码，否则在浏览器中会中文乱码
+            // 指定编码，否则在浏览器中会中文乱码
             response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
             return response.writeWith(Mono.just(buffer));
+        }
+        if (newRequest != null) {
+            return chain.filter(exchange.mutate().request(newRequest).build());
         }
         return chain.filter(exchange);
     }
 
+    /**
+     * 定义统一入口
+     *
+     * @param request
+     * @return
+     */
     protected abstract boolean access(ServerHttpRequest request);
 
     /**
@@ -69,5 +78,5 @@ public abstract class BaseFilter implements GlobalFilter, Ordered {
      *
      * @return
      */
-    protected abstract ResponseResult<String> errorBody();
+    protected abstract Result errorBody();
 }

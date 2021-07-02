@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>fast-data-switch-core</artifactId>
-    <name>fast data switch core</name>
     <description>fast data switch core provides a framework for data exchanging</description>
     <packaging>jar</packaging>
     <parent>
         <groupId>ltd.fdsa</groupId>
-        <artifactId>fast-data-switch-parent</artifactId>
-        <version>1.0.0.RELEASE</version>
+        <artifactId>fast-data-switch</artifactId>
+        <version>2.1.5-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <dependencies>
@@ -19,13 +18,17 @@
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.googlecode.aviator</groupId>
             <artifactId>aviator</artifactId>
             <version>4.2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>ltd.fdsa</groupId>
+            <artifactId>fast-data-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.fdsa</groupId>
+            <artifactId>fast-data-core-web</artifactId>
         </dependency>
         <dependency>
             <groupId>com.lmax</groupId>
@@ -33,13 +36,8 @@
             <version>3.4.2</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-configuration</groupId>
-            <artifactId>commons-configuration</artifactId>
-            <version>1.10</version>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
         </dependency>
         <dependency>
             <groupId>com.carrotsearch</groupId>
@@ -50,15 +48,13 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
         </dependency>
         <dependency>
-            <groupId>ltd.fdsa</groupId>
-            <artifactId>fast-data-common-util</artifactId>
-            <version>${fast-data.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
-    </dependencies>
+     </dependencies>
 </project>

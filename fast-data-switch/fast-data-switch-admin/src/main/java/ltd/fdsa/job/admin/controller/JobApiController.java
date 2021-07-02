@@ -1,16 +1,12 @@
 package ltd.fdsa.job.admin.controller;
- 
 
-import ltd.fdsa.job.admin.controller.annotation.PermissionLimit;
-import ltd.fdsa.job.admin.core.conf.JobAdminConfig;
-import ltd.fdsa.job.admin.core.exception.JobException;
-import ltd.fdsa.job.admin.core.util.JacksonUtil;
-import ltd.fdsa.job.core.biz.AdminBiz;
-import ltd.fdsa.job.core.biz.model.HandleCallbackParam;
-import ltd.fdsa.job.core.biz.model.RegistryParam;
-import ltd.fdsa.job.core.biz.model.ReturnT;
-import ltd.fdsa.job.core.util.JobRemotingUtil;
-
+import ltd.fdsa.job.admin.annotation.PermissionLimit;
+import ltd.fdsa.switcher.core.exception.FastDataSwitchException;
+import ltd.fdsa.switcher.core.job.coordinator.Coordinator;
+import ltd.fdsa.switcher.core.job.model.HandleCallbackParam;
+import ltd.fdsa.switcher.core.job.model.RegistryParam;
+import ltd.fdsa.switcher.core.util.JacksonUtil;
+import ltd.fdsa.web.view.Result;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,26 +21,21 @@ import java.util.List;
 public class JobApiController {
 
     @Resource
-    private AdminBiz adminBiz;
-
+    private Coordinator adminBiz;
 
     // ---------------------- base ----------------------
 
     /**
      * valid access token
      */
-    private void validAccessToken(HttpServletRequest request){
-        if (JobAdminConfig.getAdminConfig().getAccessToken()!=null
-                && JobAdminConfig.getAdminConfig().getAccessToken().trim().length()>0
-                && !JobAdminConfig.getAdminConfig().getAccessToken().equals(request.getHeader(JobRemotingUtil.XXL_RPC_ACCESS_TOKEN))) {
-            throw new JobException("The access token is wrong.");
-        }
+    private void validAccessToken(HttpServletRequest request) {
+
     }
 
     /**
      * parse Param
      */
-    private Object parseParam(String data, Class<?> parametrized, Class<?>... parameterClasses){
+    private Object parseParam(String data, Class<?> parametrized, Class<?>... parameterClasses) {
         Object param = null;
         try {
             if (parameterClasses != null) {
@@ -52,9 +43,10 @@ public class JobApiController {
             } else {
                 param = JacksonUtil.readValue(data, parametrized);
             }
-        } catch (Exception e) { }
-        if (param==null) {
-            throw new JobException("The request data invalid.");
+        } catch (Exception e) {
+        }
+        if (param == null) {
+            throw new FastDataSwitchException("The request data invalid.");
         }
         return param;
     }
@@ -69,19 +61,19 @@ public class JobApiController {
      */
     @RequestMapping("/callback")
     @ResponseBody
-    @PermissionLimit(limit=false)
-    public ReturnT<String> callback(HttpServletRequest request, @RequestBody(required = false) String data) {
+    @PermissionLimit(limit = false)
+    public Result<String> callback(
+            HttpServletRequest request, @RequestBody(required = false) String data) {
         // valid
         validAccessToken(request);
 
         // param
-        List<HandleCallbackParam> callbackParamList = (List<HandleCallbackParam>) parseParam(data, List.class, HandleCallbackParam.class);
+        List<HandleCallbackParam> callbackParamList =
+                (List<HandleCallbackParam>) parseParam(data, List.class, HandleCallbackParam.class);
 
         // invoke
         return adminBiz.callback(callbackParamList);
     }
-
-
 
     /**
      * registry
@@ -91,8 +83,9 @@ public class JobApiController {
      */
     @RequestMapping("/registry")
     @ResponseBody
-    @PermissionLimit(limit=false)
-    public ReturnT<String> registry(HttpServletRequest request, @RequestBody(required = false) String data) {
+    @PermissionLimit(limit = false)
+    public Result<String> registry(
+            HttpServletRequest request, @RequestBody(required = false) String data) {
         // valid
         validAccessToken(request);
 
@@ -111,8 +104,9 @@ public class JobApiController {
      */
     @RequestMapping("/registryRemove")
     @ResponseBody
-    @PermissionLimit(limit=false)
-    public ReturnT<String> registryRemove(HttpServletRequest request, @RequestBody(required = false) String data) {
+    @PermissionLimit(limit = false)
+    public Result<String> registryRemove(
+            HttpServletRequest request, @RequestBody(required = false) String data) {
         // valid
         validAccessToken(request);
 

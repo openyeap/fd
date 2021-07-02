@@ -1,0 +1,26 @@
+project:
+  swagger:
+    enabled: true
+    basePackages:
+      - ltd.fdsa.demo.controller
+      - ltd.fdsa
+    api-info:
+      title: swagger api
+      description: 优雅的restful风格
+      terms-of-service-url: http://fdsa.ltd
+      version: 1.0
+      contact:
+        name: zhumingwu
+        url: http://fdsa.ltd
+        email: zhumingwu@fdsa.ltd
+
+  consul:
+    enabled: true
+    minutes: 1
+    host: 10.168.4.14
+    port: 8500
+    health:
+      enabled: true
+
+
+ 

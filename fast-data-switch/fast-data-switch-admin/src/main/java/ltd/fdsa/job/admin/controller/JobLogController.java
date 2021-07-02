@@ -1,19 +1,19 @@
-package ltd.fdsa.job.admin.controller; 
+package ltd.fdsa.job.admin.controller;
 
-import ltd.fdsa.job.admin.core.exception.JobException;
-import ltd.fdsa.job.admin.core.model.JobGroup;
-import ltd.fdsa.job.admin.core.model.JobInfo;
-import ltd.fdsa.job.admin.core.model.JobLog;
-import ltd.fdsa.job.admin.core.scheduler.JobScheduler;
-import ltd.fdsa.job.admin.core.util.I18nUtil;
-import ltd.fdsa.job.admin.dao.JobGroupDao;
-import ltd.fdsa.job.admin.dao.JobInfoDao;
-import ltd.fdsa.job.admin.dao.JobLogDao;
-import ltd.fdsa.job.core.biz.ExecutorBiz;
-import ltd.fdsa.job.core.biz.model.LogResult;
-import ltd.fdsa.job.core.biz.model.ReturnT;
-import ltd.fdsa.job.core.util.DateUtil;
-
+import ltd.fdsa.job.admin.scheduler.JobScheduler;
+import ltd.fdsa.job.admin.jpa.entity.JobGroup;
+import ltd.fdsa.job.admin.jpa.entity.JobInfo;
+import ltd.fdsa.job.admin.jpa.entity.JobLog;
+import ltd.fdsa.job.admin.jpa.service.JobGroupService;
+import ltd.fdsa.job.admin.jpa.service.JobInfoService;
+import ltd.fdsa.job.admin.jpa.service.JobLogService;
+import ltd.fdsa.switcher.core.exception.FastDataSwitchException;
+import ltd.fdsa.switcher.core.job.executor.Executor;
+import ltd.fdsa.switcher.core.job.model.LogResult;
+import ltd.fdsa.job.admin.util.DateUtil;
+import ltd.fdsa.job.admin.util.I18nUtil;
+import ltd.fdsa.web.enums.HttpCode;
+import ltd.fdsa.web.view.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * index controller
@@ -35,196 +36,211 @@ import java.util.Map;
 @Controller
 @RequestMapping("/joblog")
 public class JobLogController {
-	private static Logger logger = LoggerFactory.getLogger(JobLogController.class);
+    private static Logger logger = LoggerFactory.getLogger(JobLogController.class);
+    @Resource
+    public JobInfoService JobInfoDao;
+    @Resource
+    public JobLogService JobLogDao;
+    @Resource
+    private JobGroupService JobGroupDao;
 
-	@Resource
-	private JobGroupDao JobGroupDao;
-	@Resource
-	public JobInfoDao JobInfoDao;
-	@Resource
-	public JobLogDao JobLogDao;
+    @RequestMapping
+    public String index(
+            HttpServletRequest request,
+            Model model,
+            @RequestParam(required = false, defaultValue = "0") Integer jobId) {
 
-	@RequestMapping
-	public String index(HttpServletRequest request, Model model, @RequestParam(required = false, defaultValue = "0") Integer jobId) {
+        // 执行器列表
+        List<JobGroup> jobGroupList_all = JobGroupDao.findAll();
 
-		// 执行器列表
-		List<JobGroup> jobGroupList_all =  JobGroupDao.findAll();
+        // filter group
+        List<JobGroup> jobGroupList = JobInfoController.filterJobGroupByRole(request, jobGroupList_all);
+        if (jobGroupList == null || jobGroupList.size() == 0) {
+            throw new FastDataSwitchException(I18nUtil.getString("jobgroup_empty"));
+        }
 
-		// filter group
-		List<JobGroup> jobGroupList = JobInfoController.filterJobGroupByRole(request, jobGroupList_all);
-		if (jobGroupList==null || jobGroupList.size()==0) {
-			throw new JobException(I18nUtil.getString("jobgroup_empty"));
-		}
+        model.addAttribute("JobGroupList", jobGroupList);
 
-		model.addAttribute("JobGroupList", jobGroupList);
+        // 任务
+        if (jobId > 0) {
+            JobInfo jobInfo = JobInfoDao.findById(jobId).get();
+            if (jobInfo == null) {
+                throw new RuntimeException(
+                        I18nUtil.getString("jobinfo_field_id") + I18nUtil.getString("system_unvalid"));
+            }
 
-		// 任务
-		if (jobId > 0) {
-			JobInfo jobInfo = JobInfoDao.loadById(jobId);
-			if (jobInfo == null) {
-				throw new RuntimeException(I18nUtil.getString("jobinfo_field_id") + I18nUtil.getString("system_unvalid"));
-			}
+            model.addAttribute("jobInfo", jobInfo);
 
-			model.addAttribute("jobInfo", jobInfo);
+            // valid permission
+            JobInfoController.validPermission(request, jobInfo.getGroupId());
+        }
 
-			// valid permission
-			JobInfoController.validPermission(request, jobInfo.getJobGroup());
-		}
+        return "joblog/joblog.index";
+    }
 
-		return "joblog/joblog.index";
-	}
+    @RequestMapping("/getJobsByGroup")
+    @ResponseBody
+    public Result<List<JobInfo>> getJobsByGroup(int jobGroup) {
+        List<JobInfo> list = JobInfoDao.findAll().stream().filter(m -> m.getGroupId() == jobGroup).collect(Collectors.toList());
+        return Result.success(list);
+    }
 
-	@RequestMapping("/getJobsByGroup")
-	@ResponseBody
-	public ReturnT<List<JobInfo>> getJobsByGroup(int jobGroup){
-		List<JobInfo> list = JobInfoDao.getJobsByGroup(jobGroup);
-		return new ReturnT<List<JobInfo>>(list);
-	}
-	
-	@RequestMapping("/pageList")
-	@ResponseBody
-	public Map<String, Object> pageList(HttpServletRequest request,
-										@RequestParam(required = false, defaultValue = "0") int start,
-										@RequestParam(required = false, defaultValue = "10") int length,
-										int jobGroup, int jobId, int logStatus, String filterTime) {
+    @RequestMapping("/pageList")
+    @ResponseBody
+    public Map<String, Object> pageList(
+            HttpServletRequest request,
+            @RequestParam(required = false, defaultValue = "0") int start,
+            @RequestParam(required = false, defaultValue = "10") int length,
+            int jobGroup,
+            int jobId,
+            int logStatus,
+            String filterTime) {
 
-		// valid permission
-		JobInfoController.validPermission(request, jobGroup);	// 仅管理员支持查询全部；普通用户仅支持查询有权限的 jobGroup
-		
-		// parse param
-		Date triggerTimeStart = null;
-		Date triggerTimeEnd = null;
-		if (filterTime!=null && filterTime.trim().length()>0) {
-			String[] temp = filterTime.split(" - ");
-			if (temp.length == 2) {
-				triggerTimeStart = DateUtil.parseDateTime(temp[0]);
-				triggerTimeEnd = DateUtil.parseDateTime(temp[1]);
-			}
-		}
-		
-		// page query
-		List<JobLog> list = JobLogDao.pageList(start, length, jobGroup, jobId, triggerTimeStart, triggerTimeEnd, logStatus);
-		int list_count = JobLogDao.pageListCount(start, length, jobGroup, jobId, triggerTimeStart, triggerTimeEnd, logStatus);
-		
-		// package result
-		Map<String, Object> maps = new HashMap<String, Object>();
-	    maps.put("recordsTotal", list_count);		// 总记录数
-	    maps.put("recordsFiltered", list_count);	// 过滤后的总记录数
-	    maps.put("data", list);  					// 分页列表
-		return maps;
-	}
+        // valid permission
+        JobInfoController.validPermission(request, jobGroup); // 仅管理员支持查询全部；普通用户仅支持查询有权限的 jobGroup
 
-	@RequestMapping("/logDetailPage")
-	public String logDetailPage(int id, Model model){
+        // parse param
+        Date triggerTimeStart = null;
+        Date triggerTimeEnd = null;
+        if (filterTime != null && filterTime.trim().length() > 0) {
+            String[] temp = filterTime.split(" - ");
+            if (temp.length == 2) {
+                triggerTimeStart = DateUtil.parseDateTime(temp[0]);
+                triggerTimeEnd = DateUtil.parseDateTime(temp[1]);
+            }
+        }
 
-		// base check
-		ReturnT<String> logStatue = ReturnT.SUCCESS;
-		JobLog jobLog = JobLogDao.load(id);
-		if (jobLog == null) {
+//        // page query
+//        List<JobLog> list =
+//                JobLogDao.pageList(
+//                        start, length, jobGroup, jobId, triggerTimeStart, triggerTimeEnd, logStatus);
+//        int list_count =
+//                JobLogDao.pageListCount(
+//                        start, length, jobGroup, jobId, triggerTimeStart, triggerTimeEnd, logStatus);
+
+        // package result
+        Map<String, Object> maps = new HashMap<String, Object>();
+//        maps.put("recordsTotal", list_count); // 总记录数
+//        maps.put("recordsFiltered", list_count); // 过滤后的总记录数
+//        maps.put("data", list); // 分页列表
+        return maps;
+    }
+
+    @RequestMapping("/logDetailPage")
+    public String logDetailPage(int id, Model model) {
+
+        // base check
+        Result<String> logStatue = Result.success();
+        JobLog jobLog = JobLogDao.findById(id).get();
+        if (jobLog == null) {
             throw new RuntimeException(I18nUtil.getString("joblog_logid_unvalid"));
-		}
+        }
 
         model.addAttribute("triggerCode", jobLog.getTriggerCode());
         model.addAttribute("handleCode", jobLog.getHandleCode());
         model.addAttribute("executorAddress", jobLog.getExecutorAddress());
         model.addAttribute("triggerTime", jobLog.getTriggerTime().getTime());
         model.addAttribute("logId", jobLog.getId());
-		return "joblog/joblog.detail";
-	}
+        return "joblog/joblog.detail";
+    }
 
-	@RequestMapping("/logDetailCat")
-	@ResponseBody
-	public ReturnT<LogResult> logDetailCat(String executorAddress, long triggerTime, long logId, int fromLineNum){
-		try {
-			ExecutorBiz executorBiz = JobScheduler.getExecutorBiz(executorAddress);
-			ReturnT<LogResult> logResult = executorBiz.log(triggerTime, logId, fromLineNum);
+    @RequestMapping("/logDetailCat")
+    @ResponseBody
+    public Result<LogResult> logDetailCat(
+            String executorAddress, long triggerTime, int logId, String fromLineNum) {
+        try {
+            Executor executorBiz = JobScheduler.getExecutorClient(executorAddress);
+            Result<LogResult> logResult = executorBiz.log(logId, fromLineNum);
 
-			// is end
-            if (logResult.getContent()!=null && logResult.getContent().getFromLineNum() > logResult.getContent().getToLineNum()) {
-                JobLog jobLog = JobLogDao.load(logId);
+            // is end
+            if (logResult.getData() != null
+                    && logResult.getData().getFromLineNum() > logResult.getData().getToLineNum()) {
+                JobLog jobLog = JobLogDao.findById(logId).get();
                 if (jobLog.getHandleCode() > 0) {
-                    logResult.getContent().setEnd(true);
+                    logResult.getData().setEnd(true);
                 }
             }
 
-			return logResult;
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			return new ReturnT<LogResult>(ReturnT.FAIL_CODE, e.getMessage());
-		}
-	}
+            return logResult;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return Result.fail(500, e.getMessage());
+        }
+    }
 
-	@RequestMapping("/logKill")
-	@ResponseBody
-	public ReturnT<String> logKill(int id){
-		// base check
-		JobLog log = JobLogDao.load(id);
-		JobInfo jobInfo = JobInfoDao.loadById(log.getJobId());
-		if (jobInfo==null) {
-			return new ReturnT<String>(500, I18nUtil.getString("jobinfo_glue_jobid_unvalid"));
-		}
-		if (ReturnT.SUCCESS_CODE != log.getTriggerCode()) {
-			return new ReturnT<String>(500, I18nUtil.getString("joblog_kill_log_limit"));
-		}
+    @RequestMapping("/logKill")
+    @ResponseBody
+    public Result<String> logKill(int id) {
+        // base check
+        JobLog log = JobLogDao.findById(id).get();
+        JobInfo jobInfo = JobInfoDao.findById(log.getJobId()).get();
+        if (jobInfo == null) {
+            return Result.fail(500, I18nUtil.getString("jobinfo_glue_jobid_unvalid"));
+        }
+        if (Result.success().getCode() != log.getTriggerCode()) {
+            return Result.fail(500, I18nUtil.getString("joblog_kill_log_limit"));
+        }
 
-		// request of kill
-		ReturnT<String> runResult = null;
-		try {
-			ExecutorBiz executorBiz = JobScheduler.getExecutorBiz(log.getExecutorAddress());
-			runResult = executorBiz.kill(jobInfo.getId());
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			runResult = new ReturnT<String>(500, e.getMessage());
-		}
+        // request of kill
+        Result<String> runResult = null;
+        try {
+            Executor executorBiz = JobScheduler.getExecutorClient(log.getExecutorAddress());
+            runResult = executorBiz.kill(jobInfo.getId());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            runResult = Result.fail(500, e.getMessage());
+        }
 
-		if (ReturnT.SUCCESS_CODE == runResult.getCode()) {
-			log.setHandleCode(ReturnT.FAIL_CODE);
-			log.setHandleMsg( I18nUtil.getString("joblog_kill_log_byman")+":" + (runResult.getMsg()!=null?runResult.getMsg():""));
-			log.setHandleTime(new Date());
-			JobLogDao.updateHandleInfo(log);
-			return new ReturnT<String>(runResult.getMsg());
-		} else {
-			return new ReturnT<String>(500, runResult.getMsg());
-		}
-	}
+        if (Result.success().getCode() == runResult.getCode()) {
+            log.setHandleCode(HttpCode.INTERNAL_SERVER_ERROR.getCode());
+            log.setHandleMsg(
+                    I18nUtil.getString("joblog_kill_log_byman")
+                            + ":"
+                            + (runResult.getMessage() != null ? runResult.getMessage() : ""));
+            log.setHandleTime(new Date());
+            JobLogDao.update(log);
+            return Result.success(runResult.getMessage());
+        } else {
+            return Result.fail(500, runResult.getMessage());
+        }
+    }
 
-	@RequestMapping("/clearLog")
-	@ResponseBody
-	public ReturnT<String> clearLog(int jobGroup, int jobId, int type){
+    @RequestMapping("/clearLog")
+    @ResponseBody
+    public Result<String> clearLog(int jobGroup, int jobId, int type) {
 
-		Date clearBeforeTime = null;
-		int clearBeforeNum = 0;
-		if (type == 1) {
-			clearBeforeTime = DateUtil.addMonths(new Date(), -1);	// 清理一个月之前日志数据
-		} else if (type == 2) {
-			clearBeforeTime = DateUtil.addMonths(new Date(), -3);	// 清理三个月之前日志数据
-		} else if (type == 3) {
-			clearBeforeTime = DateUtil.addMonths(new Date(), -6);	// 清理六个月之前日志数据
-		} else if (type == 4) {
-			clearBeforeTime = DateUtil.addYears(new Date(), -1);	// 清理一年之前日志数据
-		} else if (type == 5) {
-			clearBeforeNum = 1000;		// 清理一千条以前日志数据
-		} else if (type == 6) {
-			clearBeforeNum = 10000;		// 清理一万条以前日志数据
-		} else if (type == 7) {
-			clearBeforeNum = 30000;		// 清理三万条以前日志数据
-		} else if (type == 8) {
-			clearBeforeNum = 100000;	// 清理十万条以前日志数据
-		} else if (type == 9) {
-			clearBeforeNum = 0;			// 清理所有日志数据
-		} else {
-			return new ReturnT<String>(ReturnT.FAIL_CODE, I18nUtil.getString("joblog_clean_type_unvalid"));
-		}
+        Date clearBeforeTime = null;
+        int clearBeforeNum = 0;
+        if (type == 1) {
+            clearBeforeTime = DateUtil.addMonths(new Date(), -1); // 清理一个月之前日志数据
+        } else if (type == 2) {
+            clearBeforeTime = DateUtil.addMonths(new Date(), -3); // 清理三个月之前日志数据
+        } else if (type == 3) {
+            clearBeforeTime = DateUtil.addMonths(new Date(), -6); // 清理六个月之前日志数据
+        } else if (type == 4) {
+            clearBeforeTime = DateUtil.addYears(new Date(), -1); // 清理一年之前日志数据
+        } else if (type == 5) {
+            clearBeforeNum = 1000; // 清理一千条以前日志数据
+        } else if (type == 6) {
+            clearBeforeNum = 10000; // 清理一万条以前日志数据
+        } else if (type == 7) {
+            clearBeforeNum = 30000; // 清理三万条以前日志数据
+        } else if (type == 8) {
+            clearBeforeNum = 100000; // 清理十万条以前日志数据
+        } else if (type == 9) {
+            clearBeforeNum = 0; // 清理所有日志数据
+        } else {
+            return Result.fail(500, I18nUtil.getString("joblog_clean_type_unvalid"));
+        }
 
-		List<Long> logIds = null;
-		do {
-			logIds = JobLogDao.findClearLogIds(jobGroup, jobId, clearBeforeTime, clearBeforeNum, 1000);
-			if (logIds!=null && logIds.size()>0) {
-				JobLogDao.clearLog(logIds);
-			}
-		} while (logIds!=null && logIds.size()>0);
+//        List<Long> logIds = null;
+//        do {
+//            logIds = JobLogDao.findClearLogIds(jobGroup, jobId, clearBeforeTime, clearBeforeNum, 1000);
+//            if (logIds != null && logIds.size() > 0) {
+//                JobLogDao.deleteAll(logIds.toArray(Integer[]::new));
+//            }
+//        } while (logIds != null && logIds.size() > 0);
 
-		return ReturnT.SUCCESS;
-	}
-
+        return Result.success();
+    }
 }

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <contextName>${APP_NAME}</contextName>
+    <springProperty name="APP_NAME" scope="context" source="spring.application.name"/>
+    <springProperty name="LOG_PATH" scope="context" source="logging.path" defaultValue=".logs"/>
+    <springProperty name="LOG_FILE" scope="context" source="logging.file" defaultValue=".logs/${APP_NAME}"/>
+    <springProperty name="LOG_MAXFILESIZE" scope="context" source="logback.filesize" defaultValue="50MB"/>
+    <springProperty name="LOG_FILEMAXDAY" scope="context" source="logback.filemaxday" defaultValue="7"/>
+    <springProperty name="LOG_STASH_ADDRESS" scope="context" source="logstash.address" defaultValue="10.168.4.14:4567"/>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <include resource="org/springframework/boot/logging/logback/file-appender.xml"/>
+
+    <!--    <appender name="Logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">-->
+    <!--        <destination>${LOG_STASH_ADDRESS}</destination>-->
+    <!--        <reconnectionDelay>10 second</reconnectionDelay>-->
+    <!--        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder">-->
+    <!--            <includeContext>false</includeContext>-->
+    <!--            <customFields>{"name":"${APP_NAME}"}</customFields>-->
+    <!--            <providers>-->
+    <!--                <timestamp>-->
+    <!--                    <timeZone>UTC</timeZone>-->
+    <!--                </timestamp>-->
+    <!--            </providers>-->
+    <!--        </encoder>-->
+    <!--    </appender>-->
+
+    <!--    <appender name="INFLUXDB2" class="ltd.fdsa.starter.logger.influxdb.InfluxDbAppender">-->
+    <!--        <source>-->
+    <!--            <ip>localhost</ip>-->
+    <!--            <port>8086</port>-->
+    <!--            <user>root</user>-->
+    <!--            <password>root</password>-->
+    <!--            <database>logger</database>-->
+
+    <!--        </source>-->
+    <!--    </appender>-->
+
+    <root level="DEBUG">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+        <!--        <appender-ref ref="Logstash"/>-->
+        <!--        <appender-ref ref="INFLUXDB2"/>-->
+    </root>
+    <logger name="jdbc" level="debug"/>
+    <!--    <logger name="UserEvents" level="info">-->
+    <!--        <appender-ref ref="INFLUXDB2"/>-->
+    <!--    </logger>-->
+</configuration>

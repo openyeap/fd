@@ -1,215 +1,29 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>ltd.fdsa</groupId>
-    <artifactId>fast-data-parent</artifactId>
-    <version>1.0.0.RELEASE</version>
-    <name>fast data parent</name>
-    <description>聚合和父模块，定义依赖包，插件版本，公共配置信息</description>
-    <packaging>pom</packaging>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.1.RELEASE</version>
+        <version>2.3.4.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
+    <groupId>ltd.fdsa</groupId>
+    <artifactId>fast-data</artifactId>
+    <version>2.1.5-SNAPSHOT</version>
+    <name>fast data</name>
+    <description>聚合项目管理</description>
+    <packaging>pom</packaging>
+
     <modules>
-        <module>fast-data-common</module>
-        <module>fast-data-starter</module>
+        <module>fast-data-core</module>
+        <module>fast-data-frameworks</module>
+        <module>spring-boot-starter</module>
+        <module>maven-plugin</module>
+
         <module>fast-data-cloud</module>
         <module>fast-data-switch</module>
-        <module>fast-data-manipulation</module>
-        <module>fast-data-visualization</module>
-        <module>fast-data-demo</module>
+        <module>fast-data-modules</module>
     </modules>
-    <properties>
-        <!--基本属性定义 -->
-        <encoding>UTF-8</encoding>
-        <java.version>1.8</java.version>
-        <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-        <!--主依赖版本定义 -->
-        <spring-boot.version>2.2.1.RELEASE</spring-boot.version>
-        <spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
-        <!-- Fast Data 发布版本 -->
-        <fast-data.version>1.0.0.RELEASE</fast-data.version>
-        <!-- 数据库版本定义 -->
-        <alibaba.druid.version>1.1.9</alibaba.druid.version>
-        <tk.mybatis.version>2.1.5</tk.mybatis.version>
-        <mybatis.starter.version>2.1.0</mybatis.starter.version>
-        <mybatis.typehandlers.version>1.0.2</mybatis.typehandlers.version>
-        <oracle.version>11.2.0.3</oracle.version>
-        <kafka.version>2.1.1.RELEASE</kafka.version>
-        <kafka.clients.version>2.1.1</kafka.clients.version>
-
-        <!-- swagger -->
-        <swagger-platform.version>2.9.2</swagger-platform.version>
-        <!-- 常用jar -->
-        <fastjson.version>1.2.62</fastjson.version>
-        <guava.version>25.0-jre</guava.version>
-        <logstash-logback.version>6.3</logstash-logback.version>
-    </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <!-- data -->
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>druid-spring-boot-starter</artifactId>
-                <version>${alibaba.druid.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>druid</artifactId>
-                <version>${alibaba.druid.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.mybatis.spring.boot</groupId>
-                <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>${mybatis.starter.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>tk.mybatis</groupId>
-                <artifactId>mapper-spring-boot-starter</artifactId>
-                <version>${tk.mybatis.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.mybatis</groupId>
-                <artifactId>mybatis-typehandlers-jsr310</artifactId>
-                <version>${mybatis.typehandlers.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.logstash.logback</groupId>
-                <artifactId>logstash-logback-encoder</artifactId>
-                <version>${logstash-logback.version}</version>
-            </dependency>
-            <!--Swagger Restful UI 集成依赖 -->
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger-ui</artifactId>
-                <version>${swagger-platform.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger2</artifactId>
-                <version>${swagger-platform.version}</version>
-            </dependency>
-
-            <!-- 常用jar -->
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>fastjson</artifactId>
-                <version>${fastjson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${guava.version}</version>
-            </dependency>
-            <!--kafka依赖 -->
-            <dependency>
-                <groupId>org.springframework.kafka</groupId>
-                <artifactId>spring-kafka</artifactId>
-                <version>${kafka.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.kafka</groupId>
-                <artifactId>kafka-clients</artifactId>
-                <version>${kafka.clients.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <developers>
-        <developer>
-            <name>zhumingwu</name>
-            <email>zhumingwu@126.com</email>
-            <url>https://blog.zhumingwu.cn</url>
-        </developer>
-    </developers>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <skipTests>true</skipTests>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <encoding>${encoding}</encoding>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-    <!-- <repositories>
-        <repository>
-            <id>spring</id>
-            <url>https://maven.aliyun.com/repository/spring</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-    <distributionManagement>
-        <repository>
-            <id>maven-releases</id>
-            <name>maven-releases</name>
-            <url>http://10.168.4.75:8081/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>maven-snapshots</id>
-            <name>maven-snapshots</name>
-            <url>http://10.168.4.75:8081/repository/maven-snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement> -->
 </project>
