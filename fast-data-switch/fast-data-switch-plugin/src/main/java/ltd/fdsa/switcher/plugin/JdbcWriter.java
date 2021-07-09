@@ -3,7 +3,7 @@ package ltd.fdsa.switcher.plugin;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import ltd.fdsa.core.util.NamingUtils;
-import ltd.fdsa.switcher.core.pipeline.DataTarget;
+import ltd.fdsa.switcher.core.pipeline.Writer;
 import ltd.fdsa.switcher.core.config.Configuration;
 import ltd.fdsa.switcher.core.pipeline.impl.AbstractPipeline;
 import ltd.fdsa.web.view.Result;
@@ -17,7 +17,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class JdbcTarget extends AbstractPipeline implements DataTarget {
+public class JdbcWriter extends AbstractPipeline implements Writer {
     String driver;
     String url;
     String user;

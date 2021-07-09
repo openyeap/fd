@@ -1,6 +1,5 @@
 package ltd.fdsa.switcher.plugin;
 
-import javafx.util.Callback;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -16,6 +15,7 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 @Slf4j
 public class KafkaClient {
@@ -44,14 +44,14 @@ public class KafkaClient {
         }
     }
 
-    public void start(Callback<String, Boolean> callback) {
+    public void start(Function<String, Boolean> callback) {
 
         kafkaConsumer.subscribe(Collections.singletonList(this.topic));// 订阅消息
 
         while (true) {
             ConsumerRecords<String, String> records = kafkaConsumer.poll(Duration.ofMillis(100));
             for (ConsumerRecord<String, String> record : records) {
-                callback.call(record.value());
+                callback.apply(record.value());
             }
         }
     }

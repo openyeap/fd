@@ -8,3 +8,9 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 
 import java.util.Collections;
 import java.util.Properties;
+
+
+
+public class KafkaProperties {
+
+}

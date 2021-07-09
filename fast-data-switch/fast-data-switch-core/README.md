@@ -2,11 +2,11 @@
 
 ## 插件使用
 
-data switch通过插件机制，动态载入reader、writer和process进行数据同步的执行。所有插件需要按约定存放在${HOME}/plugins/目录下。
+data switch通过插件机制，动态载入reader、writer、channel和process进行数据同步的执行。所有插件需要按约定存放在${HOME}/plugins/目录下。
 
 以mysqlreader为例：
 
-- plugin.json中记录插件的元数据
+- plugins.json中记录插件的元数据
 - mysqlreader.jar即插件主jar
 - libs是中放的是依赖的jar
 

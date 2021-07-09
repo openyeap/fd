@@ -2,7 +2,7 @@ package ltd.fdsa.switcher.plugin;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
-import ltd.fdsa.switcher.core.pipeline.DataSource;
+import ltd.fdsa.switcher.core.pipeline.Reader;
 import ltd.fdsa.switcher.core.config.Configuration;
 import ltd.fdsa.switcher.core.pipeline.impl.AbstractPipeline;
 import ltd.fdsa.web.enums.HttpCode;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 
 @Slf4j
-public class JdbcSource extends AbstractPipeline implements DataSource {
+public class JdbcReader extends AbstractPipeline implements Reader {
     String driver;
     String url;
     String user;

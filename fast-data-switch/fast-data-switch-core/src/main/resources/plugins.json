@@ -48,10 +48,10 @@
     ]
   },
   {
-    "name": "JdbcTarget",
+    "name": "JdbcReader",
     "description": "描述信息",
     "type": "reader",
-    "className": "ltd.fdsa.plugin.JdbcSource",
+    "className": "ltd.fdsa.plugin.JdbcReader",
     "url": "http://www.fdsa.ltd",
     "developer": "zhumingwu@126.com",
     "shareWith": [

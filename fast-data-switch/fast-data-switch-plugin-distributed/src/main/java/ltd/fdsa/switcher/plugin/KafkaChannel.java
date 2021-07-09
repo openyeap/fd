@@ -1,6 +1,5 @@
 package ltd.fdsa.switcher.plugin;
 
-import javafx.util.Callback;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import ltd.fdsa.switcher.core.PluginType;
@@ -13,12 +12,13 @@ import okhttp3.RequestBody;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.function.Function;
 
 /*
 使用Kafka实现数据渠道功能
 */
 @Slf4j
-public class KafkaChannel extends AbstractPipeline implements Channel, Callback<String, Boolean> {
+public class KafkaChannel extends AbstractPipeline implements Channel, Function<String, Boolean> {
     KafkaClient kafkaClient;
     HttpClient httpClient = new HttpClient(null);
 
@@ -46,7 +46,7 @@ public class KafkaChannel extends AbstractPipeline implements Channel, Callback<
     public void start() {
         if (this.running.compareAndSet(false, true)) {
             // monitor cluster nodes
-            kafkaClient.start(this::call);
+            kafkaClient.start(this::apply);
         }
     }
 
@@ -59,8 +59,9 @@ public class KafkaChannel extends AbstractPipeline implements Channel, Callback<
         httpClient.post("/api/job/collect", RequestBody.create(MediaType.get("app"), ""));
     }
 
+
     @Override
-    public Boolean call(String param) {
+    public Boolean apply(String s) {
         return false;
     }
 }

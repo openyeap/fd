@@ -29,7 +29,7 @@ public class RedisConfig {
     }
 
     @Slf4j
-    public class Receiver {
+    public static class Receiver {
 
         public void receiveMessage(String message) {
             NamingUtils.formatLog(log,"Received <" + message + ">");
