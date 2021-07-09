@@ -109,14 +109,13 @@ public class JobLogReportHelper {
                                     }
 
                                     // 2、log-clean: switch open & once each day
-                                    if (ApplicationContextHolder.getBean(JobAdminConfig.class).getLogretentiondays() > 0
-                                            && System.currentTimeMillis() - lastCleanLogTime > 24 * 60 * 60 * 1000) {
+                                    if (System.currentTimeMillis() - lastCleanLogTime > 24 * 60 * 60 * 1000) {
 
                                         // expire-time
                                         Calendar expiredDay = Calendar.getInstance();
                                         expiredDay.add(
                                                 Calendar.DAY_OF_MONTH,
-                                                -1 * ApplicationContextHolder.getBean(JobAdminConfig.class).getLogretentiondays());
+                                                -1 * 7);
                                         expiredDay.set(Calendar.HOUR_OF_DAY, 0);
                                         expiredDay.set(Calendar.MINUTE, 0);
                                         expiredDay.set(Calendar.SECOND, 0);

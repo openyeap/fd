@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>fast-data-kafka-stream</artifactId>
+    <description>kafka stream 数据处理</description>
+    <packaging>jar</packaging>
+    <parent>
+        <groupId>ltd.fdsa</groupId>
+        <artifactId>fast-data-switch</artifactId>
+        <version>2.1.5-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <properties>
+        <algebird.version>0.13.7</algebird.version>
+        <avro.version>1.9.1</avro.version>
+        <chill.version>0.9.5</chill.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <scala.version>2.13.2</scala.version>
+        <java.version>1.8</java.version>
+        <kafka.version>2.7.0</kafka.version>
+        <xxl-job-core.version>2.0.1</xxl-job-core.version>
+        <avro.version>1.10.2</avro.version>
+        <kafka.scala.version>2.13</kafka.scala.version>
+        <scala.version>2.13.2</scala.version>
+    </properties>
+
+    <dependencies>
+        <!-- 必选，核心依赖 -->
+        <dependency>
+            <groupId>ltd.fdsa</groupId>
+            <artifactId>fast-data-core</artifactId>
+        </dependency>
+        <!-- 必选，用于快速创建数据库访问 -->
+        <dependency>
+            <groupId>ltd.fdsa</groupId>
+            <artifactId>fast-data-core-database</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.fdsa</groupId>
+            <artifactId>remote-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.fdsa</groupId>
+            <artifactId>remote-consul-spring-boot-starter</artifactId>
+        </dependency>
+        <!-- 根据实现情况选择数据库 -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>${kafka.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-streams-scala_${kafka.scala.version}</artifactId>
+            <version>${kafka.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-streams</artifactId>
+            <version>${kafka.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.xuxueli</groupId>
+            <artifactId>xxl-job-core</artifactId>
+            <version>${xxl-job-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+            <version>${avro.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.influxdb</groupId>
+            <artifactId>influxdb-client-java</artifactId>
+            <version>2.1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>ltd.fdsa</groupId>
+            <artifactId>fast-data-core-database-jpa</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

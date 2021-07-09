@@ -1,11 +1,9 @@
-server:
-  port: 9080
 spring:
   freemarker.templateLoaderPath: classpath:/templates/
   freemarker.suffix: .ftl
   freemarker.charset: UTF-8
   freemarker.request-context-attribute: request
-  freemarker.settings.number_format: 0.##########
+  freemarker.settings.number_format: 0.##
   mvc:
     static-path-pattern: /static/**
   resources:
@@ -72,4 +70,4 @@ spring:
 ### , access token
 project.job.accessToken: 
 ### , i18n (default empty as chinese, "en" as english)
-project.job.i18n: 
+project.job.i18n:

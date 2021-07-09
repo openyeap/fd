@@ -42,7 +42,8 @@ public class TestDataPipeline {
         var url = this.getClass().getClassLoader().getResource("simple_job.json");
         var json = FileUtils.readFile(url.getFile());
         final JsonConfig config = new JsonConfig(json);
-        JobContext context = new JobContext(config, pluginManager);
+        JobContext context = new JobContext();
+        context.init(config);
         context.start();
     }
 }

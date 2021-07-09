@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface JobGroupService extends DataAccessService<JobGroup, Integer> {
 
-    List<JobGroup> findByAddressType(int test);
+    List<JobGroup> findByAddressType(int addressType);
 }

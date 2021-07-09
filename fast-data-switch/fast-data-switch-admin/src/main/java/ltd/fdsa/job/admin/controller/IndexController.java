@@ -64,10 +64,7 @@ public class IndexController {
             String userName,
             String password,
             String ifRemember) {
-        boolean ifRem =
-                (ifRemember != null && ifRemember.trim().length() > 0 && "on".equals(ifRemember))
-                        ? true
-                        : false;
+        boolean ifRem = (ifRemember != null && ifRemember.trim().length() > 0 && "on".equals(ifRemember)) ? true : false;
         return loginService.login(request, response, userName, password, ifRem);
     }
 

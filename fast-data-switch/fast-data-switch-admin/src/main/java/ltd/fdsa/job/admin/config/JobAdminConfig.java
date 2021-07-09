@@ -26,13 +26,7 @@ public class JobAdminConfig implements InitializingBean, DisposableBean {
     @Value("${spring.mail.username}")
     private String emailUserName;
 
-    // ---------------------- JobScheduler ----------------------
-    @Value("${project.job.triggerpool.fast.max}")
-    private int triggerPoolFastMax;
-    @Value("${project.job.triggerpool.slow.max}")
-    private int triggerPoolSlowMax;
-    @Value("${project.job.logretentiondays}")
-    private int logretentiondays;
+
     @Resource
     private JobLogService JobLogDao;
     @Resource
@@ -73,27 +67,6 @@ public class JobAdminConfig implements InitializingBean, DisposableBean {
 
     public String getEmailUserName() {
         return emailUserName;
-    }
-
-    public int getTriggerPoolFastMax() {
-        if (triggerPoolFastMax < 200) {
-            return 200;
-        }
-        return triggerPoolFastMax;
-    }
-
-    public int getTriggerPoolSlowMax() {
-        if (triggerPoolSlowMax < 100) {
-            return 100;
-        }
-        return triggerPoolSlowMax;
-    }
-
-    public int getLogretentiondays() {
-        if (logretentiondays < 7) {
-            return -1; // Limit greater than or equal to 7, otherwise close
-        }
-        return logretentiondays;
     }
 
     public JobLogService getJobLogDao() {

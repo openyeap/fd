@@ -26,12 +26,12 @@ public class BaseJpaService<Entity extends BaseEntity<ID>, ID, Writer extends Wr
     protected ReadRepository<Entity, ID> reader;
 
     @Override
-    public Optional findById(Object o) {
-        return Optional.empty();
+    public Optional<Entity> findById(ID id) {
+        return this.reader.findById(id);
     }
 
     @Override
-    public List findAll() {
+    public List<Entity> findAll() {
         return this.reader.findAll();
     }
 
@@ -47,7 +47,7 @@ public class BaseJpaService<Entity extends BaseEntity<ID>, ID, Writer extends Wr
 
 
     @Override
-    public Page findAll(Pageable pageable) {
+    public Page<Entity> findAll(Pageable pageable) {
         return this.reader.findAll(pageable);
     }
 

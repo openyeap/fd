@@ -1,0 +1,21 @@
+minio:
+  endpoint: http://10.168.4.132:9000
+  accesskey: minioadmin
+  secretKey: minioadmin
+
+consul:
+  host: 10.168.4.67
+  port: 8500
+
+database:
+  master:
+    url: jdbc:postgresql://192.168.2.38:5431/kafka_connect?currentSchema=public
+    username: postgres
+    password: postgres
+
+kafka:
+  connect-url: 192.168.2.38:8083
+  schema-registry-url: http://192.168.2.38:8081
+
+jpa:
+  show-sql: false

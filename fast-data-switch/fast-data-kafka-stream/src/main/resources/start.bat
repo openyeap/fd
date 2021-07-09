@@ -1,0 +1,1 @@
+rs restart {project.name}

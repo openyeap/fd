@@ -7,7 +7,7 @@ import ltd.fdsa.job.admin.jpa.entity.JobGroup;
 import ltd.fdsa.job.admin.jpa.entity.JobInfo;
 import ltd.fdsa.job.admin.jpa.entity.JobUser;
 import ltd.fdsa.job.admin.jpa.service.JobGroupService;
-import ltd.fdsa.job.admin.service.JobService;
+//import ltd.fdsa.job.admin.service.JobService;
 import ltd.fdsa.job.admin.jpa.service.impl.JobUserServiceImpl;
 import ltd.fdsa.switcher.core.exception.FastDataSwitchException;
 import ltd.fdsa.switcher.core.job.cron.CronExpression;
@@ -35,8 +35,8 @@ public class JobInfoController {
 
     @Resource
     private JobGroupService JobGroupDao;
-    @Resource
-    private JobService JobService;
+//    @Resource
+//    private JobService JobService;
 
     public static List<JobGroup> filterJobGroupByRole(
             HttpServletRequest request, List<JobGroup> jobGroupList_all) {
@@ -97,50 +97,49 @@ public class JobInfoController {
         return "jobinfo/jobinfo.index";
     }
 
-    @RequestMapping("/pageList")
-    @ResponseBody
-    public Map<String, Object> pageList(
-            @RequestParam(required = false, defaultValue = "0") int start,
-            @RequestParam(required = false, defaultValue = "10") int length,
-            int jobGroup,
-            int triggerStatus,
-            String jobDesc,
-            String executorHandler,
-            String author) {
+//    @RequestMapping("/pageList")
+//    @ResponseBody
+//    public Map<String, Object> pageList(
+//            @RequestParam(required = false, defaultValue = "0") int start,
+//            @RequestParam(required = false, defaultValue = "10") int length,
+//            int jobGroup,
+//            int triggerStatus,
+//            String jobDesc,
+//            String executorHandler,
+//            String author) {
+//
+//        return JobService.pageList(start, length, jobGroup, triggerStatus, jobDesc, executorHandler, author);
+//    }
 
-        return JobService.pageList(
-                start, length, jobGroup, triggerStatus, jobDesc, executorHandler, author);
-    }
-
-    @RequestMapping("/add")
-    @ResponseBody
-    public Result<String> add(JobInfo jobInfo) {
-        return JobService.add(jobInfo);
-    }
-
-    @RequestMapping("/update")
-    @ResponseBody
-    public Result<String> update(JobInfo jobInfo) {
-        return JobService.update(jobInfo);
-    }
-
-    @RequestMapping("/remove")
-    @ResponseBody
-    public Result<String> remove(int id) {
-        return JobService.remove(id);
-    }
-
-    @RequestMapping("/stop")
-    @ResponseBody
-    public Result<String> pause(int id) {
-        return JobService.stop(id);
-    }
-
-    @RequestMapping("/start")
-    @ResponseBody
-    public Result<String> start(int id) {
-        return JobService.start(id);
-    }
+//    @RequestMapping("/add")
+//    @ResponseBody
+//    public Result<String> add(JobInfo jobInfo) {
+//        return JobService.add(jobInfo);
+//    }
+//
+//    @RequestMapping("/update")
+//    @ResponseBody
+//    public Result<String> update(JobInfo jobInfo) {
+//        return JobService.update(jobInfo);
+//    }
+//
+//    @RequestMapping("/remove")
+//    @ResponseBody
+//    public Result<String> remove(int id) {
+//        return JobService.remove(id);
+//    }
+//
+//    @RequestMapping("/stop")
+//    @ResponseBody
+//    public Result<String> pause(int id) {
+//        return JobService.stop(id);
+//    }
+//
+//    @RequestMapping("/start")
+//    @ResponseBody
+//    public Result<String> start(int id) {
+//        return JobService.start(id);
+//    }
 
     @RequestMapping("/trigger")
     @ResponseBody
