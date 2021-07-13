@@ -66,13 +66,10 @@ public class JobLogController {
             JobInfo jobInfo = JobInfoDao.findById(jobId).get();
             if (jobInfo == null) {
                 throw new RuntimeException(
-                        I18nUtil.getString("jobinfo_field_id") + I18nUtil.getString("system_unvalid"));
+                        I18nUtil.getString("jobinfo_field_id") + I18nUtil.getString("system_invalid"));
             }
 
             model.addAttribute("jobInfo", jobInfo);
-
-            // valid permission
-            JobInfoController.validPermission(request, jobInfo.getGroupId());
         }
 
         return "joblog/joblog.index";
@@ -87,18 +84,11 @@ public class JobLogController {
 
     @RequestMapping("/pageList")
     @ResponseBody
-    public Map<String, Object> pageList(
-            HttpServletRequest request,
-            @RequestParam(required = false, defaultValue = "0") int start,
-            @RequestParam(required = false, defaultValue = "10") int length,
-            int jobGroup,
-            int jobId,
-            int logStatus,
-            String filterTime) {
-
-        // valid permission
-        JobInfoController.validPermission(request, jobGroup); // 仅管理员支持查询全部；普通用户仅支持查询有权限的 jobGroup
-
+    public Map<String, Object> pageList(HttpServletRequest request, @RequestParam(required = false, defaultValue = "0") int start, @RequestParam(required = false, defaultValue = "10") int length,
+                                        int jobGroup,
+                                        int jobId,
+                                        int logStatus,
+                                        String filterTime) {
         // parse param
         Date triggerTimeStart = null;
         Date triggerTimeEnd = null;
@@ -133,7 +123,7 @@ public class JobLogController {
         Result<String> logStatue = Result.success();
         JobLog jobLog = JobLogDao.findById(id).get();
         if (jobLog == null) {
-            throw new RuntimeException(I18nUtil.getString("joblog_logid_unvalid"));
+            throw new RuntimeException(I18nUtil.getString("joblog_logid_invalid"));
         }
 
         model.addAttribute("triggerCode", jobLog.getTriggerCode());
@@ -175,7 +165,7 @@ public class JobLogController {
         JobLog log = JobLogDao.findById(id).get();
         JobInfo jobInfo = JobInfoDao.findById(log.getJobId()).get();
         if (jobInfo == null) {
-            return Result.fail(500, I18nUtil.getString("jobinfo_glue_jobid_unvalid"));
+            return Result.fail(500, I18nUtil.getString("jobinfo_glue_jobid_invalid"));
         }
         if (Result.success().getCode() != log.getTriggerCode()) {
             return Result.fail(500, I18nUtil.getString("joblog_kill_log_limit"));
@@ -230,7 +220,7 @@ public class JobLogController {
         } else if (type == 9) {
             clearBeforeNum = 0; // 清理所有日志数据
         } else {
-            return Result.fail(500, I18nUtil.getString("joblog_clean_type_unvalid"));
+            return Result.fail(500, I18nUtil.getString("joblog_clean_type_invalid"));
         }
 
 //        List<Long> logIds = null;

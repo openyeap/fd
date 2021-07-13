@@ -1,7 +1,10 @@
 package ltd.fdsa.job.admin.controller;
 
+import lombok.var;
 import ltd.fdsa.job.admin.annotation.PermissionLimit;
-import ltd.fdsa.job.admin.jpa.service.impl.JobUserServiceImpl;
+import ltd.fdsa.job.admin.jpa.service.SystemUserService;
+import ltd.fdsa.job.admin.jpa.service.impl.SystemUserServiceImpl;
+import ltd.fdsa.job.admin.util.CookieUtil;
 import ltd.fdsa.web.view.Result;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -19,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
+
 /**
  * index controller
  */
@@ -27,7 +31,7 @@ public class IndexController {
 
 
     @Resource
-    private JobUserServiceImpl loginService;
+    private SystemUserService loginService;
 
     @RequestMapping("/")
     public String index(Model model) {
@@ -58,21 +62,21 @@ public class IndexController {
     @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
     @PermissionLimit(limit = false)
-    public Result<String> loginDo(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            String userName,
-            String password,
-            String ifRemember) {
-        boolean ifRem = (ifRemember != null && ifRemember.trim().length() > 0 && "on".equals(ifRemember)) ? true : false;
-        return loginService.login(request, response, userName, password, ifRem);
+    public Result<String> loginDo(HttpServletResponse response, String userName, String password, String ifRemember) {
+        var result = loginService.login(userName, password);
+        if (result.getCode() == 200 || result.getCode() == 0) {
+            boolean ifRem = (ifRemember != null && ifRemember.trim().length() > 0 && "on".equals(ifRemember)) ? true : false;
+            CookieUtil.set(response, "LOGIN_IDENTITY_KEY", result.getData(), ifRem);
+        }
+        return result;
     }
 
     @RequestMapping(value = "logout", method = RequestMethod.POST)
     @ResponseBody
     @PermissionLimit(limit = false)
     public Result<String> logout(HttpServletRequest request, HttpServletResponse response) {
-        return loginService.logout(request, response);
+        CookieUtil.remove(request, response, "LOGIN_IDENTITY_KEY");
+        return  Result.success();
     }
 
     @RequestMapping("/help")

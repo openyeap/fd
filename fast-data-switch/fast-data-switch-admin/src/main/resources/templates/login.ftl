@@ -9,9 +9,9 @@
 <body class="hold-transition login-page">
 	<div class="login-box">
 		<div class="login-logo">
-			<a><b>XXL</b>JOB</a>
+			<a><b>F</b>DSA</a>
 		</div>
-		<form id="loginForm" method="post" >
+		<form id="loginForm" method="post" action="/login/" >
 			<div class="login-box-body">
 				<p class="login-box-msg">${I18n.admin_name}</p>
 				<div class="form-group has-feedback">

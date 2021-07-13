@@ -2,10 +2,10 @@ package ltd.fdsa.job.admin.controller;
 
 import ltd.fdsa.job.admin.annotation.PermissionLimit;
 import ltd.fdsa.job.admin.jpa.entity.JobGroup;
-import ltd.fdsa.job.admin.jpa.entity.JobUser;
+import ltd.fdsa.job.admin.jpa.entity.SystemUser;
 import ltd.fdsa.job.admin.jpa.service.JobGroupService;
-import ltd.fdsa.job.admin.jpa.service.JobUserService;
-import ltd.fdsa.job.admin.jpa.service.impl.JobUserServiceImpl;
+import ltd.fdsa.job.admin.jpa.service.SystemUserService;
+import ltd.fdsa.job.admin.jpa.service.impl.SystemUserServiceImpl;
 import ltd.fdsa.job.admin.util.I18nUtil;
 import ltd.fdsa.web.view.Result;
 import org.springframework.stereotype.Controller;
@@ -27,7 +27,7 @@ import java.util.Map;
 public class UserController {
 
     @Resource
-    private JobUserService JobUserDao;
+    private SystemUserService systemUserService;
     @Resource
     private JobGroupService JobGroupDao;
 
@@ -66,7 +66,7 @@ public class UserController {
     @RequestMapping("/add")
     @ResponseBody
     @PermissionLimit(adminuser = true)
-    public Result<String> add(JobUser JobUser) {
+    public Result<String> add(SystemUser JobUser) {
 
         // valid username
         if (!StringUtils.hasText(JobUser.getUsername())) {
@@ -90,23 +90,23 @@ public class UserController {
         JobUser.setPassword(DigestUtils.md5DigestAsHex(JobUser.getPassword().getBytes()));
 
         // check repeat
-        JobUser existUser = JobUserDao.loadByUserName(JobUser.getUsername());
+        SystemUser existUser = systemUserService.loadByUserName(JobUser.getUsername());
         if (existUser != null) {
             return Result.fail(500, I18nUtil.getString("user_username_repeat"));
         }
 
         // write
-        JobUserDao.update(JobUser);
+        systemUserService.update(JobUser);
         return Result.success();
     }
 
     @RequestMapping("/update")
     @ResponseBody
     @PermissionLimit(adminuser = true)
-    public Result<String> update(HttpServletRequest request, JobUser JobUser) {
+    public Result<String> update(HttpServletRequest request, SystemUser JobUser) {
 
         // avoid opt login seft
-        JobUser loginUser = (JobUser) request.getAttribute(JobUserServiceImpl.LOGIN_IDENTITY_KEY);
+        SystemUser loginUser = (SystemUser) request.getAttribute(SystemUserService.USER_LOGIN_IDENTITY);
         if (loginUser.getUsername().equals(JobUser.getUsername())) {
             return Result.fail(500, I18nUtil.getString("user_update_loginuser_limit"));
         }
@@ -124,7 +124,7 @@ public class UserController {
         }
 
         // write
-        JobUserDao.update(JobUser);
+        systemUserService.update(JobUser);
         return Result.success();
     }
 
@@ -134,12 +134,12 @@ public class UserController {
     public Result<String> remove(HttpServletRequest request, int id) {
 
         // avoid opt login seft
-        JobUser loginUser = (JobUser) request.getAttribute(JobUserServiceImpl.LOGIN_IDENTITY_KEY);
+        SystemUser loginUser = (SystemUser) request.getAttribute(SystemUserServiceImpl.USER_LOGIN_IDENTITY);
         if (loginUser.getId() == id) {
             return Result.fail(500, I18nUtil.getString("user_update_loginuser_limit"));
         }
 
-        JobUserDao.deleteById(id);
+        systemUserService.deleteById(id);
         return Result.success();
     }
 
@@ -160,12 +160,12 @@ public class UserController {
         String md5Password = DigestUtils.md5DigestAsHex(password.getBytes());
 
         // update pwd
-        JobUser loginUser = (JobUser) request.getAttribute(JobUserServiceImpl.LOGIN_IDENTITY_KEY);
+        SystemUser loginUser = (SystemUser) request.getAttribute(SystemUserService.USER_LOGIN_IDENTITY);
 
         // do write
-        JobUser existUser = JobUserDao.loadByUserName(loginUser.getUsername());
+        SystemUser existUser = systemUserService.loadByUserName(loginUser.getUsername());
         existUser.setPassword(md5Password);
-        JobUserDao.update(existUser);
+        systemUserService.update(existUser);
 
         return Result.success();
     }

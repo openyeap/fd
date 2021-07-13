@@ -58,7 +58,7 @@ public class I18nUtil {
      * @param keys
      * @return
      */
-    public static String getMultString(String... keys) {
+    public static String getMultiString(String... keys) {
         Map<String, String> map = new HashMap<String, String>();
 
         Properties prop = loadI18nProp();

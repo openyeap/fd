@@ -1,7 +1,7 @@
 package ltd.fdsa.job.admin.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import ltd.fdsa.job.admin.jpa.service.impl.JobUserServiceImpl;
+import ltd.fdsa.job.admin.jpa.service.impl.SystemUserServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -28,7 +28,7 @@ public class JobInfoControllerTest extends AbstractSpringMvcTest {
                                         .param("userName", "admin")
                                         .param("password", "123456"))
                         .andReturn();
-        cookie = ret.getResponse().getCookie(JobUserServiceImpl.LOGIN_IDENTITY_KEY);
+        cookie = ret.getResponse().getCookie(SystemUserServiceImpl.USER_LOGIN_IDENTITY);
     }
 
     @Test

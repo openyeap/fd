@@ -4,11 +4,10 @@ import ltd.fdsa.job.admin.route.ExecutorRouteStrategyEnum;
 import ltd.fdsa.job.admin.thread.JobTriggerPoolHelper;
 import ltd.fdsa.job.admin.trigger.TriggerTypeEnum;
 import ltd.fdsa.job.admin.jpa.entity.JobGroup;
-import ltd.fdsa.job.admin.jpa.entity.JobInfo;
-import ltd.fdsa.job.admin.jpa.entity.JobUser;
+import ltd.fdsa.job.admin.jpa.entity.SystemUser;
 import ltd.fdsa.job.admin.jpa.service.JobGroupService;
 //import ltd.fdsa.job.admin.service.JobService;
-import ltd.fdsa.job.admin.jpa.service.impl.JobUserServiceImpl;
+import ltd.fdsa.job.admin.jpa.service.impl.SystemUserServiceImpl;
 import ltd.fdsa.switcher.core.exception.FastDataSwitchException;
 import ltd.fdsa.switcher.core.job.cron.CronExpression;
 import ltd.fdsa.switcher.core.job.enums.ExecutorBlockStrategyEnum;
@@ -42,8 +41,8 @@ public class JobInfoController {
             HttpServletRequest request, List<JobGroup> jobGroupList_all) {
         List<JobGroup> jobGroupList = new ArrayList<>();
         if (jobGroupList_all != null && jobGroupList_all.size() > 0) {
-            JobUser loginUser = (JobUser) request.getAttribute(JobUserServiceImpl.LOGIN_IDENTITY_KEY);
-            if (loginUser.getRole() == 1) {
+            SystemUser loginUser = (SystemUser) request.getAttribute(SystemUserServiceImpl.USER_LOGIN_IDENTITY);
+            if (loginUser.getType() == 1) {
                 jobGroupList = jobGroupList_all;
             } else {
                 List<String> groupIdStrs = new ArrayList<>();
@@ -58,17 +57,6 @@ public class JobInfoController {
             }
         }
         return jobGroupList;
-    }
-
-    public static void validPermission(HttpServletRequest request, int jobGroup) {
-        JobUser loginUser = (JobUser) request.getAttribute(JobUserServiceImpl.LOGIN_IDENTITY_KEY);
-        if (!loginUser.validPermission(jobGroup)) {
-            throw new RuntimeException(
-                    I18nUtil.getString("system_permission_limit")
-                            + "[username="
-                            + loginUser.getUsername()
-                            + "]");
-        }
     }
 
     @RequestMapping
@@ -170,7 +158,7 @@ public class JobInfoController {
                 }
             }
         } catch (ParseException e) {
-            return Result.fail(500, I18nUtil.getString("jobinfo_field_cron_unvalid"));
+            return Result.fail(500, I18nUtil.getString("jobinfo_field_cron_invalid"));
         }
         return Result.success(result);
     }

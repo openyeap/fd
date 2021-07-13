@@ -30,10 +30,9 @@ public class JobCodeController {
 //        List<JobLogGlue> jobLogGlues = JobLogGlueDao.findByJobId(jobId);
 
         if (jobInfo == null) {
-            throw new RuntimeException(I18nUtil.getString("jobinfo_glue_jobid_unvalid"));
+            throw new RuntimeException(I18nUtil.getString("jobinfo_glue_jobid_invalid"));
         }
-        // valid permission
-        JobInfoController.validPermission(request, jobInfo.getGroupId());
+
         model.addAttribute("jobInfo", jobInfo);
         return "jobcode/jobcode.index";
     }
@@ -50,7 +49,7 @@ public class JobCodeController {
         }
         JobInfo exists_jobInfo = JobInfoDao.findById(id).get();
         if (exists_jobInfo == null) {
-            return Result.fail(500, I18nUtil.getString("jobinfo_glue_jobid_unvalid"));
+            return Result.fail(500, I18nUtil.getString("jobinfo_glue_jobid_invalid"));
         }
 
 

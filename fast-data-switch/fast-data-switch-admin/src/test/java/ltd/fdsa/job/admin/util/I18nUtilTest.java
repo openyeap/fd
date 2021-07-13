@@ -14,7 +14,7 @@ public class I18nUtilTest {
     @Test
     public void test() {
         log.info(I18nUtil.getString("admin_name"));
-        log.info(I18nUtil.getMultString("admin_name", "admin_name_full"));
-        log.info(I18nUtil.getMultString());
+        log.info(I18nUtil.getMultiString("admin_name", "admin_name_full"));
+        log.info(I18nUtil.getMultiString());
     }
 }

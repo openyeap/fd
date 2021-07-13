@@ -65,7 +65,7 @@ public class JobGroupController {
             for (String item : addresss) {
                 if (item == null || item.trim().length() == 0) {
                     return Result.fail(
-                            500, I18nUtil.getString("jobgroup_field_registryList_unvalid"));
+                            500, I18nUtil.getString("jobgroup_field_registryList_invalid"));
                 }
             }
         }
@@ -111,7 +111,7 @@ public class JobGroupController {
             for (String item : addresss) {
                 if (item == null || item.trim().length() == 0) {
                     return Result.fail(
-                            500, I18nUtil.getString("jobgroup_field_registryList_unvalid"));
+                            500, I18nUtil.getString("jobgroup_field_registryList_invalid"));
                 }
             }
         }
