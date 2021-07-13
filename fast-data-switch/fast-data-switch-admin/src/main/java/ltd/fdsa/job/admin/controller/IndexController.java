@@ -5,6 +5,7 @@ import ltd.fdsa.job.admin.annotation.PermissionLimit;
 import ltd.fdsa.job.admin.jpa.service.SystemUserService;
 import ltd.fdsa.job.admin.jpa.service.impl.SystemUserServiceImpl;
 import ltd.fdsa.job.admin.util.CookieUtil;
+import ltd.fdsa.web.controller.BaseController;
 import ltd.fdsa.web.view.Result;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -27,8 +28,12 @@ import java.util.Map;
  * index controller
  */
 @Controller
-public class IndexController {
+public class IndexController extends BaseController {
+    @Resource
+    HttpServletResponse response;
 
+    @Resource
+    HttpServletRequest request;
 
     @Resource
     private SystemUserService loginService;
@@ -50,9 +55,9 @@ public class IndexController {
         return null;
     }
 
-    @RequestMapping("/toLogin")
+    @RequestMapping("/login")
     @PermissionLimit(limit = false)
-    public String toLogin(HttpServletRequest request, HttpServletResponse response) {
+    public String toLogin(  ) {
         if (loginService.ifLogin(request, response) != null) {
             return "redirect:/";
         }
@@ -62,11 +67,11 @@ public class IndexController {
     @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
     @PermissionLimit(limit = false)
-    public Result<String> loginDo(HttpServletResponse response, String userName, String password, String ifRemember) {
+    public Result<String> doLogin(String userName, String password, String ifRemember) {
         var result = loginService.login(userName, password);
         if (result.getCode() == 200 || result.getCode() == 0) {
-            boolean ifRem = (ifRemember != null && ifRemember.trim().length() > 0 && "on".equals(ifRemember)) ? true : false;
-            CookieUtil.set(response, "LOGIN_IDENTITY_KEY", result.getData(), ifRem);
+
+            CookieUtil.set(response, SystemUserService.USER_LOGIN_IDENTITY, result.getData(), "on".equals(ifRemember));
         }
         return result;
     }
@@ -74,25 +79,14 @@ public class IndexController {
     @RequestMapping(value = "logout", method = RequestMethod.POST)
     @ResponseBody
     @PermissionLimit(limit = false)
-    public Result<String> logout(HttpServletRequest request, HttpServletResponse response) {
-        CookieUtil.remove(request, response, "LOGIN_IDENTITY_KEY");
-        return  Result.success();
+    public Result<String> logout( ) {
+        CookieUtil.remove(request, response, SystemUserService.USER_LOGIN_IDENTITY);
+        return Result.success();
     }
 
     @RequestMapping("/help")
     public String help() {
-
-    /*if (!PermissionInterceptor.ifLogin(request)) {
-    	return "redirect:/toLogin";
-    }*/
-
         return "help";
     }
 
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        dateFormat.setLenient(false);
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
-    }
 }

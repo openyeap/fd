@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -40,8 +39,8 @@ public class ReaderConfig {
     public LocalContainerEntityManagerFactoryBean readerEntityManagerFactory(@Qualifier(DataSourceConfig.READER_DATASOURCE) DataSource dataSource, DataSourceProperties properties) {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
-        adapter.setShowSql(properties.isSql());
-        adapter.setGenerateDdl(properties.isDdl());
+        adapter.setShowSql(properties.isShowSql());
+        // adapter.setGenerateDdl(properties.isGenerateDdl());
         adapter.setDatabasePlatform(properties.getDialect());
         // 注入数据源
         entityManagerFactoryBean.setDataSource(dataSource);

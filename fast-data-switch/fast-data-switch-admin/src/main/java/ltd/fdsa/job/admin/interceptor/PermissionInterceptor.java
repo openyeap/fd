@@ -44,7 +44,7 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
         if (needLogin) {
             SystemUser loginUser = loginService.ifLogin(request, response);
             if (loginUser == null) {
-                response.sendRedirect(request.getContextPath() + "/toLogin");
+                response.sendRedirect(request.getContextPath() + "/login");
                 return false;
             }
             if (needAdminister && loginUser.getType() != 1) {

@@ -2,6 +2,7 @@ package ltd.fdsa.database.datasource;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.ArrayList;
@@ -13,11 +14,12 @@ public class DataSourceProperties {
     public static final String PREFIX = "spring.datasource";
     private DruidDataSource master;
     private List<DruidDataSource> slaves = new ArrayList<>();
+    @Value("${spring.jpa.generate-ddl}")
+    private boolean generateDdl;
 
-    private boolean ddl;
+    @Value("${spring.jpa.show-sql}")
+    private boolean showSql;
 
-    private boolean sql;
-
-    private String dialect ="org.hibernate.dialect.SQLiteDialect";
+    private String dialect = "org.hibernate.dialect.SQLiteDialect";
 
 }
