@@ -66,65 +66,65 @@ public class UserController {
     @RequestMapping("/add")
     @ResponseBody
     @PermissionLimit(adminuser = true)
-    public Result<String> add(SystemUser JobUser) {
+    public Result<String> add(SystemUser systemUser) {
 
         // valid username
-        if (!StringUtils.hasText(JobUser.getUsername())) {
+        if (!StringUtils.hasText(systemUser.getName())) {
             return Result.fail(500,
                     I18nUtil.getString("system_please_input") + I18nUtil.getString("user_username"));
         }
-        JobUser.setUsername(JobUser.getUsername().trim());
-        if (!(JobUser.getUsername().length() >= 4 && JobUser.getUsername().length() <= 20)) {
+        systemUser.setName(systemUser.getName().trim());
+        if (!(systemUser.getName().length() >= 4 && systemUser.getName().length() <= 20)) {
             return Result.fail(500, I18nUtil.getString("system_lengh_limit") + "[4-20]");
         }
         // valid password
-        if (!StringUtils.hasText(JobUser.getPassword())) {
+        if (!StringUtils.hasText(systemUser.getPassword())) {
             return Result.fail(500,
                     I18nUtil.getString("system_please_input") + I18nUtil.getString("user_password"));
         }
-        JobUser.setPassword(JobUser.getPassword().trim());
-        if (!(JobUser.getPassword().length() >= 4 && JobUser.getPassword().length() <= 20)) {
+        systemUser.setPassword(systemUser.getPassword().trim());
+        if (!(systemUser.getPassword().length() >= 4 && systemUser.getPassword().length() <= 20)) {
             return Result.fail(500, I18nUtil.getString("system_lengh_limit") + "[4-20]");
         }
         // md5 password
-        JobUser.setPassword(DigestUtils.md5DigestAsHex(JobUser.getPassword().getBytes()));
+        systemUser.setPassword(DigestUtils.md5DigestAsHex(systemUser.getPassword().getBytes()));
 
         // check repeat
-        SystemUser existUser = systemUserService.loadByUserName(JobUser.getUsername());
+        SystemUser existUser = systemUserService.loadByUserName(systemUser.getName());
         if (existUser != null) {
             return Result.fail(500, I18nUtil.getString("user_username_repeat"));
         }
 
         // write
-        systemUserService.update(JobUser);
+        systemUserService.update(systemUser);
         return Result.success();
     }
 
     @RequestMapping("/update")
     @ResponseBody
     @PermissionLimit(adminuser = true)
-    public Result<String> update(HttpServletRequest request, SystemUser JobUser) {
+    public Result<String> update(HttpServletRequest request, SystemUser systemUser) {
 
         // avoid opt login seft
         SystemUser loginUser = (SystemUser) request.getAttribute(SystemUserService.USER_LOGIN_IDENTITY);
-        if (loginUser.getUsername().equals(JobUser.getUsername())) {
+        if (loginUser.getName().equals(systemUser.getName())) {
             return Result.fail(500, I18nUtil.getString("user_update_loginuser_limit"));
         }
 
         // valid password
-        if (StringUtils.hasText(JobUser.getPassword())) {
-            JobUser.setPassword(JobUser.getPassword().trim());
-            if (!(JobUser.getPassword().length() >= 4 && JobUser.getPassword().length() <= 20)) {
+        if (StringUtils.hasText(systemUser.getPassword())) {
+            systemUser.setPassword(systemUser.getPassword().trim());
+            if (!(systemUser.getPassword().length() >= 4 && systemUser.getPassword().length() <= 20)) {
                 return Result.fail(500, I18nUtil.getString("system_lengh_limit") + "[4-20]");
             }
             // md5 password
-            JobUser.setPassword(DigestUtils.md5DigestAsHex(JobUser.getPassword().getBytes()));
+            systemUser.setPassword(DigestUtils.md5DigestAsHex(systemUser.getPassword().getBytes()));
         } else {
-            JobUser.setPassword(null);
+            systemUser.setPassword(null);
         }
 
         // write
-        systemUserService.update(JobUser);
+        systemUserService.update(systemUser);
         return Result.success();
     }
 
@@ -163,7 +163,7 @@ public class UserController {
         SystemUser loginUser = (SystemUser) request.getAttribute(SystemUserService.USER_LOGIN_IDENTITY);
 
         // do write
-        SystemUser existUser = systemUserService.loadByUserName(loginUser.getUsername());
+        SystemUser existUser = systemUserService.loadByUserName(loginUser.getName());
         existUser.setPassword(md5Password);
         systemUserService.update(existUser);
 

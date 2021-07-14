@@ -3,7 +3,6 @@ package ltd.fdsa.job.admin.jpa.service.impl;
 import com.google.common.base.Strings;
 import lombok.var;
 import ltd.fdsa.core.util.Base64Utils;
-import ltd.fdsa.core.util.LicenseUtils;
 import ltd.fdsa.database.jpa.service.BaseJpaService;
 import ltd.fdsa.job.admin.jpa.entity.SystemUser;
 import ltd.fdsa.job.admin.jpa.repository.reader.SystemUserReader;
@@ -29,23 +28,23 @@ public class SystemUserServiceImpl extends BaseJpaService<SystemUser, Integer, S
 
     @Override
     public SystemUser loadByUserName(String username) {
-        var e = new SystemUser();
-        e.setUsername(username);
-        var example = Example.of(e);
-        var u = this.reader.findOne(example);
-        if (!u.isPresent()) {
+        var userQuery = new SystemUser();
+        userQuery.setName(username);
+        var example = Example.of(userQuery);
+        var result = this.reader.findOne(example);
+        if (!result.isPresent()) {
             return null;
         }
-        return u.get();
+        return result.get();
     }
 
     private String makeToken(SystemUser JobUser) {
         var version = "v1";
-        var id = JobUser.getId() + ":" + "role1,role2";
-        var kv = "k1:v1,k2:v2";
+        var id = Base64Utils.urlEncode(JobUser.getId() + ":" + "role1,role2");
+        var kv = Base64Utils.urlEncode("k1:v1,k2:v2");
         var timestamp = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
-        var signature = LicenseUtils.CheckSum(version + id + kv + timestamp);
-        String token = Base64Utils.encode(version) + "." + Base64Utils.encode(id) + "." + Base64Utils.encode(kv) + "." + timestamp + "." + signature;
+        var signature = Base64Utils.sum(version + id + kv + timestamp);
+        String token = version + "." + id + "." + kv + "." + timestamp + "." + signature;
         return token;
     }
 
@@ -53,7 +52,7 @@ public class SystemUserServiceImpl extends BaseJpaService<SystemUser, Integer, S
         if (Strings.isNullOrEmpty(token)) {
             return null;
         }
-        var items = token.split(".");
+        var items = token.split("\\.");
         if (items.length != 5) {
             return null;
         }
@@ -66,20 +65,23 @@ public class SystemUserServiceImpl extends BaseJpaService<SystemUser, Integer, S
         var kv = items[2];
         var timestamp = items[3];
         var signature = items[4];
-        var checkSum = LicenseUtils.CheckSum(version + id + kv + timestamp);
-        if (!signature.equals(checkSum)) {
+        var sum = Base64Utils.sum(version + id + kv + timestamp);
+        if (!signature.equals(sum + "")) {
             return null;
         }
-        var data = Arrays.stream(kv.split(",")).map(m -> {
-            var i = m.split(":");
-            return new AbstractMap.SimpleEntry<String, String>(i[0], i[1]);
-        }).collect(Collectors.toMap(item -> item.getKey(), item -> item.getValue(), (oldVal, currVal) -> oldVal, LinkedHashMap::new));
+        var data = new LinkedHashMap<String, String>();
+
+        for (var m : Base64Utils.urlDecode(kv).split(",")) {
+            var i = m.split("\\:");
+            data.put(i[0], i[1]);
+        }
         var user = new SystemUser();
-        user.setId(Integer.valueOf(id.split(":")[0]));
-        user.setUsername(data.getOrDefault("username", ""));
+        user.setId(Integer.valueOf(Base64Utils.urlDecode(id).split(":")[0]));
+        user.setName(data.getOrDefault("username", ""));
         user.setEmailAddress(data.getOrDefault("email_address", ""));
         return user;
     }
+
     @Override
     public Result<String> login(String username, String password) {
 
@@ -112,16 +114,34 @@ public class SystemUserServiceImpl extends BaseJpaService<SystemUser, Integer, S
      */
 
     @Override
-    public SystemUser ifLogin(HttpServletRequest request, HttpServletResponse response) {
-        String cookieToken = CookieUtil.getValue(request, SystemUserService.USER_LOGIN_IDENTITY);
-        if (Strings.isNullOrEmpty(cookieToken)) {
+    public SystemUser checkLogin(HttpServletRequest request, HttpServletResponse response) {
+        String token = getTokenFromCookie(request);
+        if (Strings.isNullOrEmpty(token)) {
+            token = getTokenFromHeader(request);
+        }
+        if (Strings.isNullOrEmpty(token)) {
+            token = getTokenFromQuery(request);
+        }
+        if (Strings.isNullOrEmpty(token)) {
             return null;
         }
-
-        SystemUser user = parseToken(cookieToken);
-        if (user == null) {
-            return null;
-        }
+        SystemUser user = parseToken(token);
         return user;
+    }
+
+    private String getTokenFromCookie(HttpServletRequest request) {
+        return CookieUtil.getValue(request, SystemUserService.USER_LOGIN_IDENTITY);
+    }
+
+    private String getTokenFromHeader(HttpServletRequest request) {
+        var bearer = request.getHeader("Authorization");
+        if (Strings.isNullOrEmpty(bearer) || !bearer.startsWith("Bearer")) {
+            return null;
+        }
+        return bearer.substring(7);
+    }
+
+    private String getTokenFromQuery(HttpServletRequest request) {
+        return request.getParameter("access_token");
     }
 }

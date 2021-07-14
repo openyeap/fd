@@ -19,7 +19,6 @@ public class SystemUser extends BaseEntity<Integer> {
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private String username; // 账号
     private String password; // 密码
     // type 角色：0-普通用户、1-管理员
     private String permission; // 权限：执行器ID列表，多个逗号分割

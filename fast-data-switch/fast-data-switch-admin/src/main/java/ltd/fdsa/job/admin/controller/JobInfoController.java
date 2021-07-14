@@ -6,7 +6,6 @@ import ltd.fdsa.job.admin.trigger.TriggerTypeEnum;
 import ltd.fdsa.job.admin.jpa.entity.JobGroup;
 import ltd.fdsa.job.admin.jpa.entity.SystemUser;
 import ltd.fdsa.job.admin.jpa.service.JobGroupService;
-//import ltd.fdsa.job.admin.service.JobService;
 import ltd.fdsa.job.admin.jpa.service.impl.SystemUserServiceImpl;
 import ltd.fdsa.switcher.core.exception.FastDataSwitchException;
 import ltd.fdsa.switcher.core.job.cron.CronExpression;

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 public interface SystemUserService extends DataAccessService<SystemUser, Integer> {
     public static final String USER_LOGIN_IDENTITY = "USER_LOGIN_IDENTITY";
 
-    SystemUser ifLogin(HttpServletRequest request, HttpServletResponse response);
+    SystemUser checkLogin(HttpServletRequest request, HttpServletResponse response);
 
     Result<String> login(String username, String password);
 
