@@ -26,23 +26,23 @@
 	<script src="${request.contextPath}/static/adminlte/dist/js/adminlte.min.js"></script>
 	<!-- Filterizr-->
 	<script src="${request.contextPath}/static/adminlte/plugins/filterizr/jquery.filterizr.min.js"></script>
-	<!-- 用于演示 FDSA  
-	<script src="${request.contextPath}/static/adminlte/dist/js/demo.js"></script>-->
+	<!-- 用于演示 FDSA -->
+    <script src="${request.contextPath}/static/adminlte/dist/js/demo.js"></script>
 
-	<!-- 特定页面脚本 -->
+    <!-- 特定页面脚本 -->
 	<script>
 	$(function () {
 		$(document).on('click', '[data-toggle="lightbox"]', function(event) {
-		event.preventDefault();
-		$(this).ekkoLightbox({
-			alwaysShowClose: true
-		});
+            event.preventDefault();
+            $(this).ekkoLightbox({
+                alwaysShowClose: true
+            });
 		});
 
-		$('.filter-container').filterizr({gutterPixels: 3});
+		// $('.filter-container').filterizr({gutterPixels: 3});
 		$('.btn[data-filter]').on('click', function() {
 		$('.btn[data-filter]').removeClass('active');
-		$(this).addClass('active');
+		    $(this).addClass('active');
 		});
 	})
 	</script>

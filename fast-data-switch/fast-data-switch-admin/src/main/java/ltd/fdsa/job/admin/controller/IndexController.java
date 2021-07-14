@@ -56,11 +56,11 @@ public class IndexController extends BaseController {
     @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
     @PermissionLimit(limit = false)
-    public Result<String> doLogin(String userName, String password, String ifRemember) {
-        var result = loginService.login(userName, password);
+    public Result<String> doLogin(String username, String password, String remember) {
+        var result = loginService.login(username, password);
         if (result.getCode() == 200 || result.getCode() == 0) {
 
-            CookieUtil.set(response, SystemUserService.USER_LOGIN_IDENTITY, result.getData(), "on".equals(ifRemember));
+            CookieUtil.set(response, SystemUserService.USER_LOGIN_IDENTITY, result.getData(), "on".equals(remember));
         }
         return result;
     }
