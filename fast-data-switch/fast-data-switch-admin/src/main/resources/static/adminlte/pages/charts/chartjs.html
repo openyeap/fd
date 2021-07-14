@@ -25,7 +25,7 @@
           <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="../..//" class="nav-link">首页</a>
+          <a href="/" class="nav-link">首页</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
           <a href="/help" class="nav-link">帮助</a>
@@ -158,7 +158,7 @@
     <!-- 主侧边栏容器 -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- 品牌 Logo -->
-      <a href="../..//" class="brand-link">
+      <a href="/" class="brand-link">
         <img src="../../dist/img/AdminLTELogo.png" alt="FDSA Logo" class="brand-image img-circle elevation-3"
           style="opacity: .8">
         <span class="brand-text font-weight-light">FDSA</span>
@@ -215,7 +215,7 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="../..//" class="nav-link">
+                  <a href="/" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>仪表盘 v3</p>
                   </a>
@@ -842,7 +842,7 @@
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="#">首页</a></li>
+                <li class="breadcrumb-item"><a href="/">首页</a></li>
                 <li class="breadcrumb-item active">ChartJS</li>
               </ol>
             </div>
@@ -1034,188 +1034,188 @@
   <script src="../../dist/js/demo.js"></script>
   <!-- 特定页面脚本 -->
   <script>
-  $(function () {
-    /* ChartJS
-     * -------
-     * 在这里，我们将使用 ChartJS 创建一些图表
-     */
+    $(function () {
+      /* ChartJS
+       * -------
+       * 在这里，我们将使用 ChartJS 创建一些图表
+       */
 
-    //--------------
-    //- 区域图 -
-    //--------------
+      //--------------
+      //- 区域图 -
+      //--------------
 
-    // 使用 jQuery 获取上下文 - 使用 jQuery 的.get() 方法。
-    var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
+      // 使用 jQuery 获取上下文 - 使用 jQuery 的.get() 方法。
+      var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
 
-    var areaChartData = {
-      labels  : ['一月', '二月', '三月', '四月', '五月', '六月', '七月'],
-      datasets: [
-        {
-          label               : '数字产品',
-          backgroundColor     : 'rgba(60,141,188,0.9)',
-          borderColor         : 'rgba(60,141,188,0.8)',
-          pointRadius          : false,
-          pointColor          : '#3b8bba',
-          pointStrokeColor    : 'rgba(60,141,188,1)',
-          pointHighlightFill  : '#fff',
-          pointHighlightStroke: 'rgba(60,141,188,1)',
-          data                : [28, 48, 40, 19, 86, 27, 90]
-        },
-        {
-          label               : '电子产品',
-          backgroundColor     : 'rgba(210, 214, 222, 1)',
-          borderColor         : 'rgba(210, 214, 222, 1)',
-          pointRadius         : false,
-          pointColor          : 'rgba(210, 214, 222, 1)',
-          pointStrokeColor    : '#c1c7d1',
-          pointHighlightFill  : '#fff',
-          pointHighlightStroke: 'rgba(220,220,220,1)',
-          data                : [65, 59, 80, 81, 56, 55, 40]
-        },
-      ]
-    }
-
-    var areaChartOptions = {
-      maintainAspectRatio : false,
-      responsive : true,
-      legend: {
-        display: false
-      },
-      scales: {
-        xAxes: [{
-          gridLines : {
-            display : false,
-          }
-        }],
-        yAxes: [{
-          gridLines : {
-            display : false,
-          }
-        }]
+      var areaChartData = {
+        labels: ['一月', '二月', '三月', '四月', '五月', '六月', '七月'],
+        datasets: [
+          {
+            label: '数字产品',
+            backgroundColor: 'rgba(60,141,188,0.9)',
+            borderColor: 'rgba(60,141,188,0.8)',
+            pointRadius: false,
+            pointColor: '#3b8bba',
+            pointStrokeColor: 'rgba(60,141,188,1)',
+            pointHighlightFill: '#fff',
+            pointHighlightStroke: 'rgba(60,141,188,1)',
+            data: [28, 48, 40, 19, 86, 27, 90]
+          },
+          {
+            label: '电子产品',
+            backgroundColor: 'rgba(210, 214, 222, 1)',
+            borderColor: 'rgba(210, 214, 222, 1)',
+            pointRadius: false,
+            pointColor: 'rgba(210, 214, 222, 1)',
+            pointStrokeColor: '#c1c7d1',
+            pointHighlightFill: '#fff',
+            pointHighlightStroke: 'rgba(220,220,220,1)',
+            data: [65, 59, 80, 81, 56, 55, 40]
+          },
+        ]
       }
-    }
 
-    // 这将获取 jQuery 集合中第一个返回的节点。
-    new Chart(areaChartCanvas, {
-      type: 'line',
-      data: areaChartData,
-      options: areaChartOptions
-    })
+      var areaChartOptions = {
+        maintainAspectRatio: false,
+        responsive: true,
+        legend: {
+          display: false
+        },
+        scales: {
+          xAxes: [{
+            gridLines: {
+              display: false,
+            }
+          }],
+          yAxes: [{
+            gridLines: {
+              display: false,
+            }
+          }]
+        }
+      }
 
-    //-------------
-    //- 折线图 -
-    //--------------
-    var lineChartCanvas = $('#lineChart').get(0).getContext('2d')
-    var lineChartOptions = $.extend(true, {}, areaChartOptions)
-    var lineChartData = $.extend(true, {}, areaChartData)
-    lineChartData.datasets[0].fill = false;
-    lineChartData.datasets[1].fill = false;
-    lineChartOptions.datasetFill = false
+      // 这将获取 jQuery 集合中第一个返回的节点。
+      new Chart(areaChartCanvas, {
+        type: 'line',
+        data: areaChartData,
+        options: areaChartOptions
+      })
 
-    var lineChart = new Chart(lineChartCanvas, {
-      type: 'line',
-      data: lineChartData,
-      options: lineChartOptions
-    })
+      //-------------
+      //- 折线图 -
+      //--------------
+      var lineChartCanvas = $('#lineChart').get(0).getContext('2d')
+      var lineChartOptions = $.extend(true, {}, areaChartOptions)
+      var lineChartData = $.extend(true, {}, areaChartData)
+      lineChartData.datasets[0].fill = false;
+      lineChartData.datasets[1].fill = false;
+      lineChartOptions.datasetFill = false
 
-    //-------------
-    //- 环形图 -
-    //-------------
-    // 使用 jQuery 获取上下文 - 使用 jQuery 的.get() 方法。
-    var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
-    var donutData        = {
-      labels: [
+      var lineChart = new Chart(lineChartCanvas, {
+        type: 'line',
+        data: lineChartData,
+        options: lineChartOptions
+      })
+
+      //-------------
+      //- 环形图 -
+      //-------------
+      // 使用 jQuery 获取上下文 - 使用 jQuery 的.get() 方法。
+      var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
+      var donutData = {
+        labels: [
           'Chrome',
           'IE',
           'FireFox',
           'Safari',
           'Opera',
           'Navigator',
-      ],
-      datasets: [
-        {
-          data: [700,500,400,600,300,100],
-          backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
-        }
-      ]
-    }
-    var donutOptions     = {
-      maintainAspectRatio : false,
-      responsive : true,
-    }
-    // 创建饼形图或环形图
-    // 你可以使用以下方法在饼形图和环形图之间进行切换。
-    new Chart(donutChartCanvas, {
-      type: 'doughnut',
-      data: donutData,
-      options: donutOptions
-    })
-
-    //-------------
-    //- 饼形图 -
-    //-------------
-    // 使用 jQuery 获取上下文 - 使用 jQuery 的.get() 方法。
-    var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
-    var pieData        = donutData;
-    var pieOptions     = {
-      maintainAspectRatio : false,
-      responsive : true,
-    }
-    // 创建饼形图或环形图
-    // 你可以使用以下方法在饼形图和环形图之间进行切换。
-    new Chart(pieChartCanvas, {
-      type: 'pie',
-      data: pieData,
-      options: pieOptions
-    })
-
-    //-------------
-    //- 条形图 -
-    //-------------
-    var barChartCanvas = $('#barChart').get(0).getContext('2d')
-    var barChartData = $.extend(true, {}, areaChartData)
-    var temp0 = areaChartData.datasets[0]
-    var temp1 = areaChartData.datasets[1]
-    barChartData.datasets[0] = temp1
-    barChartData.datasets[1] = temp0
-
-    var barChartOptions = {
-      responsive              : true,
-      maintainAspectRatio     : false,
-      datasetFill             : false
-    }
-
-    new Chart(barChartCanvas, {
-      type: 'bar',
-      data: barChartData,
-      options: barChartOptions
-    })
-
-    //---------------------
-    //- 堆叠图 -
-    //---------------------
-    var stackedBarChartCanvas = $('#stackedBarChart').get(0).getContext('2d')
-    var stackedBarChartData = $.extend(true, {}, barChartData)
-
-    var stackedBarChartOptions = {
-      responsive              : true,
-      maintainAspectRatio     : false,
-      scales: {
-        xAxes: [{
-          stacked: true,
-        }],
-        yAxes: [{
-          stacked: true
-        }]
+        ],
+        datasets: [
+          {
+            data: [700, 500, 400, 600, 300, 100],
+            backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
+          }
+        ]
       }
-    }
+      var donutOptions = {
+        maintainAspectRatio: false,
+        responsive: true,
+      }
+      // 创建饼形图或环形图
+      // 你可以使用以下方法在饼形图和环形图之间进行切换。
+      new Chart(donutChartCanvas, {
+        type: 'doughnut',
+        data: donutData,
+        options: donutOptions
+      })
 
-    new Chart(stackedBarChartCanvas, {
-      type: 'bar',
-      data: stackedBarChartData,
-      options: stackedBarChartOptions
+      //-------------
+      //- 饼形图 -
+      //-------------
+      // 使用 jQuery 获取上下文 - 使用 jQuery 的.get() 方法。
+      var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
+      var pieData = donutData;
+      var pieOptions = {
+        maintainAspectRatio: false,
+        responsive: true,
+      }
+      // 创建饼形图或环形图
+      // 你可以使用以下方法在饼形图和环形图之间进行切换。
+      new Chart(pieChartCanvas, {
+        type: 'pie',
+        data: pieData,
+        options: pieOptions
+      })
+
+      //-------------
+      //- 条形图 -
+      //-------------
+      var barChartCanvas = $('#barChart').get(0).getContext('2d')
+      var barChartData = $.extend(true, {}, areaChartData)
+      var temp0 = areaChartData.datasets[0]
+      var temp1 = areaChartData.datasets[1]
+      barChartData.datasets[0] = temp1
+      barChartData.datasets[1] = temp0
+
+      var barChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        datasetFill: false
+      }
+
+      new Chart(barChartCanvas, {
+        type: 'bar',
+        data: barChartData,
+        options: barChartOptions
+      })
+
+      //---------------------
+      //- 堆叠图 -
+      //---------------------
+      var stackedBarChartCanvas = $('#stackedBarChart').get(0).getContext('2d')
+      var stackedBarChartData = $.extend(true, {}, barChartData)
+
+      var stackedBarChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          xAxes: [{
+            stacked: true,
+          }],
+          yAxes: [{
+            stacked: true
+          }]
+        }
+      }
+
+      new Chart(stackedBarChartCanvas, {
+        type: 'bar',
+        data: stackedBarChartData,
+        options: stackedBarChartOptions
+      })
     })
-  })
   </script>
 </body>
 
