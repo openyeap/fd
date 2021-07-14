@@ -21,12 +21,11 @@ public class SystemUser extends BaseEntity<Integer> {
     private Integer id;
     private String password; // 密码
     // type 角色：0-普通用户、1-管理员
-    private String permission; // 权限：执行器ID列表，多个逗号分割
     @Column(name = "email_address")
-    private String emailAddress;
+    private String email;
     @Column(name = "locked")
-    private boolean isLocked;
+    private boolean locked;
     @Column(name = "lock_time")
-    private LocalDateTime lock_time;
+    private LocalDateTime lockTime;
     private String salt;
 }

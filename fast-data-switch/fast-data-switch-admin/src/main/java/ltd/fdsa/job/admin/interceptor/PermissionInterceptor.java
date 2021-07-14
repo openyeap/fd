@@ -1,10 +1,17 @@
 package ltd.fdsa.job.admin.interceptor;
 
+import freemarker.template.*;
+import javafx.beans.property.adapter.ReadOnlyJavaBeanBooleanProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.var;
 import ltd.fdsa.job.admin.annotation.PermissionLimit;
 import ltd.fdsa.job.admin.jpa.entity.SystemUser;
 import ltd.fdsa.job.admin.jpa.service.SystemUserService;
 import ltd.fdsa.job.admin.util.FtlUtil;
 import ltd.fdsa.job.admin.util.I18nUtil;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,6 +22,10 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import static freemarker.template.WrappingTemplateModel.getDefaultObjectWrapper;
 
 /**
  * 权限拦截
@@ -50,7 +61,8 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
             if (needAdminister && loginUser.getType() != 1) {
                 throw new RuntimeException(I18nUtil.getString("system_permission_limit"));
             }
-            request.setAttribute(SystemUserService.USER_LOGIN_IDENTITY, loginUser);
+            request.setAttribute("currentUser", new UserModel(loginUser.getName(),loginUser.getType()));
+
         }
 
         return super.preHandle(request, response, handler);
@@ -76,4 +88,12 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 
         super.postHandle(request, response, handler, modelAndView);
     }
+
+    @AllArgsConstructor
+    @Data
+    public class UserModel {
+        private String name;
+        private byte type;
+    }
+
 }

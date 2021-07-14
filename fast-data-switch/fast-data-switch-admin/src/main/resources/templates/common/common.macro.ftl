@@ -1,150 +1,771 @@
 <#macro commonStyle>
-
 	<#-- favicon -->
 	<link rel="icon" href="${request.contextPath}/static/favicon.ico" />
-
 	<meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="${request.contextPath}/static/adminlte/bower_components/bootstrap/css/bootstrap.min.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="${request.contextPath}/static/adminlte/bower_components/font-awesome/css/font-awesome.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="${request.contextPath}/static/adminlte/bower_components/Ionicons/css/ionicons.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="${request.contextPath}/static/adminlte/dist/css/AdminLTE.min.css">
-    <!-- AdminLTE Skins. Choose a skin from the css/skins folder instead of downloading all of them to reduce the load. -->
-    <link rel="stylesheet" href="${request.contextPath}/static/adminlte/dist/css/skins/_all-skins.min.css">
-      
-	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-	<!-- pace -->
-	<link rel="stylesheet" href="${request.contextPath}/static/adminlte/bower_components/PACE/themes/blue/pace-theme-flash.css">
-
+	<!-- 离线 Google 字体: Source Sans Pro -->
+	<link rel="stylesheet" href="${request.contextPath}/static/adminlte/dist/css/google.css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="${request.contextPath}/static/adminlte/plugins/fontawesome-free/css/all.min.css">
+	<!-- Ekko Lightbox -->
+	<link rel="stylesheet" href="${request.contextPath}/static/adminlte/plugins/ekko-lightbox/ekko-lightbox.css">
+	<!-- 主题样式 -->
+	<link rel="stylesheet" href="${request.contextPath}/static/adminlte/dist/css/adminlte.min.css">
 	<#-- i18n -->
 	<#global I18n = I18nUtil.getMultiString()?eval />
-
 </#macro>
 
 <#macro commonScript>
-	<!-- jQuery 2.1.4 -->
-	<script src="${request.contextPath}/static/adminlte/bower_components/jquery/jquery.min.js"></script>
-	<!-- Bootstrap 3.3.5 -->
-	<script src="${request.contextPath}/static/adminlte/bower_components/bootstrap/js/bootstrap.min.js"></script>
-	<!-- FastClick -->
-	<script src="${request.contextPath}/static/adminlte/bower_components/fastclick/fastclick.js"></script>
-	<!-- AdminLTE App -->
+	<!-- jQuery -->
+	<script src="${request.contextPath}/static/adminlte/plugins/jquery/jquery.min.js"></script>
+	<!-- Bootstrap -->
+	<script src="${request.contextPath}/static/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- Ekko Lightbox -->
+	<script src="${request.contextPath}/static/adminlte/plugins/ekko-lightbox/ekko-lightbox.min.js"></script>
+	<!-- FDSA App -->
 	<script src="${request.contextPath}/static/adminlte/dist/js/adminlte.min.js"></script>
-	<!-- jquery.slimscroll -->
-	<script src="${request.contextPath}/static/adminlte/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+	<!-- Filterizr-->
+	<script src="${request.contextPath}/static/adminlte/plugins/filterizr/jquery.filterizr.min.js"></script>
+	<!-- 用于演示 FDSA  
+	<script src="${request.contextPath}/static/adminlte/dist/js/demo.js"></script>-->
 
-    <!-- pace -->
-    <script src="${request.contextPath}/static/adminlte/bower_components/PACE/pace.min.js"></script>
-    <#-- jquery cookie -->
-	<script src="${request.contextPath}/static/plugins/jquery/jquery.cookie.js"></script>
-	<#-- jquery.validate -->
-	<script src="${request.contextPath}/static/plugins/jquery/jquery.validate.min.js"></script>
+	<!-- 特定页面脚本 -->
+	<script>
+	$(function () {
+		$(document).on('click', '[data-toggle="lightbox"]', function(event) {
+		event.preventDefault();
+		$(this).ekkoLightbox({
+			alwaysShowClose: true
+		});
+		});
 
-	<#-- layer -->
-	<script src="${request.contextPath}/static/plugins/layer/layer.js"></script>
-
-	<#-- common -->
-    <script src="${request.contextPath}/static/js/common.1.js"></script>
-    <script>
-		var base_url = '${request.contextPath}';
-        var I18n = ${I18nUtil.getMultString()};
+		$('.filter-container').filterizr({gutterPixels: 3});
+		$('.btn[data-filter]').on('click', function() {
+		$('.btn[data-filter]').removeClass('active');
+		$(this).addClass('active');
+		});
+	})
 	</script>
-
 </#macro>
 
 <#macro commonHeader>
-	<header class="main-header">
-		<a href="${request.contextPath}/" class="logo">
-			<span class="logo-mini"><b>XXL</b></span>
-			<span class="logo-lg"><b>${I18n.admin_name}</b></span>
-		</a>
-		<nav class="navbar navbar-static-top" role="navigation">
-
-			<a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
+  <!-- 左侧导航栏链接 -->
+    <ul class="navbar-nav">
+		<li class="nav-item">
+			<a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+		</li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/" class="nav-link">首页</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/help" class="nav-link">帮助</a>
+        </li>
+      
+    </ul>
+ 
+      <!-- 右侧导航栏链接 -->
+      <ul class="navbar-nav ml-auto">
+        <!-- Navbar Search -->
+        <li class="nav-item">
+          <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+            <i class="fas fa-search"></i>
+          </a>
+          <div class="navbar-search-block">
+            <form class="form-inline">
+              <div class="input-group input-group-sm">
+                <input class="form-control form-control-navbar" type="search" placeholder="搜索" aria-label="Search">
+                <div class="input-group-append">
+                  <button class="btn btn-navbar" type="submit">
+                    <i class="fas fa-search"></i>
+                  </button>
+                  <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </li>
+        <#-- 消息  -->
+        <li class="nav-item dropdown">
+            <a class="nav-link" data-toggle="dropdown" href="#">
+                <i class="far fa-comments"></i>
+                <span class="caret">2</span>
             </a>
-
-          	<div class="navbar-custom-menu">
-				<ul class="nav navbar-nav">
-					<#-- login user -->
-                    <li class="dropdown">
-                        <a href="javascript:" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            ${I18n.system_welcome} ${Request["USER_LOGIN_IDENTITY"].name}
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li id="updatePwd" ><a href="javascript:">${I18n.change_pwd}</a></li>
-                            <li id="logoutBtn" ><a href="javascript:">${I18n.logout_btn}</a></li>
-                        </ul>
-                    </li>
-				</ul>
-			</div>
-
-		</nav>
-	</header>
-
-	<!-- 修改密码.模态框 -->
-	<div class="modal fade" id="updatePwdModal" tabindex="-1" role="dialog"  aria-hidden="true">
-		<div class="modal-dialog ">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" >${I18n.change_pwd}</h4>
-				</div>
-				<div class="modal-body">
-					<form class="form-horizontal form" role="form" >
-						<div class="form-group">
-							<label for="lastname" class="col-sm-2 control-label">${I18n.change_pwd_field_newpwd}<font color="red">*</font></label>
-							<div class="col-sm-10"><input type="text" class="form-control" name="password" placeholder="${I18n.system_please_input} ${I18n.change_pwd_field_newpwd}" maxlength="100" ></div>
-						</div>
-						<hr>
-						<div class="form-group">
-							<div class="col-sm-offset-3 col-sm-6">
-								<button type="submit" class="btn btn-primary"  >${I18n.system_save}</button>
-								<button type="button" class="btn btn-default" data-dismiss="modal">${I18n.system_cancel}</button>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <a href="#" class="dropdown-item">
+              <!-- 消息开始 -->
+              <div class="media">                
+                <div class="media-body">
+                  <h3 class="dropdown-item-title">
+                    John Pierce
+                    <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
+                  </h3>
+                  <p class="text-sm">我收到你的消息了</p>
+                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 小时前</p>
+                </div>
+              </div>
+              <!-- 消息结束 -->
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <!-- 消息开始 -->
+              <div class="media">               
+                <div class="media-body">
+                  <h3 class="dropdown-item-title">
+                    Nora Silvester
+                    <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
+                  </h3>
+                  <p class="text-sm">主题在这里</p>
+                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 小时前</p>
+                </div>
+              </div>
+              <!-- 消息结束 -->
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item dropdown-footer">查看所有消息</a>
+          </div>
+        </li>
+        <!-- 通知下拉菜单 -->
+        <li class="nav-item dropdown">
+          <a class="nav-link" data-toggle="dropdown" href="#">
+            <i class="far fa-bell"></i>
+            <span class="badge badge-warning navbar-badge">15</span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <span class="dropdown-item dropdown-header">15 条通知</span>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <i class="fas fa-envelope mr-2"></i> 4 条新消息
+              <span class="float-right text-muted text-sm">3 分钟前</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <i class="fas fa-users mr-2"></i> 8 个好友请求
+              <span class="float-right text-muted text-sm">12 小时前</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <i class="fas fa-file mr-2"></i> 3 个新报告
+              <span class="float-right text-muted text-sm">2 天前</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item dropdown-footer">查看所有通知</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+            <i class="fas fa-expand-arrows-alt"></i>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+            <i class="fas fa-th-large"></i>
+          </a>
+        </li>
+        <#-- login user -->
+        <li class="nav-item dropdown">
+            <a class="nav-link" data-toggle="dropdown" href="#">               
+                <span class="caret">${I18n.system_welcome} ${Request.currentUser.name}</span>
+            </a>
+            
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                <a href="#" class="dropdown-item">
+                    ${I18n.change_pwd} 
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="/logout" class="dropdown-item">
+                    ${I18n.logout_btn} 
+                </a>   
+            </div>        
+        </li>
+    </ul>
+    <!-- 修改密码.模态框 -->
+    <div class="modal fade" id="updatePwdModal" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" >${I18n.change_pwd}</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal form" role="form" >
+                    <div class="form-group">
+                        <label for="lastname" class="col-sm-2 control-label">${I18n.change_pwd_field_newpwd}<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="password" placeholder="${I18n.system_please_input} ${I18n.change_pwd_field_newpwd}" maxlength="100" ></div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-6">
+                            <button type="submit" class="btn btn-primary"  >${I18n.system_save}</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">${I18n.system_cancel}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
 
 </#macro>
 
 <#macro commonLeft pageName >
-	<!-- Left side column. contains the logo and sidebar -->
-	<aside class="main-sidebar">
-		<!-- sidebar: style can be found in sidebar.less -->
-		<section class="sidebar">
-			<!-- sidebar menu: : style can be found in sidebar.less -->
-			<ul class="sidebar-menu">
-                <li class="header">${I18n.system_nav}</li>
-                <li class="nav-click <#if pageName == "index">active</#if>" ><a href="${request.contextPath}/"><i class="fa fa-circle-o text-aqua"></i><span>${I18n.job_dashboard_name}</span></a></li>
-				<li class="nav-click <#if pageName == "jobinfo">active</#if>" ><a href="${request.contextPath}/jobinfo"><i class="fa fa-circle-o text-yellow"></i><span>${I18n.jobinfo_name}</span></a></li>
-				<li class="nav-click <#if pageName == "joblog">active</#if>" ><a href="${request.contextPath}/joblog"><i class="fa fa-circle-o text-green"></i><span>${I18n.joblog_name}</span></a></li>
-				<#if Request["USER_LOGIN_IDENTITY"].type == 1>
-                    <li class="nav-click <#if pageName == "jobgroup">active</#if>" ><a href="${request.contextPath}/jobgroup"><i class="fa fa-circle-o text-red"></i><span>${I18n.jobgroup_name}</span></a></li>
-                    <li class="nav-click <#if pageName == "user">active</#if>" ><a href="${request.contextPath}/user"><i class="fa fa-circle-o text-purple"></i><span>${I18n.user_manage}</span></a></li>
-				</#if>
-				<li class="nav-click <#if pageName == "help">active</#if>" ><a href="${request.contextPath}/help"><i class="fa fa-circle-o text-gray"></i><span>${I18n.job_help}</span></a></li>
-			</ul>
-		</section>
-		<!-- /.sidebar -->
+
+
+<ul class="navbar-nav">
+    <!-- 品牌 Logo -->
+    <a href="/" class="brand-link">
+      <img src="${request.contextPath}/static/adminlte/dist/img/AdminLTELogo.png" alt="FDSA Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">FDSA</span>
+    </a> 
+
+       <div class="sidebar">
+            <!-- SidebarSearch Form -->
+            <div class="form-inline">
+                <div class="input-group" data-widget="sidebar-search">
+                <input class="form-control form-control-sidebar" type="search" placeholder="搜索" aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-sidebar">
+                    <i class="fas fa-search fa-fw"></i>
+                    </button>
+                </div>
+                </div>
+            </div>
+		   
+            <!-- 侧边栏菜单 -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <!-- 使用 .nav-icon 类添加图标，或使用 font-awesome 或其他任何图标字体库 -->
+                <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <p>
+                    仪表盘
+                    <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/index.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>仪表盘 v1</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/index2.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>仪表盘 v2</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages//" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>仪表盘 v3</p>
+                    </a>
+                    </li>
+                </ul>
+                </li>
+    
+                <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-copy"></i>
+                    <p>
+                    布局选项
+                    <i class="fas fa-angle-left right"></i>
+                    <span class="badge badge-info right">6</span>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/layout/top-nav.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>顶部导航</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="layout/top-nav-sidebar.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>顶部导航 + 侧边栏</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/layout/boxed.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>盒式布局</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/layout/fixed-sidebar.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>固定侧栏</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/layout/fixed-sidebar-custom.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>固定侧边栏 <small>+ 自定义区域</small></p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/layout/fixed-topnav.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>固定导航栏</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/layout/fixed-footer.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>固定页脚</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/layout/collapsed-sidebar.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>折叠侧边栏</p>
+                    </a>
+                    </li>
+                </ul>
+                </li>
+                <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-chart-pie"></i>
+                    <p>
+                    图表
+                    <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/charts/chartjs.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>ChartJS 插件</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/charts/flot.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Flot 插件</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/charts/inline.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>内联图表</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/charts/uplot.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>uPlot</p>
+                    </a>
+                    </li>
+                </ul>
+                </li>
+                <li class="nav-item">
+                <a href="${request.contextPath}/static/adminlte/pages/#" class="nav-link">
+                    <i class="nav-icon fas fa-tree"></i>
+                    <p>
+                    UI 元素
+                    <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/UI/general.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>常规</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/UI/icons.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>图标</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/UI/buttons.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>按钮</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/UI/sliders.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>滑块</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/UI/modals.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>弹框 & 提醒</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/UI/navbar.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>导航 & 选项卡</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/UI/timeline.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>时间线</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/UI/ribbons.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>丝带</p>
+                    </a>
+                    </li>
+                </ul>
+                </li>
+                <li class="nav-item">
+                <a href="${request.contextPath}/static/adminlte/pages/#" class="nav-link">
+                    <i class="nav-icon fas fa-edit"></i>
+                    <p>
+                    表单
+                    <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/forms/general.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>常规元素</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/forms/advanced.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>高级表单</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/forms/editors.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>编辑器</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/forms/validation.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>验证</p>
+                    </a>
+                    </li>
+                </ul>
+                </li>
+                <li class="nav-item">
+                <a href="${request.contextPath}/static/adminlte/pages/#" class="nav-link">
+                    <i class="nav-icon fas fa-table"></i>
+                    <p>
+                    表格
+                    <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/tables/simple.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>简单表格</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/tables/data.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>数据表格</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/tables/jsgrid.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>jsGrid 插件</p>
+                    </a>
+                    </li>
+                </ul>
+                </li>
+                <li class="nav-header">示例</li>
+                <li class="nav-item">
+                <a href="${request.contextPath}/static/adminlte/pages/calendar.html" class="nav-link">
+                    <i class="nav-icon far fa-calendar-alt"></i>
+                    <p>
+                    日历
+                    <span class="badge badge-info right">2</span>
+                    </p>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a href="${request.contextPath}/static/adminlte/pages/gallery.html" class="nav-link active">
+                    <i class="nav-icon far fa-image"></i>
+                    <p>
+                    相册
+                    </p>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a href="${request.contextPath}/static/adminlte/pages/kanban.html" class="nav-link">
+                    <i class="nav-icon fas fa-columns"></i>
+                    <p>
+                    看板
+                    </p>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a href="${request.contextPath}/static/adminlte/pages/#" class="nav-link">
+                    <i class="nav-icon far fa-envelope"></i>
+                    <p>
+                    邮箱
+                    <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/mailbox/mailbox.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>收件箱</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/mailbox/compose.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>写信</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/mailbox/read-mail.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>查看</p>
+                    </a>
+                    </li>
+                </ul>
+                </li>
+                <li class="nav-item">
+                <a href="${request.contextPath}/static/adminlte/pages/#" class="nav-link">
+                    <i class="nav-icon fas fa-book"></i>
+                    <p>
+                    页面
+                    <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/examples/invoice.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>发票</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/examples/profile.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>资料</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/examples/e-commerce.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>电子商务</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/examples/projects.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>项目</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/examples/project-add.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>添加项目</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/examples/project-edit.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>编辑项目</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/examples/project-detail.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>项目详情</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/examples/contacts.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>联系人</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/examples/faq.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>FAQ</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/examples/contact-us.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>联系我们</p>
+                    </a>
+                    </li>
+                </ul>
+                </li>
+                <li class="nav-item">
+                <a href="${request.contextPath}/static/adminlte/pages/#" class="nav-link">
+                    <i class="nav-icon far fa-plus-square"></i>
+                    <p>
+                    附加
+                    <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>
+                        登录 & 注册 v1
+                        <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                        <a href="${request.contextPath}/static/adminlte/pages/examples/login.html" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>登录 v1</p>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a href="${request.contextPath}/static/adminlte/pages/examples/register.html" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>注册 v1</p>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a href="${request.contextPath}/static/adminlte/pages/examples/forgot-password.html" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>忘记密码 v1</p>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a href="${request.contextPath}/static/adminlte/pages/examples/recover-password.html" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>重置密码 v1</p>
+                        </a>
+                        </li>
+                    </ul>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>
+                        登录 & 注册 v2
+                        <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                        <a href="${request.contextPath}/static/adminlte/pages/examples/login-v2.html" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>登录 v2</p>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a href="${request.contextPath}/static/adminlte/pages/examples/register-v2.html" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>注册 v2</p>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a href="${request.contextPath}/static/adminlte/pages/examples/forgot-password-v2.html" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>忘记密码 v2</p>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a href="${request.contextPath}/static/adminlte/pages/examples/recover-password-v2.html" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>重置密码 v2</p>
+                        </a>
+                        </li>
+                    </ul>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/examples/lockscreen.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>锁屏</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/examples/legacy-user-menu.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>传统用户菜单</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/examples/language-menu.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>多国语言</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/examples/404.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>404 错误</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/examples/500.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>500 错误</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/examples/pace.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>加载状态</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/examples/blank.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>空白页</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/../starter.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>起始页</p>
+                    </a>
+                    </li>
+                </ul>
+                </li>
+                <li class="nav-item">
+                <a href="${request.contextPath}/static/adminlte/pages/#" class="nav-link">
+                    <i class="nav-icon fas fa-search"></i>
+                    <p>
+                    搜索
+                    <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/search/simple.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>普通搜索</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="${request.contextPath}/static/adminlte/pages/search/enhanced.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>高级</p>
+                    </a>
+                    </li>
+                </ul>
+                </li> 
+                
+            </ul>
+               
+            </nav>
+	    </div>
 	</aside>
 </#macro>
 
@@ -225,15 +846,12 @@
 	<div class="control-sidebar-bg"></div>
 </#macro>
 
-<#macro commonFooter >
-	<footer class="main-footer">
-        Powered by <b></b> ${I18n.admin_version}
-		<div class="pull-right hidden-xs">
-            <strong>Copyright &copy; 2015-${.now?string('yyyy')} &nbsp;
-                <a href="https://www..com/" target="_blank" ></a>
-				&nbsp;
-                <a href="https://github.com//" target="_blank" >github</a>
-            </strong><!-- All rights reserved. -->
-		</div>
-	</footer>
+<#macro commonFooter > 
+     <footer class="main-footer">
+      <div class="float-right d-none d-sm-block">
+        <b>版本</b> ${I18n.admin_version}
+      </div>
+      <strong>Copyright &copy; 2015-${.now?string('yyyy')}&nbsp;<a href="https://github.com/fdsa-ltd">fdsa.ltd</a>.</strong> 保留所有权利。
+    </footer>
+
 </#macro>

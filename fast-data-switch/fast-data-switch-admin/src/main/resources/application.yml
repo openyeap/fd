@@ -1,9 +1,15 @@
 spring:
-  freemarker.templateLoaderPath: classpath:/templates/
-  freemarker.suffix: .ftl
-  freemarker.charset: UTF-8
-  freemarker.request-context-attribute: request
-  freemarker.settings.number_format: 0.##
+  freemarker:
+    #template-loader-path: classpath:/templates/
+    template-loader-path: file:/Work/java/fast-data/fast-data-switch/fast-data-switch-admin/src/main/resources/templates
+    charset: UTF-8
+    suffix: .ftl
+    request-context-attribute: request
+    expose-request-attributes: true
+    settings:
+      number_format: 0.##
+      template_update_delay: 0
+
   mvc:
     static-path-pattern: /static/**
   resources:

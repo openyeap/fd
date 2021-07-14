@@ -3,17 +3,20 @@
 <head>
   	<#import "./common/common.macro.ftl" as netCommon>
 	<@netCommon.commonStyle />
-    <!-- daterangepicker -->
-    <link rel="stylesheet" href="${request.contextPath}/static/adminlte/bower_components/bootstrap-daterangepicker/daterangepicker.css">
-    <title>${I18n.admin_name}</title>
+	<title>${I18n.admin_name}</title>
 </head>
-<body class="hold-transition skin-blue sidebar-mini <#if cookieMap?exists && cookieMap["Job_adminlte_settings"]?exists && "off" == cookieMap["Job_adminlte_settings"].value >sidebar-collapse</#if> ">
+<body class="hold-transition sidebar-mini">
 <div class="wrapper">
-	<!-- header -->
-	<@netCommon.commonHeader />
-	<!-- left -->
+    <!-- 导航栏 -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    	<@netCommon.commonHeader />
+    </nav>
+    <!-- /.导航栏 -->
+
+    <!-- 主侧边栏容器 -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
 	<@netCommon.commonLeft "index" />
-	
+    </aside>
 	<!-- Content Wrapper. Contains page content -->
 	<div class="content-wrapper">
 		<!-- Content Header (Page header) -->
@@ -28,8 +31,8 @@
 			-->
 		</section>
 
-		<!-- Main content -->
-		<section class="content">
+        <!-- Main content -->
+        <section class="content">
 
             <!-- 任务信息 -->
             <div class="row">
@@ -41,7 +44,7 @@
 
                         <div class="info-box-content">
                             <span class="info-box-text">${I18n.job_dashboard_job_num}</span>
-                            <span class="info-box-number">${jobInfoCount}</span>
+                            <span class="info-box-number">${0}</span>
 
                             <div class="progress">
                                 <div class="progress-bar" style="width: 100%"></div>
@@ -58,7 +61,7 @@
 
                         <div class="info-box-content">
                             <span class="info-box-text">${I18n.job_dashboard_trigger_num}</span>
-                            <span class="info-box-number">${jobLogCount}</span>
+                            <span class="info-box-number">${0}</span>
 
                             <div class="progress">
                                 <div class="progress-bar" style="width: 100%" ></div>
@@ -80,7 +83,7 @@
 
                         <div class="info-box-content">
                             <span class="info-box-text">${I18n.job_dashboard_jobgroup_num}</span>
-                            <span class="info-box-number">${executorCount}</span>
+                            <span class="info-box-number">${0}</span>
 
                             <div class="progress">
                                 <div class="progress-bar" style="width: 100%"></div>
@@ -127,7 +130,6 @@
                     </div>
                 </div>
             </div>
-
 		</section>
 		<!-- /.content -->
 	</div>
@@ -137,11 +139,5 @@
 	<@netCommon.commonFooter />
 </div>
 <@netCommon.commonScript />
-<!-- daterangepicker -->
-<script src="${request.contextPath}/static/adminlte/bower_components/moment/moment.min.js"></script>
-<script src="${request.contextPath}/static/adminlte/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
-<#-- echarts -->
-<script src="${request.contextPath}/static/plugins/echarts/echarts.common.min.js"></script>
-<script src="${request.contextPath}/static/js/index.js"></script>
 </body>
 </html>

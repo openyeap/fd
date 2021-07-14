@@ -27,7 +27,7 @@ public class IndexController extends BaseController {
     @Resource
     private SystemUserService loginService;
 
-    @RequestMapping("/")
+    @RequestMapping(value = {"/", "/index"})
     public String index(Model model) {
 
 //        Map<String, Object> dashboardMap = JobService.dashboardInfo();
@@ -46,7 +46,7 @@ public class IndexController extends BaseController {
 
     @RequestMapping("/login")
     @PermissionLimit(limit = false)
-    public String toLogin(  ) {
+    public String toLogin() {
         if (loginService.checkLogin(request, response) != null) {
             return "redirect:/";
         }
@@ -65,10 +65,10 @@ public class IndexController extends BaseController {
         return result;
     }
 
-    @RequestMapping(value = "logout", method = RequestMethod.POST)
+    @RequestMapping(value = "logout", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     @PermissionLimit(limit = false)
-    public Result<String> logout( ) {
+    public Result<String> logout() {
         CookieUtil.remove(request, response, SystemUserService.USER_LOGIN_IDENTITY);
         return Result.success();
     }

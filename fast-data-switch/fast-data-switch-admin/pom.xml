@@ -71,25 +71,31 @@
             <groupId>ltd.fdsa</groupId>
             <artifactId>fast-data-switch-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ma.glasnost.orika</groupId>
+            <artifactId>orika-core</artifactId>
+            <version>1.5.4</version>
+            <scope>compile</scope>
+        </dependency>
 
 
     </dependencies>
     <build>
         <plugins>
             <plugin>
-                <!--Ö÷ÒªÊ¹ÓÃµÄÊÇmavenÌá¹©µÄassembly²å¼þÍê³É-->
+                <!--ï¿½ï¿½ÒªÊ¹ï¿½Ãµï¿½ï¿½ï¿½mavenï¿½á¹©ï¿½ï¿½assemblyï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-->
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
                     <execution>
                         <configuration>
                             <appendAssemblyId>false</appendAssemblyId>
-                            <!--¾ßÌåµÄÅäÖÃÎÄ¼þ-->
+                            <!--ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½-->
                             <descriptors>${project.basedir}/src/main/resources/package.xml</descriptors>
                         </configuration>
                         <id>make-assembly</id>
-                        <!--°ó¶¨µ½maven²Ù×÷ÀàÐÍÉÏ-->
+                        <!--ï¿½ó¶¨µï¿½mavenï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-->
                         <phase>package</phase>
-                        <!--ÔËÐÐÒ»´Î-->
+                        <!--ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½-->
                         <goals>
                             <goal>single</goal>
                         </goals>

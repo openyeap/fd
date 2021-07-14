@@ -5,13 +5,18 @@
 	<@netCommon.commonStyle />
 	<title>${I18n.admin_name}</title>
 </head>
-<body class="hold-transition skin-blue sidebar-mini <#if cookieMap?exists && cookieMap["Job_adminlte_settings"]?exists && "off" == cookieMap["Job_adminlte_settings"].value >sidebar-collapse</#if> ">
+<body class="hold-transition sidebar-mini">
 <div class="wrapper">
-	<!-- header -->
-	<@netCommon.commonHeader />
-	<!-- left -->
-	<@netCommon.commonLeft "help" />
-	
+    <!-- 导航栏 -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    	<@netCommon.commonHeader />
+    </nav>
+    <!-- /.导航栏 -->
+
+    <!-- 主侧边栏容器 -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+	    <@netCommon.commonLeft "help" />
+    </aside>
 	<!-- Content Wrapper. Contains page content -->
 	<div class="content-wrapper">
 		<!-- Content Header (Page header) -->

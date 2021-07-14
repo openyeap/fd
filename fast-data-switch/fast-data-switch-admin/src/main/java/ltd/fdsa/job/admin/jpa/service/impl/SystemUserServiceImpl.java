@@ -3,6 +3,7 @@ package ltd.fdsa.job.admin.jpa.service.impl;
 import com.google.common.base.Strings;
 import lombok.var;
 import ltd.fdsa.core.util.Base64Utils;
+import ltd.fdsa.database.entity.Status;
 import ltd.fdsa.database.jpa.service.BaseJpaService;
 import ltd.fdsa.job.admin.jpa.entity.SystemUser;
 import ltd.fdsa.job.admin.jpa.repository.reader.SystemUserReader;
@@ -17,10 +18,10 @@ import org.springframework.util.DigestUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class SystemUserServiceImpl extends BaseJpaService<SystemUser, Integer, SystemUserWriter, SystemUserReader> implements SystemUserService {
@@ -30,6 +31,7 @@ public class SystemUserServiceImpl extends BaseJpaService<SystemUser, Integer, S
     public SystemUser loadByUserName(String username) {
         var userQuery = new SystemUser();
         userQuery.setName(username);
+        userQuery.setStatus(Status.OK);
         var example = Example.of(userQuery);
         var result = this.reader.findOne(example);
         if (!result.isPresent()) {
@@ -38,10 +40,10 @@ public class SystemUserServiceImpl extends BaseJpaService<SystemUser, Integer, S
         return result.get();
     }
 
-    private String makeToken(SystemUser JobUser) {
+    private String makeToken(SystemUser systemUser) {
         var version = "v1";
-        var id = Base64Utils.urlEncode(JobUser.getId() + ":" + "role1,role2");
-        var kv = Base64Utils.urlEncode("k1:v1,k2:v2");
+        var id = Base64Utils.urlEncode(systemUser.getId() + ":" + "role1,role2");
+        var kv = Base64Utils.urlEncode(MessageFormat.format("name:{0},email:{1}", systemUser.getName(), systemUser.getEmail()));
         var timestamp = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
         var signature = Base64Utils.sum(version + id + kv + timestamp);
         String token = version + "." + id + "." + kv + "." + timestamp + "." + signature;
@@ -77,8 +79,8 @@ public class SystemUserServiceImpl extends BaseJpaService<SystemUser, Integer, S
         }
         var user = new SystemUser();
         user.setId(Integer.valueOf(Base64Utils.urlDecode(id).split(":")[0]));
-        user.setName(data.getOrDefault("username", ""));
-        user.setEmailAddress(data.getOrDefault("email_address", ""));
+        user.setName(data.getOrDefault("name", ""));
+        user.setEmail(data.getOrDefault("email", ""));
         return user;
     }
 

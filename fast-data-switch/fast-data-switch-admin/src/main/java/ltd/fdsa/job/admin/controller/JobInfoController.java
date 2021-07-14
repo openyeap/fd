@@ -45,9 +45,7 @@ public class JobInfoController {
                 jobGroupList = jobGroupList_all;
             } else {
                 List<String> groupIdStrs = new ArrayList<>();
-                if (loginUser.getPermission() != null && loginUser.getPermission().trim().length() > 0) {
-                    groupIdStrs = Arrays.asList(loginUser.getPermission().trim().split(","));
-                }
+
                 for (JobGroup groupItem : jobGroupList_all) {
                     if (groupIdStrs.contains(String.valueOf(groupItem.getId()))) {
                         jobGroupList.add(groupItem);

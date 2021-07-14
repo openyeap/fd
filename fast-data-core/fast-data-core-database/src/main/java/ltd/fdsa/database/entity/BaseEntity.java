@@ -28,7 +28,7 @@ public abstract class BaseEntity<ID> implements IEntity<ID>, ISupportAudit<ID>, 
      */
     @Column(name = "type")
     @Order(0)
-    private Byte type;
+    private Byte type = 0;
 
 
     /**
@@ -63,7 +63,7 @@ public abstract class BaseEntity<ID> implements IEntity<ID>, ISupportAudit<ID>, 
      * 排序
      */
     @Column(name = "sort")
-    private Integer sort;
+    private Integer sort = 0;
 
     /**
      * 备注
