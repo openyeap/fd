@@ -85,6 +85,8 @@ public class ConfigTest {
         log.info("{}", slaves);
         var app = config.getProperty("spring.application.name");
         log.info("{}", app);
+        var application = config.getProperty("spring.application");
+        log.info("{}",application);
 
         var list = config.getProperty("spring.datasource.slaves");
 
