@@ -19,6 +19,7 @@
         <module>fast-data-switch-plugin</module>
         <module>fast-data-switch-plugin-distributed</module>
         <module>fast-data-kafka-stream</module>
+        <module>kafka-connect-transform</module>
     </modules>
     <properties></properties>
 
