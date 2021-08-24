@@ -15,7 +15,6 @@
  */
 package ltd.fdsa.kafka.connect.transform;
 
-import com.github.jcustenborder.kafka.connect.utils.config.Description;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.apache.kafka.common.config.ConfigDef;
@@ -24,16 +23,11 @@ import org.apache.kafka.connect.connector.ConnectRecord;
 import org.apache.kafka.connect.data.*;
 import org.apache.kafka.connect.transforms.Transformation;
 
-import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@Description("Transformation to generate record id")
 public class AviatorTransformation<R extends ConnectRecord<R>> implements Transformation<R> {
     AviatorConfig config;
 
@@ -97,7 +91,7 @@ public class AviatorTransformation<R extends ConnectRecord<R>> implements Transf
 
     @Override
     public ConfigDef config() {
-        return ExtractMDConfig.config();
+        return DigestConfig.config();
     }
 
     @Override

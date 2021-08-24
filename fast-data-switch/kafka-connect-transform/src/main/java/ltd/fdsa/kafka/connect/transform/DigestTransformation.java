@@ -15,7 +15,6 @@
  */
 package ltd.fdsa.kafka.connect.transform;
 
-import com.github.jcustenborder.kafka.connect.utils.config.Description;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.apache.kafka.common.config.ConfigDef;
@@ -33,14 +32,17 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@Description("Transformation to generate record id")
-public class ExtractMDTransformation<R extends ConnectRecord<R>> implements Transformation<R> {
-    ExtractMDConfig config;
+public class DigestTransformation<R extends ConnectRecord<R>> implements Transformation<R> {
+    DigestConfig config;
 
-    Map<Schema, List<String>> fieldMappings = new HashMap<>();
+    public ConfigDef config() {
+        return DigestConfig.config();
+    }
 
-    @Override
-    public ConnectRecord apply(ConnectRecord record) {
+    public void configure(Map<String, ?> settings) {
+        this.config = new DigestConfig(settings);
+    }
+    public R apply(R record) {
         if (null == record.valueSchema() || Schema.Type.STRUCT != record.valueSchema().type()) {
             log.trace("record.valueSchema() is null or record.valueSchema() is not a struct.");
             return record;
@@ -62,7 +64,7 @@ public class ExtractMDTransformation<R extends ConnectRecord<R>> implements Tran
             MessageDigest m = MessageDigest.getInstance(config.methodName);
             var x = "";
             for (var field : this.config.includes) {
-                x += ";" + inputStruct.getString(field);
+                x += ";" + inputStruct.get(field).toString();
             }
             m.update(x.getBytes("UTF8"));
             byte s[] = m.digest();
@@ -100,21 +102,8 @@ public class ExtractMDTransformation<R extends ConnectRecord<R>> implements Tran
             return record;
         }
 
-
     }
-
-    @Override
-    public ConfigDef config() {
-        return ExtractMDConfig.config();
-    }
-
-    @Override
     public void close() {
-
     }
 
-    @Override
-    public void configure(Map<String, ?> settings) {
-        this.config = new ExtractMDConfig(settings);
-    }
 }

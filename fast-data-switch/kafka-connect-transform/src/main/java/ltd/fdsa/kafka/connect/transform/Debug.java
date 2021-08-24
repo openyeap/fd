@@ -56,10 +56,9 @@ public class Debug<R extends ConnectRecord<R>> implements Transformation<R> {
         debugContent.put("value", result);
     }
 
-    @Override
     public R apply(R r) {
         try {
-            Map<String, Object> debugContent = new LinkedHashMap<>();
+            Map<String, Object> debugContent = new LinkedHashMap<String, Object>();
             addConnectRecord(debugContent, r);
             if (r instanceof SinkRecord) {
                 SinkRecord sinkRecord = (SinkRecord) r;
@@ -81,17 +80,14 @@ public class Debug<R extends ConnectRecord<R>> implements Transformation<R> {
         return r;
     }
 
-    @Override
     public ConfigDef config() {
         return new ConfigDef();
     }
 
-    @Override
     public void close() {
 
     }
 
-    @Override
     public void configure(Map<String, ?> settings) {
     }
 }

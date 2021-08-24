@@ -24,12 +24,12 @@ import org.apache.kafka.common.protocol.types.Field;
 import java.util.List;
 import java.util.Map;
 
-public class ExtractMDConfig extends AbstractConfig {
+public class DigestConfig extends AbstractConfig {
     public final String fieldName;
     public final String methodName;
     public final List<String> includes;
 
-    public ExtractMDConfig(Map<String, ?> settings) {
+    public DigestConfig(Map<String, ?> settings) {
         super(config(), settings);
         var name = this.getString(FIELD_NAME_CONF);
         if (Strings.isNullOrEmpty(name)) {

@@ -68,7 +68,7 @@ public class AviatorConfig extends AbstractConfig {
         super(config(), settings);
         String expression = this.getString(EXPRESSION_CONF);
         if (!cache.containsKey(expression)) {
-            List<String> sb = new ArrayList<>();
+            List<String> sb = new ArrayList<String>();
             for (String item : expression.split(";")) {
                 String[] kv = item.split("=");
                 sb.add("'" + kv[0].trim() + "'," + kv[1].trim());

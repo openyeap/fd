@@ -60,15 +60,4 @@ public class Column {
         return JSON.toJSONString(this);
     }
 
-    public enum Type {
-        BAD,
-        NULL,
-        INT,
-        LONG,
-        DOUBLE,
-        STRING,
-        BOOL,
-        DATE,
-        BYTES
-    }
 }
