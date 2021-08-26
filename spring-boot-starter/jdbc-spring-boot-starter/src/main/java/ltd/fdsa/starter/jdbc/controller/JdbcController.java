@@ -2,10 +2,10 @@ package ltd.fdsa.starter.jdbc.controller;
 
 import io.swagger.models.Swagger;
 import lombok.extern.slf4j.Slf4j;
-import ltd.fdsa.database.controller.BaseController;
 import ltd.fdsa.starter.jdbc.RdmlParser;
 import ltd.fdsa.starter.jdbc.model.DBResult;
 import ltd.fdsa.starter.jdbc.service.JdbcService;
+import ltd.fdsa.web.controller.BaseController;
 import ltd.fdsa.web.view.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

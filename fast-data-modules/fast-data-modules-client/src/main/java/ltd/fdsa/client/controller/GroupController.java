@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import ltd.fdsa.client.jpa.entity.Group;
 import ltd.fdsa.client.jpa.service.GroupService;
-import ltd.fdsa.database.controller.BaseController;
+import ltd.fdsa.web.controller.BaseController;
 import ltd.fdsa.database.entity.Status;
 import ltd.fdsa.web.enums.HttpCode;
 import ltd.fdsa.web.view.Result;

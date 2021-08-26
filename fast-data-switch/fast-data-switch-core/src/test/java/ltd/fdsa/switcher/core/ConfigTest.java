@@ -23,7 +23,6 @@ import java.util.Properties;
 
 
 /**
-
  * @ClassName:
  * @description:
  * @since 2020-10-28
@@ -42,7 +41,7 @@ public class ConfigTest {
         var url = this.getClass().getClassLoader().getResource("application.yml");
         var content = FileUtils.readFile(url.getFile());
 
-        var config = YamlConfig.YamlConfig(content);// YamlConfig(content);
+        var config = new YamlConfig(content);// YamlConfig(content);
         var slaves = config.getString("spring.datasource.slaves");
         log.info("{}", slaves);
         var app = config.getString("spring.application.name");
@@ -59,10 +58,10 @@ public class ConfigTest {
 
         for (var item : this.env.getPropertySources()) {
             try {
-           
-            log.info("{}", item.getClass());
+
+                log.info("{}", item.getClass());
             } catch (Exception ex) {
-                log.error("ss",ex);
+                log.error("ss", ex);
             }
         }
     }
@@ -86,7 +85,7 @@ public class ConfigTest {
         var app = config.getProperty("spring.application.name");
         log.info("{}", app);
         var application = config.getProperty("spring.application");
-        log.info("{}",application);
+        log.info("{}", application);
 
         var list = config.getProperty("spring.datasource.slaves");
 

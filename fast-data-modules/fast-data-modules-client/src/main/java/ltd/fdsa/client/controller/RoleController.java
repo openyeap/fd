@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import ltd.fdsa.client.mybatis.entity.Role;
 import ltd.fdsa.client.mybatis.plus.service.RoleService;
-import ltd.fdsa.database.controller.BaseController;
+import ltd.fdsa.web.controller.BaseController;
 import ltd.fdsa.database.entity.Status;
 import ltd.fdsa.database.sql.queries.Queries;
 import ltd.fdsa.database.sql.schema.Table;

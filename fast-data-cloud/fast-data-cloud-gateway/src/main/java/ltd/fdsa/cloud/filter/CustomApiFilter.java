@@ -2,7 +2,6 @@ package ltd.fdsa.cloud.filter;
 
 import io.netty.buffer.ByteBufAllocator;
 import lombok.var;
-import ltd.fdsa.cloud.property.AuthProperties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.reactivestreams.Subscriber;
@@ -39,8 +38,7 @@ public class CustomApiFilter implements GlobalFilter, Ordered {
 
     private static final Log log = LogFactory.getLog(GatewayFilter.class);
 
-    @Autowired
-    private AuthProperties mySQLProperties;
+
     private ServerHttpRequest request;
     private ServerHttpResponse response;
 //    @Autowired

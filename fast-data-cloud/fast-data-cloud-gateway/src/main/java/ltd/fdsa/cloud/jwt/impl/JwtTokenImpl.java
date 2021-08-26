@@ -87,7 +87,7 @@ public class JwtTokenImpl implements IJwtToken, InitializingBean {
                 .setSubject(subject)
                 .setId(UUID.randomUUID().toString())
                 .setIssuedAt(now)
-                .setIssuer(JwtConstant.TOKEN_ISSUER)
+                .setIssuer("TOKEN_ISSUER")
                 .setClaims(claims)
                 .signWith(SignatureAlgorithm.RS256, PRIVATE_KEY);
         if (expired > 0) {

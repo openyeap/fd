@@ -1,9 +1,9 @@
 package ltd.fdsa.cloud.util;
 
 import lombok.extern.slf4j.Slf4j;
-import ltd.fdsa.cloud.constant.SecretConstant;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.yaml.snakeyaml.scanner.Constant;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -68,9 +68,9 @@ public class AESSecretUtil {
         return null;
     }
 
-    public static String decryptToStr(String enCryptdata, String key) {
-        return StringUtils.isNotBlank(enCryptdata)
-                ? new String(decrypt(parseHexStr2Byte(enCryptdata), key))
+    public static String decryptToStr(String encryptData, String key) {
+        return StringUtils.isNotBlank(encryptData)
+                ? new String(decrypt(parseHexStr2Byte(encryptData), key))
                 : null;
     }
 
@@ -99,9 +99,5 @@ public class AESSecretUtil {
         return result;
     }
 
-    public static void main(String[] args) {
-        String ss = encryptToStr("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxMjMiLCJ1c2VyTmFtZSI6Ikp1ZHkiLCJleHAiOjE1MzI3Nzk2MjIsIm5iZiI6MTUzMjc3NzgyMn0.sIw_leDZwG0pJ8ty85Iecd_VXjObYutILNEwPUyeVSo", SecretConstant.DATA_KEY);
-        log.info(ss);
-        log.info(decryptToStr(ss, SecretConstant.DATA_KEY));
-    }
+
 }

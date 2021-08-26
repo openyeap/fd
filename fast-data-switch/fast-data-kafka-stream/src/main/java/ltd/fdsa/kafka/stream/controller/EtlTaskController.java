@@ -1,10 +1,10 @@
 package ltd.fdsa.kafka.stream.controller;
 
-import ltd.fdsa.database.controller.BaseController;
 import ltd.fdsa.kafka.stream.entity.EtlTask;
 import ltd.fdsa.kafka.stream.view.EtlTaskReq;
 import ltd.fdsa.kafka.stream.service.IEtlTaskService;
 import io.swagger.annotations.ApiOperation;
+import ltd.fdsa.web.controller.BaseController;
 import ltd.fdsa.web.view.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

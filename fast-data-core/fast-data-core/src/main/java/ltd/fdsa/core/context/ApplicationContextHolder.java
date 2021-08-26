@@ -37,7 +37,6 @@ public class ApplicationContextHolder implements //BeanFactoryPostProcessor,
 
     private static ApplicationContext APPLICATION_CONTEXT;
 
-
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
 //        NamingUtils.formatLog(log,"{} 初始化前 {}", beanName, bean);

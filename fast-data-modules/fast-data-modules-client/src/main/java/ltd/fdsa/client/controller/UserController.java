@@ -4,13 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import ltd.fdsa.client.mybatis.entity.User;
 import ltd.fdsa.client.mybatis.generic.service.UserService;
-
-import ltd.fdsa.database.controller.BaseController;
 import ltd.fdsa.database.entity.Status;
 import ltd.fdsa.web.enums.HttpCode;
 import ltd.fdsa.web.view.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ltd.fdsa.web.controller.BaseController;
 
 @RestController
 @RequestMapping("user")

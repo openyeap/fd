@@ -7,4 +7,9 @@ public class IntData implements Data {
     public Object getValue() {
         return this.data;
     }
+
+    @Override
+    public Type getType() {
+        return Type.INT;
+    }
 }
