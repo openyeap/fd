@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="importmap-type" content="systemjs-importmap">
 
-  <title> Microfrontends</title>
+  <title>{{ .Title }}</title>
 
   <script type="systemjs-importmap">
     {
@@ -17,7 +17,9 @@
         "app1": "http://localhost:8081/js/app.js",
         "app2": "http://localhost:8082/js/app.js",    
         "app3": "http://localhost:8083/entry.js",  
-        "app4": "http://localhost:8083/js/app.js",    
+        {{ range . }}
+        "{{ .Name }}": "{{ .Uri }}",
+        {{ end }} 
         "vue": "https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js",
         "vuex":"https://unpkg.com/vuex@3.6.2/dist/vuex.js",
         "vue-router": "https://cdn.jsdelivr.net/npm/vue-router@3.1.6/dist/vue-router.min.js",
@@ -57,6 +59,9 @@
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
+
+
+
   <div class="wrapper" id='body'>
 
     <!-- Preloader -->
@@ -920,45 +925,6 @@
   </div>
   <!-- ./wrapper -->
 
-
-  <!-- See //github.com/joeldenning/import-map-overrides#user-interface  -->
-  <import-map-overrides-full show-when-local-storage="overrides-ui"></import-map-overrides-full>
-
-  <!-- jQuery -->
-  <script src="/plugins/jquery/jquery.min.js"></script>
-  <!-- jQuery UI 1.11.4 -->
-  <script src="/plugins/jquery-ui/jquery-ui.min.js"></script>
-  <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-  <!-- <script>
-    $.widget.bridge('uibutton', $.ui.button)
-  </script> -->
-  <!-- Bootstrap 4 -->
-  <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <!-- ChartJS -->
-  <script src="/plugins/chart.js/Chart.min.js"></script>
-  <!-- Sparkline -->
-  <script src="/plugins/sparklines/sparkline.js"></script>
-  <!-- JQVMap -->
-  <script src="/plugins/jqvmap/jquery.vmap.min.js"></script>
-  <script src="/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-  <!-- jQuery Knob Chart -->
-  <script src="/plugins/jquery-knob/jquery.knob.min.js"></script>
-  <!-- daterangepicker -->
-  <!-- <script src="plugins/moment/moment.min.js"></script> -->
-  <script src="/plugins/daterangepicker/daterangepicker.js"></script>
-  <!-- Tempusdominus Bootstrap 4 -->
-  <!-- <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script> -->
-  <!-- Summernote -->
-  <script src="/plugins/summernote/summernote-bs4.min.js"></script>
-  <!-- overlayScrollbars -->
-  <script src="/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-  <!-- AdminLTE App -->
-  <script src="/js/adminlte.js"></script>
-  <!-- AdminLTE for demo purposes -->
-  <script src="/js/app.js"></script>
-  <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-  <!-- <script src="js/pages/dashboard.js"></script> -->
-
   <template id='home'>
     <div>
       <!-- Content Header (Page header) -->
@@ -1568,6 +1534,134 @@
 
 
   </template>
+  <!-- See //github.com/joeldenning/import-map-overrides#user-interface  -->
+  <import-map-overrides-full show-when-local-storage="overrides-ui"></import-map-overrides-full>
+
+  <!-- jQuery -->
+  <script src="/plugins/jquery/jquery.min.js"></script>
+  <!-- jQuery UI 1.11.4 -->
+  <script src="/plugins/jquery-ui/jquery-ui.min.js"></script>
+  <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+  <!-- <script>
+    $.widget.bridge('uibutton', $.ui.button)
+  </script> -->
+  <!-- Bootstrap 4 -->
+  <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- ChartJS -->
+  <script src="/plugins/chart.js/Chart.min.js"></script>
+  <!-- Sparkline -->
+  <script src="/plugins/sparklines/sparkline.js"></script>
+  <!-- JQVMap -->
+  <script src="/plugins/jqvmap/jquery.vmap.min.js"></script>
+  <script src="/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+  <!-- jQuery Knob Chart -->
+  <script src="/plugins/jquery-knob/jquery.knob.min.js"></script>
+  <!-- daterangepicker -->
+  <!-- <script src="plugins/moment/moment.min.js"></script> -->
+  <script src="/plugins/daterangepicker/daterangepicker.js"></script>
+  <!-- Tempusdominus Bootstrap 4 -->
+  <!-- <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script> -->
+  <!-- Summernote -->
+  <script src="/plugins/summernote/summernote-bs4.min.js"></script>
+  <!-- overlayScrollbars -->
+  <script src="/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="/js/adminlte.js"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script>
+    window.__POWERED_BY_ADMA__ = true;
+
+    (function () {
+      Promise.all([System.import('single-spa'), System.import('vue'), System.import('vuex'), System.import('vue-router')]).then(function (modules) {
+        window.singleSpa = modules[0];
+        window.Vue = modules[1];
+        window.Vuex = modules[2];
+        window.VueRouter = modules[3];
+        Vue.use(Vuex);
+        const store = new Vuex.Store({
+          state: {},
+          mutations: {},
+          modules: {
+          }
+        })
+
+        // 0. 如果使用模块化机制编程，导入Vue和VueRouter，要调用 Vue.use(VueRouter)
+        Vue.use(VueRouter);
+
+        // 1. 定义 (路由) 组件。
+        // 可以从其他文件 import 进来
+        const about = { template: '<div>this is about page</div>' }
+        // 2. 定义路由
+        // 每个路由应该映射一个组件。 其中"component" 可以是
+        // 通过 Vue.extend() 创建的组件构造器，
+        // 或者，只是一个组件配置对象。
+        // 我们晚点再讨论嵌套路由。
+        const routes = [
+          { path: '/about', component: about }
+          ,
+          { path: '/', component: { template: $('#home').html() } }
+        ]
+
+        // 3. 创建 router 实例，然后传 `routes` 配置
+        // 你还可以传别的配置参数, 不过先这么简单着吧。
+        const router = new VueRouter({
+          mode: 'history',
+          routes: routes
+        })
+
+        window.app = new Vue({
+          el: '#body',
+          store,
+          router,
+          // render: h => h(App)
+        })
+
+        singleSpa.registerApplication(
+          'app1',
+          () => System.import('app1'),
+          location => location.pathname.startsWith('/app1')
+        );
+
+        singleSpa.registerApplication(
+          'app2',
+          () => System.import('app2'),
+          location => location.pathname.startsWith('/app2')
+        );
+
+        singleSpa.registerApplication(
+          'app3',
+          () => System.import('app3'),
+          location => location.pathname.startsWith("/app3")
+        );
+
+        singleSpa.registerApplication(
+          'app4',
+          () => System.import('app4'),
+          location => location.pathname.startsWith("/app4")
+        );
+
+        { { range. } }
+
+        singleSpa.registerApplication(
+          '{{ .Name }}',
+          () => System.import('{{ .Name }}'),
+          location => location.pathname.startsWith('{{ .Name }}')
+        );
+        { { end } }
+        // singleSpa.navigateToUrl("/app1");
+        // singleSpa.navigateToUrl("/app2");
+        // singleSpa.navigateToUrl("/app3");
+        // singleSpa.navigateToUrl("/app4");    
+        // singleSpa.navigateToUrl("/")
+        singleSpa.start();
+      })
+    })()
+
+  </script>
+  <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+  <!-- <script src="js/pages/dashboard.js"></script> -->
+
+
 </body>
 
 </html>

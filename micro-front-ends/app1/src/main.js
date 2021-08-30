@@ -64,8 +64,8 @@ export async function mount(props) {
 
 export async function unmount(props) {
   console.log('[vue] app mount', props);
-  vm.$destroy();
-  vm.$el.innerHTML = '';
+  // vm.$destroy();
+  // vm.$el.innerHTML = '';
   // instance = null;
   // router = null;
 }
