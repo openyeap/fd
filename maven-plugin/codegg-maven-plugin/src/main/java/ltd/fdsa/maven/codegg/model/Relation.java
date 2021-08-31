@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class Relation {
     String name;
-    Define from;
-    Define to;
+    RelationDefine from;
+    RelationDefine to;
 }
 

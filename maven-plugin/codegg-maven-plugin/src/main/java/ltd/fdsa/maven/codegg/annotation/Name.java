@@ -1,4 +1,4 @@
-package ltd.fdsa.maven.codegg;
+package ltd.fdsa.maven.codegg.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -11,6 +11,6 @@ public @interface Name {
      *
      * @return
      */
-    String name() default "";
+    String value() default "";
 
 }

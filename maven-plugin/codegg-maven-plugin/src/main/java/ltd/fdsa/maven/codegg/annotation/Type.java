@@ -1,12 +1,10 @@
-package ltd.fdsa.maven.codegg;
+package ltd.fdsa.maven.codegg.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Scale {
+public @interface Type {
 
-
-    int scale() default 0;
-
+    String value() default "";
 }

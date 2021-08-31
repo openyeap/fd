@@ -1,11 +1,10 @@
-package ltd.fdsa.maven.codegg;
+package ltd.fdsa.maven.codegg.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Comments {
+public @interface Length {
 
-
-    String description() default "";
+    int value() default 0;
 }
