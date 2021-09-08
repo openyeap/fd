@@ -16,7 +16,7 @@ Aviator是一个高性能、轻量级的java语言实现的表达式求值引擎
 
 ```properties
 "transforms": "Aviator",
-"transforms.Aviator.type": "AviatorTransformation,
+"transforms.Aviator.type": "AviatorTransformation“,
 "transforms.Aviator.expression": "full_name = db.first_name +' ' + db.last_name, age = db.age",
 ```
 
@@ -24,7 +24,7 @@ Aviator是一个高性能、轻量级的java语言实现的表达式求值引擎
 
 | 操作符    | 操作数限制                                                   |
 | :-------- | :----------------------------------------------------------- |
-| () [ ]    | ()用于函数调用，[ ]用于数组和java.util.List的元素访问，要求[indx]中的index必须为整型 |
+| () [ ]    | ()用于函数调用，[ ]用于数组和java.util.List的元素访问，要求[index]中的index必须为整型 |
 | ! - ~     | ! 能用于Boolean,- 仅能用于Number,~仅能用于整数               |
 | * / %     | Number之间                                                   |
 | + -       | + - 都能用于Number之间, + 还能用于String之间，或者String和其他对象 |
