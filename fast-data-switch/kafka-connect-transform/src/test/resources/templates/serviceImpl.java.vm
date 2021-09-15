@@ -1,0 +1,19 @@
+package ${package.ServiceImpl};
+
+import ${package.Entity}.${entity};
+import ${package.Mapper.replace("readmappers","writemappers")}.${table.mapperName.replace("Mapper", "Writer")};
+import ${package.Mapper.replace("writemappers","readmappers")}.${table.mapperName.replace("Mapper", "Reader")};
+import ${package.Service}.${table.serviceName};
+import ${superServiceImplClassPackage};
+import org.springframework.stereotype.Service;
+
+@Service
+#if(${kotlin})
+open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>(), ${table.serviceName} {
+
+}
+#else
+public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName.replace("Mapper", "Writer")}, ${table.mapperName.replace("Mapper", "Reader")}, ${entity}, Long> implements ${table.serviceName} {
+
+}
+#end

@@ -6,6 +6,7 @@ import com.lmax.disruptor.dsl.Disruptor;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
+import ltd.fdsa.switcher.core.model.Record;
 import ltd.fdsa.switcher.core.pipeline.Channel;
 import ltd.fdsa.switcher.core.pipeline.Pipeline;
 import ltd.fdsa.switcher.core.config.Configuration;
@@ -18,7 +19,7 @@ import java.util.concurrent.Executors;
 
 @Slf4j
 public class DisruptorChannel extends AbstractPipeline implements Channel {
-    private Disruptor<Map<String, Object>> disruptor;
+    private Disruptor<Record> disruptor;
 
     @Override
     public Result<String> init(Configuration configuration) {
@@ -26,7 +27,7 @@ public class DisruptorChannel extends AbstractPipeline implements Channel {
         if (result.getCode() == 200) {
             int bufferSize = this.config.getInt("bufferSize", 1024);
             // Construct the Disruptor
-            this.disruptor = new Disruptor<Map<String, Object>>(HashMap::new, bufferSize, Executors.defaultThreadFactory());
+            this.disruptor = new Disruptor<Record>(Record::new, bufferSize, Executors.defaultThreadFactory());
             return Result.success();
         }
         return result;
@@ -43,7 +44,7 @@ public class DisruptorChannel extends AbstractPipeline implements Channel {
     }
 
     @Override
-    public void collect(Map<String, Object>... records) {
+    public void collect(Record... records) {
         if (!this.isRunning()) {
             return;
         }
@@ -63,24 +64,23 @@ public class DisruptorChannel extends AbstractPipeline implements Channel {
 
 
     @AllArgsConstructor
-    class RecordHandler implements EventHandler<Map<String, Object>> {
+    class RecordHandler implements EventHandler<Record> {
         private final List<Pipeline> sinks;
 
         @Override
-        public void onEvent(Map<String, Object> stringObjectMap, long l, boolean b) throws Exception {
+        public void onEvent(Record record, long l, boolean b) throws Exception {
             for (var sink : sinks) {
-                sink.collect(new HashMap<String, Object>(stringObjectMap));
+                sink.collect(record);
             }
         }
     }
 
     @AllArgsConstructor
-    class RecordSender implements EventTranslator<Map<String, Object>> {
-        private Map<String, Object> record;
+    class RecordSender implements EventTranslator<Record> {
+        private Record record;
 
         @Override
-        public void translateTo(Map<String, Object> stringObjectMap, long l) {
-            stringObjectMap.putAll(record);
+        public void translateTo(Record record, long l) {
         }
     }
 }

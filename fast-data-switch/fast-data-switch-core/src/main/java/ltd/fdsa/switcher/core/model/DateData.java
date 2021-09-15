@@ -1,17 +1,18 @@
 package ltd.fdsa.switcher.core.model;
 
 import java.nio.ByteBuffer;
+import java.util.Date;
 
-public class IntData implements Item {
-    private int data;
+public class DateData implements Item {
+    private Date data;
 
-    public IntData(int value) {
-        this.data = value;
+    public DateData(long value) {
+        this.data = new Date(value);
     }
 
     @Override
     public Item parse(byte[] bytes) {
-        if (bytes.length != 5) {
+        if (bytes.length != 9) {
             return null;
         }
         if (bytes[0] != (byte) this.getType().ordinal()) {
@@ -20,14 +21,14 @@ public class IntData implements Item {
         ByteBuffer buffer = ByteBuffer.allocate(bytes.length - 1);
         buffer.put(bytes, 1, bytes.length - 1);
         buffer.flip(); //need flip
-        return new IntData(buffer.getInt());
+        return new DateData(buffer.getLong());
     }
 
     @Override
     public byte[] toBytes() {
-        ByteBuffer buffer = ByteBuffer.allocate(5);
+        ByteBuffer buffer = ByteBuffer.allocate(9);
         buffer.put((byte) getType().ordinal());
-        buffer.putInt(this.data);
+        buffer.putLong(this.data.getTime());
         return buffer.array();
     }
 
@@ -38,6 +39,6 @@ public class IntData implements Item {
 
     @Override
     public Type getType() {
-        return Type.INT0;
+        return Type.DATE0;
     }
 }

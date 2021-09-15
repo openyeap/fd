@@ -2,6 +2,7 @@ package ltd.fdsa.switcher.core.pipeline;
 
 
 import ltd.fdsa.switcher.core.config.Configuration;
+import ltd.fdsa.switcher.core.model.Record;
 import ltd.fdsa.web.view.Result;
 import org.springframework.context.SmartLifecycle;
 
@@ -13,7 +14,7 @@ public interface Pipeline extends SmartLifecycle {
     Result<String> init(Configuration configuration);
 
     // collector
-    void collect(Map<String, Object>... records);
+    void collect(Record... records);
 
     // output
     Map<String, String> scheme();

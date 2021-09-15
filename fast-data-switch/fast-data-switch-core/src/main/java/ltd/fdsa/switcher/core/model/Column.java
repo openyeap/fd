@@ -11,48 +11,48 @@ import java.util.Date;
 @Data
 public class Column {
 
-    private Object rawData;
+    private Item value;
 
     private int byteSize;
 
-    private String name;
+    private Item key;
 
-    public Column(final String name, final Object object) {
-        this(name, object, 8); // TODO get size of the object
+    public Column(final String name, final Item object) {
+        this(name, object, object.toBytes().length);
     }
 
-    public Column(final String name, final Object object, int byteSize) {
-        this.name = name;
-        this.rawData = object;
+    public Column(final String name, final Item object, int byteSize) {
+        this.key = new StringData(name);
+        this.value = object;
         this.byteSize = byteSize;
     }
 
     public Long asLong() {
-        return TypeConvertUtils.convert(this.rawData, Long.class);
+        return TypeConvertUtils.convert(this.value.getValue(), Long.class);
     }
 
     public Double asDouble() {
-        return TypeConvertUtils.convert(this.rawData, Double.class);
+        return TypeConvertUtils.convert(this.value.getValue(), Double.class);
     }
 
     public String asString() {
-        return TypeConvertUtils.convert(this.rawData, String.class);
+        return TypeConvertUtils.convert(this.value.getValue(), String.class);
     }
 
     public Date asDate() {
-        return TypeConvertUtils.convert(this.rawData, Date.class);
+        return TypeConvertUtils.convert(this.value.getValue(), Date.class);
     }
 
     public Boolean asBoolean() {
-        return TypeConvertUtils.convert(this.rawData, Boolean.class);
+        return TypeConvertUtils.convert(this.value.getValue(), Boolean.class);
     }
 
     public BigDecimal asBigDecimal() {
-        return TypeConvertUtils.convert(this.rawData, BigDecimal.class);
+        return TypeConvertUtils.convert(this.value.getValue(), BigDecimal.class);
     }
 
     public BigInteger asBigInteger() {
-        return TypeConvertUtils.convert(this.rawData, BigInteger.class);
+        return TypeConvertUtils.convert(this.value.getValue(), BigInteger.class);
     }
 
     @Override

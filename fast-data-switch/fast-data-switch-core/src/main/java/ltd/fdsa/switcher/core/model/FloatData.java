@@ -2,10 +2,10 @@ package ltd.fdsa.switcher.core.model;
 
 import java.nio.ByteBuffer;
 
-public class IntData implements Item {
-    private int data;
+public class FloatData implements Item {
+    private float data;
 
-    public IntData(int value) {
+    public FloatData(float value) {
         this.data = value;
     }
 
@@ -20,14 +20,14 @@ public class IntData implements Item {
         ByteBuffer buffer = ByteBuffer.allocate(bytes.length - 1);
         buffer.put(bytes, 1, bytes.length - 1);
         buffer.flip(); //need flip
-        return new IntData(buffer.getInt());
+        return new FloatData(buffer.getFloat());
     }
 
     @Override
     public byte[] toBytes() {
         ByteBuffer buffer = ByteBuffer.allocate(5);
         buffer.put((byte) getType().ordinal());
-        buffer.putInt(this.data);
+        buffer.putFloat(this.data);
         return buffer.array();
     }
 
@@ -38,6 +38,6 @@ public class IntData implements Item {
 
     @Override
     public Type getType() {
-        return Type.INT0;
+        return Type.Float0;
     }
 }

@@ -6,6 +6,7 @@ import lombok.var;
 import ltd.fdsa.core.util.ClassLoaderSwapper;
 import ltd.fdsa.switcher.core.PluginType;
 
+import ltd.fdsa.switcher.core.model.Record;
 import ltd.fdsa.switcher.core.pipeline.Pipeline;
 import ltd.fdsa.switcher.core.config.Configuration;
 import ltd.fdsa.switcher.core.constant.Constants;
@@ -82,7 +83,7 @@ public abstract class AbstractPipeline implements Pipeline {
     }
 
     @Override
-    public void collect(Map<String, Object>... records) {
+    public void collect(Record... records) {
         if (!this.isRunning()) {
             return;
         }

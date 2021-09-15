@@ -2,16 +2,16 @@ package ltd.fdsa.switcher.core.model;
 
 import java.nio.ByteBuffer;
 
-public class IntData implements Item {
-    private int data;
+public class DoubleData implements Item {
+    private double data;
 
-    public IntData(int value) {
+    public DoubleData(double value) {
         this.data = value;
     }
 
     @Override
     public Item parse(byte[] bytes) {
-        if (bytes.length != 5) {
+        if (bytes.length != 9) {
             return null;
         }
         if (bytes[0] != (byte) this.getType().ordinal()) {
@@ -20,14 +20,14 @@ public class IntData implements Item {
         ByteBuffer buffer = ByteBuffer.allocate(bytes.length - 1);
         buffer.put(bytes, 1, bytes.length - 1);
         buffer.flip(); //need flip
-        return new IntData(buffer.getInt());
+        return new DoubleData(buffer.getDouble());
     }
 
     @Override
     public byte[] toBytes() {
-        ByteBuffer buffer = ByteBuffer.allocate(5);
+        ByteBuffer buffer = ByteBuffer.allocate(9);
         buffer.put((byte) getType().ordinal());
-        buffer.putInt(this.data);
+        buffer.putDouble(this.data);
         return buffer.array();
     }
 
@@ -38,6 +38,6 @@ public class IntData implements Item {
 
     @Override
     public Type getType() {
-        return Type.INT0;
+        return Type.Double0;
     }
 }

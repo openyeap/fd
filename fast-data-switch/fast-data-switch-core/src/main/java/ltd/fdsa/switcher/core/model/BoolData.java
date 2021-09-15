@@ -2,10 +2,10 @@ package ltd.fdsa.switcher.core.model;
 
 import java.nio.ByteBuffer;
 
-public class ByteData implements Item {
+public class BoolData implements Item {
     private byte data;
 
-    public ByteData(byte data) {
+    public BoolData(byte data) {
         this.data = data;
     }
 
@@ -17,7 +17,7 @@ public class ByteData implements Item {
         if (bytes[0] != this.getType().ordinal()) {
             return null;
         }
-        return new ByteData(bytes[1]);
+        return new BoolData(bytes[1]);
     }
 
     @Override
@@ -30,11 +30,11 @@ public class ByteData implements Item {
 
     @Override
     public Object getValue() {
-        return this.data;
+        return this.data > 0;
     }
 
     @Override
     public Type getType() {
-        return Type.Byte0;
+        return Type.BOOL0;
     }
 }
