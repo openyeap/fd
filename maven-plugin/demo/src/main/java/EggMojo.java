@@ -1,91 +1,218 @@
-package ltd.fdsa.maven.codegg;
 
-import com.baomidou.mybatisplus.annotation.DbType;
-import com.baomidou.mybatisplus.generator.AutoGenerator;
-import com.baomidou.mybatisplus.generator.InjectionConfig;
-import com.baomidou.mybatisplus.generator.config.*;
-import com.baomidou.mybatisplus.generator.config.po.TableInfo;
-import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
-import com.google.common.base.Strings;
+import annotation.*;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import lombok.var;
-import org.apache.maven.model.Developer;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.logging.Log;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.apache.maven.project.MavenProject;
+import model.Entity;
+import model.Field;
+import model.Module;
+import model.RelationDefine;
 
-import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
+
+import java.io.*;
 import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-@EqualsAndHashCode(callSuper = true)
-@Mojo(name = "egg", defaultPhase = LifecyclePhase.CLEAN, threadSafe = true, requiresDependencyResolution = ResolutionScope.RUNTIME)
 @Data
-public class EggMojo extends AbstractMojo {
+@Slf4j
+public class EggMojo {
 
-    Log log = this.getLog();
-    @Parameter(defaultValue = "${project}", readonly = true, required = true)
-    private MavenProject project;
-    @Parameter(property = "packageName", defaultValue = "")
-    private String packageName;
-    @Parameter(property = "parentName", defaultValue = "")
-    private String parentName;
-    @Parameter(property = "author", required = true, defaultValue = "zhumingwu@126.com")
-    private String author;
+    public java.lang.reflect.Field[] getDeclaredFields(Class<?> clazz) {
+        ArrayList<java.lang.reflect.Field> fieldList = new ArrayList<>(16);
+        while (clazz != null) {
+            var fields = clazz.getDeclaredFields();
+            var sss = Stream.of(fields).collect(Collectors.toList());
+            fieldList.addAll(sss);
+            clazz = clazz.getSuperclass();
+        }
+        java.lang.reflect.Field[] f = new java.lang.reflect.Field[fieldList.size()];
+        return fieldList.toArray(f);
+    }
 
-    @Override
-    @SneakyThrows
+    private RelationDefine[] getRelations(List<Class<?>> classes) {
+        List<RelationDefine> results = new ArrayList<RelationDefine>();
+        for (var clazz : classes) {
+            for (var item :  getDeclaredFields(clazz)) {
+                var builder = RelationDefine.builder();
+                var relation = item.getAnnotation(Relation.class);
+                if (relation == null) {
+                    continue;
+                }
+                builder.name(relation.value());
+                builder.fromEntity(relation.entity());
+                builder.fromField(relation.field());
+                builder.toEntity(clazz);
+                builder.toField(item.getName());
+                results.add(builder.build());
+            }
+        }
+        return results.toArray(new RelationDefine[0]);
+    }
+
+    private Entity[] getEntities(List<Class<?>> classes) {
+
+        List<Entity> results = new ArrayList<Entity>();
+        for (var item : classes) {
+            var builder = Entity.builder();
+            builder.code(item.getCanonicalName());
+            var name = item.getAnnotation(Name.class);
+            if (name == null) {
+                builder.name(item.getSimpleName());
+            } else {
+                builder.name(name.value());
+            }
+            var remark = item.getAnnotation(Remark.class);
+            if (remark == null) {
+                builder.remark(item.getSimpleName());
+            } else {
+                builder.remark(remark.value());
+            }
+            builder.fields(getFields(item));
+            results.add(builder.build());
+        }
+        return results.toArray(new Entity[0]);
+    }
+
+    private Field[] getFields(Class<?> clazz) {
+        List<Field> results = new ArrayList<Field>();
+        for (var item : getDeclaredFields(clazz)) {
+            var builder = Field.builder();
+            builder.code(clazz.getCanonicalName() + "." + item.getName());
+            var name = item.getAnnotation(Name.class);
+            if (name == null) {
+                builder.name(item.getName());
+            } else {
+                builder.name(name.value());
+            }
+            var type = item.getAnnotation(Type.class);
+            if (type == null) {
+                builder.type(item.getType().getSimpleName());
+            } else {
+                builder.type(type.value());
+            }
+            var remark = item.getAnnotation(Remark.class);
+            if (remark == null) {
+                builder.remark(item.getName());
+            } else {
+                builder.remark(remark.value());
+            }
+            var isNull = item.getAnnotation(IsNull.class);
+            if (isNull == null) {
+                builder.isNull(false);
+            } else {
+                builder.isNull(isNull.value());
+            }
+            var length = item.getAnnotation(Length.class);
+            if (length == null) {
+                builder.length(8);
+            } else {
+                builder.length(length.value());
+            }
+            var scale = item.getAnnotation(Scale.class);
+            if (scale == null) {
+                builder.scale(3);
+            } else {
+                builder.scale(scale.value());
+            }
+            var autoIncrement = item.getAnnotation(AutoIncrement.class);
+            if (autoIncrement == null) {
+                builder.autoIncrement(false);
+            } else {
+                builder.autoIncrement(autoIncrement.value());
+            }
+            results.add(builder.build());
+        }
+        return results.toArray(new Field[0]);
+    }
+
     public void execute() {
-        log.info("Try to generate code in " + String.join(".", this.parentName, this.packageName));
         log.info("------------------------------------------------------------------------");
-        log.info(this.project.getBasedir().getAbsolutePath());
-        if (Strings.isNullOrEmpty(this.parentName)) {
-            this.parentName = this.project.getGroupId();
-        }
-        if (Strings.isNullOrEmpty(this.packageName)) {
-            this.packageName = String.join(".", this.project.getArtifactId().split("-"));
-        }
-        List<Developer> developers = this.project.getDevelopers();
-        if (developers.stream().count() > 0) {
-            this.author = developers.get(0).getName();
-        }
+        log.info("Try to generate code in ");
         log.info("------------------------------------------------------------------------");
 
         try {
             log.info("Generate file start");
 
-            //得到模板文件
-            var root = EggMojo.class.getClassLoader().getResources("./templates");
-            if (root == null) {
-                log.info("failed!");
-                return;
+            var builder = Module.builder();
+            builder.name("project name");
+            builder.description("description of the project");
+            log.info("得到class描述");
+            ClassLoader classLoader = new ClassLoader(System.getProperty("user.dir"));
+            builder.entities(getEntities(classLoader.loadClasses(entry -> entry.getName().endsWith(".class"), clazz -> IEntity.class.isAssignableFrom(clazz)
+                    && !IEntity.class.equals(clazz)
+            )));
+            builder.relations(getRelations(classLoader.loadClasses(entry -> entry.getName().endsWith(".class"), clazz -> IEntity.class.isAssignableFrom(clazz))));
+            log.info(builder.build().toString());
+            log.info("得到模板文件 ");
+
+
+            // step1 创建freeMarker配置实例
+            Configuration configuration = new Configuration(Configuration.VERSION_2_3_0);
+
+
+            var root = new File(EggMojo.class.getClassLoader().getResource("./templates").toURI());
+            // step2 获取模版路径
+            configuration.setDirectoryForTemplateLoading(root);
+
+            // step3 创建数据模型
+            var data = new HashMap<String, Object>();
+            data.put("module", builder.build());
+            data.put("ll", new StringLengthMethod());
+            Writer out = null;
+            try {
+                // step4 加载模版文件
+                for (var file : find(root)) {
+                    if (file.getName().endsWith(".ftl")) {
+                        for (var entity : builder.build().getEntities()) {
+                            var source = file.getPath().substring(0, file.getPath().lastIndexOf(".ftl"));
+                            Template fileNameTemplate = new Template("file", source, configuration);
+                            StringWriter result = new StringWriter();
+                            data.put("entity", entity);
+                            fileNameTemplate.process(data, result);
+                            var targetName = result.toString().substring(root.getPath().length() + 1);
+                            var templateName = file.getPath().substring(root.getPath().length() + 1).replace("\\", "/");
+                            Template template = configuration.getTemplate(templateName);
+                            // step5 生成数据
+                            File targetFile = new File("./" + targetName);
+                            if (!targetFile.getParentFile().exists()) {
+                                targetFile.getParentFile().mkdirs();
+                            }
+                            out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(targetFile)));
+                            // step6 输出文件
+                            template.process(data, out);
+                        }
+                    } else {
+                        var templateName = file.getPath().substring(root.getPath().length() + 1).replace("\\", "/");
+                        Template template = configuration.getTemplate(templateName);
+                        // step5 生成数据
+                        File targetFile = new File("./" + templateName);
+                        if (!targetFile.getParentFile().exists()) {
+                            targetFile.getParentFile().mkdirs();
+                        }
+                        out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(targetFile)));
+                        // step6 输出文件
+                        template.process(data, out);
+                    }
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (null != out) {
+                        out.flush();
+                    }
+                } catch (Exception e2) {
+                    e2.printStackTrace();
+                }
             }
 
-            while (root.hasMoreElements()){
-                System.out.println(root.nextElement());
-            }
-//            for (var file : find(new File(root.toURI()))) {
-//                log.info(file.getAbsolutePath());
-//            }
-            //得到class描述
-
-            JarFile jarFile = new JarFile("D:\\Work\\java\\fast-data\\maven-plugin\\demo\\target\\demo-2.1.5-SNAPSHOT.jar");
-            Enumeration<JarEntry> entries = jarFile.entries();
-            while (entries.hasMoreElements()){
-                 log.info(entries.nextElement().toString());
-            }
 
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -175,14 +302,5 @@ public class EggMojo extends AbstractMojo {
             result.addAll(find(file));
         }
         return result;
-    }
-
-    @SneakyThrows
-    private void copyFile(String fileName, File targetFile) {
-        InputStream initialStream = EggMojo.class.getClassLoader().getResourceAsStream(fileName);
-        assert initialStream != null;
-        log.info(targetFile.getCanonicalPath());
-        Files.copy(initialStream, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        initialStream.close();
     }
 }

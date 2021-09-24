@@ -17,18 +17,18 @@ public class ObjectData implements Item {
         if (bytes[0] != (byte) this.getType().ordinal()) {
             return null;
         }
-        byte[]
+
         ByteBuffer buffer = ByteBuffer.allocate(bytes.length - 1);
         buffer.put(bytes, 1, bytes.length - 1);
         buffer.flip(); //need flip
-        return new ObjectData(buffer.getLong());
+        return new ObjectData(buffer.array());
     }
 
     @Override
     public byte[] toBytes() {
         ByteBuffer buffer = ByteBuffer.allocate(9);
         buffer.put((byte) getType().ordinal());
-        buffer.putLong(this.data);
+        buffer.put(this.data);
         return buffer.array();
     }
 

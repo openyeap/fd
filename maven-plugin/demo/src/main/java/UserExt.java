@@ -1,9 +1,10 @@
+import annotation.Relation;
 import lombok.Data;
-import annotation.IsNull;
 
 @Data
-public class User implements IEntity {
-    @IsNull
-    String Name;
+public class UserExt extends User {
+    Integer age;
+    @Relation(entity = User.class, field = "name")
+    Integer id;
 }
 

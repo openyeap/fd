@@ -1,9 +1,13 @@
-package ltd.fdsa.maven.codegg.model;
+package model;
 
+import lombok.Builder;
 import lombok.Data;
 
+import java.io.Serializable;
+
+@Builder
 @Data
-public class Field {
+public class Field implements Serializable {
     String name;
     String code;
     String remark;

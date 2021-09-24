@@ -1,11 +1,16 @@
-package ltd.fdsa.maven.codegg.model;
+package model;
 
+import lombok.Builder;
 import lombok.Data;
-import ltd.fdsa.maven.codegg.model.Entity;
+import model.Entity;
+
+import java.io.Serializable;
 
 @Data
-public class Module {
+@Builder
+public class Module  implements Serializable {
     String name;
     String description;
     Entity[] entities;
+    RelationDefine[] relations;
 }
