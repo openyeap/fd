@@ -2,8 +2,7 @@ package ltd.fdsa.switcher.core.model;
 
 /*
  * 自描述数据结构
- * 第一个byte作为类型，根据类型不同取N个bytes作为内容的长度length。再取length个类型的单元作为内容
- * 注：定长类型可以直取内容，以下为类型的编号
+ * 第一个byte作为类型，根据类型不同: 定长时，直取内容；变长时，取N个bytes作为内容的长度length。再取length个类型的单元作为内容；
  * */
 public interface Item {
 

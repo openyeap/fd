@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>demo</artifactId>
+    <groupId>ltd.fdsa</groupId>
+    <version>2.1.5-SNAPSHOT</version>
+    <description>this is a data demo</description>
+    <packaging>jar</packaging>
+ 
+    <dependencies>
+        <dependency>
+            <groupId>ltd.fdsa</groupId>
+            <artifactId>codegg-maven-plugin</artifactId>
+            <version>2.1.5-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+           
+            <plugin>
+                <groupId>ltd.fdsa</groupId>
+                <artifactId>codegg-maven-plugin</artifactId>
+                <version>2.1.5-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>init</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+         
+        </plugins>
+    </build>
+</project>

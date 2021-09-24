@@ -1,4 +1,4 @@
-package ltd.fdsa.maven.codegg.model;
+package model;
 
 import lombok.Data;
 

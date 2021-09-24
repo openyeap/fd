@@ -31,7 +31,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 @EqualsAndHashCode(callSuper = true)
-@Mojo(name = "init", defaultPhase = LifecyclePhase.CLEAN, threadSafe = true, requiresDependencyResolution = ResolutionScope.RUNTIME)
+@Mojo(name = "egg", defaultPhase = LifecyclePhase.CLEAN, threadSafe = true, requiresDependencyResolution = ResolutionScope.RUNTIME)
 @Data
 public class EggMojo extends AbstractMojo {
 
@@ -48,14 +48,15 @@ public class EggMojo extends AbstractMojo {
     @Override
     @SneakyThrows
     public void execute() {
+        log.info("Try to generate code in " + String.join(".", this.parentName, this.packageName));
+        log.info("------------------------------------------------------------------------");
+        log.info(this.project.getBasedir().getAbsolutePath());
         if (Strings.isNullOrEmpty(this.parentName)) {
             this.parentName = this.project.getGroupId();
         }
         if (Strings.isNullOrEmpty(this.packageName)) {
             this.packageName = String.join(".", this.project.getArtifactId().split("-"));
         }
-        this.log.info("Try to generate code in " + String.join(".", this.parentName, this.packageName));
-        log.info("------------------------------------------------------------------------");
         List<Developer> developers = this.project.getDevelopers();
         if (developers.stream().count() > 0) {
             this.author = developers.get(0).getName();
@@ -64,41 +65,34 @@ public class EggMojo extends AbstractMojo {
 
         try {
             log.info("Generate file start");
-            var root = this.getClass().getClassLoader().getResource("./");
-            if (root == null || !root.getProtocol().equals("file")) {
+
+            //得到模板文件
+            var root = EggMojo.class.getClassLoader().getResources("./templates");
+            if (root == null) {
+                log.info("failed!");
                 return;
             }
 
-            for (var file : find(new File(root.toURI()))) {
-                log.info(file.getAbsolutePath());
+            while (root.hasMoreElements()){
+                System.out.println(root.nextElement());
             }
+//            for (var file : find(new File(root.toURI()))) {
+//                log.info(file.getAbsolutePath());
+//            }
+            //得到class描述
 
-            String projectPath = System.getProperty("user.dir") + "/src/main/java";
-            ClassLoader loader = Thread.currentThread().getContextClassLoader();
-           var ss = loader.loadClass("");
-           ss.getAnnotations();
-
-
-            String packagePath = packageName.replace(".", "/");
-            URL url = loader.getResource(packagePath);
-            if (url != null) {
-                String type = url.getProtocol();
-                if (type.equals("file")) {
-                    fileNames = getClassNameByFile(url.getPath(), null, true);
-                } else if (type.equals("jar")) {
-                    fileNames = getClassNameByJar(url.getPath(), true);
-                }
-            } else {
-                fileNames = getClassNameByJar(((URLClassLoader) loader).getURLs(), packagePath, true);
+            JarFile jarFile = new JarFile("D:\\Work\\java\\fast-data\\maven-plugin\\demo\\target\\demo-2.1.5-SNAPSHOT.jar");
+            Enumeration<JarEntry> entries = jarFile.entries();
+            while (entries.hasMoreElements()){
+                 log.info(entries.nextElement().toString());
             }
-            return fileNames;
-
 
         } catch (Exception e) {
             log.error(e.getMessage());
         }
 
     }
+
     private static List<String> getClassNameByFile(String filePath, List<String> className, boolean childPackage) {
         List<String> myClassName = new ArrayList<String>();
         File file = new File(filePath);
@@ -123,7 +117,8 @@ public class EggMojo extends AbstractMojo {
 
     /**
      * 从jar获取某包下所有类
-     * @param jarPath jar文件路径
+     *
+     * @param jarPath      jar文件路径
      * @param childPackage 是否遍历子包
      * @return 类的完整名称
      */
@@ -164,6 +159,7 @@ public class EggMojo extends AbstractMojo {
         }
         return myClassName;
     }
+
     private List<File> find(File dirFile) {
 
         List<File> result = new ArrayList<File>();
@@ -185,7 +181,7 @@ public class EggMojo extends AbstractMojo {
     private void copyFile(String fileName, File targetFile) {
         InputStream initialStream = EggMojo.class.getClassLoader().getResourceAsStream(fileName);
         assert initialStream != null;
-        this.log.info(targetFile.getCanonicalPath());
+        log.info(targetFile.getCanonicalPath());
         Files.copy(initialStream, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         initialStream.close();
     }
