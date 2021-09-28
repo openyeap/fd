@@ -1,7 +1,6 @@
 import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
-import org.springframework.util.Assert;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -12,6 +11,7 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
@@ -134,6 +134,14 @@ public class ClassLoader extends URLClassLoader {
         }
 
         return jarURLs;
+    }
+
+    private static class Assert{
+        public static void isTrue(boolean expression, String message) {
+            if (!expression) {
+                throw new IllegalArgumentException(message);
+            }
+        }
     }
 
 
