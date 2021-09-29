@@ -55,10 +55,10 @@ public class Egg {
             builder.description("description of the project");
             log.info("得到class描述");
             ClassLoader classLoader = new ClassLoader(System.getProperty("user.dir"));
-            builder.entities(getEntities(classLoader, classLoader.loadClasses(entry -> entry.getName().endsWith(".class"), clazz -> IEntity.class.isAssignableFrom(clazz) && !IEntity.class.equals(clazz))));
-            builder.relations(getRelations(classLoader, classLoader.loadClasses(entry -> entry.getName().endsWith(".class"), clazz -> IEntity.class.isAssignableFrom(clazz) && !IEntity.class.equals(clazz))));
+            var classList = classLoader.loadClasses(entry -> entry.getName().endsWith(".class"), clazz -> IEntity.class.isAssignableFrom(clazz) && !IEntity.class.equals(clazz));
+            getEntities(classLoader, classList, builder);
             log.info(builder.build().toString());
-            log.info("得到模板文件 ");
+            log.info("得到模板文件");
 
 
             // step1 创建freeMarker配置实例
@@ -131,63 +131,56 @@ public class Egg {
 
     }
 
-    private RelationDefine[] getRelations(ClassLoader classLoader, List<Class<?>> classes) {
-        List<RelationDefine> results = new ArrayList<RelationDefine>();
-        for (var clazz : classes) {
-            for (var item : classLoader.getDeclaredFields(clazz)) {
-                var builder = RelationDefine.builder();
-                var relation = item.getAnnotation(Relation.class);
-                if (relation == null) {
-                    continue;
-                }
-                builder.name(relation.value());
-                builder.fromEntity(relation.entity());
-                builder.fromField(relation.field());
-                builder.toEntity(clazz);
-                builder.toField(item.getName());
-                results.add(builder.build());
-            }
-        }
-        return results.toArray(new RelationDefine[0]);
-    }
 
-    private Entity[] getEntities(ClassLoader classLoader, List<Class<?>> classes) {
+    private void getEntities(ClassLoader classLoader, List<Class<?>> classes, Module.ModuleBuilder moduleBuilder) {
 
         List<Entity> results = new ArrayList<Entity>();
         for (var item : classes) {
-            var builder = Entity.builder();
-            builder.code(item.getCanonicalName());
+            var entityBuilder = Entity.builder();
+            entityBuilder.code(item.getCanonicalName());
             var table = item.getAnnotation(Table.class);
             if (table == null) {
                 table = DEFAULT_TABLE;
             }
             var name = table.name();
             if (Strings.isNullOrEmpty(name)) {
-                builder.name(item.getSimpleName());
+                entityBuilder.name(item.getSimpleName());
             } else {
-                builder.name(name);
+                entityBuilder.name(name);
             }
             var value = table.value();
             if (Strings.isNullOrEmpty(value)) {
-                builder.code(item.getSimpleName());
+                entityBuilder.code(item.getSimpleName());
             } else {
-                builder.code(value);
+                entityBuilder.code(value);
             }
             var remark = table.remark();
             if (Strings.isNullOrEmpty(remark)) {
-                builder.remark(item.getSimpleName());
+                entityBuilder.remark(item.getSimpleName());
             } else {
-                builder.remark(remark);
+                entityBuilder.remark(remark);
             }
-            builder.fields(getFields(classLoader, item));
-            results.add(builder.build());
+            entityBuilder.fields(getFields(classLoader, item, moduleBuilder));
+            results.add(entityBuilder.build());
         }
-        return results.toArray(new Entity[0]);
+        moduleBuilder.entities(results.toArray(new Entity[0]));
     }
 
-    private Field[] getFields(ClassLoader classLoader, Class<?> clazz) {
+    private Field[] getFields(ClassLoader classLoader, Class<?> clazz, Module.ModuleBuilder moduleBuilder) {
         List<Field> results = new ArrayList<Field>();
+        List<RelationDefine> relationDefines = new ArrayList<RelationDefine>();
         for (var item : classLoader.getDeclaredFields(clazz)) {
+
+            var relation = item.getAnnotation(Relation.class);
+            if (relation != null) {
+                var relationDefineBuilder = RelationDefine.builder();
+                relationDefineBuilder.name(relation.value());
+                relationDefineBuilder.fromEntity(relation.entity());
+                relationDefineBuilder.fromField(relation.field());
+                relationDefineBuilder.toEntity(clazz);
+                relationDefineBuilder.toField(item.getName());
+                relationDefines.add(relationDefineBuilder.build());
+            }
             var builder = Field.builder();
             builder.code(clazz.getCanonicalName() + "." + item.getName());
             var column = item.getAnnotation(Column.class);
@@ -229,9 +222,9 @@ public class Egg {
 
             results.add(builder.build());
         }
+        moduleBuilder.relations(relationDefines.toArray(new RelationDefine[0]));
         return results.toArray(new Field[0]);
     }
-
 
     private List<File> find(File dirFile) {
 
