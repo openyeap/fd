@@ -1,5 +1,8 @@
 
-import annotation.*;
+import annotation.Column;
+import annotation.Relation;
+import annotation.Table;
+import com.google.common.base.Strings;
 import demo.IEntity;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -21,7 +24,23 @@ import java.util.List;
 @Slf4j
 public class Egg {
 
+    static Table DEFAULT_TABLE;
 
+    static Column DEFAULT_COLUMN;
+
+    static {
+        // 默认注解
+
+        @Table
+        final class c {
+            @Column
+            String name;
+
+        }
+        DEFAULT_TABLE = c.class.getAnnotation(Table.class);
+        DEFAULT_COLUMN = c.class.getDeclaredFields()[0].getAnnotation(Column.class);
+
+    }
 
     public void execute() {
         log.info("------------------------------------------------------------------------");
@@ -138,17 +157,27 @@ public class Egg {
         for (var item : classes) {
             var builder = Entity.builder();
             builder.code(item.getCanonicalName());
-            var name = item.getAnnotation(Name.class);
-            if (name == null) {
+            var table = item.getAnnotation(Table.class);
+            if (table == null) {
+                table = DEFAULT_TABLE;
+            }
+            var name = table.name();
+            if (Strings.isNullOrEmpty(name)) {
                 builder.name(item.getSimpleName());
             } else {
-                builder.name(name.value());
+                builder.name(name);
             }
-            var remark = item.getAnnotation(Remark.class);
-            if (remark == null) {
+            var value = table.value();
+            if (Strings.isNullOrEmpty(value)) {
+                builder.code(item.getSimpleName());
+            } else {
+                builder.code(value);
+            }
+            var remark = table.remark();
+            if (Strings.isNullOrEmpty(remark)) {
                 builder.remark(item.getSimpleName());
             } else {
-                builder.remark(remark.value());
+                builder.remark(remark);
             }
             builder.fields(getFields(classLoader, item));
             results.add(builder.build());
@@ -161,48 +190,43 @@ public class Egg {
         for (var item : classLoader.getDeclaredFields(clazz)) {
             var builder = Field.builder();
             builder.code(clazz.getCanonicalName() + "." + item.getName());
-            var name = item.getAnnotation(Name.class);
-            if (name == null) {
+            var column = item.getAnnotation(Column.class);
+            if (column == null) {
+                column = DEFAULT_COLUMN;
+            }
+            var name = column.name();
+            if (Strings.isNullOrEmpty(name)) {
                 builder.name(item.getName());
             } else {
-                builder.name(name.value());
+                builder.name(name);
             }
-            var type = item.getAnnotation(Type.class);
-            if (type == null) {
+            var type = column.type();
+            if (Strings.isNullOrEmpty(type)) {
                 builder.type(item.getType().getSimpleName());
             } else {
-                builder.type(type.value());
+                builder.type(type);
             }
-            var remark = item.getAnnotation(Remark.class);
-            if (remark == null) {
+            var remark = column.remark();
+            if (Strings.isNullOrEmpty(remark)) {
                 builder.remark(item.getName());
             } else {
-                builder.remark(remark.value());
+                builder.remark(remark);
             }
-            var isNull = item.getAnnotation(IsNull.class);
-            if (isNull == null) {
-                builder.isNull(false);
-            } else {
-                builder.isNull(isNull.value());
-            }
-            var length = item.getAnnotation(Length.class);
-            if (length == null) {
-                builder.length(8);
-            } else {
-                builder.length(length.value());
-            }
-            var scale = item.getAnnotation(Scale.class);
-            if (scale == null) {
-                builder.scale(3);
-            } else {
-                builder.scale(scale.value());
-            }
-            var autoIncrement = item.getAnnotation(AutoIncrement.class);
-            if (autoIncrement == null) {
-                builder.autoIncrement(false);
-            } else {
-                builder.autoIncrement(autoIncrement.value());
-            }
+            var isNull = column.isNull();
+
+            builder.isNull(isNull);
+
+            var length = column.length();
+
+            builder.length(length);
+            var scale = column.scale();
+
+            builder.scale(scale);
+
+            var autoIncrement = column.autoIncrement();
+
+            builder.autoIncrement(autoIncrement);
+
             results.add(builder.build());
         }
         return results.toArray(new Field[0]);
