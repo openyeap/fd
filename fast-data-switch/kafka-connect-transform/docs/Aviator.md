@@ -17,7 +17,8 @@ Aviator是一个高性能、轻量级的java语言实现的表达式求值引擎
 ```properties
 "transforms": "Aviator",
 "transforms.Aviator.type": "AviatorTransformation“,
-"transforms.Aviator.expression": "full_name = db.first_name +' ' + db.last_name, age = db.age",
+"transforms.Aviator.field": "full_name",
+"transforms.Aviator.expression": "first_name +' ' +  last_name",
 ```
 
 ## 内置操作符列表

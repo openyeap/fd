@@ -18,27 +18,56 @@ package ltd.fdsa.kafka.connect.transform;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.apache.kafka.common.config.ConfigDef;
-import org.apache.kafka.common.utils.Bytes;
 import org.apache.kafka.connect.connector.ConnectRecord;
 import org.apache.kafka.connect.data.*;
 import org.apache.kafka.connect.transforms.Transformation;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
 public class AviatorTransformation<R extends ConnectRecord<R>> implements Transformation<R> {
     AviatorConfig config;
-
-    Map<Schema, List<String>> fieldMappings = new HashMap<>();
+    Schema schema;
+    protected SchemaAndValue process(R record, Object value) {
+        if (schema != null) {
+            return new SchemaAndValue(schema, value);
+        }
+        if (value == null) {
+            return new SchemaAndValue(SchemaBuilder.string().optional().build(), null);
+        }
+        if (value instanceof String) {
+            this.schema = SchemaBuilder.string().optional().build();
+        } else if (value instanceof Byte) {
+            this.schema = SchemaBuilder.int8().optional().build();
+        } else if (value instanceof Character) {
+            this.schema = SchemaBuilder.int16().optional().build();
+        } else if (value instanceof Integer) {
+            this.schema = SchemaBuilder.int32().optional().build();
+        } else if (value instanceof Long) {
+            this.schema = SchemaBuilder.int64().optional().build();
+        } else if (value instanceof Float) {
+            this.schema = SchemaBuilder.float32().optional().build();
+        } else if (value instanceof java.lang.Double) {
+            this.schema = SchemaBuilder.float64().optional().build();
+        } else if (value instanceof Boolean) {
+            this.schema = SchemaBuilder.bool().optional().build();
+        } else {
+            log.debug(value.getClass().toString());
+            this.schema = SchemaBuilder.bytes().optional().build();
+        }
+        return new SchemaAndValue(schema, value);
+    }
 
     @Override
-    public ConnectRecord apply(ConnectRecord record) {
-
+    public R apply(R record) {
         if (null == record.valueSchema() || Schema.Type.STRUCT != record.valueSchema().type()) {
             log.trace("record.valueSchema() is null or record.valueSchema() is not a struct.");
             return record;
+        }
+        var schemaBuilder = SchemaBuilder.struct();
+        for (var field : record.valueSchema().fields()) {
+            schemaBuilder.field(field.name(), field.schema());
         }
         // 得到record中的数据
         Struct inputStruct = (Struct) record.value();
@@ -46,48 +75,19 @@ public class AviatorTransformation<R extends ConnectRecord<R>> implements Transf
         for (var field : record.valueSchema().fields()) {
             env.put(field.name(), inputStruct.get(field));
         }
-        env.put(this.config.contextName, record);
-        Map<String, Object> result = (Map<String, Object>) this.config.expression.execute(env);
-// 根据计算结果构建结构
-        var schemaBuilder = SchemaBuilder.struct();
-        for (var field : result.entrySet()) {
-            var value = field.getValue();
-            if (value instanceof String) {
-                schemaBuilder.field(field.getKey(), Schema.STRING_SCHEMA);
-            } else if (value instanceof Byte) {
-                schemaBuilder.field(field.getKey(), Schema.INT8_SCHEMA);
-            } else if (value instanceof Character) {
-                schemaBuilder.field(field.getKey(), Schema.INT16_SCHEMA);
-            } else if (value instanceof Integer) {
-                schemaBuilder.field(field.getKey(), Schema.INT32_SCHEMA);
-            } else if (value instanceof Long) {
-                schemaBuilder.field(field.getKey(), Schema.INT64_SCHEMA);
-            } else if (value instanceof Float) {
-                schemaBuilder.field(field.getKey(), Schema.FLOAT32_SCHEMA);
-            } else if (value instanceof java.lang.Double) {
-                schemaBuilder.field(field.getKey(), Schema.FLOAT64_SCHEMA);
-            } else if (value instanceof Boolean) {
-                schemaBuilder.field(field.getKey(), Schema.BOOLEAN_SCHEMA);
-            } else if (value instanceof Bytes) {
-                schemaBuilder.field(field.getKey(), Schema.BYTES_SCHEMA);
-            } else {
-                schemaBuilder.field(field.getKey(), Schema.STRING_SCHEMA);
-            }
+        // 得到计算结果
+        var value = this.config.expression.execute(env);
+        var schemaAndValue = process(record, value);
+        schemaBuilder.field(this.config.field, schemaAndValue.schema());
+
+        // 重构输入结果
+        Struct outputStruct = new Struct(schemaBuilder.build());
+        for (var field : record.valueSchema().fields()) {
+            outputStruct.put(field.name(), inputStruct.get(field));
         }
-        Struct outputStruct = new Struct(schemaBuilder.schema());
-        for (var field : result.entrySet()) {
-            var value = field.getValue();
-            outputStruct.put(field.getKey(), value);
-        }
-        return record.newRecord(
-                record.topic(),
-                record.kafkaPartition(),
-                record.keySchema(),
-                record.key(),
-                outputStruct.schema(),
-                outputStruct,
-                record.timestamp()
-        );
+        outputStruct.put(this.config.field, schemaAndValue.value());
+
+        return record.newRecord(record.topic(), record.kafkaPartition(), record.keySchema(), record.key(), outputStruct.schema(), outputStruct, record.timestamp());
     }
 
     @Override

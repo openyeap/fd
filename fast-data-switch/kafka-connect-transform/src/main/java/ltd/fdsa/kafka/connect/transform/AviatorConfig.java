@@ -27,27 +27,20 @@ import lombok.var;
 import org.apache.kafka.common.config.AbstractConfig;
 import org.apache.kafka.common.config.ConfigDef;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
 public class AviatorConfig extends AbstractConfig {
-  public final Expression expression;
+    private static final Map<String, Expression> cache = new HashMap<String, Expression>();
 
-    public final String contextName;
-
+    public final Expression expression;
+    public final String field;
     static final String EXPRESSION_CONF = "expression";
     static final String EXPRESSION_DOC = "The aviator expression to generate new data record." +
             "For example if you wanted full from `firstname` and `lastname`, you would use `name = db.firstname + ' ' + db.lastname`.";
-    public static final String CONTEXT_NAME_CONF = "context";
-    static final String CONTEXT_NAME_DOC = "The name for the record in the transformation context." +
-            "By default, the context name is `db`, you can change it to meet your expression requirement.";
-
-    private static final Map<String, Expression> cache = new HashMap<String, Expression>();
-
-
+    public static final String FIELD_NAME_CONF = "field";
+    static final String FIELD_NAME_DOC = "The field name of the new result from expression.";
 
     class stringSplit extends AbstractFunction {
         @Override
@@ -68,34 +61,27 @@ public class AviatorConfig extends AbstractConfig {
         super(config(), settings);
         String expression = this.getString(EXPRESSION_CONF);
         if (!cache.containsKey(expression)) {
-            List<String> sb = new ArrayList<String>();
-            for (String item : expression.split(";")) {
-                String[] kv = item.split("=");
-                sb.add("'" + kv[0].trim() + "'," + kv[1].trim());
-            }
-            String epx = String.join(",", sb);
             // 自定义函数
             // AviatorEvaluator.addFunction(new stringSplit());
             // 编译表达式
-            Expression ep = AviatorEvaluator.compile("seq.map(" + epx.toString() + ")"
-            );
+            Expression ep = AviatorEvaluator.compile(expression);
             cache.put(expression, ep);
         }
         this.expression = cache.get(expression);
 
 
-        var name = this.getString(CONTEXT_NAME_CONF);
+        var name = this.getString(FIELD_NAME_CONF);
         if (Strings.isNullOrEmpty(name)) {
-            this.contextName = "db";
+            this.field = "db";
         } else {
-            this.contextName = name;
+            this.field = name;
         }
-     }
+    }
 
     public static ConfigDef config() {
         return new ConfigDef()
-                .define(CONTEXT_NAME_CONF, ConfigDef.Type.STRING, ConfigDef.Importance.LOW, CONTEXT_NAME_DOC)
-                .define(EXPRESSION_CONF, ConfigDef.Type.LIST, ConfigDef.Importance.HIGH, EXPRESSION_DOC) ;
+                .define(FIELD_NAME_CONF, ConfigDef.Type.STRING, ConfigDef.Importance.HIGH, FIELD_NAME_DOC)
+                .define(EXPRESSION_CONF, ConfigDef.Type.LIST, ConfigDef.Importance.HIGH, EXPRESSION_DOC);
     }
 
 }
