@@ -30,7 +30,6 @@
         <module>spring-boot-starter</module>
         <module>maven-plugin</module>
         <module>fast-data-cloud</module>
-        <module>fast-data-switch</module>
         <module>fast-data-modules</module>
     </modules>
     <distributionManagement>
