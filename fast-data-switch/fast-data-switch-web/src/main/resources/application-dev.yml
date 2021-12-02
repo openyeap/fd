@@ -1,6 +1,0 @@
-database:
-  master:
-    driver-class-name: org.sqlite.JDBC
-    url: jdbc:sqlite:D:/database.db
-    username:
-    password:
