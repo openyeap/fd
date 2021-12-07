@@ -16,12 +16,7 @@ import java.util.jar.JarFile;
 
 @Slf4j
 public class ClassUtil {
-    /**
-     * 通过包名获取包内所有类
-     *
-     * @param pkg
-     * @return
-     */
+
     public static List<Class<?>> getAllClassByPackageName(Package pkg) {
         String packageName = pkg.getName();
         // 获取当前包下以及子包下所以的类
@@ -31,6 +26,9 @@ public class ClassUtil {
 
     /**
      * 通过接口名取得某个接口下所有实现这个接口的类
+     *
+     * @param c class
+     * @return class list
      */
     public static List<Class<?>> getAllClassByInterface(Class<?> c) {
         List<Class<?>> returnClassList = null;
@@ -59,6 +57,10 @@ public class ClassUtil {
 
     /**
      * 取得某一类所在包的所有类名 不含迭代
+     *
+     * @param classLocation class
+     * @param packageName packageName
+     * @return String[]
      */
     public static String[] getPackageAllClassName(String classLocation, String packageName) {
         // 将packageName分解
@@ -80,7 +82,7 @@ public class ClassUtil {
      * 从包package中获取所有的Class
      *
      * @param packageName
-     * @return
+     * @return list
      */
     private static List<Class<?>> getClasses(String packageName) {
 

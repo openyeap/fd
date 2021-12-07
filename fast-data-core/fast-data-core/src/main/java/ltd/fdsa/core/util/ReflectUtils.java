@@ -10,6 +10,7 @@ public abstract class ReflectUtils {
     /**
      * 获取对象对应泛型的类型参数。
      *
+     * @param <T>     class
      * @param obj     对象
      * @param rawType 泛型的原始类型
      * @return 泛型定义的第一个类型参数
@@ -21,6 +22,7 @@ public abstract class ReflectUtils {
     /**
      * 获取类对应泛型的类型参数。
      *
+     * @param <T>     class
      * @param clazz   类
      * @param rawType 泛型的原始类型
      * @return 泛型定义的第一个类型参数

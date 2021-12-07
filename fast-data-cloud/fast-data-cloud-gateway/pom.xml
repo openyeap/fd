@@ -16,12 +16,12 @@
         <dependency>
             <groupId>ltd.fdsa</groupId>
             <artifactId>fast-data-core</artifactId>
-            <version>2.1.5-SNAPSHOT</version>
+            <version>1.0.0-RELEASE</version>
         </dependency>
         <dependency>
             <groupId>ltd.fdsa</groupId>
             <artifactId>fast-data-core-web</artifactId>
-            <version>2.1.5-SNAPSHOT</version>
+            <version>1.0.0-RELEASE</version>
         </dependency>
 <!--        <dependency>-->
 <!--            <groupId>org.graphqlize</groupId>-->

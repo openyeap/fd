@@ -13,8 +13,8 @@ public class FileUtils {
     /**
      * 判断文件是否存在
      *
-     * @param path
-     * @return
+     * @param path  path
+     * @return boolean 
      */
     public static boolean checkFileExist(String path) {
         File file = new File(path);
@@ -24,8 +24,8 @@ public class FileUtils {
     /**
      * 根据路径读取文件
      *
-     * @param filePath
-     * @return
+     * @param filePath path
+     * @return String
      */
     public static String readFile(String filePath) {
         File file = new File(filePath);
@@ -38,8 +38,8 @@ public class FileUtils {
     /**
      * 读取文件
      *
-     * @param file
-     * @return
+     * @param file path
+     * @return String
      */
     public static String readFile(File file) {
         if (file == null) {
@@ -65,8 +65,8 @@ public class FileUtils {
     /**
      * 写文件
      *
-     * @param filePath
-     * @param content
+     * @param filePath path
+     * @param content content
      */
     public static void writeFile(String filePath, String content) {
         FileWriter fw = null;
@@ -101,8 +101,6 @@ public class FileUtils {
             pw.flush();
         } catch (Exception e) {
             log.error("FileUtils.writeFile", e);
-
-
         }
     }
 }

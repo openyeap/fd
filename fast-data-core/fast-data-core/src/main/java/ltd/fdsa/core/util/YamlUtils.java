@@ -18,11 +18,6 @@ import java.util.Map;
 public abstract class YamlUtils {
     private final static Yaml yaml = new Yaml();
 
-    /**
-     * 加载yaml的配置
-     *
-     * @param payload 源文件内容
-     */
     public static Map<String, String> load(String payload) {
         return getSettings((LinkedHashMap<String, Object>) yaml.load(payload), null);
     }
@@ -31,11 +26,6 @@ public abstract class YamlUtils {
         return yaml.load(payload);
     }
 
-    /**
-     * 加载yaml的配置
-     *
-     * @param data 源文件内容
-     */
     public static String getString(Object data) {
         return yaml.dump(data);
     }
@@ -51,8 +41,6 @@ public abstract class YamlUtils {
                 result.put(key, value.toString());
             }
         }
-
         return result;
-
     }
 }

@@ -24,6 +24,9 @@ public class NamingUtils {
 
     /**
      * 下划线转驼峰命名
+     *
+     * @param name name
+     * @return String
      */
     public static String underlineToCamel(String name) {
         // 快速检查
@@ -44,9 +47,9 @@ public class NamingUtils {
     /**
      * 去掉指定的前缀
      *
-     * @param name   ignore
-     * @param prefix ignore
-     * @return ignore
+     * @param name name
+     * @param prefix prefix
+     * @return String
      */
     public static String removePrefix(String name, String... prefix) {
         if (Strings.isNullOrEmpty(name)) {
@@ -65,6 +68,9 @@ public class NamingUtils {
 
     /**
      * 驼峰转下划线,效率比上面高
+     *
+     * @param name name
+     * @return String
      */
     public static String camelToUnderline(String name) {
         if (Strings.isNullOrEmpty(name)) {

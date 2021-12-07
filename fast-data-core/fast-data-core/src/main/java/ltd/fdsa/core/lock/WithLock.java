@@ -14,14 +14,14 @@ public @interface WithLock {
     /**
      * 默认使用的lock名称
      *
-     * @return
+     * @return String
      */
     String lockManager() default "";
 
     /**
      * lock 键值
      *
-     * @return
+     * @return String
      */
     String lockKey() default "lockKey";
 

@@ -16,8 +16,8 @@ public final class ClassLoaderSwapper implements AutoCloseable {
     /**
      * 保存当前classLoader，并将当前线程的classLoader设置为所给classLoader
      *
-     * @param
-     * @return
+     * @param classLoader classLoader
+     * @return ClassLoaderSwapper
      */
     public ClassLoaderSwapper newClassLoader(ClassLoader classLoader) {
         this.storeClassLoader = Thread.currentThread().getContextClassLoader();
@@ -28,7 +28,7 @@ public final class ClassLoaderSwapper implements AutoCloseable {
     /**
      * 将当前线程的类加载器设置为保存的类加载
      *
-     * @return
+     * @return ClassLoaderSwapper
      */
     public ClassLoaderSwapper restoreClassLoader() {
         Thread.currentThread().setContextClassLoader(this.storeClassLoader);

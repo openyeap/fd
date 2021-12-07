@@ -56,6 +56,8 @@ public class RefreshOperation {
      * 较高优先处理配置信息变更
      *
      * @author zhumingwu
+     *
+     * @param refreshedEvent event
      */
     @EventListener
     @Order(-100)

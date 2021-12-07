@@ -41,7 +41,7 @@ public class RSAUtils {
     /**
      * 生成公私钥密钥对
      *
-     * @return
+     * @return RSAKeyPair
      */
     @SneakyThrows
     public static RSAKeyPair genKeyPair() {
@@ -62,7 +62,7 @@ public class RSAUtils {
      *
      * @param encryptedData 已加密数据
      * @param privateKey    私钥(BASE64编码)
-     * @return @
+     * @return byte[]
      */
     @SneakyThrows
     public static byte[] decryptByPrivateKey(byte[] encryptedData, String privateKey) {
@@ -81,7 +81,7 @@ public class RSAUtils {
      *
      * @param text       密文
      * @param privateKey 解密私钥
-     * @return
+     * @return String
      */
     @SneakyThrows
     public static String decryptByPrivateKey(String text, String privateKey) {
@@ -94,7 +94,7 @@ public class RSAUtils {
      *
      * @param encryptedData 已加密数据
      * @param publicKey     公钥(BASE64编码)
-     * @return @
+     * @return byte[]
      */
     @SneakyThrows
     public static byte[] decryptByPublicKey(byte[] encryptedData, String publicKey) {
@@ -114,7 +114,7 @@ public class RSAUtils {
      *
      * @param text      密文
      * @param publicKey 解密公钥
-     * @return
+     * @return String
      */
     @SneakyThrows
     public static String decryptByPublicKey(String text, String publicKey) {
@@ -128,7 +128,7 @@ public class RSAUtils {
      *
      * @param data      源数据
      * @param publicKey 公钥(BASE64编码)
-     * @return @
+     * @return byte[]
      */
     @SneakyThrows
     public static byte[] encryptByPublicKey(byte[] data, String publicKey) {
@@ -148,7 +148,7 @@ public class RSAUtils {
      *
      * @param text      明文
      * @param publicKey 加密公钥
-     * @return
+     * @return String
      */
     @SneakyThrows
     public static String encryptByPublicKey(String text, String publicKey) {
@@ -162,7 +162,7 @@ public class RSAUtils {
      *
      * @param data       源数据
      * @param privateKey 私钥(BASE64编码)
-     * @return @
+     * @return byte[]
      */
     @SneakyThrows
     public static byte[] encryptByPrivateKey(byte[] data, String privateKey) {
@@ -183,7 +183,7 @@ public class RSAUtils {
      *
      * @param text       明文
      * @param privateKey 加密私钥
-     * @return
+     * @return String
      */
     @SneakyThrows
     public static String encryptByPrivateKey(String text, String privateKey) {
@@ -197,7 +197,7 @@ public class RSAUtils {
      *
      * @param data       已加密数据
      * @param privateKey 私钥(BASE64编码)
-     * @return @
+     * @return String
      */
     @SneakyThrows
     public static String sign(byte[] data, String privateKey) {
@@ -218,7 +218,7 @@ public class RSAUtils {
      *
      * @param text       已加密数据
      * @param privateKey 私钥(BASE64编码)
-     * @return @
+     * @return String
      */
     public static String sign(String text, String privateKey) {
         return sign(Base64.getDecoder().decode(text), privateKey);
@@ -231,7 +231,7 @@ public class RSAUtils {
      * @param data            已加密数据
      * @param publicKeyString 公钥(BASE64编码)
      * @param sign            数字签名
-     * @return @
+     * @return boolean
      */
     @SneakyThrows
     public static boolean verify(byte[] data, String publicKeyString, String sign) {
@@ -252,28 +252,12 @@ public class RSAUtils {
      * @param data      已加密数据
      * @param publicKey 公钥(BASE64编码)
      * @param sign      数字签名
-     * @return @
+     * @return boolean
      */
     @SneakyThrows
     public static boolean verify(String data, String publicKey, String sign) {
         return verify(Base64.getDecoder().decode(data), publicKey, sign);
     }
-
-//    @SneakyThrows
-//    public static PrivateKey getPrivateKey(String privateKeyString) {
-//        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKeyString));
-//        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
-//        PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
-//        return privateKey;
-//    }
-//
-//    @SneakyThrows
-//    public static PublicKey getPublicKey(String publicKeyString) {
-//        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64.getDecoder().decode(publicKeyString));
-//        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
-//        PublicKey publicKey = keyFactory.generatePublic(keySpec);
-//        return publicKey;
-//    }
 
     public static class RSAKeyPair {
         private final String publicKey;

@@ -106,7 +106,7 @@ public class ImageUtils {
      * 根据地址获得数据的字节流
      *
      * @param strUrl 网络连接地址
-     * @return
+     * @return byte[]
      */
     public static byte[] getImageFromNetByUrl(String strUrl) {
         try {
@@ -137,8 +137,8 @@ public class ImageUtils {
      * 从输入流中获取数据
      *
      * @param inStream 输入流
-     * @return
-     * @throws Exception
+     * @return byte[]
+     * @throws Exception 错误
      */
     public static byte[] readInputStream(InputStream inStream) throws Exception {
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();

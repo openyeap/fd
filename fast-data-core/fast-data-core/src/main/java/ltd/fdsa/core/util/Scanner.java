@@ -16,12 +16,7 @@ import java.util.jar.JarFile;
 
 @Slf4j
 public class Scanner {
-    /**
-     * 从包package中获取所有的Class
-     *
-     * @param packageName
-     * @return
-     */
+
     public Set<Class<?>> getClasses(String packageName) throws Exception {
 
         // 第一个class类的集合
