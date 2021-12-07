@@ -13,8 +13,6 @@
     </parent>
     <modules>
         <module>koffer-maven-plugin</module>
-        <module>codegg-maven-plugin</module>
-        <module>codegg</module>
     </modules>
 
     <properties></properties>
