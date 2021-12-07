@@ -12,10 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * 
- * @date 2019/4/4
- */
 @Controller
 @RequestMapping("#{requestMapping}")
 public class #{entity}Controller {

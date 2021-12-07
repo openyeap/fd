@@ -16,9 +16,6 @@ import java.nio.file.FileAlreadyExistsException;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * @date 2018/10/28
- */
 public class GenerateUtil {
 
     private static final String JAVA_SUFFIX = ".java";

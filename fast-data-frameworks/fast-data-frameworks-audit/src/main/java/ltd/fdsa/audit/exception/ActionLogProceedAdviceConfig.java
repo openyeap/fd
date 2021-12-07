@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 /**
  * 将异常切入程序添加到异常通知器中
  *
- * @date 2019/4/6
  */
 @Configuration
 public class ActionLogProceedAdviceConfig {

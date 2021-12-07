@@ -16,7 +16,6 @@ import java.util.Objects;
 /**
  * 异常通知器
  *
- * @date 2019/4/5
  */
 @ControllerAdvice
 public class ResultExceptionAdvice {

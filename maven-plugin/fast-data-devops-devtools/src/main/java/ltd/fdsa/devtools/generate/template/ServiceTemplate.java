@@ -14,9 +14,6 @@ import ltd.fdsa.devtools.generate.utils.parser.JavaParseUtil;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.Set;
 
-/**
- * @date 2018/10/25
- */
 public class ServiceTemplate {
 
     /**

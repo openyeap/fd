@@ -19,8 +19,6 @@ import java.util.List;
 
 /**
  * 代码生成：xml解析工具
- *
- * @date 2019/3/1
  */
 public class XmlParseUtil {
 

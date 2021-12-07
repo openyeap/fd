@@ -5,8 +5,6 @@ import java.util.TreeSet;
 
 /**
  * 数据容器，用于存储java源码数据
- *
- * @date 2019/3/28
  */
 public class JAngelContainer {
 

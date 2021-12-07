@@ -6,8 +6,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * 项目-shiro会话配置项
- *
- * @date 2018/11/6
  */
 @Data
 @Component

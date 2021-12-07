@@ -5,8 +5,6 @@ import java.util.List;
 
 /**
  * 字符串处理工具
- *
- * @date 2019/3/28
  */
 public class StringUtil {
 

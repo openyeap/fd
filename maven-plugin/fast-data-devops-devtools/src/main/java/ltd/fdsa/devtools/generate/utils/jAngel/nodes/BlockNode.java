@@ -5,7 +5,6 @@ import ltd.fdsa.devtools.generate.utils.jAngel.JAngel;
 /**
  * 块节点
  *
- * @date 2019/4/2
  */
 public class BlockNode extends Node {
 

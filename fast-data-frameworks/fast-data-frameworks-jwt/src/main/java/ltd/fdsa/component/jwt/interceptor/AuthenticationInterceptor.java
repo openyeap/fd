@@ -20,7 +20,6 @@ import java.lang.reflect.Method;
 /**
  * jwt权限拦截器
  *
- * @date 2019/4/12
  */
 @Component
 public class AuthenticationInterceptor implements HandlerInterceptor {

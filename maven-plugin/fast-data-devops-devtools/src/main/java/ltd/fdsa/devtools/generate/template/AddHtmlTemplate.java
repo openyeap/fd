@@ -15,9 +15,6 @@ import java.nio.file.FileAlreadyExistsException;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * @date 2018/10/25
- */
 public class AddHtmlTemplate {
 
     /**

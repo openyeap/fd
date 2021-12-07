@@ -7,7 +7,6 @@ import java.util.List;
 /**
  * 封装生成数据
  *
- * @date 2018/10/23
  */
 @Data
 public class Generate {

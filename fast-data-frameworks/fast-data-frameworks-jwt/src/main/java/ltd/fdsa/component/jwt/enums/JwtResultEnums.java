@@ -6,7 +6,6 @@ import ltd.fdsa.web.enums.ResultCode;
 /**
  * jwt结果集枚举
  *
- * @date 2019/4/13
  */
 @Getter
 public enum JwtResultEnums implements ResultCode {

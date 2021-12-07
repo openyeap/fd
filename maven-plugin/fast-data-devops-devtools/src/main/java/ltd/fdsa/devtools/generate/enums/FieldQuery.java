@@ -4,8 +4,6 @@ import lombok.Getter;
 
 /**
  * 代码生成-字段查询方式
- *
- * @date 2018/10/21
  */
 @Getter
 public enum FieldQuery {

@@ -12,7 +12,6 @@ import java.util.Map;
 /**
  * xss过滤拦截器
  *
- * @date 2018/12/9
  */
 @Configuration
 public class XssFilterConfig {

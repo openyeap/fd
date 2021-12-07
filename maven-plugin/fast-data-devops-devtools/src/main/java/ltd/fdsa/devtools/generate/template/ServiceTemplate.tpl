@@ -6,10 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- * 
- * @date 2019/4/4
- */
 public interface #{entity}Service {
 
     /**

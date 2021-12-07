@@ -3,7 +3,6 @@ package ltd.fdsa.web.enums;
 /**
  * 结果枚举接口
  *
- * @date 2019/2/13
  */
 public interface ResultCode {
 

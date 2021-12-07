@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 处理session超时问题拦截器
  *
- * @date 2018/8/14
+ 
  */
 public class UserAuthFilter extends AccessControlFilter {
 

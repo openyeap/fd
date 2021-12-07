@@ -2,9 +2,6 @@ package ltd.fdsa.devtools.generate.domain;
 
 import lombok.Data;
 
-/**
- * @date 2018/10/21
- */
 @Data
 public class Basic {
     private String projectPath;

@@ -9,8 +9,6 @@ import java.lang.annotation.Target;
 
 /**
  * 行为日志注解
- *
- * @date 2018/11/12
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})

@@ -29,9 +29,6 @@ import java.nio.file.FileAlreadyExistsException;
 import java.util.Date;
 import java.util.Map;
 
-/**
- * @date 2018/10/23
- */
 public class EntityTemplate {
 
     /**

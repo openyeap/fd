@@ -13,7 +13,7 @@ import java.util.Optional;
 /**
  * 审核员自动赋值配置
  *
- * @date 2018/8/14
+ 
  */
 @Configuration
 public class AuditorConfig implements AuditorAware<User> {

@@ -2,8 +2,6 @@ package ltd.fdsa.devtools.generate.enums;
 
 /**
  * 业务层结构类型
- *
- * @date 2019/4/4
  */
 public enum TierType {
     /**

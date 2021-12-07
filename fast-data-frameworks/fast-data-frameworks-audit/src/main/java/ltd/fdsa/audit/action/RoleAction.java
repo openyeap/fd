@@ -8,7 +8,6 @@ import ltd.fdsa.audit.action.model.BusinessMethod;
 /**
  * 角色日志行为
  *
- * @date 2018/10/14
  */
 public class RoleAction extends BaseActionMap {
 

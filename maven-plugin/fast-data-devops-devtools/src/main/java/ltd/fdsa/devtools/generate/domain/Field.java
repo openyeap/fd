@@ -4,9 +4,6 @@ import lombok.Data;
 
 import java.util.List;
 
-/**
- * @date 2018/10/21
- */
 @Data
 public class Field {
     private String name;

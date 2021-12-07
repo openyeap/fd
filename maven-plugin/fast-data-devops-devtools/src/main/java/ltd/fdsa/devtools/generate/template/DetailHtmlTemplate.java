@@ -15,9 +15,6 @@ import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.Arrays;
 
-/**
- * @date 2018/10/25
- */
 public class DetailHtmlTemplate {
 
     private static String[] fixedSort = {"user", "date", "remark"};

@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 /**
- * @date 2018/8/14
+ 
  */
 @Configuration
 public class ShiroConfig {

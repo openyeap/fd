@@ -14,8 +14,6 @@ import java.lang.reflect.Method;
 
 /**
  * 行为日志注解AOP
- *
- * @date 2018/11/12
  */
 @Aspect
 @Component

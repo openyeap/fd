@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Jwt权限注解AOP
  *
- * @date 2019/4/13
  */
 @Aspect
 @Component

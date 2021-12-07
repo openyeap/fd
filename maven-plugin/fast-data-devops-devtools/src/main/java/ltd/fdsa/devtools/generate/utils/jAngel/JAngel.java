@@ -12,9 +12,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URLDecoder;
 
-/**
- * @date 2019/3/28
- */
 public class JAngel {
 
     /* 默认值区域 */

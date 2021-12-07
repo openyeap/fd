@@ -8,8 +8,6 @@ import java.util.List;
 
 /**
  * 方法节点
- *
- * @date 2019/3/28
  */
 public class MethodNode extends Modifier {
 

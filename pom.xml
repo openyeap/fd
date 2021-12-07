@@ -21,7 +21,6 @@
         <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <guava.version>25.0-jre</guava.version>
     </properties>
 
     <modules>

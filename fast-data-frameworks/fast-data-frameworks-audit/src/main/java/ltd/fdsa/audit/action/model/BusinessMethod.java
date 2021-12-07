@@ -3,7 +3,7 @@ package ltd.fdsa.audit.action.model;
 import lombok.Getter;
 
 /**
- * @date 2018/10/15
+ 
  */
 @Getter
 public class BusinessMethod extends ActionModel {

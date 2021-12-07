@@ -7,8 +7,6 @@ import java.io.OutputStreamWriter;
 
 /**
  * 文件操作工具
- *
- * @date 2019/3/2
  */
 public class FileUtil {
 

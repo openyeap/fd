@@ -15,10 +15,6 @@
         <module>koffer-maven-plugin</module>
     </modules>
 
-    <properties></properties>
-    <dependencies></dependencies>
-
-
     <dependencyManagement>
         <dependencies>
             <dependency>

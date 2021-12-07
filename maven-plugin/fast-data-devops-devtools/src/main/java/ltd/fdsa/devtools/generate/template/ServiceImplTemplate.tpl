@@ -9,10 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- * 
- * @date 2019/4/4
- */
 @Service
 public class #{entity}ServiceImpl implements #{entity}Service {
 

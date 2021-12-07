@@ -4,8 +4,6 @@ import ltd.fdsa.devtools.generate.utils.jAngel.JAngel;
 
 /**
  * java代码文档
- *
- * @date 2019/3/28
  */
 public class Document extends Node {
 

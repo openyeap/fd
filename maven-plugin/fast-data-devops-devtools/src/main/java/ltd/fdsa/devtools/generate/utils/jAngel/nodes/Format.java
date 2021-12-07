@@ -9,8 +9,6 @@ import java.util.regex.Pattern;
 
 /**
  * 版式实体，使用占位符方式处理数据
- *
- * @date 2019/3/28
  */
 public class Format {
 

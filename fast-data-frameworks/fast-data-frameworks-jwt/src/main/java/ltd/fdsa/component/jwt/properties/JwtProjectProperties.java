@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 /**
  * jwt配置项
  *
- * @date 2019/4/13
  */
 @Data
 @Configuration

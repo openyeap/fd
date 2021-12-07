@@ -2,8 +2,6 @@ package ltd.fdsa.devtools.generate.utils;
 
 /**
  * 代码操作工具
- *
- * @date 2019/3/26
  */
 public class CodeUtil {
 

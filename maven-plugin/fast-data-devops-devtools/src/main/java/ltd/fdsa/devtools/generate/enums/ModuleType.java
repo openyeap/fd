@@ -5,7 +5,6 @@ import lombok.Getter;
 /**
  * 代码生成-模块结构类型
  *
- * @date 2019/4/6
  */
 @Getter
 public enum ModuleType {

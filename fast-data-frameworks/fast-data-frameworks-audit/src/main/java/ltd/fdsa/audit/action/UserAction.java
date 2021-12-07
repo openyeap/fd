@@ -9,11 +9,6 @@
 //import javax.persistence.Table;
 //import java.util.List;
 //
-///**
-// * 用户日志行为
-// *
-// * @date 2018/10/14
-// */
 //public class UserAction extends BaseActionMap {
 //
 //    public static final String USER_LOGIN = "user_login";

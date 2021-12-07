@@ -9,9 +9,6 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 
-/**
- * @date 2018/10/25
- */
 public class PomXmlTemplate {
 
     /**

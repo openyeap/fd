@@ -4,8 +4,6 @@ import lombok.Getter;
 
 /**
  * 代码生成-字段验证方式
- *
- * @date 2018/10/21
  */
 @Getter
 public enum FieldVerify {

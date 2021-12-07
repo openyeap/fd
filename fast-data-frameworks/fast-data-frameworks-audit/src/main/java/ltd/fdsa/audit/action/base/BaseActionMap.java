@@ -5,9 +5,6 @@ import ltd.fdsa.audit.action.model.BusinessType;
 
 import java.util.HashMap;
 
-/**
- * @date 2018/10/14
- */
 public abstract class BaseActionMap {
 
     protected HashMap<String, Object> dictory = new HashMap<>();

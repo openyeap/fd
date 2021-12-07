@@ -5,8 +5,6 @@ import ltd.fdsa.audit.action.base.ResetLog;
 
 /**
  * 通用：记录数据状态的行为
- *
- * @date 2018/10/14
  */
 public class StatusAction extends BaseActionMap {
 

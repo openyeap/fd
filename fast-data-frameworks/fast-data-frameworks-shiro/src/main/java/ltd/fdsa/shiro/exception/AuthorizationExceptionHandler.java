@@ -17,8 +17,6 @@ import java.io.IOException;
 
 /**
  * 拦截访问权限异常处理
- *
- * @date 2019/4/26
  */
 @ControllerAdvice
 @Order(-1)

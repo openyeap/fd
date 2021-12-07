@@ -4,9 +4,6 @@ import ltd.fdsa.audit.action.base.BaseActionMap;
 import ltd.fdsa.audit.action.base.ResetLog;
 import ltd.fdsa.audit.action.model.SystemMethod;
 
-/**
- * @date 2018/10/19
- */
 public class SystemAction extends BaseActionMap {
 
     public static final String RUNTIME_EXCEPTION = "runtime_exception";

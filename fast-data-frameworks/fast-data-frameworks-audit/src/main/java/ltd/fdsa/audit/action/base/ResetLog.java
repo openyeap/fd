@@ -19,8 +19,6 @@ import java.util.regex.Pattern;
 
 /**
  * 自定义日志数据
- *
- * @date 2018/10/14
  */
 @Data
 public class ResetLog {

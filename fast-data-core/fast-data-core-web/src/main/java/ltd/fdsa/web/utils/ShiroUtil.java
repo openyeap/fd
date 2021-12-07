@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Shiro工具类
  *
- * @date 2018/8/14
+ 
  */
 public class ShiroUtil {
 

@@ -6,8 +6,6 @@ import ltd.fdsa.web.enums.ResultCode;
 
 /**
  * 自定义异常对象
- *
- * @date 2018/8/14
  */
 @Getter
 public class ResultException extends RuntimeException {

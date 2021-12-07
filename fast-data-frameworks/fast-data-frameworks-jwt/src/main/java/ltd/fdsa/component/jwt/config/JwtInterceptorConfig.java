@@ -10,7 +10,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * jwt权限配置拦截器
  *
- * @date 2019/4/12
  */
 @Configuration
 @ConditionalOnProperty(name = "project.jwt.pattern-path", havingValue = "true")

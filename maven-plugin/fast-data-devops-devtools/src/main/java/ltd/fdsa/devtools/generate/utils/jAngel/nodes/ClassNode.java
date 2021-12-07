@@ -7,8 +7,6 @@ import java.util.List;
 
 /**
  * java类节点
- *
- * @date 2019/3/28
  */
 public class ClassNode extends Node {
 

@@ -11,9 +11,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * @date 2018/10/21
- */
 public class DefaultValue {
 
     /**

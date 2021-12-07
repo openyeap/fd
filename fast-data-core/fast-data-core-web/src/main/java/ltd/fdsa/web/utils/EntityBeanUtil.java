@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * 实体对象操作工具
  *
- * @date 2018/10/15
+ 
  */
 @Slf4j
 public class EntityBeanUtil {

@@ -21,9 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @date 2018/10/24
- */
 public class ValidatorTemplate {
 
     /**

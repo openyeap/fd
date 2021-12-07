@@ -12,7 +12,6 @@ import java.io.Serializable;
 /**
  * 记住我部门适配器（用于判断延迟加载超时）
  *
- * @date 2019/10/30
  */
 public class RememberMeDept extends Dept implements HibernateProxy {
 
