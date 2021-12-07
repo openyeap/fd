@@ -25,6 +25,7 @@ public class JwtUtil {
      * @param username 用户名
      * @param secret   秘钥
      * @param amount   过期天数
+     * @return token
      */
     public static String getToken(String username, String secret, int amount) {
         SecurityProperties.User user = new SecurityProperties.User();
@@ -38,6 +39,7 @@ public class JwtUtil {
      * @param user   用户对象
      * @param secret 秘钥
      * @param amount 过期天数
+     * @return token
      */
     public static String getToken(SecurityProperties.User user, String secret, int amount) {
         // 过期时间
@@ -65,6 +67,8 @@ public class JwtUtil {
 
     /**
      * 获取请求对象中的token数据
+     * @param request request
+     * @return token
      */
     public static String getRequestToken(HttpServletRequest request) {
         // 获取JwtTokens失败
@@ -77,6 +81,7 @@ public class JwtUtil {
 
     /**
      * 获取当前token中的用户名
+     * @return subject
      */
     public static String getSubject() {
         HttpServletRequest request = HttpServletUtil.getRequest();
@@ -88,7 +93,7 @@ public class JwtUtil {
      * 验证JwtToken
      *
      * @param token JwtToken数据
-     * @return true 验证通过
+     * @param secret secret
      * @throws TokenExpiredException    Token过期
      * @throws JWTVerificationException 令牌无效（验证不通过）
      */
@@ -100,6 +105,9 @@ public class JwtUtil {
 
     /**
      * 生成Secret混淆数据
+     * @param secret secret
+     * @param random random
+     * @return Secret
      */
     private static Algorithm getSecret(String secret, String random) {
         String salt = "君不见黄河之水天上来，奔流到海不复回。君不见高堂明镜悲白发，朝如青丝暮成雪。";

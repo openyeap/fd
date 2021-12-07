@@ -28,7 +28,7 @@ public class RoleController extends BaseController {
         var role_status = table.intColumn("status").build();
         var select = Queries.select(table.getColumns()).from(table).where(role_status.eq(0));
 
-        return Result.success( this.service.findWhere(select));
+        return Result.success( this.service.find(role_status.eq(0)));
     }
 
 

@@ -18,52 +18,5 @@
         <module>fast-data-modules-client</module>
         <module>fast-data-modules-search</module>
         <module>fast-data-modules-research</module>
-    </modules>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>ltd.fdsa</groupId>
-                <artifactId>codegg-maven-plugin</artifactId>
-                <version>1.0.0-RELEASE</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>init</goal>
-                        </goals>
-                        <configuration>
-                            <tables>
-                                <table>s_user</table>
-                                <table>s_role</table>
-                                <table>s_group</table>
-                                <table>r_group_role</table>
-                                <table>s_permission</table>
-                                <table>r_user_group</table>
-                                <table>r_group_role</table>
-                            </tables>
-                            <prefixes>
-                                <prefix>s_</prefix>
-                                <prefix>t_</prefix>
-                                <prefix>r_</prefix>
-                            </prefixes>
-                            <!-- 数据库类型：MYSQL,MARIADB,ORACLE,ORACLE_12C,H2,SQLITE,POSTGRE_SQL,SQL_SERVER2005,SQL_SERVER,OTHER -->
-                            <dbType>MYSQL</dbType>
-                            <!-- 数据库驱动，项目中需要引用对应的依赖-->
-                            <dbDriver></dbDriver>
-                            <!-- 数据库连接 -->
-                            <dbUrl></dbUrl>
-                            <!-- 数据库用户名 -->
-                            <dbUserName></dbUserName>
-                            <!-- 数据库密码 -->
-                            <dbPassword></dbPassword>
-                            <!-- 数据库模式 -->
-                            <dbSchema>public</dbSchema>
-                            <!-- 是否覆盖现有文件：true|false -->
-                            <!-- <override>true</override> -->
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+    </modules> 
 </project>

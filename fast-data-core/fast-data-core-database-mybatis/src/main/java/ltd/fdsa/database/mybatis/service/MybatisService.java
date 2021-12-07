@@ -4,9 +4,7 @@ import ltd.fdsa.database.entity.BaseEntity;
 import ltd.fdsa.database.mybatis.mapper.reader.ReadMapper;
 import ltd.fdsa.database.mybatis.mapper.writer.WriteMapper;
 import ltd.fdsa.database.service.DataAccessService;
-import ltd.fdsa.database.sql.columns.Column;
-import ltd.fdsa.database.sql.queries.Select;
-import ltd.fdsa.database.sql.schema.Table;
+import ltd.fdsa.database.sql.conditions.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -53,7 +51,7 @@ public class MybatisService<Entity extends BaseEntity<ID>, ID, Writer extends Wr
     }
 
     @Override
-    public List<Entity> findWhere(Select select) {
+    public List<Entity> find(Condition where) {
         return null;
     }
 

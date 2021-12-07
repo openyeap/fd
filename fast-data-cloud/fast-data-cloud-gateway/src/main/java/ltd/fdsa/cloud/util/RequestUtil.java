@@ -18,7 +18,7 @@ public class RequestUtil {
      * 读取body内容
      *
      * @param serverHttpRequest
-     * @return
+     * @return String
      */
     public static String resolveBodyFromRequest(ServerHttpRequest serverHttpRequest) {
         //获取请求体
@@ -39,7 +39,7 @@ public class RequestUtil {
      * 去掉空格,换行和制表符
      *
      * @param str
-     * @return
+     * @return String
      */
     private static String formatStr(String str) {
         if (str != null && str.length() > 0) {

@@ -42,3 +42,6 @@ public class Count extends NumberColumnFunction
         return INTEGER;
     }
 }
+
+
+

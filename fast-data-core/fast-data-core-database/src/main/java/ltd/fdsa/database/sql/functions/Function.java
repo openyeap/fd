@@ -45,6 +45,10 @@ public interface Function extends Selectable, SqlTypeSupplier
     {
         return new Count(null);
     }
+    public static DistinctCount distinct(Column column)
+    {
+        return new DistinctCount(column);
+    }
 
     public static Now now()
     {

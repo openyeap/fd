@@ -6,24 +6,24 @@
     <parent>
         <groupId>ltd.fdsa</groupId>
         <artifactId>fast-data-devops</artifactId>
-        <version>2.1.5-SNAPSHOT</version>
+        <version>1.0.0-RELEASE</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <dependencies>
         <dependency>
             <groupId>ltd.fdsa</groupId>
             <artifactId>fast-data-component</artifactId>
-            <version>2.1.5-SNAPSHOT</version>
+            <version>1.0.0-RELEASE</version>
         </dependency>
         <dependency>
             <groupId>ltd.fdsa.modules</groupId>
             <artifactId>system</artifactId>
-            <version>2.1.5-SNAPSHOT</version>
+            <version>1.0.0-RELEASE</version>
         </dependency>
         <dependency>
             <groupId>ltd.fdsa.component</groupId>
             <artifactId>shiro</artifactId>
-            <version>2.1.5-SNAPSHOT</version>
+            <version>1.0.0-RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate.validator</groupId>

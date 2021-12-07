@@ -1,23 +1,19 @@
 package ltd.fdsa.database.mybatis.plus.service;
 
 import lombok.var;
-import ltd.fdsa.core.context.ApplicationContextHolder;
-import ltd.fdsa.database.config.DataSourceConfig;
 import ltd.fdsa.database.entity.BaseEntity;
 import ltd.fdsa.database.entity.Status;
 import ltd.fdsa.database.mybatis.plus.mapper.reader.ReadMapper;
 import ltd.fdsa.database.mybatis.plus.mapper.writer.WriteMapper;
-import ltd.fdsa.database.repository.DAO;
 import ltd.fdsa.database.service.DataAccessService;
-import ltd.fdsa.database.sql.queries.Select;
+import ltd.fdsa.database.sql.conditions.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
 import javax.servlet.http.HttpServletRequest;
-import javax.sql.DataSource;
-import java.lang.reflect.ParameterizedType;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -63,18 +59,8 @@ public class MybatisPlusService<Entity extends BaseEntity<ID>, ID, Writer extend
     }
 
     @Override
-    public List<Entity> findWhere(Select select) {
-        var dataSource = ApplicationContextHolder.getBeansOfType(DataSource.class).get(DataSourceConfig.READER_DATASOURCE);
-
-        ParameterizedType parameterizedType = (ParameterizedType) this.getClass().getGenericSuperclass();
-        Class clazz = (Class<Entity>) parameterizedType.getActualTypeArguments()[0];
-        try {
-            return DAO.getObjectList(dataSource, select.build().toString(), clazz);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public List<Entity> find(Condition where) {
         return Collections.emptyList();
-
     }
 
     @Override

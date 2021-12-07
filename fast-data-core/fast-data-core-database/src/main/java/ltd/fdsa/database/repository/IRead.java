@@ -1,6 +1,7 @@
 package ltd.fdsa.database.repository;
 
 import ltd.fdsa.database.entity.BaseEntity;
+import ltd.fdsa.database.sql.conditions.Condition;
 import ltd.fdsa.database.sql.queries.Select;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,5 +26,5 @@ public interface IRead<Entity extends BaseEntity, ID> {
 
     boolean existsById(ID id);
 
-    List<Entity> findWhere(Select select);
+    List<Entity> find(Condition where);
 }

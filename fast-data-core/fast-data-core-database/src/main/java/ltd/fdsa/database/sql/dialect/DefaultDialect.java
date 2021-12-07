@@ -216,10 +216,10 @@ public abstract class DefaultDialect implements Dialect {
         } else {
             builder.append(selectables.stream().map(selectable ->
             {
-                var bldr = new StringBuilder(indent.getIndent());
-                bldr.append(selectable.getValue(context, indentation));
-                appendAlias(bldr, selectable.getAlias(), context);
-                return bldr.toString();
+                var stringBuilder = new StringBuilder(indent.getIndent());
+                stringBuilder.append(selectable.getValue(context, indentation));
+                appendAlias(stringBuilder, selectable.getAlias(), context);
+                return stringBuilder.toString();
             }).collect(joining("," + context.getDelimiter())));
         }
     }
@@ -343,7 +343,6 @@ public abstract class DefaultDialect implements Dialect {
 
     private static String build(StringBuilder builder) {
         var sql = builder.toString();
-        log.debug("build sql-statement {}", sql);
         return sql;
     }
 

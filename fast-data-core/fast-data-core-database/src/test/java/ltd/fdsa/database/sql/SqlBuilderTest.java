@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Test;
  * @author zhumingwu
  * @since 3/20/2021 10:36 AM
  */
-public class aaa {
+public class SqlBuilderTest {
     @Test
-    public void test() {
+    public void testSelect() {
         var t_user = Table.create("t_user").as("t1");
 
         var user_id = t_user.intColumn("user_id").size(32).build();
@@ -29,5 +29,15 @@ public class aaa {
                 .orderAscendingBy(user_id)
                 .where(user_id.eq(1));
         select.print(Dialects.SYBASE, Indentation.enabled());
+    }
+
+    @Test
+    public void testSelectCount() {
+        var t_user = Table.create("t_user");
+        var id = t_user.bigIntColumn("id");
+        var select = Queries.select(ltd.fdsa.database.sql.functions.Function.distinct(id.build()).as("cnt"))
+                .from(t_user);
+
+        System.out.println(select.build(Dialects.MYSQL, Indentation.enabled()));
     }
 }

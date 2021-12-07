@@ -7,7 +7,7 @@ import ltd.fdsa.database.entity.Status;
 import ltd.fdsa.database.jpa.repository.reader.ReadRepository;
 import ltd.fdsa.database.jpa.repository.writer.WriteRepository;
 import ltd.fdsa.database.service.DataAccessService;
-import ltd.fdsa.database.sql.queries.Select;
+import ltd.fdsa.database.sql.conditions.Condition;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -57,7 +57,7 @@ public class BaseJpaService<Entity extends BaseEntity<ID>, ID, Writer extends Wr
     }
 
     @Override
-    public List<Entity> findWhere(Select select) {
+    public List<Entity> find(Condition where) {
         return Collections.emptyList();
     }
 

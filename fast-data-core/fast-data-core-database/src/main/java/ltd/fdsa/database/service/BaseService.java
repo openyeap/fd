@@ -7,12 +7,13 @@ import ltd.fdsa.core.util.NamingUtils;
 import ltd.fdsa.database.config.DataSourceConfig;
 import ltd.fdsa.database.entity.BaseEntity;
 import ltd.fdsa.database.entity.Status;
-import ltd.fdsa.database.repository.DAO;
 import ltd.fdsa.database.repository.IMetaData;
+import ltd.fdsa.database.sql.conditions.Condition;
+import ltd.fdsa.database.sql.functions.Function;
 import ltd.fdsa.database.sql.queries.Queries;
-import ltd.fdsa.database.sql.queries.Select;
 import ltd.fdsa.database.sql.schema.Schema;
 import ltd.fdsa.database.sql.schema.Table;
+import ltd.fdsa.database.utils.PlaceHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -51,37 +52,44 @@ public class BaseService<Entity extends BaseEntity<ID>, ID> implements DataAcces
 
     @Override
     public Optional<Entity> findById(ID id) {
-        var table = this.entityClass.getAnnotation(javax.persistence.Table.class);
-        var entity_id = Table.create(table.name()).charColumn("id").build();
-        var select = Queries.select().where(entity_id.eq(id.toString()));
-        return DAO.getObjectList(this.reader, select.build().toString(), this.entityClass).stream().findFirst();
+        var entityInfo = PlaceHolder.genEntityInfo(this.entityClass);
+        var table = Table.create(entityInfo.getName());
+        var entity_id = table.bigIntColumn(entityInfo.getId().getName()).build();
+        var select = Queries.select().where(entity_id.eq((Long) id));
+        List<Entity> list = this.find(entity_id.eq((Integer) id));
+        if (list.isEmpty()) {
+            return Optional.of(null);
+        }
+        return Optional.of(list.get(0));
     }
 
     @Override
     public List<Entity> findAll() {
-        var table = this.entityClass.getAnnotation(javax.persistence.Table.class);
-        var queryTable = Table.create(table.name());
-        var select = Queries.select().from(queryTable);
-        return DAO.getObjectList(this.reader, select.build().toString(), this.entityClass);
-
+        var entityInfo = PlaceHolder.genEntityInfo(this.entityClass);
+        var queryTable = Table.create(entityInfo.getName());
+        var status = queryTable.intColumn("status").build();
+        return this.find(status.eq(Status.OK.ordinal()));
     }
 
     @Override
     public List<Entity> findAllById(ID... ids) {
-        List<Entity> result = new ArrayList<>();
+        var entityInfo = PlaceHolder.genEntityInfo(this.entityClass);
+        var table = Table.create(entityInfo.getName());
+        var entity_id = table.bigIntColumn(entityInfo.getId().getName()).build();
+        var condition = Condition.emptyCondition();
         for (var id : ids) {
-            var e = this.findById(id);
-            if (e.isPresent()) {
-                result.add(e.get());
-            }
+            condition = condition.or(entity_id.eq((Long) id));
         }
-        return result;
+        return this.find(condition);
     }
 
     @Override
     public long count() {
-
-        return this.findAll().size();
+        var entityInfo = PlaceHolder.genEntityInfo(this.entityClass);
+        var table = Table.create(entityInfo.getName());
+        var select = Queries.select(Function.count().as("cnt"))
+                .from(table);
+        return this.executeSql(select.build());
     }
 
     @Override
@@ -95,54 +103,13 @@ public class BaseService<Entity extends BaseEntity<ID>, ID> implements DataAcces
     }
 
     @Override
-    public List<Entity> findWhere(Select select) {
+    public List<Entity> find(Condition where) {
+        var entityInfo = PlaceHolder.genEntityInfo(this.entityClass);
+        var table = Table.create(entityInfo.getName());
 
-        return DAO.getObjectList(this.reader, select.build(), this.entityClass);
+        var select = Queries.select().where(where);
 
-    }
-
-    @Override
-    public Entity update(Entity entity) {
-        return null;
-    }
-
-    @Override
-    public void updateAll(Entity... entities) {
-
-    }
-
-    @Override
-    public void deleteById(ID id) {
-
-    }
-
-    @Override
-    public void deleteAll(Entity... entities) {
-
-    }
-
-    @Override
-    public void clearAll() {
-
-    }
-
-    @Override
-    public Entity insert(Entity entity) {
-        return null;
-    }
-
-    @Override
-    public void insertAll(Entity... entities) {
-
-    }
-
-    @Override
-    public int executeSql(String sql) {
-        return 0;
-    }
-
-    protected <T> List<T> getDataFromSource(DataSource dataSource, String sql) {
-        List<T> ls = new ArrayList<>();
+        List<Entity> ls = new ArrayList<>();
         final Map<String, Method> methods = new HashMap<>();
         for (var method : this.entityClass.getMethods()) {
             if (!method.getName().startsWith("set")) {
@@ -156,12 +123,11 @@ public class BaseService<Entity extends BaseEntity<ID>, ID> implements DataAcces
                 continue;
             }
             methods.put(method.getName(), method);
-
         }
-        try (var conn = dataSource.getConnection();
-             var pst = conn.prepareStatement(sql);
-             var rs = pst.executeQuery();) {
 
+        try (var conn = this.reader.getConnection();
+             var pst = conn.prepareStatement(select.build());
+             var rs = pst.executeQuery();) {
             //取得ResultSet的列名
             ResultSetMetaData resultSetMetaData = rs.getMetaData();
             int columnsCount = resultSetMetaData.getColumnCount();
@@ -171,7 +137,7 @@ public class BaseService<Entity extends BaseEntity<ID>, ID> implements DataAcces
                 columnNames[i] = resultSetMetaData.getColumnLabel(i + 1);
             }
             while (rs.next()) {
-                T bean = (T) this.entityClass.newInstance();
+                Entity bean = (Entity) this.entityClass.newInstance();
                 //反射, 从ResultSet绑定到JavaBean
                 for (int i = 0; i < columnNames.length; i++) {
                     //取得Set方法
@@ -224,12 +190,60 @@ public class BaseService<Entity extends BaseEntity<ID>, ID> implements DataAcces
                 }
                 ls.add(bean);
             }
-
-
         } catch (Exception e) {
             log.error("getObjectList", e);
         }
         return ls;
+
+    }
+
+    @Override
+    public Entity update(Entity entity) {
+        return null;
+    }
+
+    @Override
+    public void updateAll(Entity... entities) {
+
+    }
+
+    @Override
+    public void deleteById(ID id) {
+
+    }
+
+    @Override
+    public void deleteAll(Entity... entities) {
+
+    }
+
+    @Override
+    public void clearAll() {
+
+    }
+
+    @Override
+    public Entity insert(Entity entity) {
+        return null;
+    }
+
+    @Override
+    public void insertAll(Entity... entities) {
+
+    }
+
+    @Override
+    public int executeSql(String sql) {
+        try (var conn = this.reader.getConnection();
+             var pst = conn.prepareStatement(sql);
+             var rs = pst.executeQuery();) {
+            while (rs.next()) {
+                return rs.getInt(0);
+            }
+        } catch (Exception e) {
+            log.error("getObjectList", e);
+        }
+        return -1;
     }
 
     @Override

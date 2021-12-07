@@ -17,6 +17,8 @@ public class DateTimeUtil {
 
     /**
      * 返回当前的日期
+     *
+     * @return 当前时间
      */
     public static LocalDate getCurrentLocalDate() {
         return LocalDate.now();
@@ -24,6 +26,7 @@ public class DateTimeUtil {
 
     /**
      * 返回当前时间
+     * @return 当前时间
      */
     public static LocalTime getCurrentLocalTime() {
         return LocalTime.now();
@@ -31,6 +34,7 @@ public class DateTimeUtil {
 
     /**
      * 返回当前日期时间
+     * @return 当前时间
      */
     public static LocalDateTime getCurrentLocalDateTime() {
         return LocalDateTime.now();
@@ -38,6 +42,7 @@ public class DateTimeUtil {
 
     /**
      * yyyy-MM-dd
+     * @return yyyy-MM-dd string
      */
     public static String getCurrentDateStr() {
         return LocalDate.now().format(DATE_FORMATTER);
@@ -45,6 +50,7 @@ public class DateTimeUtil {
 
     /**
      * yyMMdd
+     * @return yyMMdd
      */
     public static String getCurrentShortDateStr() {
         return LocalDate.now().format(SHORT_DATE_FORMATTER);
@@ -56,6 +62,8 @@ public class DateTimeUtil {
 
     /**
      * yyyy-MM-dd HH:mm:ss
+     *
+     * @return yyyy-MM-dd HH:mm:ss
      */
     public static String getCurrentDateTimeStr() {
         return LocalDateTime.now().format(DATETIME_FORMATTER);
@@ -68,6 +76,8 @@ public class DateTimeUtil {
 
     /**
      * yyMMddHHmmss
+     *
+     * @return string
      */
     public static String getCurrentShortDateTimeStr() {
         return LocalDateTime.now().format(SHORT_DATETIME_FORMATTER);
@@ -75,6 +85,8 @@ public class DateTimeUtil {
 
     /**
      * HHmmss
+     *
+     * @return string
      */
     public static String getCurrentTimeStr() {
         return LocalTime.now().format(TIME_FORMATTER);
@@ -146,6 +158,7 @@ public class DateTimeUtil {
 
     /**
      * 日期相隔秒
+     * @return long
      */
     public static long periodSeconds(LocalDateTime startDateTime, LocalDateTime endDateTime) {
         return Duration.between(startDateTime, endDateTime).get(ChronoUnit.SECONDS);
@@ -153,6 +166,7 @@ public class DateTimeUtil {
 
     /**
      * 日期相隔分
+     * @return long
      */
     public static long periodMinute(LocalDateTime startDateTime, LocalDateTime endDateTime) {
 
@@ -162,6 +176,7 @@ public class DateTimeUtil {
 
     /**
      * 日期相隔天数
+     * @return long
      */
     public static long periodDays(LocalDate startDate, LocalDate endDate) {
         return startDate.until(endDate, ChronoUnit.DAYS);
@@ -169,6 +184,7 @@ public class DateTimeUtil {
 
     /**
      * 日期相隔周数
+     * @return long
      */
     public static long periodWeeks(LocalDate startDate, LocalDate endDate) {
         return startDate.until(endDate, ChronoUnit.WEEKS);
@@ -176,6 +192,7 @@ public class DateTimeUtil {
 
     /**
      * 日期相隔月数
+     * @return long
      */
     public static long periodMonths(LocalDate startDate, LocalDate endDate) {
         return startDate.until(endDate, ChronoUnit.MONTHS);
@@ -183,6 +200,7 @@ public class DateTimeUtil {
 
     /**
      * 日期相隔年数
+     * @return long
      */
     public static long periodYears(LocalDate startDate, LocalDate endDate) {
         return startDate.until(endDate, ChronoUnit.YEARS);
@@ -190,6 +208,7 @@ public class DateTimeUtil {
 
     /**
      * 是否当天
+     * @return long
      */
     public static boolean isToday(LocalDate date) {
         return getCurrentLocalDate().equals(date);
@@ -197,6 +216,7 @@ public class DateTimeUtil {
 
     /**
      * 获取当前毫秒数
+     * @return long
      */
     public static Long toEpochMilli(LocalDateTime dateTime) {
         return dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
@@ -204,6 +224,7 @@ public class DateTimeUtil {
 
     /**
      * 判断是否为闰年
+     * @return long
      */
     public static boolean isLeapYear(LocalDate localDate) {
         return localDate.isLeapYear();
