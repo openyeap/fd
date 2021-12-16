@@ -1,0 +1,27 @@
+# 定义查询接口, 一个schema文件中只能定义一个Query对象
+type Query {
+  # 无参, 返回字符串
+  entity(id: ID, name: String): Entity
+  # 对象参数, 返回列表
+  entities(page: Page): [Entity]
+}
+# 定义修改接口
+type Mutation {
+  hello: String
+}
+# 定义入参对象
+input Page {
+  index: Int = 0
+  size: Int = 10
+}
+#定义普通对象
+type Entity {
+  id: ID
+  name: String
+}
+# GraphQL 自带一组默认标量类型：
+# ID: 唯一标识。
+# Int：有符号 32 位整数。
+# Float：有符号双精度浮点值。
+# String：UTF‐8 字符序列。
+# Boolean：true 或者 false。
