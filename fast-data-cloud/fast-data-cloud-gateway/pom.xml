@@ -24,6 +24,11 @@
             <version>1.0.0-RELEASE</version>
         </dependency>
         <dependency>
+            <groupId>ltd.fdsa</groupId>
+            <artifactId>fast-data-core-database</artifactId>
+            <version>1.0.0-RELEASE</version>
+        </dependency>
+        <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
             <version>4.9.3</version>
@@ -128,11 +133,11 @@
 
                 <configuration>
                     <sourceDirectory>${basedir}/src/main/antlr4/</sourceDirectory>
-                    <outputDirectory>${basedir}/src/main/java/ltd/fdsa/antlr/fql</outputDirectory>
+                    <outputDirectory>${basedir}/src/main/java/ltd/fdsa/fql/antlr</outputDirectory>
                     <listener>false</listener>
                     <visitor>true</visitor>
                     <excludes>
-                        <exclude>*Common.g4</exclude>
+                        <exclude>Common.g4</exclude>
                     </excludes>
 
                     <treatWarningsAsErrors>true</treatWarningsAsErrors>

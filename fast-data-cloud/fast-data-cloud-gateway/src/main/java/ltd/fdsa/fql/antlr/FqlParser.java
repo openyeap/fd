@@ -1,5 +1,5 @@
-// Generated from Graphql.g4 by ANTLR 4.9.3
-package ltd.fdsa.antlr.fql;
+// Generated from Fql.g4 by ANTLR 4.9.3
+package ltd.fdsa.fql.antlr;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
-public class GraphqlParser extends Parser {
+public class FqlParser extends Parser {
 	static { RuntimeMetaData.checkVersion("4.9.3", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
@@ -97,7 +97,7 @@ public class GraphqlParser extends Parser {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "Graphql.g4"; }
+	public String getGrammarFileName() { return "Fql.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -108,7 +108,7 @@ public class GraphqlParser extends Parser {
 	@Override
 	public ATN getATN() { return _ATN; }
 
-	public GraphqlParser(TokenStream input) {
+	public FqlParser(TokenStream input) {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
@@ -123,7 +123,7 @@ public class GraphqlParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_document; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GraphqlVisitor ) return ((GraphqlVisitor<? extends T>)visitor).visitDocument(this);
+			if ( visitor instanceof FqlVisitor ) return ((FqlVisitor<? extends T>)visitor).visitDocument(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -162,7 +162,7 @@ public class GraphqlParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_selectionSet; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GraphqlVisitor ) return ((GraphqlVisitor<? extends T>)visitor).visitSelectionSet(this);
+			if ( visitor instanceof FqlVisitor ) return ((FqlVisitor<? extends T>)visitor).visitSelectionSet(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -227,7 +227,7 @@ public class GraphqlParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_selection; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GraphqlVisitor ) return ((GraphqlVisitor<? extends T>)visitor).visitSelection(this);
+			if ( visitor instanceof FqlVisitor ) return ((FqlVisitor<? extends T>)visitor).visitSelection(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -304,7 +304,7 @@ public class GraphqlParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_alias; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GraphqlVisitor ) return ((GraphqlVisitor<? extends T>)visitor).visitAlias(this);
+			if ( visitor instanceof FqlVisitor ) return ((FqlVisitor<? extends T>)visitor).visitAlias(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -342,7 +342,7 @@ public class GraphqlParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_enumValue; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GraphqlVisitor ) return ((GraphqlVisitor<? extends T>)visitor).visitEnumValue(this);
+			if ( visitor instanceof FqlVisitor ) return ((FqlVisitor<? extends T>)visitor).visitEnumValue(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -381,7 +381,7 @@ public class GraphqlParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_arrayValue; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GraphqlVisitor ) return ((GraphqlVisitor<? extends T>)visitor).visitArrayValue(this);
+			if ( visitor instanceof FqlVisitor ) return ((FqlVisitor<? extends T>)visitor).visitArrayValue(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -437,7 +437,7 @@ public class GraphqlParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_arrayValueWithVariable; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GraphqlVisitor ) return ((GraphqlVisitor<? extends T>)visitor).visitArrayValueWithVariable(this);
+			if ( visitor instanceof FqlVisitor ) return ((FqlVisitor<? extends T>)visitor).visitArrayValueWithVariable(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -493,7 +493,7 @@ public class GraphqlParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_objectValueWithVariable; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GraphqlVisitor ) return ((GraphqlVisitor<? extends T>)visitor).visitObjectValueWithVariable(this);
+			if ( visitor instanceof FqlVisitor ) return ((FqlVisitor<? extends T>)visitor).visitObjectValueWithVariable(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -549,7 +549,7 @@ public class GraphqlParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_objectFieldWithVariable; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GraphqlVisitor ) return ((GraphqlVisitor<? extends T>)visitor).visitObjectFieldWithVariable(this);
+			if ( visitor instanceof FqlVisitor ) return ((FqlVisitor<? extends T>)visitor).visitObjectFieldWithVariable(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -592,7 +592,7 @@ public class GraphqlParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_directives; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GraphqlVisitor ) return ((GraphqlVisitor<? extends T>)visitor).visitDirectives(this);
+			if ( visitor instanceof FqlVisitor ) return ((FqlVisitor<? extends T>)visitor).visitDirectives(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -644,7 +644,7 @@ public class GraphqlParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_directive; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GraphqlVisitor ) return ((GraphqlVisitor<? extends T>)visitor).visitDirective(this);
+			if ( visitor instanceof FqlVisitor ) return ((FqlVisitor<? extends T>)visitor).visitDirective(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -696,7 +696,7 @@ public class GraphqlParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_arguments; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GraphqlVisitor ) return ((GraphqlVisitor<? extends T>)visitor).visitArguments(this);
+			if ( visitor instanceof FqlVisitor ) return ((FqlVisitor<? extends T>)visitor).visitArguments(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -752,7 +752,7 @@ public class GraphqlParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_argument; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GraphqlVisitor ) return ((GraphqlVisitor<? extends T>)visitor).visitArgument(this);
+			if ( visitor instanceof FqlVisitor ) return ((FqlVisitor<? extends T>)visitor).visitArgument(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -783,29 +783,29 @@ public class GraphqlParser extends Parser {
 	}
 
 	public static class BaseNameContext extends ParserRuleContext {
-		public TerminalNode NAME() { return getToken(GraphqlParser.NAME, 0); }
-		public TerminalNode FRAGMENT() { return getToken(GraphqlParser.FRAGMENT, 0); }
-		public TerminalNode QUERY() { return getToken(GraphqlParser.QUERY, 0); }
-		public TerminalNode MUTATION() { return getToken(GraphqlParser.MUTATION, 0); }
-		public TerminalNode SUBSCRIPTION() { return getToken(GraphqlParser.SUBSCRIPTION, 0); }
-		public TerminalNode SCHEMA() { return getToken(GraphqlParser.SCHEMA, 0); }
-		public TerminalNode SCALAR() { return getToken(GraphqlParser.SCALAR, 0); }
-		public TerminalNode TYPE() { return getToken(GraphqlParser.TYPE, 0); }
-		public TerminalNode INTERFACE() { return getToken(GraphqlParser.INTERFACE, 0); }
-		public TerminalNode IMPLEMENTS() { return getToken(GraphqlParser.IMPLEMENTS, 0); }
-		public TerminalNode ENUM() { return getToken(GraphqlParser.ENUM, 0); }
-		public TerminalNode UNION() { return getToken(GraphqlParser.UNION, 0); }
-		public TerminalNode INPUT() { return getToken(GraphqlParser.INPUT, 0); }
-		public TerminalNode EXTEND() { return getToken(GraphqlParser.EXTEND, 0); }
-		public TerminalNode DIRECTIVE() { return getToken(GraphqlParser.DIRECTIVE, 0); }
-		public TerminalNode REPEATABLE() { return getToken(GraphqlParser.REPEATABLE, 0); }
+		public TerminalNode NAME() { return getToken(FqlParser.NAME, 0); }
+		public TerminalNode FRAGMENT() { return getToken(FqlParser.FRAGMENT, 0); }
+		public TerminalNode QUERY() { return getToken(FqlParser.QUERY, 0); }
+		public TerminalNode MUTATION() { return getToken(FqlParser.MUTATION, 0); }
+		public TerminalNode SUBSCRIPTION() { return getToken(FqlParser.SUBSCRIPTION, 0); }
+		public TerminalNode SCHEMA() { return getToken(FqlParser.SCHEMA, 0); }
+		public TerminalNode SCALAR() { return getToken(FqlParser.SCALAR, 0); }
+		public TerminalNode TYPE() { return getToken(FqlParser.TYPE, 0); }
+		public TerminalNode INTERFACE() { return getToken(FqlParser.INTERFACE, 0); }
+		public TerminalNode IMPLEMENTS() { return getToken(FqlParser.IMPLEMENTS, 0); }
+		public TerminalNode ENUM() { return getToken(FqlParser.ENUM, 0); }
+		public TerminalNode UNION() { return getToken(FqlParser.UNION, 0); }
+		public TerminalNode INPUT() { return getToken(FqlParser.INPUT, 0); }
+		public TerminalNode EXTEND() { return getToken(FqlParser.EXTEND, 0); }
+		public TerminalNode DIRECTIVE() { return getToken(FqlParser.DIRECTIVE, 0); }
+		public TerminalNode REPEATABLE() { return getToken(FqlParser.REPEATABLE, 0); }
 		public BaseNameContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_baseName; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GraphqlVisitor ) return ((GraphqlVisitor<? extends T>)visitor).visitBaseName(this);
+			if ( visitor instanceof FqlVisitor ) return ((FqlVisitor<? extends T>)visitor).visitBaseName(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -844,14 +844,14 @@ public class GraphqlParser extends Parser {
 		public BaseNameContext baseName() {
 			return getRuleContext(BaseNameContext.class,0);
 		}
-		public TerminalNode ON_KEYWORD() { return getToken(GraphqlParser.ON_KEYWORD, 0); }
+		public TerminalNode ON_KEYWORD() { return getToken(FqlParser.ON_KEYWORD, 0); }
 		public EnumValueNameContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_enumValueName; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GraphqlVisitor ) return ((GraphqlVisitor<? extends T>)visitor).visitEnumValueName(this);
+			if ( visitor instanceof FqlVisitor ) return ((FqlVisitor<? extends T>)visitor).visitEnumValueName(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -911,16 +911,16 @@ public class GraphqlParser extends Parser {
 		public BaseNameContext baseName() {
 			return getRuleContext(BaseNameContext.class,0);
 		}
-		public TerminalNode BooleanValue() { return getToken(GraphqlParser.BooleanValue, 0); }
-		public TerminalNode NullValue() { return getToken(GraphqlParser.NullValue, 0); }
-		public TerminalNode ON_KEYWORD() { return getToken(GraphqlParser.ON_KEYWORD, 0); }
+		public TerminalNode BooleanValue() { return getToken(FqlParser.BooleanValue, 0); }
+		public TerminalNode NullValue() { return getToken(FqlParser.NullValue, 0); }
+		public TerminalNode ON_KEYWORD() { return getToken(FqlParser.ON_KEYWORD, 0); }
 		public NameContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_name; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GraphqlVisitor ) return ((GraphqlVisitor<? extends T>)visitor).visitName(this);
+			if ( visitor instanceof FqlVisitor ) return ((FqlVisitor<? extends T>)visitor).visitName(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -991,11 +991,11 @@ public class GraphqlParser extends Parser {
 	}
 
 	public static class ValueContext extends ParserRuleContext {
-		public TerminalNode StringValue() { return getToken(GraphqlParser.StringValue, 0); }
-		public TerminalNode IntValue() { return getToken(GraphqlParser.IntValue, 0); }
-		public TerminalNode FloatValue() { return getToken(GraphqlParser.FloatValue, 0); }
-		public TerminalNode BooleanValue() { return getToken(GraphqlParser.BooleanValue, 0); }
-		public TerminalNode NullValue() { return getToken(GraphqlParser.NullValue, 0); }
+		public TerminalNode StringValue() { return getToken(FqlParser.StringValue, 0); }
+		public TerminalNode IntValue() { return getToken(FqlParser.IntValue, 0); }
+		public TerminalNode FloatValue() { return getToken(FqlParser.FloatValue, 0); }
+		public TerminalNode BooleanValue() { return getToken(FqlParser.BooleanValue, 0); }
+		public TerminalNode NullValue() { return getToken(FqlParser.NullValue, 0); }
 		public EnumValueContext enumValue() {
 			return getRuleContext(EnumValueContext.class,0);
 		}
@@ -1008,7 +1008,7 @@ public class GraphqlParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_value; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GraphqlVisitor ) return ((GraphqlVisitor<? extends T>)visitor).visitValue(this);
+			if ( visitor instanceof FqlVisitor ) return ((FqlVisitor<? extends T>)visitor).visitValue(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1104,11 +1104,11 @@ public class GraphqlParser extends Parser {
 		public VariableContext variable() {
 			return getRuleContext(VariableContext.class,0);
 		}
-		public TerminalNode StringValue() { return getToken(GraphqlParser.StringValue, 0); }
-		public TerminalNode IntValue() { return getToken(GraphqlParser.IntValue, 0); }
-		public TerminalNode FloatValue() { return getToken(GraphqlParser.FloatValue, 0); }
-		public TerminalNode BooleanValue() { return getToken(GraphqlParser.BooleanValue, 0); }
-		public TerminalNode NullValue() { return getToken(GraphqlParser.NullValue, 0); }
+		public TerminalNode StringValue() { return getToken(FqlParser.StringValue, 0); }
+		public TerminalNode IntValue() { return getToken(FqlParser.IntValue, 0); }
+		public TerminalNode FloatValue() { return getToken(FqlParser.FloatValue, 0); }
+		public TerminalNode BooleanValue() { return getToken(FqlParser.BooleanValue, 0); }
+		public TerminalNode NullValue() { return getToken(FqlParser.NullValue, 0); }
 		public EnumValueContext enumValue() {
 			return getRuleContext(EnumValueContext.class,0);
 		}
@@ -1124,7 +1124,7 @@ public class GraphqlParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_valueWithVariable; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GraphqlVisitor ) return ((GraphqlVisitor<? extends T>)visitor).visitValueWithVariable(this);
+			if ( visitor instanceof FqlVisitor ) return ((FqlVisitor<? extends T>)visitor).visitValueWithVariable(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1240,7 +1240,7 @@ public class GraphqlParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_variable; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GraphqlVisitor ) return ((GraphqlVisitor<? extends T>)visitor).visitVariable(this);
+			if ( visitor instanceof FqlVisitor ) return ((FqlVisitor<? extends T>)visitor).visitVariable(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1284,7 +1284,7 @@ public class GraphqlParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_type; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GraphqlVisitor ) return ((GraphqlVisitor<? extends T>)visitor).visitType(this);
+			if ( visitor instanceof FqlVisitor ) return ((FqlVisitor<? extends T>)visitor).visitType(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1340,7 +1340,7 @@ public class GraphqlParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_typeName; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GraphqlVisitor ) return ((GraphqlVisitor<? extends T>)visitor).visitTypeName(this);
+			if ( visitor instanceof FqlVisitor ) return ((FqlVisitor<? extends T>)visitor).visitTypeName(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1376,7 +1376,7 @@ public class GraphqlParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_listType; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GraphqlVisitor ) return ((GraphqlVisitor<? extends T>)visitor).visitListType(this);
+			if ( visitor instanceof FqlVisitor ) return ((FqlVisitor<? extends T>)visitor).visitListType(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1419,7 +1419,7 @@ public class GraphqlParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_nonNullType; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GraphqlVisitor ) return ((GraphqlVisitor<? extends T>)visitor).visitNonNullType(this);
+			if ( visitor instanceof FqlVisitor ) return ((FqlVisitor<? extends T>)visitor).visitNonNullType(this);
 			else return visitor.visitChildren(this);
 		}
 	}

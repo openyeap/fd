@@ -1,38 +1,23 @@
 package ltd.fdsa.database.sql.queries;
 
-import static ltd.fdsa.database.sql.domain.ConditionType.WHERE;
-import static ltd.fdsa.database.sql.domain.ConditionType.WHERE_NOT;
-import static ltd.fdsa.database.sql.domain.JoinType.FULL_OUTER;
-import static ltd.fdsa.database.sql.domain.JoinType.INNER;
-import static ltd.fdsa.database.sql.domain.JoinType.LEFT;
-import static ltd.fdsa.database.sql.domain.JoinType.LEFT_OUTER;
-import static ltd.fdsa.database.sql.domain.JoinType.RIGHT;
-import static ltd.fdsa.database.sql.domain.JoinType.RIGHT_OUTER;
-import static ltd.fdsa.database.sql.domain.OrderDirection.ASC;
-import static ltd.fdsa.database.sql.domain.OrderDirection.DESC;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import lombok.Getter;
+import lombok.ToString;
 import lombok.var;
 import ltd.fdsa.database.sql.columns.Column;
 import ltd.fdsa.database.sql.conditions.CombinedCondition;
 import ltd.fdsa.database.sql.conditions.Condition;
 import ltd.fdsa.database.sql.dialect.Dialect;
-import ltd.fdsa.database.sql.domain.ConditionType;
-import ltd.fdsa.database.sql.domain.Groupable;
-import ltd.fdsa.database.sql.domain.Joinable;
-import ltd.fdsa.database.sql.domain.JoinableTable;
-import ltd.fdsa.database.sql.domain.Limit;
-import ltd.fdsa.database.sql.domain.OrderBy;
-import ltd.fdsa.database.sql.domain.OrderDirection;
-import ltd.fdsa.database.sql.domain.PlainGroupable;
-import ltd.fdsa.database.sql.domain.Queryable;
-import ltd.fdsa.database.sql.domain.QueryableSelect;
-import ltd.fdsa.database.sql.domain.Selectable;
+import ltd.fdsa.database.sql.domain.*;
 import ltd.fdsa.database.sql.utils.Indentation;
-import lombok.Getter;
-import lombok.ToString;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static ltd.fdsa.database.sql.domain.ConditionType.WHERE;
+import static ltd.fdsa.database.sql.domain.ConditionType.WHERE_NOT;
+import static ltd.fdsa.database.sql.domain.JoinType.*;
+import static ltd.fdsa.database.sql.domain.OrderDirection.ASC;
+import static ltd.fdsa.database.sql.domain.OrderDirection.DESC;
 
 /**
  * @author zhumingwu
@@ -225,34 +210,36 @@ public class Select implements QueryableQuery
         return orderAscendingBy(column);
     }
 
-    public Select orderAscendingBy(Column column)
-    {
+    public Select orderAscendingBy(Column column) {
         return orderBy(column, ASC);
     }
 
-    public Select orderDescendingBy(Column column)
-    {
+    public Select orderDescendingBy(Column column) {
         return orderBy(column, DESC);
     }
 
-    public Select orderBy(Column column, OrderDirection direction)
-    {
-        if (orderBys == null)
-        {
+    public Select orderBy(Column column, OrderDirection direction) {
+        if (orderBys == null) {
             orderBys = new ArrayList<>();
         }
         orderBys.add(new OrderBy(column, direction));
         return this;
     }
 
-    public Select limit(long limit, long offset)
-    {
+    public Select orderBy(List<OrderBy> orders) {
+        if (orderBys == null) {
+            orderBys = new ArrayList<>();
+        }
+        orderBys.addAll(orders);
+        return this;
+    }
+
+    public Select limit(long limit, long offset) {
         limitation = new Limit(limit, offset);
         return this;
     }
 
-    public Select limit(long limit)
-    {
+    public Select limit(long limit) {
         return limit(limit, 0);
     }
 

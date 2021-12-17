@@ -1,4 +1,4 @@
-grammar GraphqlCommon;
+grammar Common;
 
 //
 //operationType : SUBSCRIPTION | MUTATION | QUERY;
