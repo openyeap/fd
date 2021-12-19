@@ -29,49 +29,28 @@ public class JdbcFqlVisitor {
     }
 
     Map<String, Object> visitSelectionSet(FqlParser.SelectionSetContext ctx) {
-        var data = new HashMap<String, Object>();
+        var result = new HashMap<String, Object>();
         if (ctx == null || ctx.isEmpty()) {
-            return data;
+            return result;
         }
         for (var selection : ctx.selection()) {
-            data.putAll(visitSelection(selection));
+            result.putAll(visitSelection(selection, result));
         }
-        return data;
+        return result;
     }
 
-    Map<String, Object> visitSelection(FqlParser.SelectionContext ctx) {
-        var data = new HashMap<String, Object>();
+    Map<String, Object> visitSelection(FqlParser.SelectionContext ctx , Map<String, Object> data) {
         var table = getTable(ctx);
 
         var query = visitArguments(ctx.arguments(), table);
 
-        query.select();
         if (ctx.selectionSet() != null && !ctx.selectionSet().isEmpty()) {
             for (var selection : ctx.selectionSet().selection()) {
                 //visitSubSelection(selection);
             }
         }
-        return null;
+        return data;
     }
-
-    Map<String, Object> visitSubSelection(FqlParser.SelectionContext ctx) {
-        if (ctx.selectionSet() != null) {
-
-        }
-        var data = new HashMap<String, Object>();
-        var table = getTable(ctx);
-
-        var query = visitArguments(ctx.arguments(), table);
-
-        query.select();
-        if (ctx.selectionSet() != null && !ctx.selectionSet().isEmpty()) {
-            for (var selection : ctx.selectionSet().selection()) {
-                visitSelection(selection);
-            }
-        }
-        return null;
-    }
-
 
     Table getTable(FqlParser.SelectionContext ctx) {
         var alias = ctx.alias() == null ? "" : ctx.alias().name().getText();

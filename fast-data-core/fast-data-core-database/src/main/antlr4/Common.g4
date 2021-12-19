@@ -1,37 +1,14 @@
 grammar Common;
 
-//
-//operationType : SUBSCRIPTION | MUTATION | QUERY;
-//
-//description : StringValue;
-
-enumValue : enumValueName ;
-
-
 arrayValue: '[' value* ']';
 
 arrayValueWithVariable: '[' valueWithVariable* ']';
-
-
-
-//objectValue: '{' objectField* '}';
-objectValueWithVariable: '{' objectFieldWithVariable* '}';
-//objectField : name ':' value;
-objectFieldWithVariable : name ':' valueWithVariable;
-
-
-directives : directive+;
-
-directive :'@' name arguments?;
-
 
 arguments : '(' argument+ ')';
 
 argument : name ':' valueWithVariable;
 
 baseName: NAME | FRAGMENT | QUERY | MUTATION | SUBSCRIPTION | SCHEMA | SCALAR | TYPE | INTERFACE | IMPLEMENTS | ENUM | UNION | INPUT | EXTEND | DIRECTIVE | REPEATABLE;
-//fragmentName: baseName | BooleanValue | NullValue;
-enumValueName: baseName | ON_KEYWORD;
 
 name: baseName | BooleanValue | NullValue | ON_KEYWORD;
 
@@ -41,7 +18,6 @@ IntValue |
 FloatValue |
 BooleanValue |
 NullValue |
-enumValue |
 arrayValue  ;
 
 
@@ -52,14 +28,9 @@ IntValue |
 FloatValue |
 BooleanValue |
 NullValue |
-enumValue |
-arrayValueWithVariable |
-objectValueWithVariable;
-
+arrayValueWithVariable;
 
 variable : '$' name;
-
-//defaultValue : '=' value;
 
 type : typeName | listType | nonNullType;
 

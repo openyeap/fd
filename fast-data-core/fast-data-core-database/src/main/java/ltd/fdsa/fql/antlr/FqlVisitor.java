@@ -53,30 +53,6 @@ public interface FqlVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitArrayValueWithVariable(FqlParser.ArrayValueWithVariableContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link FqlParser#objectValueWithVariable}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitObjectValueWithVariable(FqlParser.ObjectValueWithVariableContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link FqlParser#objectFieldWithVariable}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitObjectFieldWithVariable(FqlParser.ObjectFieldWithVariableContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link FqlParser#directives}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDirectives(FqlParser.DirectivesContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link FqlParser#directive}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDirective(FqlParser.DirectiveContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link FqlParser#arguments}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
