@@ -1,5 +1,6 @@
 package ltd.fdsa.fql;
 
+import com.google.common.base.Strings;
 import lombok.var;
 import ltd.fdsa.database.sql.conditions.Condition;
 import ltd.fdsa.database.sql.conditions.EmptyCondition;
@@ -10,7 +11,6 @@ import ltd.fdsa.database.sql.queries.Queries;
 import ltd.fdsa.database.sql.queries.Select;
 import ltd.fdsa.database.sql.schema.Table;
 import ltd.fdsa.fql.antlr.FqlParser;
-import org.assertj.core.util.Strings;
 
 import javax.sql.DataSource;
 import java.sql.ResultSetMetaData;

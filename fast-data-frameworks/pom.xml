@@ -18,7 +18,7 @@
         <module>fast-data-frameworks-influxdb</module>
         <module>fast-data-frameworks-jwt</module>
         <module>fast-data-frameworks-audit</module>
-        <module>fast-data-frameworks-koffer</module>
+<!--        <module>fast-data-frameworks-koffer</module>-->
         <module>fast-data-frameworks-consul</module>
         <module>fast-data-frameworks-redis</module>
     </modules>

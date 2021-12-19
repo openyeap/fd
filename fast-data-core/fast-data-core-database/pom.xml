@@ -41,6 +41,31 @@
             <version>2.0.2</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>4.9.3</version>
+        </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr4-maven-plugin</artifactId>
+                <version>4.9.3</version>
+                <!--                <version>4.3</version>-->
+                <configuration>
+                    <sourceDirectory>${basedir}/src/main/antlr4/</sourceDirectory>
+                    <outputDirectory>${basedir}/src/main/java/ltd/fdsa/fql/antlr</outputDirectory>
+                    <listener>false</listener>
+                    <visitor>true</visitor>
+                    <excludes>
+                        <exclude>Common.g4</exclude>
+                    </excludes>
+
+                    <treatWarningsAsErrors>true</treatWarningsAsErrors>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

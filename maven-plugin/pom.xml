@@ -12,7 +12,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <modules>
-        <module>koffer-maven-plugin</module>
+<!--        <module>koffer-maven-plugin</module>-->
     </modules>
 
     <dependencyManagement>
