@@ -20,7 +20,7 @@ public class FqlTest {
         query = "{\n" +
                 "  hero : user(id:12) {\n" +
                 "    name\n" +
-                "    friends : friend(user_id:user_id) {\n" +
+                "    friends : friend(user_id:$user_id) {\n" +
                 "      name\n" +
                 "    }\n" +
                 "  }\n" +

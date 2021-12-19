@@ -35,12 +35,6 @@ public interface FqlVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAlias(FqlParser.AliasContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link FqlParser#enumValue}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitEnumValue(FqlParser.EnumValueContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link FqlParser#arrayValue}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -65,18 +59,6 @@ public interface FqlVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitArgument(FqlParser.ArgumentContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link FqlParser#baseName}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBaseName(FqlParser.BaseNameContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link FqlParser#enumValueName}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitEnumValueName(FqlParser.EnumValueNameContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link FqlParser#name}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -100,28 +82,4 @@ public interface FqlVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitVariable(FqlParser.VariableContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link FqlParser#type}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitType(FqlParser.TypeContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link FqlParser#typeName}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitTypeName(FqlParser.TypeNameContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link FqlParser#listType}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitListType(FqlParser.ListTypeContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link FqlParser#nonNullType}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNonNullType(FqlParser.NonNullTypeContext ctx);
 }

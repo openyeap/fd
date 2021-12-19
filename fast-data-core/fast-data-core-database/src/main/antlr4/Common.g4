@@ -8,9 +8,7 @@ arguments : '(' argument+ ')';
 
 argument : name ':' valueWithVariable;
 
-baseName: NAME | FRAGMENT | QUERY | MUTATION | SUBSCRIPTION | SCHEMA | SCALAR | TYPE | INTERFACE | IMPLEMENTS | ENUM | UNION | INPUT | EXTEND | DIRECTIVE | REPEATABLE;
-
-name: baseName | BooleanValue | NullValue | ON_KEYWORD;
+name: NAME | BooleanValue | NullValue | EXPAND;
 
 value :
 StringValue |
@@ -18,7 +16,7 @@ IntValue |
 FloatValue |
 BooleanValue |
 NullValue |
-arrayValue  ;
+arrayValue;
 
 
 valueWithVariable :
@@ -32,33 +30,26 @@ arrayValueWithVariable;
 
 variable : '$' name;
 
-type : typeName | listType | nonNullType;
-
-typeName : name;
-listType : '[' type ']';
-nonNullType: typeName '!' | listType '!';
-
-
 BooleanValue: 'true' | 'false';
 
 NullValue: 'null';
 
-FRAGMENT: 'fragment';
-QUERY: 'query';
-MUTATION: 'mutation';
-SUBSCRIPTION: 'subscription';
-SCHEMA: 'schema';
-SCALAR: 'scalar';
-TYPE: 'type';
-INTERFACE: 'interface';
-IMPLEMENTS: 'implements';
-ENUM: 'enum';
-UNION: 'union';
-INPUT: 'input';
-EXTEND: 'extend';
-DIRECTIVE: 'directive';
-ON_KEYWORD: 'on';
-REPEATABLE: 'repeatable';
+//FRAGMENT: 'fragment';
+//QUERY: 'query';
+//MUTATION: 'mutation';
+//SUBSCRIPTION: 'subscription';
+//SCHEMA: 'schema';
+//SCALAR: 'scalar';
+//TYPE: 'type';
+//INTERFACE: 'interface';
+//IMPLEMENTS: 'implements';
+//ENUM: 'enum';
+//UNION: 'union';
+//INPUT: 'input';
+//EXTEND: 'extend';
+//DIRECTIVE: 'directive';
+EXPAND: '...';
+//REPEATABLE: 'repeatable';
 NAME: [_A-Za-z][_0-9A-Za-z]*;
 
 
