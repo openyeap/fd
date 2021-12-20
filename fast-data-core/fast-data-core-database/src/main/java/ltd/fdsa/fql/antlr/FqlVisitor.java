@@ -29,6 +29,12 @@ public interface FqlVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSelection(FqlParser.SelectionContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link FqlParser#arguments}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArguments(FqlParser.ArgumentsContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link FqlParser#alias}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -46,12 +52,6 @@ public interface FqlVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitArrayValueWithVariable(FqlParser.ArrayValueWithVariableContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link FqlParser#arguments}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArguments(FqlParser.ArgumentsContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link FqlParser#argument}.
 	 * @param ctx the parse tree

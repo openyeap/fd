@@ -4,8 +4,6 @@ arrayValue: '[' value* ']';
 
 arrayValueWithVariable: '[' valueWithVariable* ']';
 
-arguments : '(' argument+ ')';
-
 argument : name ':' valueWithVariable;
 
 name: NAME | BooleanValue | NullValue | EXPAND;

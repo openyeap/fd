@@ -12,62 +12,34 @@ import ltd.fdsa.database.sql.queries.Select;
 import ltd.fdsa.database.sql.schema.Table;
 import ltd.fdsa.fql.antlr.FqlParser;
 
-import javax.sql.DataSource;
-import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-public class JdbcFqlVisitor {
-    DataSource dataSource;
-    Dict dict = new Dict();
-    FqlUtil util = new FqlUtil();
-    public Map<String, Object> visit(FqlParser.DocumentContext ctx) {
-        return visitSelectionSet(ctx.selectionSet());
+public class FqlUtil {
+
+
+    public List<FqlParser.SelectionContext> getSelectionSet(FqlParser.DocumentContext ctx) {
+        return ctx.selectionSet().selection();
     }
 
-    Map<String, Object> visitSelectionSet(FqlParser.SelectionSetContext ctx) {
-        var result = new HashMap<String, Object>();
-        if (ctx == null || ctx.isEmpty()) {
-            return result;
+    List<FqlParser.ArgumentsContext> getArgumentList(FqlParser.SelectionContext ctx) {
+        if (ctx.arguments().size() == 0) {
+            return Collections.emptyList();
         }
-        for (var selection : ctx.selection()) {
-            result.putAll(visitSelection(selection, result));
-        }
-        return result;
+        return ctx.arguments();
     }
 
-    Map<String, Object> visitSelection(FqlParser.SelectionContext ctx , Map<String, Object> data) {
-        var name = util.getNameAndAlias(ctx);
-        var table = getTable(ctx);
-        var query = visitArguments(ctx.arguments(), table);
-        if (ctx.selectionSet() == null || ctx.selectionSet().isEmpty()) {
-            query.select(table.getColumns());
-        } else {
-            for (var selection : ctx.selectionSet().selection()) {
-                if (selection.arguments().size() > 0) {  //visitSubSelection(selection);
-
-                } else {
-                    var column = util.getNameAndAlias(selection);
-
-                    query.select(table.column(column.name).build().as(column.alias));
-                }
-            }
-        }
-        return data;
-    }
-
-    Table getTable(FqlParser.SelectionContext ctx) {
+    public NameAndAlias getNameAndAlias(FqlParser.SelectionContext ctx) {
         var alias = ctx.alias() == null ? "" : ctx.alias().name().getText();
 
         var name = ctx.name() == null ? "" : ctx.name().getText();
         if (Strings.isNullOrEmpty(alias)) {
             alias = name;
         }
-        var table = Table.create(dict.getDict(name)).as(alias);
-        return table;
+        return NameAndAlias.builder().alias(alias).name(name).build();
     }
 
     Select visitArguments(List<FqlParser.ArgumentsContext> contextList, Table table) {
@@ -182,27 +154,5 @@ public class JdbcFqlVisitor {
                 return true;
         }
         return false;
-    }
-
-    Map<String, Object> fetchData(Select select) {
-        var data = new HashMap<String, Object>();
-        try (var conn = this.dataSource.getConnection();
-             var pst = conn.prepareStatement(select.build());
-             var rs = pst.executeQuery();) {
-            //取得ResultSet的列名
-            ResultSetMetaData resultSetMetaData = rs.getMetaData();
-            int columnsCount = resultSetMetaData.getColumnCount();
-            String[] columnNames = new String[columnsCount];
-            for (int i = 0; i < columnsCount; i++) {
-                columnNames[i] = resultSetMetaData.getColumnLabel(i + 1);
-            }
-            while (rs.next()) {
-                for (int i = 0; i < columnNames.length; i++) {
-                    data.put(columnNames[i], rs.getObject(i));
-                }
-            }
-        } catch (Exception e) {
-        }
-        return data;
     }
 }
