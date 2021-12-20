@@ -24,11 +24,6 @@
             <version>1.0.0-RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>ltd.fdsa</groupId>
-            <artifactId>fast-data-core-database</artifactId>
-            <version>1.0.0-RELEASE</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter</artifactId>
         </dependency>
@@ -55,10 +50,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
         </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
