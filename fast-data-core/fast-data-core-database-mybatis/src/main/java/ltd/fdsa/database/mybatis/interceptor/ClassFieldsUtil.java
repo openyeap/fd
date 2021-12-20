@@ -8,16 +8,9 @@ import java.util.List;
 
 /**
  * 类字段工具类
- *
  */
 public class ClassFieldsUtil {
 
-    /**
-     * 获取本类及父类的所有字段
-     *
-     * @param object
-     * @return
-     */
     public static List<Field> getAllFields(Object object) {
         if (object == null) {
             return Collections.emptyList();

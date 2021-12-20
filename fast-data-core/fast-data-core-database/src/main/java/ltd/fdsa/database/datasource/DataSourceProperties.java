@@ -14,10 +14,10 @@ public class DataSourceProperties {
     public static final String PREFIX = "spring.datasource";
     private DruidDataSource master;
     private List<DruidDataSource> slaves = new ArrayList<>();
-    @Value("${spring.jpa.generate-ddl}")
+    @Value("${spring.jpa.generate-ddl:false}")
     private boolean generateDdl;
 
-    @Value("${spring.jpa.show-sql}")
+    @Value("${spring.jpa.show-sql:false}")
     private boolean showSql;
 
     private String dialect = "org.hibernate.dialect.SQLiteDialect";

@@ -41,21 +41,23 @@ FQL用{}表示集合，所以一般一个完整的查询语句可以表示为：
 
 | operator | 操作          | 备注             |
 | ------------ | ------------ | ---------------------- |
-| eq           | `=` or `is`  | key's equals value or key is null |
+| eq           | `=` or `IS`  | key's equals value or key is null |
 | gt           | `>`          | key's greater than value |
 | gte          | `>=`         | key's greater than or equal value |
 | lt           | `<`          | key's less than value  |
 | lte          | `<=`         | key's less than or equal value |
-| neq          | `<>` or `is` | key's not equal value or is not null |
+| neq          | `<>` or `IS` | key's not equal value or is not null |
 | like         | `LIKE`       | key's like '%value%' |
 | start        |  `LIKE`        | key's like 'value%' |
 | end          | `LIKE`       | key's like '%value' |
 | in           | `IN`         | key's in (value's) |
-| order       | `order`         | order by key  asc or desc |
+| nin           | `NOT IN`         | key's in (value's) |
+| order       | `order`         | order by key value |
 | limit           | `limit`         | limit value |
 | offset           | `offset`         | offset value |
-| distinct |  `distinct `         | distinct |
+| distinct |  `distinct`         | distinct |
 
+注： 当order的value为 false, "desc"时，表示降序 
 # 示例
 
 ## 单表查询

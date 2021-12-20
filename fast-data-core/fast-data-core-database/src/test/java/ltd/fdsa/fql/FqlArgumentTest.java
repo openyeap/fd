@@ -2,24 +2,45 @@ package ltd.fdsa.fql;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
+import ltd.fdsa.core.config.ProjectAutoConfiguration;
 import ltd.fdsa.fql.antlr.FqlLexer;
 import ltd.fdsa.fql.antlr.FqlParser;
+import ltd.fdsa.fql.util.FqlUtil;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Properties;
 
 
 @Slf4j
+@EnableAutoConfiguration(exclude = ProjectAutoConfiguration.class)
+@SpringBootTest
+@SpringBootConfiguration
+@RunWith(SpringRunner.class)
 public class FqlArgumentTest {
+    @Autowired
+    DataSource dataSource;
 
     @Test
     public void testIntArgument() {
         String query = "{\n" +
-                "  hero : user(id_eq:12) {\n" +
-                "    name\n" +
-                "    friends : friend(user_id_eq:\"$user_id\") {\n" +
-                "      name\n" +
+                "  user : t_user(id_eq:12) {\n" +
+                "    name\nuser_id\n" +
+                "    roles : t_user_role(user_id_eq:\"$user_id\") {\n" +
+                "      role_id\n" +
+                "      ... : t_role(role_id_eq: $role_id) {\n" +
+                "         name\n" +
+                "      }" +
                 "    }\n" +
                 "  }\n" +
                 "}";
@@ -29,9 +50,9 @@ public class FqlArgumentTest {
     @Test
     public void testStringArgument() {
         String query = "{\n" +
-                "  hero : user(id_eq:\"test\") {\n" +
+                "  hero : t_user(id_eq:\"test\") {\n" +
                 "    name\n" +
-                "    friends : friend(user_id_eq:$ids) {\n" +
+                "    roles : t_user_role(user_id_eq:$user_id) {\n" +
                 "      name\n" +
                 "    }\n" +
                 "  }\n" +
@@ -42,9 +63,9 @@ public class FqlArgumentTest {
     @Test
     public void testFloatArgument() {
         String query = "{\n" +
-                "  hero : user(id_eq:112.342) {\n" +
+                "  user : t_user(id_eq:112.342) {\n" +
                 "    name\n" +
-                "    friends : friend(user_id_eq:543.234) {\n" +
+                "    roles : t_user_role(user_id_eq:1) {\n" +
                 "      name\n" +
                 "    }\n" +
                 "  }\n" +
@@ -53,13 +74,14 @@ public class FqlArgumentTest {
         test(input);
     }
 
-    void test(CharStream input) {
+    public void test(CharStream input) {
         FqlLexer lexer = new FqlLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         FqlParser parser = new FqlParser(tokens);
-        var tree = parser.document();
-        JdbcFqlVisitor visitor = new JdbcFqlVisitor();
-        visitor.visit(tree);
+        FqlParser.DocumentContext document = parser.document();
+        JdbcFqlVisitor visitor = new JdbcFqlVisitor(new FqlUtil(dataSource, new Properties(), new HashMap<>()));
+        var data = visitor.visit(document);
+        System.out.println(data.toString());
     }
 
 }

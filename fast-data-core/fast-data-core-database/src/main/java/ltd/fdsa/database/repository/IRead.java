@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @author
+ * @author zhumingwu
  * @since 3/20/2021 10:35 AM
  */
 public interface IRead<Entity extends BaseEntity, ID> {

@@ -1,19 +1,19 @@
 package ltd.fdsa.fql;
 
-import com.google.common.base.Strings;
 import lombok.var;
+import ltd.fdsa.database.sql.columns.Column;
 import ltd.fdsa.database.sql.conditions.Condition;
-import ltd.fdsa.database.sql.conditions.EmptyCondition;
 import ltd.fdsa.database.sql.domain.LikeType;
 import ltd.fdsa.database.sql.domain.OrderBy;
 import ltd.fdsa.database.sql.domain.OrderDirection;
 import ltd.fdsa.database.sql.queries.Queries;
-import ltd.fdsa.database.sql.queries.Select;
 import ltd.fdsa.database.sql.schema.Table;
 import ltd.fdsa.fql.antlr.FqlParser;
+import ltd.fdsa.fql.model.FilterSet;
+import ltd.fdsa.fql.model.QueryInfo;
+import ltd.fdsa.fql.model.TableInfo;
+import ltd.fdsa.fql.util.FqlUtil;
 
-import javax.sql.DataSource;
-import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,188 +21,309 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class JdbcFqlVisitor {
-    DataSource dataSource;
-    Dict dict = new Dict();
-    FqlUtil util = new FqlUtil();
-    public Map<String, Object> visit(FqlParser.DocumentContext ctx) {
-        return visitSelectionSet(ctx.selectionSet());
+
+    final FqlUtil util;
+
+    public JdbcFqlVisitor(FqlUtil util) {
+        this.util = util;
     }
 
-    Map<String, Object> visitSelectionSet(FqlParser.SelectionSetContext ctx) {
+    public Map<String, Object> visit(FqlParser.DocumentContext ctx) {
         var result = new HashMap<String, Object>();
-        if (ctx == null || ctx.isEmpty()) {
-            return result;
-        }
-        for (var selection : ctx.selection()) {
-            result.putAll(visitSelection(selection, result));
+        for (var selection : ctx.selectionSet().selection()) {
+            visitSelection(selection, result, new HashMap<>(0));
         }
         return result;
     }
 
-    Map<String, Object> visitSelection(FqlParser.SelectionContext ctx , Map<String, Object> data) {
-        var name = util.getNameAndAlias(ctx);
-        var table = getTable(ctx);
-        var query = visitArguments(ctx.arguments(), table);
-        if (ctx.selectionSet() == null || ctx.selectionSet().isEmpty()) {
-            query.select(table.getColumns());
-        } else {
+    void visitSelection(FqlParser.SelectionContext ctx, Map<String, Object> root, Map<String, Object> current) {
+        var builder = QueryInfo.builder();
+        List<FqlParser.SelectionContext> todoList = new ArrayList<>();
+        // 表名信息
+        TableInfo tableInfo = util.getTableInfo(ctx);
+        builder.alias(tableInfo.getAlias()).name(tableInfo.getName()).code(tableInfo.getCode());
+        // 选择信息
+        if (ctx.selectionSet() != null) {
             for (var selection : ctx.selectionSet().selection()) {
-                if (selection.arguments().size() > 0) {  //visitSubSelection(selection);
-
+                //子选择
+                if (selection.arguments().size() > 0) {
+                    // 延迟处理
+                    todoList.add(selection);
                 } else {
-                    var column = util.getNameAndAlias(selection);
-
-                    query.select(table.column(column.name).build().as(column.alias));
+                    // 字段选择
+                    var column = util.getColumnInfo(selection, builder.getName());
+                    builder.column(column.getName(), column.getAlias(), column.getCode(), false);
                 }
             }
+        } else {
+            var columns = util.getColumnSet(builder.getName());
+            for (var column : columns.entrySet()) {
+                builder.column(column.getValue());
+            }
         }
-        return data;
+        // 操作信息
+        visitArguments(ctx.arguments(), builder);
+
+        // 执行
+        var queryInfo = builder.build();
+        //table
+        Table table = Table.create(queryInfo.getCode()).as(queryInfo.getName());
+        //select
+        Column[] columns = new Column[queryInfo.getColumns().size()];
+        var values = queryInfo.getColumns().values();
+        for (int i = 0; i < columns.length; i++) {
+            var column = values[i];
+            columns[i] = table.column(column.getCode()).build().as(column.getAlias());
+        }
+        //where
+        var where = Condition.emptyCondition();
+        for (var orFilter : queryInfo.getFilters()) {
+            var condition = Condition.emptyCondition();
+            for (var andFilter : orFilter.getFilters()) {
+                switch (andFilter.getType()) {
+                    case EQ:
+                        if (andFilter.getValue() == null) {
+                            condition = condition.and(table.column(andFilter.getName()).build().isNull());
+                            break;
+                        }
+                        if (andFilter.getValue() instanceof Number) {
+                            condition = condition.and(table.doubleColumn(andFilter.getName()).build().eq(Double.valueOf(andFilter.getValue().toString())));
+                            break;
+                        }
+                        condition = condition.and(table.column(andFilter.getName()).build().eq(andFilter.getValue().toString()));
+                        break;
+                    case NEQ:
+                        if (andFilter.getValue() == null) {
+                            condition = condition.and(table.column(andFilter.getName()).build().isNotNull());
+                            break;
+                        }
+                        if (andFilter.getValue() instanceof Number) {
+                            condition = condition.and(table.doubleColumn(andFilter.getName()).build().nEq(Double.valueOf(andFilter.getValue().toString())));
+                            break;
+                        }
+                        condition = condition.and(table.column(andFilter.getName()).build().nEq(andFilter.getValue().toString()));
+                        break;
+                    case LT:
+                        if (andFilter.getValue() == null) {
+                            break;
+                        }
+                        if (andFilter.getValue() instanceof Number) {
+                            condition = condition.and(table.doubleColumn(andFilter.getName()).build().lt(Double.valueOf(andFilter.getValue().toString())));
+                            break;
+                        }
+                        break;
+                    case LTE:
+                        if (andFilter.getValue() == null) {
+                            break;
+                        }
+                        if (andFilter.getValue() instanceof Number) {
+                            condition = condition.and(table.doubleColumn(andFilter.getName()).build().ltEq(Double.valueOf(andFilter.getValue().toString())));
+                            break;
+                        }
+                        break;
+                    case GT:
+                        if (andFilter.getValue() == null) {
+                            break;
+                        }
+                        if (andFilter.getValue() instanceof Number) {
+                            condition = condition.and(table.doubleColumn(andFilter.getName()).build().gt(Double.valueOf(andFilter.getValue().toString())));
+                            break;
+                        }
+                        break;
+                    case GTE:
+                        if (andFilter.getValue() == null) {
+                            break;
+                        }
+                        if (andFilter.getValue() instanceof Number) {
+                            condition = condition.and(table.doubleColumn(andFilter.getName()).build().gtEq(Double.valueOf(andFilter.getValue().toString())));
+                            break;
+                        }
+                        break;
+                    case LIKE:
+                        if (andFilter.getValue() == null) {
+                            break;
+                        }
+                        if (andFilter.getValue() instanceof Number) {
+                            break;
+                        }
+                        condition = condition.and(table.column(andFilter.getName()).build().isLike(andFilter.getValue().toString(), LikeType.BOTH));
+                        break;
+                    case START:
+                        if (andFilter.getValue() == null) {
+                            break;
+                        }
+                        if (andFilter.getValue() instanceof Number) {
+                            break;
+                        }
+                        condition = condition.and(table.column(andFilter.getName()).build().isLike(andFilter.getValue().toString(), LikeType.BEFORE));
+                        break;
+                    case END:
+                        if (andFilter.getValue() == null) {
+                            break;
+                        }
+                        if (andFilter.getValue() instanceof Number) {
+                            break;
+                        }
+                        condition = condition.and(table.column(andFilter.getName()).build().isLike(andFilter.getValue().toString(), LikeType.AFTER));
+                        break;
+                    case IN:
+                        if (andFilter.getValue() == null) {
+                            condition = condition.and(table.column(andFilter.getName()).build().isNull());
+                            break;
+                        }
+                        if (andFilter.getValue() instanceof Number) {
+                            condition = condition.and(table.doubleColumn(andFilter.getName()).build().eq(Double.valueOf(andFilter.getValue().toString())));
+                            break;
+                        }
+                        if (andFilter.getValue() instanceof List) {
+                            var list = (List<String>) andFilter.getValue();
+                            condition = condition.and(table.column(andFilter.getName()).build().isIn(list));
+                            break;
+                        }
+                        condition = condition.and(table.column(andFilter.getName()).build().eq(andFilter.getValue().toString()));
+                        break;
+                    case NIN:
+                        if (andFilter.getValue() == null) {
+                            condition = condition.and(table.column(andFilter.getName()).build().isNotNull());
+                            break;
+                        }
+                        if (andFilter.getValue() instanceof Number) {
+                            condition = condition.and(table.doubleColumn(andFilter.getName()).build().nEq(Double.valueOf(andFilter.getValue().toString())));
+                            break;
+                        }
+                        if (andFilter.getValue() instanceof List) {
+                            var list = (List<String>) andFilter.getValue();
+                            condition = condition.and(table.column(andFilter.getName()).build().isNotIn(list));
+                            break;
+                        }
+                        condition = condition.and(table.column(andFilter.getName()).build().nEq(andFilter.getValue().toString()));
+                        break;
+                }
+            }
+            where = where.or(condition);
+        }
+        //order
+        var orders = new ArrayList<OrderBy>();
+        for (var entry : queryInfo.getOrders().entrySet()) {
+            orders.add(new OrderBy(table.column(entry.getKey()).build(), entry.getValue()));
+        }
+        //other
+        var select = Queries
+                .select(columns)
+                .from(table)
+                .where(where);
+        if (orders.size() > 0) {
+            select.orderBy(orders);
+        }
+        if (queryInfo.getLimit() < Integer.MAX_VALUE) {
+            select.limit(queryInfo.getLimit(), queryInfo.getOffset());
+        }
+        if (queryInfo.isDistinct()) {
+            select.distinct();
+        }
+        var fetchData = util.fetchData(select);
+        if (fetchData.size() == 1) {
+            if ("...".equals(queryInfo.getAlias())) {
+                current.putAll(fetchData.get(0));
+            } else {
+                current.put(queryInfo.getAlias(), fetchData.get(0));
+            }
+            root.putAll(current);
+            for (var selection : todoList) {
+                this.visitSelection(selection, current, fetchData.get(0));
+            }
+        } else {
+            var list = new ArrayList<Map<String, Object>>();
+            // todo
+            if ("...".equals(queryInfo.getAlias())) {
+                for (var item : fetchData) {
+                    item.putAll(current);
+                    list.add(item);
+                    // 延迟处理
+                    for (var selection : todoList) {
+                        this.visitSelection(selection, root, item);
+                    }
+                }
+                root.put("", list);
+            } else {
+                root.put(queryInfo.getAlias(), fetchData);
+            }
+        }
     }
 
-    Table getTable(FqlParser.SelectionContext ctx) {
-        var alias = ctx.alias() == null ? "" : ctx.alias().name().getText();
-
-        var name = ctx.name() == null ? "" : ctx.name().getText();
-        if (Strings.isNullOrEmpty(alias)) {
-            alias = name;
-        }
-        var table = Table.create(dict.getDict(name)).as(alias);
-        return table;
-    }
-
-    Select visitArguments(List<FqlParser.ArgumentsContext> contextList, Table table) {
-        var distinct = false;
-        Integer limit = 1000000;
-        Integer offset = 0;
-
-        List<OrderBy> orders = new ArrayList<>();
-        Condition condition = new EmptyCondition();
+    void visitArguments(List<FqlParser.ArgumentsContext> contextList, QueryInfo.QueryBuilder builder) {
         for (var ctx : contextList) {
-            Condition emptyCondition = new EmptyCondition();
             if (ctx.argument() != null && !ctx.argument().isEmpty()) {
+                var filters = new FilterSet();
                 for (var argument : ctx.argument()) {
-                    distinct |= visitArgument(argument, table, limit, offset, emptyCondition, orders);
+                    visitArgument(argument, builder, filters);
                 }
+                builder.filters(filters);
             }
-            condition = condition.or(emptyCondition);
         }
-        var query = Queries.select().from(table);
-        if (distinct) {
-            query.distinct();
-        }
-        query.limit(limit, offset).orderBy(orders).where(condition);
-        return query;
     }
 
-    boolean visitArgument(FqlParser.ArgumentContext ctx, Table table, Integer limit, Integer offset, Condition condition, List<OrderBy> orders) {
-        var data = new HashMap<String, Object>();
+    void visitArgument(FqlParser.ArgumentContext ctx, QueryInfo.QueryBuilder builder, FilterSet filters) {
         var text = ctx.name().getText();
-
-
-        var i = text.lastIndexOf('_');
+        var lastIndexOf = text.lastIndexOf('_');
         String operator = "";
         String name = text;
-        if (i >= 0) {
-            operator = text.substring(i);
-            name = text.substring(0, i);
+        if (lastIndexOf >= 0) {
+            operator = text.substring(lastIndexOf);
+            name = text.substring(0, lastIndexOf);
         }
 
         switch (operator) {
-            case "":
             case "eq":
-                if (ctx.valueWithVariable().NullValue() != null) {
-                    condition = condition.and(table.column(name).build().isNull());
-                } else if (ctx.valueWithVariable().StringValue() != null) {
-                    condition = condition.and(table.column(name).build().eq(ctx.valueWithVariable().getText()));
-                } else {
-                    condition = condition.and(table.doubleColumn(name).build().eq(Double.valueOf(ctx.valueWithVariable().getText())));
-                }
-                break;
             case "gt":
-                condition = condition.and(table.doubleColumn(name).build().gt(Double.valueOf(ctx.valueWithVariable().getText())));
-                break;
             case "gte":
-                condition = condition.and(table.doubleColumn(name).build().gtEq(Double.valueOf(ctx.valueWithVariable().getText())));
-                break;
             case "lt":
-                condition = condition.and(table.doubleColumn(name).build().lt(Double.valueOf(ctx.valueWithVariable().getText())));
-                break;
             case "lte":
-                condition = condition.and(table.doubleColumn(name).build().ltEq(Double.valueOf(ctx.valueWithVariable().getText())));
-                break;
             case "neq":
-                if (ctx.valueWithVariable().NullValue() != null) {
-                    condition = condition.and(table.column(name).build().isNotNull());
-                } else if (ctx.valueWithVariable().StringValue() != null) {
-                    condition = condition.and(table.column(name).build().nEq(ctx.valueWithVariable().getText()));
-                } else {
-                    condition = condition.and(table.doubleColumn(name).build().nEq(Double.valueOf(ctx.valueWithVariable().getText())));
-                }
-                break;
             case "like":
-                if (ctx.valueWithVariable().StringValue() != null) {
-                    condition = condition.and(table.column(name).build().isLike(ctx.valueWithVariable().getText(), LikeType.BOTH));
-                }
-                break;
             case "start":
-                if (ctx.valueWithVariable().StringValue() != null) {
-                    condition = condition.and(table.column(name).build().isLike(ctx.valueWithVariable().getText(), LikeType.BEFORE));
-                }
-                break;
             case "end":
-                if (ctx.valueWithVariable().StringValue() != null) {
-                    condition = condition.and(table.column(name).build().isLike(ctx.valueWithVariable().getText(), LikeType.AFTER));
-                }
-                break;
-
-
             case "in":
-                if (ctx.valueWithVariable().arrayValueWithVariable() != null) {
+            case "nin":
+                if (ctx.valueWithVariable().NullValue() != null) {
+                    filters.add(name, FilterSet.Type.valueOf(operator), null);
+                } else if (ctx.valueWithVariable().StringValue() != null) {
+                    filters.add(name, FilterSet.Type.valueOf(operator), ctx.valueWithVariable().getText());
+                } else if (ctx.valueWithVariable().arrayValueWithVariable() != null) {
                     var value = ctx.valueWithVariable().arrayValueWithVariable().valueWithVariable();
                     if (value.isEmpty()) {
                         break;
                     }
                     var list = value.stream().map(c -> c.getText()).collect(Collectors.toList());
-                    condition = condition.and(table.column(name).build().isIn(list));
+                    filters.add(name, FilterSet.Type.valueOf(operator), list);
+                } else {
+                    filters.add(name, FilterSet.Type.valueOf(operator), (Double.valueOf(ctx.valueWithVariable().getText())));
                 }
                 break;
-            case "asc":
-                orders.add(new OrderBy(table.column(name).build(), OrderDirection.ASC));
-            case "desc":
-                orders.add(new OrderBy(table.column(name).build(), OrderDirection.DESC));
+            case "order":
+                if ("desc".equals(ctx.valueWithVariable().getText())
+                        || "false".equals(ctx.valueWithVariable().getText())
+                ) {
+                    builder.order(name, OrderDirection.DESC);
+                    break;
+                }
+                builder.order(name, OrderDirection.ASC);
+                break;
             case "limit":
                 if (ctx.valueWithVariable().IntValue() != null) {
-                    limit = Integer.valueOf(ctx.valueWithVariable().getText());
+                    builder.limit(Integer.valueOf(ctx.valueWithVariable().getText()));
                 }
+                break;
             case "offset":
                 if (ctx.valueWithVariable().IntValue() != null) {
-                    offset = Integer.valueOf(ctx.valueWithVariable().getText());
+                    builder.offset(Integer.valueOf(ctx.valueWithVariable().getText()));
                 }
+                break;
             case "distinct":
-                return true;
+                builder.distinct();
+                break;
         }
-        return false;
     }
 
-    Map<String, Object> fetchData(Select select) {
-        var data = new HashMap<String, Object>();
-        try (var conn = this.dataSource.getConnection();
-             var pst = conn.prepareStatement(select.build());
-             var rs = pst.executeQuery();) {
-            //取得ResultSet的列名
-            ResultSetMetaData resultSetMetaData = rs.getMetaData();
-            int columnsCount = resultSetMetaData.getColumnCount();
-            String[] columnNames = new String[columnsCount];
-            for (int i = 0; i < columnsCount; i++) {
-                columnNames[i] = resultSetMetaData.getColumnLabel(i + 1);
-            }
-            while (rs.next()) {
-                for (int i = 0; i < columnNames.length; i++) {
-                    data.put(columnNames[i], rs.getObject(i));
-                }
-            }
-        } catch (Exception e) {
-        }
-        return data;
-    }
+
 }

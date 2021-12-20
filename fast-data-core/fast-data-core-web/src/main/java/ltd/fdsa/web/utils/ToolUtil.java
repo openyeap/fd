@@ -11,19 +11,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
 
-/**
- * 通用方法工具类
- *
- 
- */
 @Slf4j
 public class ToolUtil {
 
-    /**
-     * 获取随机位数的字符串
-     *
-     * @param length 随机位数
-     */
     public static String getRandomString(int length) {
         Random random = new Random();
         StringBuilder sb = new StringBuilder();
@@ -36,9 +26,6 @@ public class ToolUtil {
         return sb.toString();
     }
 
-    /**
-     * 首字母转小写
-     */
     public static String lowerFirst(String word) {
         if (Character.isLowerCase(word.charAt(0))) {
             return word;
@@ -47,9 +34,6 @@ public class ToolUtil {
         }
     }
 
-    /**
-     * 首字母转大写
-     */
     public static String upperFirst(String word) {
         if (Character.isUpperCase(word.charAt(0))) {
             return word;
@@ -58,9 +42,6 @@ public class ToolUtil {
         }
     }
 
-    /**
-     * 获取项目不同模式下的根路径
-     */
     public static String getProjectPath() {
         String filePath = ToolUtil.class.getResource("").getPath();
         String projectPath = ToolUtil.class.getClassLoader().getResource("").getPath();
@@ -104,9 +85,7 @@ public class ToolUtil {
         return rootPath.replaceAll("\\\\", "/");
     }
 
-    /**
-     * 获取文件后缀名
-     */
+
     public static String getFileSuffix(String fileName) {
         if (!fileName.isEmpty()) {
             int lastIndexOf = fileName.lastIndexOf(".");
@@ -114,12 +93,6 @@ public class ToolUtil {
         }
         return "";
     }
-
-    /**
-     * 将枚举转成List集合
-     *
-     * @param enumClass 枚举类
-     */
     public static Map<Long, String> enumToMap(Class<?> enumClass) {
         Map<Long, String> map = new TreeMap<>();
         try {

@@ -3,7 +3,6 @@ package ltd.fdsa.database.config;
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
-import ltd.fdsa.core.util.NamingUtils;
 import ltd.fdsa.database.datasource.DataSourceProperties;
 import ltd.fdsa.database.datasource.DynamicDataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,14 +28,10 @@ public class DataSourceConfig {
     public static final String WRITER_DATASOURCE = "dataSource";
     public static final String READER_DATASOURCE = "readerDataSource";
 
-    /**
-     * @param properties
-     * @return
-     */
+
     @Bean(name = WRITER_DATASOURCE)
     @Primary
     public DataSource writerDataSource(DataSourceProperties properties) {
-        NamingUtils.formatLog(log, "writerDataSource Start");
         return properties.getMaster();
     }
 
@@ -44,17 +39,11 @@ public class DataSourceConfig {
     @Bean
     @Primary
     public DataSourceTransactionManager masterTransactionManager(@Qualifier(WRITER_DATASOURCE) DataSource dataSource) {
-        NamingUtils.formatLog(log, "TransactionManager Start");
         return new DataSourceTransactionManager(dataSource);
     }
 
-    /**
-     * @param properties
-     * @return
-     */
     @Bean(name = READER_DATASOURCE)
     public DataSource readerDataSource(DataSourceProperties properties) {
-        NamingUtils.formatLog(log, "readerDataSource Start");
         var readerDataSources = this.getReaderDataSources(properties);
         int readSize = readerDataSources == null ? 0 : readerDataSources.size();
         Map<Object, Object> targetDataSources = new HashMap<>(readSize);
