@@ -177,6 +177,9 @@ public class FqlUtil {
     public ColumnInfo getColumnInfo(FqlParser.SelectionContext ctx, String table) {
         var alias = ctx.alias() == null ? "" : ctx.alias().name().getText();
         var name = ctx.name() == null ? "" : ctx.name().getText();
+        if ("...".equals(name)) {
+            return new ColumnInfo("...", "...", "...", false);
+        }
         if (Strings.isNullOrEmpty(alias)) {
             alias = name;
         }
@@ -189,10 +192,8 @@ public class FqlUtil {
 
     public List<Map<String, Object>> fetchData(Select select) {
         var data = new ArrayList<Map<String, Object>>();
-
-
         var sql = select.build(Dialects.MYSQL);
-
+        System.out.println(sql);
         try (var conn = this.writer.getConnection();
              var pst = conn.prepareStatement(sql);
              var rs = pst.executeQuery();) {
@@ -203,13 +204,13 @@ public class FqlUtil {
             for (int i = 0; i < columnsCount; i++) {
                 columnNames[i] = resultSetMetaData.getColumnLabel(i + 1);
             }
-            var item = new HashMap<String, Object>();
             while (rs.next()) {
+                var item = new TreeMap<String, Object>();
                 for (int i = 0; i < columnNames.length; i++) {
                     item.put(columnNames[i], rs.getObject(columnNames[i]));
                 }
+                data.add(item);
             }
-            data.add(item);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

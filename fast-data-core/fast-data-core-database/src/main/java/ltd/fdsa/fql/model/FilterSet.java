@@ -10,23 +10,22 @@ public class FilterSet {
 
 
     public enum Type {
-        EQ("eq"),
-        GT("gt"),
-        GTE("gte"),
-        LT("lt"),
-        LTE("lte"),
-        NEQ("neq"),
-        LIKE("like"),
-        START("start"),
-        END("end"),
-        IN("in"),
-        NIN("nin"),
+        eq("eq"),
+        gt("gt"),
+        gte("gte"),
+        lt("lt"),
+        lte("lte"),
+        neq("neq"),
+        like("like"),
+        start("start"),
+        end("end"),
+        in("in"),
+        nin("nin"),
         ;
 
 
         // 成员变量
         private String name;
-
         // 构造方法
         private Type(String name) {
             this.name = name;

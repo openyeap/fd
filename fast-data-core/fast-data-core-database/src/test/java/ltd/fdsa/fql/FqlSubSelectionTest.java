@@ -18,6 +18,8 @@ import java.util.Properties;
 
 
 @Slf4j
+@SpringBootTest
+@RunWith(SpringRunner.class)
 public class FqlSubSelectionTest {
 
     @Autowired

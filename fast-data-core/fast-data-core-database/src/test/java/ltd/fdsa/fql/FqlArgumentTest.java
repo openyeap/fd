@@ -34,39 +34,28 @@ public class FqlArgumentTest {
     @Test
     public void testIntArgument() {
         String query = "{\n" +
-                "  user : t_user(id_eq:12) {\n" +
-                "    name\nuser_id\n" +
-                "    roles : t_user_role(user_id_eq:\"$user_id\") {\n" +
+                "  user : t_user(user_id_eq:1) {\n" +
+                "    name\n" +
+                "    user_id\n" +
+                "    roles : t_user_role(user_id_eq:$user_id) {\n" +
                 "      role_id\n" +
                 "      ... : t_role(role_id_eq: $role_id) {\n" +
                 "         name\n" +
-                "      }" +
+                "      }\n" +
                 "    }\n" +
                 "  }\n" +
                 "}";
-        CharStream input = CharStreams.fromString(query);
+        var input = CharStreams.fromString(query);
         test(input);
     }
+
     @Test
     public void testStringArgument() {
         String query = "{\n" +
-                "  hero : t_user(id_eq:\"test\") {\n" +
+                "  hero : t_user(user_id_eq:\"1\") {\n" +
                 "    name\n" +
                 "    roles : t_user_role(user_id_eq:$user_id) {\n" +
-                "      name\n" +
-                "    }\n" +
-                "  }\n" +
-                "}";
-        CharStream input = CharStreams.fromString(query);
-        test(input);
-    }
-    @Test
-    public void testFloatArgument() {
-        String query = "{\n" +
-                "  user : t_user(id_eq:112.342) {\n" +
-                "    name\n" +
-                "    roles : t_user_role(user_id_eq:1) {\n" +
-                "      name\n" +
+                "      role_id\n" +
                 "    }\n" +
                 "  }\n" +
                 "}";
@@ -74,12 +63,29 @@ public class FqlArgumentTest {
         test(input);
     }
 
+    @Test
+    public void testFloatArgument() {
+        String query = "{\n" +
+                "  user : t_user(user_id_eq:1.0) {\n" +
+                "    name\n" +
+                "    roles : t_user_role(user_id_eq:1) {\n" +
+                "       ...\n" +
+                "       role_id\n" +
+                "    }\n" +
+                "  }\n" +
+                "}";
+        CharStream input = CharStreams.fromString(query);
+        test(input);
+    }
+
+
     public void test(CharStream input) {
-        FqlLexer lexer = new FqlLexer(input);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        FqlParser parser = new FqlParser(tokens);
-        FqlParser.DocumentContext document = parser.document();
-        JdbcFqlVisitor visitor = new JdbcFqlVisitor(new FqlUtil(dataSource, new Properties(), new HashMap<>()));
+        var lexer = new FqlLexer(input);
+        var tokens = new CommonTokenStream(lexer);
+        var parser = new FqlParser(tokens);
+        var document = parser.document();
+        var visitor = new JdbcFqlVisitor(new FqlUtil(dataSource, new Properties(), new HashMap<>()));
+        System.out.println(input);
         var data = visitor.visit(document);
         System.out.println(data.toString());
     }
