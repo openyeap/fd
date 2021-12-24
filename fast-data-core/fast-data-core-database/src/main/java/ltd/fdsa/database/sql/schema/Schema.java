@@ -5,13 +5,11 @@ import lombok.ToString;
 
 /**
  * @author zhumingwu
- *
  * @since 3/20/2021 10:36 AM
  */
 @Getter
 @ToString
-public class Schema
-{
+public class Schema {
     private String name;
 
     private Schema(String name) {
@@ -24,8 +22,7 @@ public class Schema
      * @param tableName the name for the {@link Table}
      * @return the created {@link Table}
      */
-    public Table table(String tableName)
-    {
+    public Table table(String tableName) {
         return new Table(this, tableName);
     }
 
@@ -35,8 +32,7 @@ public class Schema
      * @param name the name for the {@link Schema}
      * @return the created {@link Schema}
      */
-    public static Schema create(String name)
-    {
+    public static Schema create(String name) {
         return new Schema(name);
     }
 }

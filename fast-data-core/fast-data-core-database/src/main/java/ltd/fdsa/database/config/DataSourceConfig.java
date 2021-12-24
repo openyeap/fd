@@ -7,10 +7,10 @@ import ltd.fdsa.database.datasource.DataSourceProperties;
 import ltd.fdsa.database.datasource.DynamicDataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
@@ -23,21 +23,18 @@ import java.util.Map;
 @Configuration
 @EnableConfigurationProperties(DataSourceProperties.class)
 @AutoConfigureBefore(DruidDataSourceAutoConfigure.class)
+@ConditionalOnProperty(name = "spring.datasource.master.type", havingValue = "com.alibaba.druid.pool.DruidDataSource")
 @Slf4j
 public class DataSourceConfig {
     public static final String WRITER_DATASOURCE = "dataSource";
     public static final String READER_DATASOURCE = "readerDataSource";
 
-
     @Bean(name = WRITER_DATASOURCE)
-    @Primary
     public DataSource writerDataSource(DataSourceProperties properties) {
         return properties.getMaster();
     }
 
-
     @Bean
-    @Primary
     public DataSourceTransactionManager masterTransactionManager(@Qualifier(WRITER_DATASOURCE) DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }

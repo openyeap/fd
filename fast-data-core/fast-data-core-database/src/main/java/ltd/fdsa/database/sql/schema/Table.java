@@ -32,14 +32,11 @@ public class Table implements Queryable {
 
     @ToString.Exclude
     private Schema schema;
-
     @ToString.Exclude
     private Column[] columns;
-
     @ToString.Exclude
     private String type;
-
-    private String description;
+    private String remark;
 
     Table(Schema schema, String name) {
         this.schema = schema;
@@ -52,12 +49,12 @@ public class Table implements Queryable {
         this.alias = alias;
     }
 
-    Table(Schema schema, String name, String alias, String type, String description) {
+    Table(Schema schema, String name, String alias, String type, String remark) {
         this.schema = schema;
         this.name = name;
         this.alias = alias;
         this.type = type;
-        this.description = description;
+        this.remark = remark;
     }
 
     @Override
@@ -89,8 +86,9 @@ public class Table implements Queryable {
         this.type = type;
         return this;
     }
-    public Table description(String description) {
-        this.description = description;
+
+    public Table remark(String remark) {
+        this.remark = remark;
         return this;
     }
 

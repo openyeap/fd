@@ -270,7 +270,7 @@ public class BaseService<Entity extends BaseEntity<ID>, ID> implements DataAcces
                         .create(tableSet.getString("TABLE_CAT"))
                         .table(tableSet.getString("TABLE_NAME"))
                         .type(tableSet.getString("TABLE_TYPE"))
-                        .description(tableSet.getString("REMARKS"));
+                        .remark(tableSet.getString("REMARKS"));
                 ResultSet columnSet = conn.getMetaData().getColumns(null, schemaPattern, table.getName(), null);
                 var columnsMetaData = columnSet.getMetaData();
                 while (columnSet.next()) {

@@ -1,11 +1,9 @@
 package ltd.fdsa.database.sql.columns;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 import ltd.fdsa.database.sql.conditions.EqualityConditions;
 import ltd.fdsa.database.sql.conditions.NullableConditions;
-import ltd.fdsa.database.sql.domain.*;
 import ltd.fdsa.database.sql.domain.*;
 import ltd.fdsa.database.sql.schema.Table;
 import ltd.fdsa.database.sql.utils.BuilderUtils;
@@ -15,7 +13,6 @@ import ltd.fdsa.database.sql.utils.Indentation;
  * @author zhumingwu
  * @since 3/20/2021 10:36 AM
  */
-@AllArgsConstructor
 @Getter
 @ToString
 public abstract class Column implements Groupable, Selectable, Definable, NullableConditions, EqualityConditions, SqlTypeSupplier {
@@ -24,10 +21,27 @@ public abstract class Column implements Groupable, Selectable, Definable, Nullab
     protected String name;
 
     private String alias;
-
     protected ColumnDefinition columnDefinition;
 
     private int sqlType;
+    private String remark;
+
+    public Column(Table table, String name, String alias, ColumnDefinition columnDefinition, int sqlType) {
+        this.table = table;
+        this.name = name;
+        this.alias = alias;
+        this.columnDefinition = columnDefinition;
+        this.sqlType = sqlType;
+    }
+
+    public Column as(String alias) {
+        this.alias = alias;
+        return this;
+    }
+    public Column remark(String remark) {
+        this.remark = remark;
+        return this;
+    }
 
     @Override
     public String getValue(BuildingContext context, Indentation indentation) {
