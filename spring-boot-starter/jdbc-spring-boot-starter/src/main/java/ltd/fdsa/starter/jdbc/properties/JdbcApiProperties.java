@@ -4,67 +4,54 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
+import java.util.LinkedHashMap;
 
 @Data
 @Component
 @ConfigurationProperties(JdbcApiProperties.PREFIX)
 public class JdbcApiProperties {
-    public static final String PREFIX = "project.tables";
-
+    public static final String PREFIX = "project";
     private boolean enabled = true;
-    /**
-     * special _ replace *_
-     */
-    private String[] prefixMatches;
 
-    /**
-     * special _ replace *_
-     */
-    private String[] prefixNotMatches;
+    private LinkedHashMap<String, DatabaseRule> databases;
 
-    /**
-     * special _ replace *_
-     */
-    private String[] suffixMatches;
+    @Data
+    public static class DatabaseRule {
+        private String catalog;
+        private String schema;
+        private String url;
+        private String driverClassName = "org.postgresql.Driver";
+        private String username;
+        private String password;
+        private LinkedHashMap<String, TableNameRule> tables;
 
-    /**
-     * special _ replace *_
-     */
-    private String[] suffixNotMatches;
-
-    /**
-     * special _ replace *_
-     */
-    private String[] containers;
-
-    @Override
-    public String toString() {
-        return "TablesFilterConfig{"
-                + "prefixMatches='"
-                + Arrays.toString(prefixMatches)
-                + "'\n"
-                + "prefixNotMatches='"
-                + Arrays.toString(prefixNotMatches)
-                + "'\n"
-                + "suffixMatches='"
-                + Arrays.toString(suffixMatches)
-                + "'\n"
-                + "suffixNotMatches='"
-                + Arrays.toString(suffixNotMatches)
-                + "'\n"
-                + "}";
     }
 
     @Data
-    public static class TablesRemark {
-        private String tableName;
-        private String comment;
+    public static class TableNameRule {
+        private NameFix[] removes;
+        private NameFix[] appends;
+        private LinkedHashMap<String, String> replaces;
+        private ColumnNameRule column;
+        private Acl[] acl;
     }
 
     @Data
-    public static class ColumnRemark {
-        private String colName;
-        private String comment;
+    public static class ColumnNameRule {
+        private NameFix[] removes;
+        private NameFix[] appends;
+        private LinkedHashMap<String, String> replaces;
+    }
+
+    @Data
+    public static class NameFix {
+        private String prefix;
+        private String suffix;
+    }
+
+    public static enum Acl {
+        QueryList, QueryByKey,
+        Create, Update, UpdateByKey, Delete,
+        DeleteByKey;
     }
 }

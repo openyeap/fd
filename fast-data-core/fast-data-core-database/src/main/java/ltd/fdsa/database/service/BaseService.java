@@ -267,93 +267,25 @@ public class BaseService<Entity extends BaseEntity<ID>, ID> implements DataAcces
             ResultSet tableSet = connectionMetaData.getTables(catalog, schemaPattern, null, new String[]{"TABLE", "VIEW"});
             while (tableSet.next()) {
                 Table table = Schema
-                        .create(tableSet.getString("TABLE_CAT"))
+                        .create(tableSet.getString("TABLE_SCHEM"))
                         .table(tableSet.getString("TABLE_NAME"))
                         .type(tableSet.getString("TABLE_TYPE"))
                         .remark(tableSet.getString("REMARKS"));
-                ResultSet columnSet = conn.getMetaData().getColumns(null, schemaPattern, table.getName(), null);
+                ResultSet columnSet = conn.getMetaData().getColumns(catalog, schemaPattern, table.getName(), null);
                 var columnsMetaData = columnSet.getMetaData();
                 while (columnSet.next()) {
+                    String columnRemark = columnSet.getString("REMARKS");
                     var typeName = columnSet.getString("TYPE_NAME");
-                    switch (typeName) {
-                        case "BIGINT":
-                            table.bigIntColumn(columnSet.getString("COLUMN_NAME"))
-                                    .size(Integer.parseInt(columnSet.getString("COLUMN_SIZE")))
-                                    .build();
-                            break;
-                        case "DATETIME":
-                            table.dateTimeColumn(columnSet.getString("COLUMN_NAME"))
-                                    .build();
-                            break;
-                        case "VARCHAR":
-                            table.varCharColumn(columnSet.getString("COLUMN_NAME"))
-                                    .size(Integer.parseInt(columnSet.getString("COLUMN_SIZE")))
-                                    .build();
-
-                            break;
-                        case "INT":
-                            table.intColumn(columnSet.getString("COLUMN_NAME"))
-                                    .size(Integer.parseInt(columnSet.getString("COLUMN_SIZE")))
-                                    .build();
-                            break;
-                        case "TINYINT":
-                            table.tinyIntColumn(columnSet.getString("COLUMN_NAME"))
-                                    .size(Integer.parseInt(columnSet.getString("COLUMN_SIZE")))
-                                    .build();
-
-                            break;
-                        case "DATE":
-                            table.dateColumn(columnSet.getString("COLUMN_NAME"))
-                                    .build();
-
-                            break;
-                        case "DOUBLE":
-                            table.doubleColumn(columnSet.getString("COLUMN_NAME"))
-                                    .size(Integer.parseInt(columnSet.getString("COLUMN_SIZE")))
-                                    .build();
-                            break;
-                        case "TIMESTAMP":
-                            table.floatColumn(columnSet.getString("COLUMN_NAME"))
-                                    .size(Integer.parseInt(columnSet.getString("COLUMN_SIZE")))
-                                    .build();
-                            break;
-                        case "TINYBLOB":
-                            table.column(columnSet.getString("COLUMN_NAME"))
-                                    .type(typeName)
-                                    .build();
-                            break;
-                        case "TEXT":
-                            table.textColumn(columnSet.getString("COLUMN_NAME"))
-                                    .build();
-                            break;
-                        case "BIT":
-                            table.column(columnSet.getString("COLUMN_NAME"))
-                                    .type(typeName)
-                                    .size(Integer.parseInt(columnSet.getString("COLUMN_SIZE")))
-                                    .build();
-                            break;
-                        case "CHAR":
-                            table.charColumn(columnSet.getString("COLUMN_NAME"))
-                                    .size(Integer.parseInt(columnSet.getString("COLUMN_SIZE")))
-                                    .build();
-                            break;
-                        case "SMALLINT":
-                            table.smallIntColumn(columnSet.getString("COLUMN_NAME"))
-                                    .size(Integer.parseInt(columnSet.getString("COLUMN_SIZE")))
-                                    .build();
-                            break;
-
-                        default:
-                            log.warn("没有考虑到的类型：{}", typeName);
-                            table.varCharColumn(columnSet.getString("COLUMN_NAME"))
-                                    .size(Integer.parseInt(columnSet.getString("COLUMN_SIZE")))
-                                    .build();
-                    }
+                    var columnName = columnSet.getString("COLUMN_NAME");
+                    var columnSize = columnSet.getInt("COLUMN_SIZE");
+                    table.column(columnName)
+                            .size(columnSize)
+                            .type(typeName)
+                            .build()
+                            .remark(columnRemark);
                 }
-
                 result.add(table);
             }
-
         } catch (Exception ex) {
             log.error("listAllTables", ex);
         }

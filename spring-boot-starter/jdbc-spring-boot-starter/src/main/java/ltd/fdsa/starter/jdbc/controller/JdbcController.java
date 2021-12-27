@@ -2,10 +2,12 @@ package ltd.fdsa.starter.jdbc.controller;
 
 import io.swagger.models.Swagger;
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import ltd.fdsa.starter.jdbc.RdmlParser;
 import ltd.fdsa.starter.jdbc.model.DBResult;
 import ltd.fdsa.starter.jdbc.service.JdbcService;
 import ltd.fdsa.web.controller.BaseController;
+import ltd.fdsa.web.enums.HttpCode;
 import ltd.fdsa.web.view.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -36,37 +39,27 @@ public class JdbcController extends BaseController {
     }
 
     @RequestMapping(value = "/tables", method = RequestMethod.GET, produces = "application/json")
-    public Object getTables() {
+    public Result getTables() {
 
-        List<Object> result = new ArrayList();
-        this.jdbcService.listAllTables("", "public").forEach(t -> {
-            result.add(DBResult.builder()
-                    .name(t.getName())
-                    .content(t.getSchema().getName())
-                    .build());
-        });
-        return Result.success(result);
+        return Result.success(this.jdbcService.getNamedTables().values());
     }
 
     @RequestMapping(value = "/{name}/columns", method = RequestMethod.GET, produces = "application/json")
-    public Object getColumns(@PathVariable String name) {
-        List<Object> result = new ArrayList<>();
-        this.jdbcService.listAllFields(name, "", "").forEach(
-                t -> {
-                    result.add(DBResult.builder()
-                            .name(t.getName())
-                            .content(t.getColumnDefinition())
-                            .build());
-                }
-        );
-        return Result.success(result);
+    public Result getColumns(@PathVariable String name) {
+        var list = this.jdbcService.getNamedColumns().get(name).values().stream().map(t ->
+                DBResult.builder()
+                        .name(t.getName())
+                        .content(t.getColumnDefinition())
+                        .build()
+        ).collect(Collectors.toList());
+        return Result.success(list);
     }
 
     @RequestMapping(value = "/{table}", method = RequestMethod.PUT, produces = "application/json")
-    public Object create(@PathVariable String table, @RequestBody Map<String, Object> data) {
+    public Result create(@PathVariable String table, @RequestBody Map<String, Object> data) {
         try {
             if (data == null || data.size() == 0) {
-                return "data不能为空";
+                return Result.fail(HttpCode.BAD_REQUEST, "data不能为空");
             }
             StringBuffer sql = new StringBuffer();
             sql.append(" insert into " + table + " ( ");
@@ -91,29 +84,29 @@ public class JdbcController extends BaseController {
                 }
             }
             sql.append(" ) ");
-            return this.jdbcService.create(sql.toString(), values);
+            return Result.success(jdbcService.update(sql.toString(), values));
         } catch (Exception ex) {
-            return ex;
+            return Result.error(ex);
         }
     }
 
     @RequestMapping(value = "/{table}", method = RequestMethod.DELETE, produces = "application/json")
-    public Object delete(@PathVariable String table, @RequestParam(defaultValue = "") String where) {
+    public Result delete(@PathVariable String table, @RequestParam(defaultValue = "") String where) {
         try {
             StringBuffer sql = new StringBuffer();
             sql.append(" delete from " + table + " ");
             sql.append(" where " + where);
-            return this.jdbcService.update(sql.toString(), null);
+            return Result.success(this.jdbcService.update(sql.toString(), null));
         } catch (Exception ex) {
-            return ex;
+            return Result.error(ex);
         }
     }
 
     @RequestMapping(value = "/{table}", method = RequestMethod.POST, produces = "application/json")
-    public Object update(@PathVariable String table, @RequestParam(defaultValue = "") String where, @RequestBody Map<String, Object> data) {
+    public Result update(@PathVariable String table, @RequestParam(defaultValue = "") String where, @RequestBody Map<String, Object> data) {
         try {
             if (data == null || data.size() == 0) {
-                return "data不能为空";
+                return Result.fail(400, "data不能为空");
             }
             StringBuffer sql = new StringBuffer();
             sql.append(" update " + table);
@@ -132,14 +125,14 @@ public class JdbcController extends BaseController {
             if (where != null && !"".equals(where)) {
                 sql.append(" where " + where);
             }
-            return this.jdbcService.update(sql.toString(), list);
+            return Result.success(this.jdbcService.update(sql.toString(), list));
         } catch (Exception ex) {
-            return ex;
+            return Result.error(ex);
         }
     }
 
     @RequestMapping(value = "/{table}", method = RequestMethod.GET, produces = "application/json")
-    public Object query(@PathVariable String table,
+    public Result query(@PathVariable String table,
                         @RequestParam(defaultValue = "*") String select,
                         @RequestParam(defaultValue = "") String query,
                         @RequestParam(defaultValue = "") String order,
@@ -162,9 +155,9 @@ public class JdbcController extends BaseController {
             sql.append("\r\n");
             sql.append(parser.parsePage(page, size));
             log.info(sql.toString());
-            return this.jdbcService.query(sql.toString(), null);
+            return Result.success(jdbcService.query(sql.toString(), null));
         } catch (Exception ex) {
-            return ex;
+            return Result.error(ex);
         }
     }
 }
