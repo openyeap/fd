@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>fast-data-modules-client</artifactId>
-    <description>fast data client</description>
+    <artifactId>fast-data-modules-server</artifactId>
+
+    <description>server project for Spring Boot</description>
     <packaging>jar</packaging>
     <parent>
         <groupId>ltd.fdsa</groupId>
         <artifactId>fast-data-parent</artifactId>
-        <version>1.0.1</version>
-        <relativePath>../../fast-data-core</relativePath>
+        <version>1.0.1-SNAPSHOT</version>
+        <relativePath />
     </parent>
-    <properties/>
+    <properties />
     <dependencies>
+        <!-- 必选，核心依赖 -->
         <dependency>
             <groupId>ltd.fdsa</groupId>
             <artifactId>fast-data-core</artifactId>
@@ -22,21 +23,7 @@
             <groupId>ltd.fdsa</groupId>
             <artifactId>fast-data-core-database</artifactId>
         </dependency>
-        <!-- 可选，自动记录日志到日志中心 -->
-        <dependency>
-            <groupId>ltd.fdsa</groupId>
-            <artifactId>logger-spring-boot-starter</artifactId>
-        </dependency>
-        <!-- 可选，自动生成数据库的增删改查 -->
-        <dependency>
-            <groupId>ltd.fdsa</groupId>
-            <artifactId>jdbc-spring-boot-starter</artifactId>
-        </dependency>
-        <!-- 可选，自动加入到监控中心 -->
-        <dependency>
-            <groupId>ltd.fdsa</groupId>
-            <artifactId>monitor-spring-boot-starter</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>ltd.fdsa</groupId>
             <artifactId>remote-spring-boot-starter</artifactId>
@@ -62,13 +49,16 @@
             <groupId>ltd.fdsa</groupId>
             <artifactId>fast-data-core-database-mybatis</artifactId>
         </dependency>
+        <!-- api -->
         <dependency>
             <groupId>ltd.fdsa</groupId>
-            <artifactId>fast-data-core-database-mybatis-generic</artifactId>
+            <artifactId>fast-data-modules-api</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>ltd.fdsa</groupId>
-            <artifactId>fast-data-core-database-mybatis-plus</artifactId>
+            <artifactId>fast-data-core-web</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
         </dependency>
         <!-- spring -->
         <dependency>
@@ -76,19 +66,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>ltd.fdsa</groupId>
-            <artifactId>fast-data-modules-api</artifactId>
-            <version>1.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>ltd.fdsa</groupId>
-            <artifactId>fast-data-core-web</artifactId>
-            <version>1.0.1</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
         </dependency>
     </dependencies>
 </project>

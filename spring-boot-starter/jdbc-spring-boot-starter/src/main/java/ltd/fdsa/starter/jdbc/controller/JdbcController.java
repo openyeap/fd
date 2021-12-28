@@ -8,7 +8,6 @@ import ltd.fdsa.database.sql.dialect.Dialects;
 import ltd.fdsa.database.sql.domain.Placeholder;
 import ltd.fdsa.database.sql.queries.Queries;
 import ltd.fdsa.database.sql.utils.Indentation;
-import ltd.fdsa.database.fql.JdbcFqlVisitor;
 import ltd.fdsa.database.fql.antlr.FqlLexer;
 import ltd.fdsa.database.fql.antlr.FqlParser;
 import ltd.fdsa.starter.jdbc.RdmlParser;
@@ -16,6 +15,7 @@ import ltd.fdsa.starter.jdbc.model.DBResult;
 import ltd.fdsa.database.service.JdbcApiService;
 import ltd.fdsa.web.controller.BaseController;
 import ltd.fdsa.web.enums.HttpCode;
+import ltd.fdsa.database.fql.JdbcFqlVisitor;
 import ltd.fdsa.web.view.Result;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
@@ -251,7 +251,7 @@ public class JdbcController extends BaseController {
             var tokens = new CommonTokenStream(lexer);
             var parser = new FqlParser(tokens);
             var document = parser.document();
-            var visitor = new JdbcFqlVisitor(null);
+            var visitor = new JdbcFqlVisitor(this.service);
             return Result.success(visitor.visit(document));
         } catch (Exception ex) {
             return Result.error(ex);

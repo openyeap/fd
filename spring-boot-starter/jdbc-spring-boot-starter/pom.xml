@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>jdbc-spring-boot-starter</artifactId>
     <name>spring-boot-starter-jdbc</name>
@@ -8,7 +9,7 @@
     <parent>
         <groupId>ltd.fdsa</groupId>
         <artifactId>spring-boot-starter</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -16,6 +17,10 @@
         <dependency>
             <groupId>ltd.fdsa</groupId>
             <artifactId>fast-data-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.fdsa</groupId>
+            <artifactId>fast-data-core-database</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.fdsa</groupId>
@@ -33,7 +38,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -41,10 +45,6 @@
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-models</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ltd.fdsa</groupId>
-            <artifactId>fast-data-core-database</artifactId>
         </dependency>
     </dependencies>
 </project>

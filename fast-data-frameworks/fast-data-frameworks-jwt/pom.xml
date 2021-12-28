@@ -7,7 +7,7 @@
     <parent>
         <groupId>ltd.fdsa</groupId>
         <artifactId>fast-data-frameworks</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <properties></properties>
@@ -26,7 +26,7 @@
         <dependency>
             <groupId>ltd.fdsa</groupId>
             <artifactId>fast-data-core-web</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <version>1.0.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
