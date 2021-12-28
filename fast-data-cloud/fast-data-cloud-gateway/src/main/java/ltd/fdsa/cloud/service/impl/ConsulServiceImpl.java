@@ -1,10 +1,10 @@
 package ltd.fdsa.cloud.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.QueryParams;
 import com.ecwid.consul.v1.Response;
 import com.ecwid.consul.v1.kv.model.GetValue;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import ltd.fdsa.cloud.constant.Constant;
 import ltd.fdsa.cloud.service.ConsulService;
@@ -26,9 +26,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class ConsulServiceImpl implements ApplicationListener<ApplicationStartedEvent>, ConsulService {
 
-    /**
-     * 保存用户验证配置数据
-     */
     private static ConcurrentHashMap<String, String> authList = new ConcurrentHashMap<>();
     @Autowired
     private ConsulClient consulClient;
@@ -82,7 +79,7 @@ public class ConsulServiceImpl implements ApplicationListener<ApplicationStarted
                                     continue;
                                 }
                                 value = new String(Base64.decode(gv.getValue()));
-                                Map<String, String> map = JSONObject.parseObject(value, Map.class);
+                                Map<String, String> map = new ObjectMapper().readValue(value, Map.class);
                                 for (Map.Entry<String, String> entry : map.entrySet()) {
                                     authList.put(entry.getKey(), entry.getValue());
                                 }

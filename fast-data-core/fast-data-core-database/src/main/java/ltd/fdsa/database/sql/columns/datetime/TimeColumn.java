@@ -33,12 +33,6 @@ public class TimeColumn extends Column
     {
         super(table, name, alias, columnDefinition, DATE);
     }
-
-    public TimeColumn as(String alias)
-    {
-        return new TimeColumn(table, name, alias, columnDefinition);
-    }
-
     public Condition isEqualTo(LocalTime value)
     {
         return value == null ? new GenericCondition(IS_NULL, this) : new GenericCondition(IS_EQUAL_TO, this, value);

@@ -5,12 +5,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
-*
-* @ClassName:Application
-* @description:Application
-* @author:zhumingwu
-* @since:2020-12-09
-**/
+ * @author:zhumingwu
+ * @since:2020-12-09
+ **/
 @SpringBootApplication
 @Slf4j
 public class ClientApplication {

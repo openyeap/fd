@@ -20,20 +20,20 @@ class SmallIntColumnTest extends IntegerColumnTest<SmallIntColumn, SmallIntColum
     @Override
     public BiFunction<SmallIntColumn, String, SmallIntColumn> getAliasFunction()
     {
-        return (column, alias) -> column.as(alias);
+        return (column, alias) -> (SmallIntColumn) column.as(alias);
     }
 
     @Test
     void testDecimalColumnDefinition()
     {
         assertBuild(Consumers::noAction).isEqualTo("SMALLINT DEFAULT NULL");
-        assertBuild(builder -> builder.notNull()).isEqualTo("SMALLINT NOT NULL");
+        assertBuild(builder -> builder.nullable(false)).isEqualTo("SMALLINT NOT NULL");
         assertBuild(builder -> builder.defaultNull()).isEqualTo("SMALLINT DEFAULT NULL");
         assertBuild(builder -> builder.noDefault()).isEqualTo("SMALLINT");
         assertBuild(builder -> builder.noDefault().autoIncrement()).isEqualTo("SMALLINT AUTO_INCREMENT");
         assertBuild(builder -> builder.size(5).defaultNull()).isEqualTo("SMALLINT(5) DEFAULT NULL");
         assertBuild(builder -> builder.size(5).defaultValue(123)).isEqualTo("SMALLINT(5) DEFAULT 123");
         assertBuild(builder -> builder.size(Integer.valueOf(5)).defaultValue(Integer.valueOf(123))).isEqualTo("SMALLINT(5) DEFAULT 123");
-        assertBuild(builder -> builder.size(5).notNull().defaultValue(123)).isEqualTo("SMALLINT(5) NOT NULL DEFAULT 123");
+        assertBuild(builder -> builder.size(5).nullable(false).defaultValue(123)).isEqualTo("SMALLINT(5) NOT NULL DEFAULT 123");
     }
 }

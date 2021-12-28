@@ -1,7 +1,6 @@
 package ltd.fdsa.cloud.filter;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import ltd.fdsa.cloud.constant.Constant;
 import ltd.fdsa.cloud.service.IMockRuleService;
@@ -19,8 +18,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.StandardCharsets;
-
 @Component
 @Slf4j
 public class MockRuleFilter implements GlobalFilter, Ordered {
@@ -36,13 +33,9 @@ public class MockRuleFilter implements GlobalFilter, Ordered {
         if (MockRuleServiceImpl.mockRuleMap.containsKey(fullPath) && MockRuleServiceImpl.mockRuleMap.get(fullPath).getStatus() == Constant.MOCK_RULE_STATUS_OPEN) {
             try {
                 String result = mockRuleService.getMockData(fullPath);
-                Object obj = null;
-                try {
-                    obj = JSONObject.parseObject(result);
-                } catch (Exception e) {
-                    obj = JSON.parseArray(result);
-                }
-                byte[] bits = JSONObject.toJSONString(Result.success(obj)).getBytes(StandardCharsets.UTF_8);
+                Object obj = new ObjectMapper().readTree(result);
+
+                byte[] bits = new ObjectMapper().writeValueAsBytes(Result.success(obj));
                 DataBuffer buffer = response.bufferFactory().wrap(bits);
                 response.setStatusCode(HttpStatus.OK);
                 // 指定编码，否则在浏览器中会中文乱码

@@ -15,43 +15,18 @@ public class DateTimeUtil {
     public static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     public static final DateTimeFormatter LONG_DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss SSS");
 
-    /**
-     * 返回当前的日期
-     *
-     * @return 当前时间
-     */
     public static LocalDate getCurrentLocalDate() {
         return LocalDate.now();
     }
 
-    /**
-     * 返回当前时间
-     * @return 当前时间
-     */
     public static LocalTime getCurrentLocalTime() {
         return LocalTime.now();
     }
 
-    /**
-     * 返回当前日期时间
-     * @return 当前时间
-     */
-    public static LocalDateTime getCurrentLocalDateTime() {
-        return LocalDateTime.now();
-    }
-
-    /**
-     * yyyy-MM-dd
-     * @return yyyy-MM-dd string
-     */
     public static String getCurrentDateStr() {
         return LocalDate.now().format(DATE_FORMATTER);
     }
 
-    /**
-     * yyMMdd
-     * @return yyMMdd
-     */
     public static String getCurrentShortDateStr() {
         return LocalDate.now().format(SHORT_DATE_FORMATTER);
     }
@@ -60,34 +35,18 @@ public class DateTimeUtil {
         return LocalDate.now().format(YEAR_MONTH_FORMATTER);
     }
 
-    /**
-     * yyyy-MM-dd HH:mm:ss
-     *
-     * @return yyyy-MM-dd HH:mm:ss
-     */
     public static String getCurrentDateTimeStr() {
         return LocalDateTime.now().format(DATETIME_FORMATTER);
     }
-
 
     public static String getCurrentLongDateTimeStr() {
         return LocalDateTime.now().format(LONG_DATETIME_FORMATTER);
     }
 
-    /**
-     * yyMMddHHmmss
-     *
-     * @return string
-     */
     public static String getCurrentShortDateTimeStr() {
         return LocalDateTime.now().format(SHORT_DATETIME_FORMATTER);
     }
 
-    /**
-     * HHmmss
-     *
-     * @return string
-     */
     public static String getCurrentTimeStr() {
         return LocalTime.now().format(TIME_FORMATTER);
     }
@@ -156,80 +115,43 @@ public class DateTimeUtil {
         return time.format(TIME_FORMATTER);
     }
 
-    /**
-     * 日期相隔秒
-     * @return long
-     */
     public static long periodSeconds(LocalDateTime startDateTime, LocalDateTime endDateTime) {
         return Duration.between(startDateTime, endDateTime).get(ChronoUnit.SECONDS);
     }
 
-    /**
-     * 日期相隔分
-     * @return long
-     */
     public static long periodMinute(LocalDateTime startDateTime, LocalDateTime endDateTime) {
 
         java.time.Duration duration = java.time.Duration.between(startDateTime, endDateTime);
         return duration.toMinutes();
     }
 
-    /**
-     * 日期相隔天数
-     * @return long
-     */
     public static long periodDays(LocalDate startDate, LocalDate endDate) {
         return startDate.until(endDate, ChronoUnit.DAYS);
     }
 
-    /**
-     * 日期相隔周数
-     * @return long
-     */
     public static long periodWeeks(LocalDate startDate, LocalDate endDate) {
         return startDate.until(endDate, ChronoUnit.WEEKS);
     }
 
-    /**
-     * 日期相隔月数
-     * @return long
-     */
     public static long periodMonths(LocalDate startDate, LocalDate endDate) {
         return startDate.until(endDate, ChronoUnit.MONTHS);
     }
 
-    /**
-     * 日期相隔年数
-     * @return long
-     */
     public static long periodYears(LocalDate startDate, LocalDate endDate) {
         return startDate.until(endDate, ChronoUnit.YEARS);
     }
 
-    /**
-     * 是否当天
-     * @return long
-     */
     public static boolean isToday(LocalDate date) {
         return getCurrentLocalDate().equals(date);
     }
 
-    /**
-     * 获取当前毫秒数
-     * @return long
-     */
     public static Long toEpochMilli(LocalDateTime dateTime) {
         return dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 
-    /**
-     * 判断是否为闰年
-     * @return long
-     */
     public static boolean isLeapYear(LocalDate localDate) {
         return localDate.isLeapYear();
     }
-
 
     public static Date localDate2Date(LocalDate localDate) {
         if (null == localDate) {
@@ -248,7 +170,6 @@ public class DateTimeUtil {
 
     public static Date localDateTime2Date(LocalDateTime localDateTime) {
         ZoneId zoneId = ZoneId.systemDefault();
-        //Combines this date-time with a time-zone to create a  ZonedDateTime.
         ZonedDateTime zdt = localDateTime.atZone(zoneId);
         Date date = Date.from(zdt.toInstant());
         return date;

@@ -4,7 +4,7 @@
     <groupId>ltd.fdsa</groupId>
     <artifactId>fast-data-cloud</artifactId>
     <name>fast data cloud</name>
-    <version>1.0.0-RELEASE</version>
+    <version>1.0.1-SNAPSHOT</version>
     <description>微服务框架</description>
     <packaging>pom</packaging>
     <parent>

@@ -7,7 +7,7 @@
     <parent>
         <groupId>ltd.fdsa</groupId>
         <artifactId>fast-data-parent</artifactId>
-        <version>1.0.0-RELEASE</version>
+        <version>1.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <dependencies>
@@ -58,6 +58,10 @@
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-models</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -68,7 +72,7 @@
                 <!--                <version>4.3</version>-->
                 <configuration>
                     <sourceDirectory>${basedir}/src/main/antlr4/</sourceDirectory>
-                    <outputDirectory>${basedir}/src/main/java/ltd/fdsa/fql/antlr</outputDirectory>
+                    <outputDirectory>${basedir}/src/main/java/ltd/fdsa/database/fql/antlr</outputDirectory>
                     <listener>false</listener>
                     <visitor>true</visitor>
                     <excludes>

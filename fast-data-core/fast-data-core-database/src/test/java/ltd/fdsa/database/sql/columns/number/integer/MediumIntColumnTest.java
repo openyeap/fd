@@ -20,20 +20,20 @@ class MediumIntColumnTest extends IntegerColumnTest<MediumIntColumn, MediumIntCo
     @Override
     public BiFunction<MediumIntColumn, String, MediumIntColumn> getAliasFunction()
     {
-        return (column, alias) -> column.as(alias);
+        return (column, alias) -> (MediumIntColumn) column.as(alias);
     }
 
     @Test
     void testDecimalColumnDefinition()
     {
         assertBuild(Consumers::noAction).isEqualTo("MEDIUMINT DEFAULT NULL");
-        assertBuild(builder -> builder.notNull()).isEqualTo("MEDIUMINT NOT NULL");
+        assertBuild(builder -> builder.nullable(false)).isEqualTo("MEDIUMINT NOT NULL");
         assertBuild(builder -> builder.defaultNull()).isEqualTo("MEDIUMINT DEFAULT NULL");
         assertBuild(builder -> builder.noDefault()).isEqualTo("MEDIUMINT");
         assertBuild(builder -> builder.noDefault().autoIncrement()).isEqualTo("MEDIUMINT AUTO_INCREMENT");
         assertBuild(builder -> builder.size(5).defaultNull()).isEqualTo("MEDIUMINT(5) DEFAULT NULL");
         assertBuild(builder -> builder.size(5).defaultValue(123)).isEqualTo("MEDIUMINT(5) DEFAULT 123");
         assertBuild(builder -> builder.size(Integer.valueOf(5)).defaultValue(Integer.valueOf(123))).isEqualTo("MEDIUMINT(5) DEFAULT 123");
-        assertBuild(builder -> builder.size(5).notNull().defaultValue(123)).isEqualTo("MEDIUMINT(5) NOT NULL DEFAULT 123");
+        assertBuild(builder -> builder.size(5).nullable(false).defaultValue(123)).isEqualTo("MEDIUMINT(5) NOT NULL DEFAULT 123");
     }
 }

@@ -20,20 +20,20 @@ class BigIntColumnTest extends IntegerColumnTest<BigIntColumn, BigIntColumnBuild
     @Override
     public BiFunction<BigIntColumn, String, BigIntColumn> getAliasFunction()
     {
-        return (column, alias) -> column.as(alias);
+        return (column, alias) -> (BigIntColumn) column.as(alias);
     }
 
     @Test
     void testDecimalColumnDefinition()
     {
         assertBuild(Consumers::noAction).isEqualTo("BIGINT DEFAULT NULL");
-        assertBuild(builder -> builder.notNull()).isEqualTo("BIGINT NOT NULL");
+        assertBuild(builder -> builder.nullable(false)).isEqualTo("BIGINT NOT NULL");
         assertBuild(builder -> builder.defaultNull()).isEqualTo("BIGINT DEFAULT NULL");
         assertBuild(builder -> builder.noDefault()).isEqualTo("BIGINT");
         assertBuild(builder -> builder.noDefault().autoIncrement()).isEqualTo("BIGINT AUTO_INCREMENT");
         assertBuild(builder -> builder.size(5).defaultNull()).isEqualTo("BIGINT(5) DEFAULT NULL");
         assertBuild(builder -> builder.size(5).defaultValue(123)).isEqualTo("BIGINT(5) DEFAULT 123");
         assertBuild(builder -> builder.size(Integer.valueOf(5)).defaultValue(Integer.valueOf(123))).isEqualTo("BIGINT(5) DEFAULT 123");
-        assertBuild(builder -> builder.size(5).notNull().defaultValue(123)).isEqualTo("BIGINT(5) NOT NULL DEFAULT 123");
+        assertBuild(builder -> builder.size(5).nullable(false).defaultValue(123)).isEqualTo("BIGINT(5) NOT NULL DEFAULT 123");
     }
 }

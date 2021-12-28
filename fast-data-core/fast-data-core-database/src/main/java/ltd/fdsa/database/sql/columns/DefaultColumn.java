@@ -15,8 +15,4 @@ public class DefaultColumn extends StringColumn<DefaultColumn> {
     DefaultColumn(Table table, String name, String alias, ColumnDefinition columnDefinition) {
         super(table, name, alias, columnDefinition, CHAR);
     }
-
-    public DefaultColumn as(String alias) {
-        return new DefaultColumn(getTable(), getName(), alias, columnDefinition);
-    }
 }

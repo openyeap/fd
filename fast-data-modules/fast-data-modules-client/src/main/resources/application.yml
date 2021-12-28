@@ -7,7 +7,8 @@ spring:
     active: dev
   jpa:
     open-in-view: false
-
+  devtools:
+    add-properties: true
   datasource:
     master:
       type: com.alibaba.druid.pool.DruidDataSource
@@ -69,20 +70,37 @@ project:
     port: 8500
     health:
       enabled: true
-  tables:
+  rest-api:
     enabled: true
-    prefix-matches:
-      - s*_
-      - t*_
-      - us*_
-    changes:
-      append:
-        - t_: { prefix: 'test_', suffix: '_result' } #以t_开头的表，前增test_，后增_result
-        - s_: { suffix: '_test' } #以s开头的表，后增_test
-        - us_: { prefix: 'user_' } #以us_开头的表，前增user_
-    remove:
-      - _ #移除 _
-    replace: { land: 'plan', jiefang: 'liberate' }
+    catalog:
+    schema: public
+    tables:
+      "[bm_*]":
+        removes:
+          - prefix: bm_
+            suffix: _event
+        appends:
+          - prefix: entity_
+            suffix: controller
+        replaces:
+          - key1: value1
+          - key2: value2
+        column:
+          removes:
+            - prefix:
+              suffix:
+          appends:
+            - prefix:
+              suffix:
+          replaces:
+            - key1: value1
+            - key2: value2
+    acl:
+      "[bm_*]":
+        - CREATE
+        - UPDATE
+        - QUERY_LIST
+        - DELETE
 
 logging:
   path: /var/log/${spring.application.name}-${server.port}

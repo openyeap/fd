@@ -144,17 +144,4 @@ public final class RdmlParser {
         sql.append(page * size);
         return sql.toString();
     }
-
-    /**
-     * 替换主键值
-     *
-     * @param key
-     * @return
-     */
-    public String parsePrimaryKey(String key) {
-        key = key.replace("'", "");
-        key = key.replace("\"", "");
-        key = "'" + key + "'";
-        return key;
-    }
 }

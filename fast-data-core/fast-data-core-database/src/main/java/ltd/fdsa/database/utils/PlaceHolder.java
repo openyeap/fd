@@ -1,7 +1,7 @@
 package ltd.fdsa.database.utils;
 
 import lombok.var;
-import ltd.fdsa.database.model.ColumnInfo;
+import ltd.fdsa.database.model.FieldInfo;
 import ltd.fdsa.database.model.EntityInfo;
 import org.springframework.util.ReflectionUtils;
 
@@ -40,7 +40,7 @@ public class PlaceHolder {
                 if (!field.isAccessible()) {
                     field.setAccessible(true);
                 }
-                var bu = ColumnInfo.builder();
+                var bu = FieldInfo.builder();
                 var column = field.getAnnotation(Column.class);
                 if (column == null) {
                     bu.name(field.getName());

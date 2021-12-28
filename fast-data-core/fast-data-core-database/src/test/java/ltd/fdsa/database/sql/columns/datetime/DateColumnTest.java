@@ -27,18 +27,18 @@ class DateColumnTest extends ColumnTest<DateColumn, DateColumnBuilder, LocalDate
     @Override
     public BiFunction<DateColumn, String, DateColumn> getAliasFunction()
     {
-        return (column, alias) -> column.as(alias);
+        return (column, alias) -> (DateColumn) column.as(alias);
     }
 
     @Test
     void testDefinition()
     {
         assertBuild(Consumers::noAction).isEqualTo("DATE DEFAULT NULL");
-        assertBuild(builder -> builder.notNull()).isEqualTo("DATE NOT NULL");
+        assertBuild(builder -> builder.nullable(false)).isEqualTo("DATE NOT NULL");
         assertBuild(builder -> builder.defaultNull()).isEqualTo("DATE DEFAULT NULL");
         assertBuild(builder -> builder.noDefault()).isEqualTo("DATE");
         assertBuild(builder -> builder.defaultValue(LocalDate.of(1981, 12, 29))).isEqualTo("DATE DEFAULT '1981-12-29'");
-        assertBuild(builder -> builder.notNull().defaultValue(LocalDate.of(1981, 12, 29))).isEqualTo("DATE NOT NULL DEFAULT '1981-12-29'");
+        assertBuild(builder -> builder.nullable(false).defaultValue(LocalDate.of(1981, 12, 29))).isEqualTo("DATE NOT NULL DEFAULT '1981-12-29'");
     }
 
     @Test

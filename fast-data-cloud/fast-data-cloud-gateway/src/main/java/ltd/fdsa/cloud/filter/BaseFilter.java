@@ -18,13 +18,8 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 public abstract class BaseFilter implements GlobalFilter, Ordered {
 
-    /**
-     * 全路径/{spring.application.name}/user/login
-     */
     protected String fullPath = "";
-    /**
-     * 访问服务名{spring.application.name}
-     */
+
     protected String serviceName = "";
 
     protected ServerHttpRequest newRequest = null;
@@ -58,25 +53,11 @@ public abstract class BaseFilter implements GlobalFilter, Ordered {
         return chain.filter(exchange);
     }
 
-    /**
-     * 定义统一入口
-     *
-     * @param request
-     * @return
-     */
+
     protected abstract boolean access(ServerHttpRequest request);
 
-    /**
-     * 定义http返回状态码
-     *
-     * @return
-     */
+
     protected abstract HttpStatus errorStatus();
 
-    /**
-     * 定义response统一错误返回
-     *
-     * @return
-     */
-    protected abstract Result errorBody();
+    protected abstract Result<Object> errorBody();
 }

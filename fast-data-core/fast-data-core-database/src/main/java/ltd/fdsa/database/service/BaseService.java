@@ -1,17 +1,14 @@
 package ltd.fdsa.database.service;
 
-import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import ltd.fdsa.core.util.NamingUtils;
 import ltd.fdsa.database.config.DataSourceConfig;
 import ltd.fdsa.database.entity.BaseEntity;
 import ltd.fdsa.database.entity.Status;
-import ltd.fdsa.database.repository.IMetaData;
 import ltd.fdsa.database.sql.conditions.Condition;
 import ltd.fdsa.database.sql.functions.Function;
 import ltd.fdsa.database.sql.queries.Queries;
-import ltd.fdsa.database.sql.schema.Schema;
 import ltd.fdsa.database.sql.schema.Table;
 import ltd.fdsa.database.utils.PlaceHolder;
 import org.springframework.data.domain.Page;
@@ -22,13 +19,11 @@ import javax.sql.DataSource;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.*;
 
 @Slf4j
-public class BaseService<Entity extends BaseEntity<ID>, ID> implements DataAccessService<Entity, ID>, IMetaData {
+public class BaseService<Entity extends BaseEntity<ID>, ID> implements DataAccessService<Entity, ID> {
 
     @Resource(name = DataSourceConfig.WRITER_DATASOURCE)
     protected DataSource writer;
@@ -246,69 +241,5 @@ public class BaseService<Entity extends BaseEntity<ID>, ID> implements DataAcces
         return -1;
     }
 
-    @Override
-    public List<Table> listAllTables(String catalog, String schemaPattern) {
-        List<Table> result = new ArrayList<>();
-        try (var conn = this.writer.getConnection()) {
-            if (Strings.isNullOrEmpty(catalog)) {
-                catalog = conn.getCatalog();
-            }
-            if (catalog == "*") {
-                catalog = null;
-            }
-            if (Strings.isNullOrEmpty(schemaPattern)) {
-                schemaPattern = conn.getSchema();
-            }
-            if (schemaPattern == "*") {
-                schemaPattern = null;
-            }
-            conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            var connectionMetaData = conn.getMetaData();
-            ResultSet tableSet = connectionMetaData.getTables(catalog, schemaPattern, null, new String[]{"TABLE", "VIEW"});
-            while (tableSet.next()) {
-                Table table = Schema
-                        .create(tableSet.getString("TABLE_SCHEM"))
-                        .table(tableSet.getString("TABLE_NAME"))
-                        .type(tableSet.getString("TABLE_TYPE"))
-                        .remark(tableSet.getString("REMARKS"));
-                ResultSet columnSet = conn.getMetaData().getColumns(catalog, schemaPattern, table.getName(), null);
-                var columnsMetaData = columnSet.getMetaData();
-                while (columnSet.next()) {
-                    String columnRemark = columnSet.getString("REMARKS");
-                    var typeName = columnSet.getString("TYPE_NAME");
-                    var columnName = columnSet.getString("COLUMN_NAME");
-                    var columnSize = columnSet.getInt("COLUMN_SIZE");
-                    table.column(columnName)
-                            .size(columnSize)
-                            .type(typeName)
-                            .build()
-                            .remark(columnRemark);
-                }
-                result.add(table);
-            }
-        } catch (Exception ex) {
-            log.error("listAllTables", ex);
-        }
-        return result;
-    }
 
-    @Override
-    public Map<String, Object> listAllForeignKey(String tableName, String schemaPattern, String catalog) {
-        Map<String, Object> map = new HashMap<>();
-        try (var conn = this.writer.getConnection()) {
-            DatabaseMetaData metaData = conn.getMetaData();
-            //根据表名获得外键
-            ResultSet importedKeys = metaData.getImportedKeys(catalog, schemaPattern, tableName);
-            ResultSetMetaData resultSetMetaData = importedKeys.getMetaData();
-
-            while (importedKeys.next()) {
-                for (int i = 1; i <= resultSetMetaData.getColumnCount(); i++) {
-                    map.put(resultSetMetaData.getColumnName(i), importedKeys.getString(i));
-                }
-            }
-        } catch (Exception ex) {
-            log.error("listAllForeignKey", ex);
-        }
-        return map;
-    }
 }

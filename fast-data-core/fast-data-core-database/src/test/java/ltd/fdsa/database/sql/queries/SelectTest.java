@@ -1,36 +1,33 @@
 package ltd.fdsa.database.sql.queries;
 
-import static ltd.fdsa.database.sql.dialect.Dialects.MYSQL;
-import static ltd.fdsa.database.sql.dialect.Dialects.SYBASE;
-import static ltd.fdsa.database.sql.domain.LikeType.AFTER;
-import static ltd.fdsa.database.sql.functions.Function.count;
-import static ltd.fdsa.database.sql.queries.Queries.select;
-import static ltd.fdsa.database.sql.queries.Queries.selectDistinct;
-import static ltd.fdsa.database.sql.utils.Indentation.enabled;
-import static org.assertj.core.api.Assertions.assertThat;
+import lombok.var;
+import ltd.fdsa.database.sql.columns.datetime.DateColumn;
+import ltd.fdsa.database.sql.columns.datetime.DateTimeColumn;
+import ltd.fdsa.database.sql.columns.number.doubletype.DoubleColumn;
+import ltd.fdsa.database.sql.columns.number.integer.IntColumn;
+import ltd.fdsa.database.sql.columns.string.VarCharColumn;
+import ltd.fdsa.database.sql.conditions.Condition;
+import ltd.fdsa.database.sql.domain.Queryable;
+import ltd.fdsa.database.sql.domain.Selectable;
+import ltd.fdsa.database.sql.functions.Function;
+import ltd.fdsa.database.sql.schema.Schema;
+import ltd.fdsa.database.sql.schema.Table;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-import lombok.var;
-import ltd.fdsa.database.sql.conditions.Condition;
-import ltd.fdsa.database.sql.functions.Function;
-import org.junit.jupiter.api.Test;
+import static ltd.fdsa.database.sql.dialect.Dialects.MYSQL;
+import static ltd.fdsa.database.sql.dialect.Dialects.SYBASE;
+import static ltd.fdsa.database.sql.domain.LikeType.AFTER;
+import static ltd.fdsa.database.sql.queries.Queries.select;
+import static ltd.fdsa.database.sql.queries.Queries.selectDistinct;
+import static ltd.fdsa.database.sql.utils.Indentation.enabled;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import ltd.fdsa.database.sql.columns.datetime.DateColumn;
-import ltd.fdsa.database.sql.columns.datetime.DateTimeColumn;
-import ltd.fdsa.database.sql.columns.number.doubletype.DoubleColumn;
-import ltd.fdsa.database.sql.columns.number.integer.IntColumn;
-import ltd.fdsa.database.sql.columns.string.VarCharColumn;
-import ltd.fdsa.database.sql.domain.Queryable;
-import ltd.fdsa.database.sql.domain.Selectable;
-import ltd.fdsa.database.sql.schema.Schema;
-import ltd.fdsa.database.sql.schema.Table;
-
-class SelectTest
-{
+class SelectTest {
     public static final Schema DBA = Schema.create("dba");
 
     public static final Table PERSONS = DBA.table("persons");
@@ -43,31 +40,28 @@ class SelectTest
     public static final VarCharColumn LASTNAME = PERSONS.varCharColumn("lastname").size(50).defaultNull().build();
     public static final VarCharColumn NICKNAME = PERSONS.varCharColumn("nickname").size(30).nullable().defaultValue("Schubi").build();
     public static final IntColumn AGE = PERSONS.intColumn("age").size(5).unsigned().autoIncrement().build();
-    public static final DoubleColumn SIZE = PERSONS.doubleColumn("size").size(2.2).unsigned().defaultValue(55.8).build();
+    public static final DoubleColumn SIZE = PERSONS.doubleColumn("size").size(2.2).unsigned().alias("Gr\\ö`ße").defaultValue(55.8).build();
     public static final DateColumn BIRTHDAY = PERSONS.dateColumn("birthday").build();
     public static final DateTimeColumn HAPPENING = PERSONS.dateTimeColumn("happening").build();
 
     @Test
-    void testBuildSimpleSelect()
-    {
+    void testBuildSimpleSelect() {
         assertThat(select().from(PERSONS).whereNot(LASTNAME.isEqualTo(NICKNAME).and(FORENAME.isNull()).and(NICKNAME.isNotIn("a", "b", "c"))).build(MYSQL))
                 .isEqualTo("SELECT * FROM `dba`.`persons` WHERE NOT (`dba`.`persons`.`lastname` = `dba`.`persons`.`nickname` AND `dba`.`persons`.`forename` IS NULL AND `dba`.`persons`.`nickname` NOT IN ('a', 'b', 'c'))");
         assertThat(select().from(Queryable.plain("persons").as("p"))
                 .whereNot(LASTNAME.isEqualTo(NICKNAME).and(FORENAME.isNull()).and(NICKNAME.isNotIn("a", "b", "c")))
                 .build(SYBASE))
-                        .isEqualTo("SELECT * FROM persons AS `p` WHERE NOT (`dba`.`persons`.`lastname` = `dba`.`persons`.`nickname` AND `dba`.`persons`.`forename` IS NULL AND `dba`.`persons`.`nickname` NOT IN ('a', 'b', 'c'))");
+                .isEqualTo("SELECT * FROM persons AS `p` WHERE NOT (`dba`.`persons`.`lastname` = `dba`.`persons`.`nickname` AND `dba`.`persons`.`forename` IS NULL AND `dba`.`persons`.`nickname` NOT IN ('a', 'b', 'c'))");
     }
 
     @Test
-    void testGetDialectByName()
-    {
+    void testGetDialectByName() {
         assertThat(select().from(PERSONS).build("MYSQL")).isEqualTo("SELECT * FROM `dba`.`persons`");
         assertThat(select().from(PERSONS).build("MYSQL", enabled())).isEqualTo("SELECT\n  *\nFROM\n  `dba`.`persons`");
     }
 
     @Test
-    void testBuildComplexSelect()
-    {
+    void testBuildComplexSelect() {
         var subCondition = Condition.emptyCondition();
 
         subCondition = subCondition.and(LASTNAME.isEqualTo("Schumacher")
@@ -77,7 +71,7 @@ class SelectTest
 
         List<String> names = Arrays.asList("Schubi", null, "Ronny");
 
-        var select = selectDistinct(FORENAME, LASTNAME, SIZE.as("Gr\\ö`ße"))
+        var select = selectDistinct(FORENAME, LASTNAME, SIZE)
                 .select(Selectable.plain("IsNull(`COL`, '')").as("Color"), Function.sum(AGE).as("ageSum"))
                 .from(select(Function.count(FORENAME).as("foreCount")).from(PERSONS).as("sub"))
                 .leftOuterJoin(PERSONS.as("q")
@@ -268,20 +262,17 @@ class SelectTest
     }
 
     @Test
-    void testWithEmptyCondition()
-    {
+    void testWithEmptyCondition() {
         assertThat(select().from(PERSONS).where(Condition.emptyCondition()).build()).isEqualTo("SELECT * FROM `dba`.`persons`");
     }
 
     @Test
-    void testSimplestCopy()
-    {
+    void testSimplestCopy() {
         assertThat(Select.copy(select().from(PERSONS)).build()).isEqualTo(select().from(PERSONS).build());
     }
 
     @Test
-    void testClearSelects()
-    {
+    void testClearSelects() {
         var select = select(LASTNAME).from(PERSONS);
 
         assertThat(select.getSelectables()).isNotNull();
@@ -290,8 +281,7 @@ class SelectTest
     }
 
     @Test
-    void testClearJoins()
-    {
+    void testClearJoins() {
         var select = select(LASTNAME).from(PERSONS).leftJoin(GROUPS.on(NICKNAME.eq(FORENAME)));
 
         assertThat(select.getJoins()).isNotNull();
@@ -300,8 +290,7 @@ class SelectTest
     }
 
     @Test
-    void testClearWheres()
-    {
+    void testClearWheres() {
         var select = select(LASTNAME).from(PERSONS).where(FORENAME.isNull());
 
         assertThat(select.getWhere()).isNotNull();
@@ -310,8 +299,7 @@ class SelectTest
     }
 
     @Test
-    void testClearGroupBys()
-    {
+    void testClearGroupBys() {
         var select = select(LASTNAME).from(PERSONS).groupBy(FORENAME);
 
         assertThat(select.getGroupBys()).isNotNull();
@@ -320,8 +308,7 @@ class SelectTest
     }
 
     @Test
-    void testClearHavings()
-    {
+    void testClearHavings() {
         var select = select(LASTNAME).from(PERSONS).havingNot(Function.count().gt(10));
 
         assertThat(select.getHaving()).isNotNull();
@@ -330,8 +317,7 @@ class SelectTest
     }
 
     @Test
-    void testClearOrdering()
-    {
+    void testClearOrdering() {
         var select = select(LASTNAME).from(PERSONS).orderBy(LASTNAME);
 
         assertThat(select.getOrderBys()).isNotNull();
@@ -340,8 +326,7 @@ class SelectTest
     }
 
     @Test
-    void testClearLimit()
-    {
+    void testClearLimit() {
         var select = select(LASTNAME).from(PERSONS).limit(5);
 
         assertThat(select.getLimitation()).isNotNull();
@@ -350,8 +335,7 @@ class SelectTest
     }
 
     @Test
-    void testJoins()
-    {
+    void testJoins() {
         assertThat(select().from(PERSONS).join(GROUPS.on(NAME.eq(LASTNAME))).build())
                 .isEqualTo("SELECT * FROM `dba`.`persons` JOIN `dba`.`groups` ON `dba`.`groups`.`name` = `dba`.`persons`.`lastname`");
 

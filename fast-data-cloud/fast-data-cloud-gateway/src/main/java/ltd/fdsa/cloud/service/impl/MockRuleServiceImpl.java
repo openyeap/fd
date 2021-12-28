@@ -1,12 +1,11 @@
 package ltd.fdsa.cloud.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.Response;
 import com.ecwid.consul.v1.kv.model.GetValue;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import ltd.fdsa.cloud.constant.Constant;
 import ltd.fdsa.cloud.constant.MockHandleTypeEnum;
 import ltd.fdsa.cloud.model.MockRule;
@@ -86,11 +85,11 @@ public class MockRuleServiceImpl implements IMockRuleService {
 
                         String mockRuleConfig = new String(Base64Utils.decodeFromString(value), "UTF-8");
 
-                        MockRuleConsul mockRuleConsul = JSONObject.parseObject(mockRuleConfig, MockRuleConsul.class);
+                        MockRuleConsul mockRuleConsul = new ObjectMapper().readValue(mockRuleConfig, MockRuleConsul.class);
                         if (!StringUtils.equals(updateTime, mockRuleConsul.getUpdateTime())) {
                             updateTime = mockRuleConsul.getUpdateTime();
                             listToMap(mockRuleConsul.getData());
-                            NamingUtils.formatLog(log,"拉取 mock 规则数据成功。");
+                            NamingUtils.formatLog(log, "拉取 mock 规则数据成功。");
                         }
 
                         Thread.sleep(8000L);//8s加载一次;
@@ -133,7 +132,7 @@ public class MockRuleServiceImpl implements IMockRuleService {
                 }
 
             }
-            NamingUtils.formatLog(log,"mock规则同步删除本地缓存数据成功。");
+            NamingUtils.formatLog(log, "mock规则同步删除本地缓存数据成功。");
         }
 
     }
@@ -149,9 +148,9 @@ public class MockRuleServiceImpl implements IMockRuleService {
 
         mockValues.add(mockRule);
 
-        MockRuleConsul rul = new MockRuleConsul(DateTimeUtil.getCurrentDateTimeStr(), mockValues);
+        MockRuleConsul value = new MockRuleConsul(DateTimeUtil.getCurrentDateTimeStr(), mockValues);
 
-        consulClient.setKVValue(Constant.MOCK_RULE_KEY_CONSUL, JSONObject.toJSONString(rul));
+        this.consulClient.setKVValue(Constant.MOCK_RULE_KEY_CONSUL, new ObjectMapper().writeValueAsString(value));
 
         mockRuleMap.put(mockRule.getRequestPath(), mockRule);
 
@@ -166,9 +165,9 @@ public class MockRuleServiceImpl implements IMockRuleService {
 
         map.put(mockRule.getRequestPath(), mockRule);
 
-        MockRuleConsul rul = new MockRuleConsul(DateTimeUtil.getCurrentDateTimeStr(), new ArrayList<MockRule>(map.values()));
+        MockRuleConsul value = new MockRuleConsul(DateTimeUtil.getCurrentDateTimeStr(), new ArrayList<MockRule>(map.values()));
 
-        consulClient.setKVValue(Constant.MOCK_RULE_KEY_CONSUL, JSONObject.toJSONString(rul));
+        this.consulClient.setKVValue(Constant.MOCK_RULE_KEY_CONSUL, new ObjectMapper().writeValueAsString(value));
 
         mockRuleMap.put(mockRule.getRequestPath(), mockRule);
 
@@ -182,9 +181,9 @@ public class MockRuleServiceImpl implements IMockRuleService {
 
         map.remove(requestPath);
 
-        MockRuleConsul rul = new MockRuleConsul(DateTimeUtil.getCurrentDateTimeStr(), new ArrayList<MockRule>(map.values()));
+        MockRuleConsul value = new MockRuleConsul(DateTimeUtil.getCurrentDateTimeStr(), new ArrayList<MockRule>(map.values()));
 
-        consulClient.setKVValue(Constant.MOCK_RULE_KEY_CONSUL, JSONObject.toJSONString(rul));
+        this.consulClient.setKVValue(Constant.MOCK_RULE_KEY_CONSUL, new ObjectMapper().writeValueAsString(value));
 
         mockRuleMap.remove(requestPath);
 
@@ -220,11 +219,11 @@ public class MockRuleServiceImpl implements IMockRuleService {
         }
 
         try {
-            JSONArray jsonArray = JSON.parseArray(resultData);
+            var jsonArray = new ObjectMapper().readValue(resultData, List.class);
 
             if (jsonArray.size() == 1) {
                 //如果只有一条直接返回
-                return JSON.toJSONString(jsonArray.get(0));
+                return new ObjectMapper().writeValueAsString(jsonArray.get(0));
             }
 
             //按规则处理数据
@@ -232,12 +231,7 @@ public class MockRuleServiceImpl implements IMockRuleService {
 
         } catch (Exception e) {
 
-            try {
-                JSON.parseObject(resultData);
-            } catch (Exception e1) {
-                log.error("mock 数据格式错误！", e);
-                return "";
-            }
+            log.error("mock 数据格式错误！", e);
 
         }
 
@@ -246,7 +240,7 @@ public class MockRuleServiceImpl implements IMockRuleService {
     }
 
 
-    private String handleData(JSONArray jsonArray, MockRule rule) {
+    private String handleData(List jsonArray, MockRule rule) {
 
         int size = jsonArray.size();
         String result = "";
@@ -254,7 +248,7 @@ public class MockRuleServiceImpl implements IMockRuleService {
         try {
             if (MockHandleTypeEnum.RANDOM.getCode() == rule.getHandleType()) {
                 //随机模式
-                result = JSON.toJSONString(jsonArray.get(RandomUtils.nextInt(size)));
+                result = new ObjectMapper().writeValueAsString(jsonArray.get(RandomUtils.nextInt(size)));
 
             } else if (MockHandleTypeEnum.ROLL.getCode() == rule.getHandleType()) {
                 //轮询模式
@@ -263,10 +257,10 @@ public class MockRuleServiceImpl implements IMockRuleService {
                 long seconds = DateTimeUtil.periodSeconds(updateTime, LocalDateTime.now());
                 int tempDataIndex = 0;
                 if (validTime < seconds) { //如果过了有效时间，则重新轮询
-                    result = JSON.toJSONString(jsonArray.get(0));
+                    result = new ObjectMapper().writeValueAsString(jsonArray.get(0));
                     tempDataIndex = 1;
                 } else {
-                    result = JSON.toJSONString(jsonArray.get(rule.getDataIndex()));
+                    result = new ObjectMapper().writeValueAsString(jsonArray.get(rule.getDataIndex()));
 
                     tempDataIndex = rule.getDataIndex() + 1;
                     if (size <= tempDataIndex) {
@@ -279,13 +273,13 @@ public class MockRuleServiceImpl implements IMockRuleService {
                 rule.setDataIndex(tempDataIndex);
                 rule.setUpdateTime(now);
                 if (!updateMockRule(rule)) {
-                    String s = JSON.toJSONString(rule);
+                    String s = new ObjectMapper().writeValueAsString(rule);
                     log.error("更新mock数据异常:{}", s);
                     throw new Exception("更新mock数据异常：" + s);
                 }
 
             } else { //默认模式
-                result = jsonArray.toJSONString();
+                result = new ObjectMapper().writeValueAsString(jsonArray);
             }
 
         } catch (Exception e) {

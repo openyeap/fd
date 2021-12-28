@@ -9,8 +9,8 @@
     <parent>
         <groupId>ltd.fdsa</groupId>
         <artifactId>fast-data-parent</artifactId>
-        <version>1.0.0-RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>1.0.1-SNAPSHOT</version>
+        <relativePath>../fast-data-core</relativePath>
     </parent>
     <modules>
         <module>fast-data-modules-api</module>
@@ -18,5 +18,5 @@
         <module>fast-data-modules-client</module>
         <module>fast-data-modules-search</module>
         <module>fast-data-modules-research</module>
-    </modules> 
+    </modules>
 </project>

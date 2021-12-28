@@ -33,6 +33,6 @@ public class DefaultColumnBuilder extends StringColumnBuilder<DefaultColumnBuild
 
     @Override
     protected DefaultColumn getColumnInstance() {
-        return new DefaultColumn(table, name, null, new ColumnDefinition(type, size, isNullable, isDefaultNull, false, false, defaultValue));
+        return new DefaultColumn(table, name, this.alias, new ColumnDefinition(type, size, isNullable, isDefaultNull, false, false, defaultValue));
     }
 }

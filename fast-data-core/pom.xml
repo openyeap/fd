@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>ltd.fdsa</groupId>
     <artifactId>fast-data-parent</artifactId>
-    <version>1.0.0-RELEASE</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>fast data core</name>
     <description>聚合父模块，核心模块，定义依赖包</description>
     <packaging>pom</packaging>
@@ -25,7 +26,7 @@
         <module>fast-data-core-web</module>
     </modules>
     <properties>
-        <project.version>1.0.0-RELEASE</project.version>
+        <project.version>1.0.1-SNAPSHOT</project.version>
         <!--基本属性定义 -->
         <encoding>UTF-8</encoding>
         <java.version>1.8</java.version>
@@ -79,62 +80,71 @@
             <dependency>
                 <groupId>ltd.fdsa</groupId>
                 <artifactId>fast-data-core</artifactId>
-                <version>1.0.0-RELEASE</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.fdsa</groupId>
                 <artifactId>fast-data-core-web</artifactId>
-                <version>1.0.0-RELEASE</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.fdsa</groupId>
                 <artifactId>fast-data-core-database</artifactId>
-                <version>1.0.0-RELEASE</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.fdsa</groupId>
                 <artifactId>fast-data-core-database-jpa</artifactId>
-                <version>1.0.0-RELEASE</version>
+                <version>${project.version}</version>
+
             </dependency>
             <dependency>
                 <groupId>ltd.fdsa</groupId>
                 <artifactId>fast-data-core-database-mybatis</artifactId>
-                <version>1.0.0-RELEASE</version>
+                <version>${project.version}</version>
+
             </dependency>
             <dependency>
                 <groupId>ltd.fdsa</groupId>
                 <artifactId>fast-data-core-database-mybatis-generic</artifactId>
-                <version>1.0.0-RELEASE</version>
+                <version>${project.version}</version>
+
             </dependency>
             <dependency>
                 <groupId>ltd.fdsa</groupId>
                 <artifactId>fast-data-core-database-mybatis-plus</artifactId>
-                <version>1.0.0-RELEASE</version>
+                <version>${project.version}</version>
+
             </dependency>
             <dependency>
                 <groupId>ltd.fdsa</groupId>
                 <artifactId>jdbc-spring-boot-starter</artifactId>
-                <version>1.0.0-RELEASE</version>
+                <version>${project.version}</version>
+
             </dependency>
             <dependency>
                 <groupId>ltd.fdsa</groupId>
                 <artifactId>remote-spring-boot-starter</artifactId>
-                <version>1.0.0-RELEASE</version>
+                <version>${project.version}</version>
+
             </dependency>
             <dependency>
                 <groupId>ltd.fdsa</groupId>
                 <artifactId>remote-consul-spring-boot-starter</artifactId>
-                <version>1.0.0-RELEASE</version>
+                <version>${project.version}</version>
+
             </dependency>
             <dependency>
                 <groupId>ltd.fdsa</groupId>
                 <artifactId>logger-spring-boot-starter</artifactId>
-                <version>1.0.0-RELEASE</version>
+                <version>${project.version}</version>
+
             </dependency>
             <dependency>
                 <groupId>ltd.fdsa</groupId>
                 <artifactId>monitor-spring-boot-starter</artifactId>
-                <version>1.0.0-RELEASE</version>
+                <version>${project.version}</version>
+
             </dependency>
             <!-- data -->
             <dependency>
@@ -171,7 +181,7 @@
             <dependency>
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-models</artifactId>
-                <version>1.5.21</version>
+                <version>1.5.20</version>
             </dependency>
             <!-- 常用jar -->
             <dependency>
@@ -235,48 +245,68 @@
             <url>https://blog.zhumingwu.cn</url>
         </developer>
     </developers>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.2.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.5</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <profiles.active>dev</profiles.active>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>ossrh</id>
+            <properties>
+                <profiles.active>dev</profiles.active>
+            </properties>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

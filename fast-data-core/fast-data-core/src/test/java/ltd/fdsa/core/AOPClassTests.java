@@ -29,9 +29,7 @@ public class AOPClassTests {
         // 强制私用CGLIB 以保证我们的Person方法也能正常调用
         factory.setProxyTargetClass(true);
         // 此处采用IntroductionInterceptor 这个引介增强的拦截器
-        DynamicIntroductionAdvice advice;
-        advice = new RunIntroductionInterceptor();
-        advice = new RunDelegatingIntroductionInterceptor();
+        DynamicIntroductionAdvice advice = new RunDelegatingIntroductionInterceptor();
 //        advice = new DelegatePerTargetObjectIntroductionInterceptor(PersonRun.class, Run.class);
 
         // 切点+通知（注意：此处放的是复合切面）
@@ -51,17 +49,17 @@ public class AOPClassTests {
         void run();
     }
 
-    class RunDelegatingIntroductionInterceptor extends DelegatingIntroductionInterceptor implements Run {
+    static class RunDelegatingIntroductionInterceptor extends DelegatingIntroductionInterceptor implements Run {
 
         @Override
         public void run() {
-            NamingUtils.formatLog(log,"I can run");
+            NamingUtils.formatLog(log, "I can run");
         }
     }
 
 
     // 自己定义一个IntroductionInterceptor来实现IntroductionInterceptor接口
-    class RunIntroductionInterceptor implements IntroductionInterceptor, Run {
+    static class RunIntroductionInterceptor implements IntroductionInterceptor, Run {
         /**
          * 判断调用的方法是否为指定类中的方法
          * 如果Method代表了一个方法 那么调用它的invoke就相当于执行了它代表的这个方法
@@ -84,7 +82,7 @@ public class AOPClassTests {
 
         @Override
         public void run() {
-            NamingUtils.formatLog(log,"I can run");
+            NamingUtils.formatLog(log, "I can run");
         }
     }
 

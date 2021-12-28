@@ -26,10 +26,10 @@ class CreateTableTest
     public static final VarCharColumn FORENAME = PERSONS.varCharColumn("forename").size(50).noDefault().build();
     public static final VarCharColumn LASTNAME = PERSONS.varCharColumn("lastname").size(50).defaultNull().build();
     public static final VarCharColumn NICKNAME = PERSONS.varCharColumn("nickname").size(30).defaultValue("Schubi").build();
-    public static final IntColumn AGE = PERSONS.intColumn("age").size(5).unsigned().notNull().noDefault().autoIncrement().build();
-    public static final DoubleColumn SIZE = PERSONS.doubleColumn("size").size(2.2).unsigned().notNull().defaultValue(55.8).build();
-    public static final DateColumn BIRTHDAY = PERSONS.dateColumn("birthday").notNull().build();
-    public static final DateTimeColumn HAPPENING = PERSONS.dateTimeColumn("happening").notNull().build();
+    public static final IntColumn AGE = PERSONS.intColumn("age").size(5).unsigned().nullable(false).noDefault().autoIncrement().build();
+    public static final DoubleColumn SIZE = PERSONS.doubleColumn("size").size(2.2).unsigned().nullable(false).defaultValue(55.8).build();
+    public static final DateColumn BIRTHDAY = PERSONS.dateColumn("birthday").nullable(false).build();
+    public static final DateTimeColumn HAPPENING = PERSONS.dateTimeColumn("happening").nullable(false).build();
 
     @Test
     void testCreateTable()

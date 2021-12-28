@@ -1,20 +1,14 @@
 package ltd.fdsa.database.model;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@Builder
+@AllArgsConstructor
 public class ColumnInfo {
     String name;
-    Class<?> type;
-    boolean unique;
-
-    boolean nullable;
-
-    int length;
-
-    int precision;
-
-    int scale;
+    String alias;
+    String code;
+    boolean numerical;
 }
+

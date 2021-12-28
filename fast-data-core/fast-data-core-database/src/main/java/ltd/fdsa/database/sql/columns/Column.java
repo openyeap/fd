@@ -34,12 +34,13 @@ public abstract class Column implements Groupable, Selectable, Definable, Nullab
         this.sqlType = sqlType;
     }
 
-    public Column as(String alias) {
-        this.alias = alias;
-        return this;
-    }
     public Column remark(String remark) {
         this.remark = remark;
+        return this;
+    }
+
+    public Column as(String alias) {
+        this.alias = alias;
         return this;
     }
 

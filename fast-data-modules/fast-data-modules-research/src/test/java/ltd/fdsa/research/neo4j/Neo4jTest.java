@@ -3,7 +3,7 @@ package ltd.fdsa.research.neo4j;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
-import ltd.fdsa.research.Application;
+import ltd.fdsa.research.ResearchApplication;
 import ltd.fdsa.research.model.entity.PersonNode;
 import ltd.fdsa.research.repository.PersonNeo4jRepository;
 import ltd.fdsa.research.service.CsvFileRead;
@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootTest(classes = Application.class)
+@SpringBootTest(classes = ResearchApplication.class)
 @RunWith(SpringRunner.class)
 @Slf4j
 public class Neo4jTest {

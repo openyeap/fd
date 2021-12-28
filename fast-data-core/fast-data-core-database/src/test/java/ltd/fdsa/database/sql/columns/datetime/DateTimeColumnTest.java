@@ -28,18 +28,18 @@ class DateTimeColumnTest extends ColumnTest<DateTimeColumn, DateTimeColumnBuilde
     @Override
     public BiFunction<DateTimeColumn, String, DateTimeColumn> getAliasFunction()
     {
-        return (column, alias) -> column.as(alias);
+        return (column, alias) -> (DateTimeColumn) column.as(alias);
     }
 
     @Test
     void testDefinition()
     {
         assertBuild(Consumers::noAction).isEqualTo("DATETIME DEFAULT NULL");
-        assertBuild(builder -> builder.notNull()).isEqualTo("DATETIME NOT NULL");
+        assertBuild(builder -> builder.nullable(false)).isEqualTo("DATETIME NOT NULL");
         assertBuild(builder -> builder.defaultNull()).isEqualTo("DATETIME DEFAULT NULL");
         assertBuild(builder -> builder.noDefault()).isEqualTo("DATETIME");
         assertBuild(builder -> builder.defaultValue(LocalDateTime.of(1981, 12, 29, 21, 3, 51))).isEqualTo("DATETIME DEFAULT '1981-12-29 21:03:51.000000'");
-        assertBuild(builder -> builder.notNull().defaultValue(LocalDateTime.of(1981, 12, 29, 21, 3, 51)))
+        assertBuild(builder -> builder.nullable(false).defaultValue(LocalDateTime.of(1981, 12, 29, 21, 3, 51)))
                 .isEqualTo("DATETIME NOT NULL DEFAULT '1981-12-29 21:03:51.000000'");
     }
 

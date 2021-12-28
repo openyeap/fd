@@ -11,6 +11,7 @@ import ltd.fdsa.core.serializer.HessianSerializer;
 import ltd.fdsa.core.serializer.JavaSerializer;
 import ltd.fdsa.core.serializer.JsonSerializer;
 import ltd.fdsa.core.serializer.KryoSerializer;
+import ltd.fdsa.starter.remote.annotation.RpcClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,7 +26,7 @@ import java.util.Optional;
 @Slf4j
 public class HomeController {
 
-
+    @RpcClient
     @Autowired
     private HiService hiService;
 

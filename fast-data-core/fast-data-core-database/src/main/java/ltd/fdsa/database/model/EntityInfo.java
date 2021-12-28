@@ -8,10 +8,10 @@ import java.util.Map;
 @Data
 public class EntityInfo {
     String name;
-    Map<String, ColumnInfo> fields;
-    ColumnInfo id;
+    Map<String, FieldInfo> fields;
+    FieldInfo id;
 
-    EntityInfo(String name, ColumnInfo id, Map<String, ColumnInfo> fields) {
+    EntityInfo(String name, FieldInfo id, Map<String, FieldInfo> fields) {
         this.name = name;
         this.fields = fields;
         this.id = id;
@@ -25,8 +25,8 @@ public class EntityInfo {
 
     public static class EntityInfoBuilder {
         private String name;
-        private Map<String, ColumnInfo> fields;
-        private ColumnInfo id;
+        private Map<String, FieldInfo> fields;
+        private FieldInfo id;
 
         EntityInfoBuilder() {
             this.fields = new HashMap<>();
@@ -38,12 +38,12 @@ public class EntityInfo {
             return this;
         }
 
-        public EntityInfoBuilder field(String key, ColumnInfo fields) {
+        public EntityInfoBuilder field(String key, FieldInfo fields) {
             this.fields.put(key, fields);
             return this;
         }
 
-        public EntityInfoBuilder id(ColumnInfo fields) {
+        public EntityInfoBuilder id(FieldInfo fields) {
             this.id = fields;
             return this;
         }
