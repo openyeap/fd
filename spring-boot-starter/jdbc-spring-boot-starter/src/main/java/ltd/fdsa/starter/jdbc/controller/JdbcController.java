@@ -139,7 +139,7 @@ public class JdbcController extends BaseController {
             sql.append(" insert into " + table + " ( ");
             int i = 0;
             int size = data.size();
-            String[] values = new String[size];
+            Object[] values = new String[size];
             for (Map.Entry<String, Object> map : data.entrySet()) {
                 sql.append(map.getKey());
                 values[i] = map.getValue().toString();
@@ -170,7 +170,7 @@ public class JdbcController extends BaseController {
             StringBuffer sql = new StringBuffer();
             sql.append(" delete from " + table + " ");
             sql.append(" where " + where);
-            return Result.success(this.service.update(sql.toString(), null));
+            return Result.success(this.service.update(sql.toString()));
         } catch (Exception ex) {
             return Result.error(ex);
         }
@@ -252,7 +252,7 @@ public class JdbcController extends BaseController {
             var parser = new FqlParser(tokens);
             var document = parser.document();
             var visitor = new JdbcFqlVisitor(this.service);
-            return Result.success(visitor.visit(document));
+            return Result.success(visitor.visit(document).getObject());
         } catch (Exception ex) {
             return Result.error(ex);
         }

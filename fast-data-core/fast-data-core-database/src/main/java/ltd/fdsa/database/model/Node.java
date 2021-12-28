@@ -29,14 +29,11 @@ public class Node {
         this.value = values.get(index);
     }
 
-    public void changeToList(List<Map<String, Object>> values) {
-        if (isList()) {
-            this.values.addAll(values);
-            this.values.remove(this.value);
-        } else {
-            this.values = values;
+    public Object getObject() {
+        if (this.values != null) {
+            return this.values;
         }
-        this.changed = true;
+        return this.value;
     }
 
     public boolean isList() {
