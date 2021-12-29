@@ -1,7 +1,6 @@
 package ltd.fdsa.core.util;
 
 import com.google.common.base.Strings;
-import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.yaml.snakeyaml.Yaml;
 
@@ -14,12 +13,11 @@ import java.util.Map;
  * @author zhumingwu
  * @since 1.0.0
  */
-@Slf4j
 public abstract class YamlUtils {
     private final static Yaml yaml = new Yaml();
 
     public static Map<String, String> load(String payload) {
-        return getSettings((LinkedHashMap<String, Object>) yaml.load(payload), null);
+        return getSettings(yaml.load(payload), null);
     }
 
     public static Object loadObj(String payload) {

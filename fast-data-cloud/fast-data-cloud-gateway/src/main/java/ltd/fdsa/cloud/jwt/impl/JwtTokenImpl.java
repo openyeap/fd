@@ -3,7 +3,6 @@ package ltd.fdsa.cloud.jwt.impl;
 import io.jsonwebtoken.*;
 import ltd.fdsa.cloud.jwt.IJwtToken;
 import ltd.fdsa.cloud.jwt.JwtProperties;
-import ltd.fdsa.cloud.jwt.constant.JwtConstant;
 import ltd.fdsa.cloud.jwt.model.JwtResult;
 import ltd.fdsa.cloud.jwt.model.JwtValidationResult;
 import ltd.fdsa.cloud.jwt.model.JwtValidationResultType;

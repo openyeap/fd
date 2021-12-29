@@ -4,18 +4,20 @@ import com.google.common.base.Strings;
 import io.swagger.models.Swagger;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
+import ltd.fdsa.database.fql.JdbcFqlVisitor;
+import ltd.fdsa.database.fql.antlr.FqlLexer;
+import ltd.fdsa.database.fql.antlr.FqlParser;
+import ltd.fdsa.database.service.JdbcApiService;
+import ltd.fdsa.database.sql.conditions.Condition;
 import ltd.fdsa.database.sql.dialect.Dialects;
 import ltd.fdsa.database.sql.domain.Placeholder;
 import ltd.fdsa.database.sql.queries.Queries;
+import ltd.fdsa.database.sql.schema.Table;
 import ltd.fdsa.database.sql.utils.Indentation;
-import ltd.fdsa.database.fql.antlr.FqlLexer;
-import ltd.fdsa.database.fql.antlr.FqlParser;
-import ltd.fdsa.starter.jdbc.RdmlParser;
-import ltd.fdsa.starter.jdbc.model.DBResult;
-import ltd.fdsa.database.service.JdbcApiService;
+import ltd.fdsa.starter.jdbc.model.ViewResult;
+import ltd.fdsa.starter.jdbc.model.ViewUpdate;
 import ltd.fdsa.web.controller.BaseController;
 import ltd.fdsa.web.enums.HttpCode;
-import ltd.fdsa.database.fql.JdbcFqlVisitor;
 import ltd.fdsa.web.view.Result;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
@@ -31,7 +33,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
 @RestController
 @RequestMapping("/v2")
 @Slf4j
@@ -41,7 +42,8 @@ public class JdbcController extends BaseController {
     JdbcApiService service;
 
     @RequestMapping(value = "/api-docs", method = RequestMethod.GET)
-    public Swagger getApiDocs(@RequestParam(value = "group", required = false) String group, HttpServletRequest request) {
+    public Swagger getApiDocs(@RequestParam(value = "group", required = false) String group,
+            HttpServletRequest request) {
         UriComponents components = UriComponentsBuilder.fromHttpRequest(new ServletServerHttpRequest(request)).build();
         String host = components.getHost();
         if (components.getPort() > 0) {
@@ -56,185 +58,250 @@ public class JdbcController extends BaseController {
         return swagger;
     }
 
-
-    @RequestMapping(value = "/tables", method = RequestMethod.GET, produces = "application/json")
-    public Result getTables() {
-        return Result.success(this.service.getNamedTables().values());
+    @RequestMapping(value = "/models", method = RequestMethod.GET, produces = "application/json")
+    public Result<Object> getModels() {
+        var result = this.service.getNamedTables().values().stream().map(table -> ViewResult
+                .builder()
+                .name(table.getAlias())
+                .content(table.getSchema().getName())
+                .remark(table.getRemark())
+                .build()).toArray();
+        return Result.success(result);
     }
 
-    @RequestMapping(value = "/{table}/columns", method = RequestMethod.GET, produces = "application/json")
-    public Result getColumns(@PathVariable String table) {
-        var list = this.service.getNamedColumns().get(table).values().stream().map(t ->
-                DBResult.builder()
-                        .name(t.getName())
-                        .content(t.getColumnDefinition())
-                        .build()
-        ).collect(Collectors.toList());
-        return Result.success(list);
+    @RequestMapping(value = "/{model}/columns", method = RequestMethod.GET, produces = "application/json")
+    public Result<Object> getColumns(@PathVariable String model) {
+        var table = this.service.getNamedTables().get(model);
+        if (table == null) {
+            return Result.fail(HttpCode.NOT_FOUND, "No data resource！");
+        }
+        var result = this.service.getNamedColumns().get(table.getAlias()).values().stream().map(column -> ViewResult
+                .builder()
+                .name(column.getAlias())
+                .content(column.getColumnDefinition())
+                .remark(column.getRemark())
+                .build()).toArray();
+        return Result.success(result);
     }
 
-    @RequestMapping(value = "/create/{table}", method = RequestMethod.PUT, produces = "application/json")
-    public Result createTable(@PathVariable String table, @RequestBody Map<String, Object> data) {
+    @RequestMapping(value = "/{model}/keys", method = RequestMethod.GET, produces = "application/json")
+    public Result<Object> getKeys(@PathVariable String model) {
+        var table = this.service.getNamedTables().get(model);
+        if (table == null) {
+            return Result.fail(HttpCode.NOT_FOUND, "No data resource！");
+        }
+        var result = this.service.getNamedKeyColumns().get(table.getAlias());
+        return Result.success(result);
+    }
+
+    @RequestMapping(value = "/create/{model}", method = RequestMethod.PUT, produces = "application/json")
+    public Result<Object> create(@PathVariable String model, @RequestBody Map<String, Object> data) {
+        var table = this.service.getNamedTables().get(model);
+        if (table == null) {
+            return Result.fail(HttpCode.NOT_FOUND, "No data resource！");
+        }
+        // 数据库字段名
+        var columns = this.service.getNamedColumns().get(table.getAlias());
+        if (columns == null) {
+            return Result.fail(HttpCode.NOT_FOUND, "No data description！");
+        }
+        if (data == null || data.size() == 0) {
+            return Result.fail(HttpCode.BAD_REQUEST, "Put data can not be empty");
+        }
 
         try {
-            if (data == null || data.size() == 0) {
-                return Result.fail(400, "新增加数据不能为空！");
-            }
-            var tb = this.service.getNamedTables().get(table);
-            if (tb == null) {
-                return Result.fail(HttpCode.NOT_FOUND, "没有相关数据！");
-            }
-            // 数据库字段名
-            var first = this.service.getNamedColumns().get(tb);
-            if (first == null) {
-                return Result.fail(HttpCode.NOT_FOUND, "没有相关数据！");
-            }
-
-            var sql = Queries.insertInto(tb);
+            var sql = Queries.insertInto(table);
             var map = new LinkedHashMap<String, Object>();
-
             for (var entry : data.entrySet()) {
-
-                var column = first.get(entry.getKey());
+                var column = columns.get(entry.getKey());
                 if (column == null) {
                     continue;
                 }
-                switch (column.getColumnDefinition().getDefinitionName()) {
-                    case "DATE":
-                        map.put(entry.getKey(), new SimpleDateFormat("yyyy-MM-dd").parse(entry.getValue().toString()));
-                        break;
-                    case "TIMESTAMP":
-                    case "DATETIME":
-                        map.put(entry.getKey(), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(entry.getValue().toString()));
-                        break;
-                    case "TIME":
-                        map.put(entry.getKey(), new SimpleDateFormat("HH:mm:ss").parse(entry.getValue().toString()));
-                        break;
-                    case "BOOLEAN":
-                    case "BOOL":
-                        map.put(entry.getKey(), Boolean.valueOf(entry.getValue().toString()));
-                        break;
-                    default:
-                        System.out.println(column.getColumnDefinition().getDefinitionName());
-                        log.warn("没有考虑到的类型：{}", column.getColumnDefinition().getDefinitionName());
-                        map.put(entry.getKey(), entry.getValue());
-                }
+                map.put(column.getName(),
+                        convertColumnData(column.getColumnDefinition().getDefinitionName(), entry.getValue()));
                 sql.set(column, Placeholder.placeholder(column));
-
             }
-            log.warn(sql.build(Dialects.POSTGRE, Indentation.indent(true)));
-            return Result.success(this.service.create(sql.build(Dialects.POSTGRE, Indentation.indent(true)), map));
+
+            return Result.success(this.service.update(sql, map));
         } catch (Exception ex) {
             return Result.error(ex);
         }
     }
 
-    @RequestMapping(value = "/{table}", method = RequestMethod.PUT, produces = "application/json")
-    public Result create(@PathVariable String table, @RequestBody Map<String, Object> data) {
+    @RequestMapping(value = "/{model}", method = RequestMethod.DELETE, produces = "application/json")
+    public Result<Object> delete(@PathVariable String model, @RequestBody Map<String, Object> where) {
+        var table = this.service.getNamedTables().get(model);
+        if (table == null) {
+            return Result.fail(HttpCode.NOT_FOUND, "No data resource！");
+        }
+        // 数据库字段名
+        var columns = this.service.getNamedColumns().get(table.getAlias());
+        if (columns == null) {
+            return Result.fail(HttpCode.NOT_FOUND, "No data description！");
+        }
+        if (where == null || where.size() == 0) {
+            return Result.fail(HttpCode.BAD_REQUEST, "Condition can not be empty");
+        }
         try {
-            if (data == null || data.size() == 0) {
-                return Result.fail(HttpCode.BAD_REQUEST, "Put data can not be empty");
+            var sql = Queries.deleteFrom(table);
+            var map = new LinkedHashMap<String, Object>();
+            var condition = Condition.emptyCondition();
+            for (var entry : where.entrySet()) {
+                var column = columns.get(entry.getKey());
+                if (column == null) {
+                    return Result.fail(HttpCode.BAD_REQUEST, entry.getKey() + "can not be found!");
+                }
+                map.put(column.getName(),
+                        convertColumnData(column.getColumnDefinition().getDefinitionName(), entry.getValue()));
+                condition = condition.and(column.eq(Placeholder.placeholder(column)));
             }
-            StringBuffer sql = new StringBuffer();
-            sql.append(" insert into " + table + " ( ");
-            int i = 0;
-            int size = data.size();
-            Object[] values = new String[size];
-            for (Map.Entry<String, Object> map : data.entrySet()) {
-                sql.append(map.getKey());
-                values[i] = map.getValue().toString();
-                i++;
-                if (i < size) {
-                    sql.append(",");
+            sql.where(condition);
+            return Result.success(this.service.update(sql, map));
+        } catch (Exception ex) {
+            return Result.error(ex);
+        }
+    }
+
+    @RequestMapping(value = "/{model}/{key}", method = RequestMethod.DELETE, produces = "application/json")
+    public Result<Object> deleteByKey(@PathVariable String model, @PathVariable String key) {
+        var table = this.service.getNamedTables().get(model);
+        if (table == null) {
+            return Result.fail(HttpCode.NOT_FOUND, "No data resource！");
+        }
+        // 数据库字段名
+        var columns = this.service.getNamedColumns().get(table.getAlias());
+        if (columns == null) {
+            return Result.fail(HttpCode.NOT_FOUND, "No data description！");
+        }
+        if (Strings.isNullOrEmpty(key)) {
+            return Result.fail(HttpCode.BAD_REQUEST, "Condition can not be empty");
+        }
+        try {
+            var sql = Queries.deleteFrom(table);
+            var map = new LinkedHashMap<String, Object>();
+
+            var condition = Condition.emptyCondition();
+            for (var entry : this.service.getNamedKeyColumns().get(table.getAlias())) {
+                var column = columns.get(entry);
+                if (column != null) {
+                    condition = condition.and(column.eq(Placeholder.placeholder(column)));
+                    map.put(column.getName(),
+                            convertColumnData(column.getColumnDefinition().getDefinitionName(), key));
                 }
             }
-            sql.append(" ) ");
-            sql.append(" values ( ");
-            for (int j = 0; j < size; j++) {
-                if (j == size - 1) {
-                    sql.append("?");
-                } else {
-                    sql.append("?,");
+            return Result.success(this.service.update(sql, map));
+        } catch (Exception ex) {
+            return Result.error(ex);
+        }
+    }
+
+    @RequestMapping(value = "/{model}", method = RequestMethod.POST, produces = "application/json")
+    public Result<Object> update(@PathVariable String model, @RequestBody ViewUpdate update) {
+        var table = this.service.getNamedTables().get(model);
+        if (table == null) {
+            return Result.fail(HttpCode.NOT_FOUND, "No data resource！");
+        }
+        // 数据库字段名
+        var columns = this.service.getNamedColumns().get(table.getAlias());
+        if (columns == null) {
+            return Result.fail(HttpCode.NOT_FOUND, "No data description！");
+        }
+        if (update == null) {
+            return Result.fail(HttpCode.BAD_REQUEST, "Update data can not be empty");
+        }
+        var data = update.getData();
+        if (data == null || data.size() == 0) {
+            return Result.fail(HttpCode.BAD_REQUEST, "Update data can not be empty");
+        }
+        var where = update.getData();
+        if (where == null || where.size() == 0) {
+            return Result.fail(HttpCode.BAD_REQUEST, "Condition can not be empty");
+        }
+
+        try {
+
+            var sql = Queries.update(table);
+            var map = new LinkedHashMap<String, Object>();
+
+            for (var entry : data.entrySet()) {
+                var column = columns.get(entry.getKey());
+                if (column == null) {
+                    continue;
+                }
+                map.put(column.getName(),
+                        convertColumnData(column.getColumnDefinition().getDefinitionName(), entry.getValue()));
+                sql.set(column, Placeholder.placeholder(column));
+            }
+
+            var condition = Condition.emptyCondition();
+            for (var entry : where.entrySet()) {
+                var column = columns.get(entry.getKey());
+                if (column == null) {
+                    return Result.fail(HttpCode.BAD_REQUEST, entry.getKey() + "can not be found!");
+                }
+                map.put(column.getName(),
+                        convertColumnData(column.getColumnDefinition().getDefinitionName(), entry.getValue()));
+                condition = condition.and(column.eq(Placeholder.placeholder(column)));
+            }
+            sql.where(condition);
+
+            return Result.success(this.service.update(sql, map));
+        } catch (Exception ex) {
+            return Result.error(ex);
+        }
+    }
+
+    @RequestMapping(value = "/{model}/{key}", method = RequestMethod.POST, produces = "application/json")
+    public Result<Object> updateByKey(@PathVariable String model, @RequestBody Map<String, Object> data,
+            @PathVariable String key) {
+        var table = this.service.getNamedTables().get(model);
+        if (table == null) {
+            return Result.fail(HttpCode.NOT_FOUND, "No data resource！");
+        }
+        // 数据库字段名
+        var columns = this.service.getNamedColumns().get(table.getAlias());
+        if (columns == null) {
+            return Result.fail(HttpCode.NOT_FOUND, "No data description！");
+        }
+        if (data == null || data.size() == 0) {
+            return Result.fail(HttpCode.BAD_REQUEST, "Update data can not be empty");
+        }
+
+        if (Strings.isNullOrEmpty(key)) {
+            return Result.fail(HttpCode.BAD_REQUEST, "Condition can not be empty");
+        }
+
+        try {
+            var sql = Queries.update(table);
+            var map = new LinkedHashMap<String, Object>();
+
+            for (var entry : data.entrySet()) {
+                var column = columns.get(entry.getKey());
+                if (column == null) {
+                    continue;
+                }
+                map.put(column.getName(),
+                        convertColumnData(column.getColumnDefinition().getDefinitionName(), entry.getValue()));
+                sql.set(column, Placeholder.placeholder(column));
+            }
+
+            var condition = Condition.emptyCondition();
+            for (var entry : this.service.getNamedKeyColumns().get(table.getAlias())) {
+                var column = columns.get(entry);
+                if (column != null) {
+                    condition = condition.and(column.eq(Placeholder.placeholder(column)));
+                    map.put(column.getName(),
+                            convertColumnData(column.getColumnDefinition().getDefinitionName(), key));
                 }
             }
-            sql.append(" ) ");
-            return Result.success(this.service.update(sql.toString(), values));
-        } catch (Exception ex) {
-            return Result.error(ex);
-        }
-    }
-
-    @RequestMapping(value = "/{table}", method = RequestMethod.DELETE, produces = "application/json")
-    public Result delete(@PathVariable String table, @RequestParam(defaultValue = "") String where) {
-        try {
-            StringBuffer sql = new StringBuffer();
-            sql.append(" delete from " + table + " ");
-            sql.append(" where " + where);
-            return Result.success(this.service.update(sql.toString()));
-        } catch (Exception ex) {
-            return Result.error(ex);
-        }
-    }
-
-    @RequestMapping(value = "/{table}", method = RequestMethod.POST, produces = "application/json")
-    public Result update(@PathVariable String table, @RequestParam(defaultValue = "") String where, @RequestBody Map<String, Object> data) {
-        try {
-            if (data == null || data.size() == 0) {
-                return Result.fail(400, "data不能为空");
-            }
-            StringBuffer sql = new StringBuffer();
-            sql.append(" update " + table);
-            sql.append(" set ");
-            int i = 0;
-            int size = data.size();
-            List<Object> list = new ArrayList<>();
-            for (Map.Entry<String, Object> map : data.entrySet()) {
-                sql.append(map.getKey() + "= ? ");
-                list.add(map.getValue());
-                i++;
-                if (i < size) {
-                    sql.append(",");
-                }
-            }
-            if (where != null && !"".equals(where)) {
-                sql.append(" where " + where);
-            }
-            return Result.success(this.service.update(sql.toString(), list));
-        } catch (Exception ex) {
-            return Result.error(ex);
-        }
-    }
-
-    @RequestMapping(value = "/{table}", method = RequestMethod.GET, produces = "application/json")
-    public Result query(@PathVariable String table,
-                        @RequestParam(defaultValue = "*") String select,
-                        @RequestParam(defaultValue = "") String query,
-                        @RequestParam(defaultValue = "") String order,
-                        @RequestParam(required = false, defaultValue = "0") int page,
-                        @RequestParam(required = false, defaultValue = "20") int size) {
-
-        try {
-            StringBuffer sql = new StringBuffer();
-            RdmlParser parser = new RdmlParser();
-            sql.append(parser.parseSelect(select));
-            sql.append("\n");
-            sql.append("from ");
-            sql.append(table);
-            sql.append("\n");
-            sql.append(parser.parseQuery(query));
-            sql.append("\n");
-            sql.append(parser.parseOrder(order));
-            sql.append("\n");
-            sql.append(parser.parsePage(page, size));
-            log.info(sql.toString());
-            return Result.success(this.service.query(sql.toString(), null));
+            return Result.success(this.service.update(sql, map));
         } catch (Exception ex) {
             return Result.error(ex);
         }
     }
 
     @RequestMapping(value = "/query", method = RequestMethod.POST, produces = "application/json")
-    public Result queryMulti(@RequestBody String query) {
+    public Result<Object> query(@RequestBody String query) {
         try {
             if (Strings.isNullOrEmpty(query)) {
                 return Result.fail(400, "QUERY string can not be empty");
@@ -243,7 +310,6 @@ public class JdbcController extends BaseController {
             if (!query.startsWith("{") && !query.endsWith("}")) {
                 query = "{" + query + "}";
             }
-
 
             CharStream input = CharStreams.fromString(query);
 
@@ -257,4 +323,30 @@ public class JdbcController extends BaseController {
             return Result.error(ex);
         }
     }
+
+    private Object convertColumnData(String type, Object data) {
+        type = type.toUpperCase(Locale.ROOT);
+        try {
+            switch (type) {
+                case "DATE":
+                    return new SimpleDateFormat("yyyy-MM-dd").parse(data.toString());
+                case "TIMESTAMP":
+                case "DATETIME":
+                    return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(data.toString());
+                case "TIME":
+                    return new SimpleDateFormat("HH:mm:ss").parse(data.toString());
+
+                case "BOOLEAN":
+                case "BOOL":
+                    return Boolean.valueOf(data.toString());
+                default:
+                    log.warn("没有考虑到的类型：{}", type);
+                    return data;
+            }
+        } catch (Exception ex) {
+
+        }
+        return null;
+    }
+
 }

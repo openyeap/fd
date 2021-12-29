@@ -26,7 +26,7 @@ public class MyClassLoader extends ClassLoader {
         }
     }
 
-    public Class loadClass(String name) throws ClassNotFoundException {
+    public Class<?> loadClass(String name) throws ClassNotFoundException {
         if (!this.classNameSet.contains(name)) {
             return super.loadClass(name);
         }

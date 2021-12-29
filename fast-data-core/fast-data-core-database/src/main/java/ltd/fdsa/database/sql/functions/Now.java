@@ -32,7 +32,7 @@ public class Now implements Function, DateTimeConditions
     @Getter
     private String alias;
 
-    public Now as(@SuppressWarnings("hiding") String alias)
+    public Now as(String alias)
     {
         return new Now(alias);
     }

@@ -1,14 +1,11 @@
 package ltd.fdsa.core.context;
 
-
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
-@Slf4j
 @Component
-public class DefaultApplicationContextAware implements ApplicationContextInitializer {
+public class DefaultApplicationContextAware implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
     @Override
     public void initialize(ConfigurableApplicationContext applicationContext) {

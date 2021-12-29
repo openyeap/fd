@@ -7,16 +7,9 @@ import com.influxdb.client.InfluxDBClientFactory;
 import com.influxdb.client.InfluxDBClientOptions;
 import lombok.var;
 import ltd.fdsa.influxdb.properties.InfluxProperties;
-import ltd.fdsa.influxdb.resolver.RegionResolver;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
-
-import javax.annotation.PostConstruct;
-import java.util.LinkedList;
-import java.util.List;
 
 @Configuration
 @EnableConfigurationProperties({InfluxProperties.class})

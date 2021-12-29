@@ -5,8 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.io.IOException;
@@ -18,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-
 
 @Slf4j
 public class OtherTest {
@@ -39,7 +36,6 @@ public class OtherTest {
      * String ip_ = inetUtils.findFirstNonLoopbackHostInfo().getIpAddress();
      */
 
-
     @Before
     public void setUp() throws Exception {
     }
@@ -56,7 +52,7 @@ public class OtherTest {
     private InetUtilsProperties properties = new InetUtilsProperties();
 
     boolean ignoreInterface(String interfaceName) {
-        Iterator var2 = this.properties.getIgnoredInterfaces().iterator();
+        Iterator<String> var2 = this.properties.getIgnoredInterfaces().iterator();
 
         String regex;
         do {
@@ -67,7 +63,7 @@ public class OtherTest {
             regex = (String) var2.next();
         } while (!interfaceName.matches(regex));
 
-        this.log.trace("Ignoring interface: " + interfaceName);
+        log.trace("Ignoring interface: " + interfaceName);
         return true;
     }
 
@@ -76,10 +72,9 @@ public class OtherTest {
 
         try {
             int lowest = 2147483647;
-            Enumeration nics = NetworkInterface.getNetworkInterfaces();
+            Enumeration<NetworkInterface> nics = NetworkInterface.getNetworkInterfaces();
 
-            label61:
-            while (true) {
+            label61: while (true) {
                 NetworkInterface ifc;
                 do {
                     while (true) {
@@ -91,12 +86,11 @@ public class OtherTest {
                             ifc = (NetworkInterface) nics.nextElement();
                         } while (!ifc.isUp());
 
-                        this.log.trace("Testing interface: " + ifc.getDisplayName());
+                        log.trace("Testing interface: " + ifc.getDisplayName());
                         if (ifc.getIndex() >= lowest && result != null) {
                             if (result != null) {
                                 continue;
                             }
-                            break;
                         }
 
                         lowest = ifc.getIndex();
@@ -104,18 +98,19 @@ public class OtherTest {
                     }
                 } while (this.ignoreInterface(ifc.getDisplayName()));
 
-                Enumeration addrs = ifc.getInetAddresses();
+                Enumeration<InetAddress> addrs = ifc.getInetAddresses();
 
                 while (addrs.hasMoreElements()) {
-                    InetAddress address = (InetAddress) addrs.nextElement();
-                    if (address instanceof Inet4Address && !address.isLoopbackAddress() && this.isPreferredAddress(address)) {
-                        this.log.trace("Found non-loopback interface: " + ifc.getDisplayName());
+                    InetAddress address = addrs.nextElement();
+                    if (address instanceof Inet4Address && !address.isLoopbackAddress()
+                            && this.isPreferredAddress(address)) {
+                        log.trace("Found non-loopback interface: " + ifc.getDisplayName());
                         result = address;
                     }
                 }
             }
         } catch (IOException var8) {
-            this.log.error("Cannot get first non-loopback address", var8);
+            log.error("Cannot get first non-loopback address", var8);
         }
 
         if (result != null) {
@@ -124,7 +119,7 @@ public class OtherTest {
             try {
                 return InetAddress.getLocalHost();
             } catch (UnknownHostException var7) {
-                this.log.warn("Unable to retrieve localhost");
+                log.warn("Unable to retrieve localhost");
                 return null;
             }
         }
@@ -134,7 +129,7 @@ public class OtherTest {
         if (this.properties.isUseOnlySiteLocalInterfaces()) {
             boolean siteLocalAddress = address.isSiteLocalAddress();
             if (!siteLocalAddress) {
-                this.log.trace("Ignoring address: " + address.getHostAddress());
+                log.trace("Ignoring address: " + address.getHostAddress());
             }
 
             return siteLocalAddress;
@@ -143,13 +138,13 @@ public class OtherTest {
             if (preferredNetworks.isEmpty()) {
                 return true;
             } else {
-                Iterator var3 = preferredNetworks.iterator();
+                Iterator<String> var3 = preferredNetworks.iterator();
 
                 String regex;
                 String hostAddress;
                 do {
                     if (!var3.hasNext()) {
-                        this.log.trace("Ignoring address: " + address.getHostAddress());
+                        log.trace("Ignoring address: " + address.getHostAddress());
                         return false;
                     }
 
@@ -162,20 +157,18 @@ public class OtherTest {
         }
     }
 
-
     @Data
     @ConfigurationProperties(InetUtilsProperties.PREFIX)
     public class InetUtilsProperties {
         public static final String PREFIX = "spring.cloud.inetutils";
         private String defaultHostname = "localhost";
         private String defaultIpAddress = "127.0.0.1";
-        private List<String> ignoredInterfaces = new ArrayList();
+        private List<String> ignoredInterfaces = new ArrayList<String>();
         private boolean useOnlySiteLocalInterfaces = false;
-        private List<String> preferredNetworks = new ArrayList();
+        private List<String> preferredNetworks = new ArrayList<String>();
 
         public InetUtilsProperties() {
         }
-
 
     }
 

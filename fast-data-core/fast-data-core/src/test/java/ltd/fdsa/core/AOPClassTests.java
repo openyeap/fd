@@ -76,7 +76,7 @@ public class AOPClassTests {
          * 判断clazz是否为给定接口IOtherBean的实现
          */
         @Override
-        public boolean implementsInterface(Class clazz) {
+        public boolean implementsInterface(Class<?> clazz) {
             return clazz.isAssignableFrom(Run.class);
         }
 

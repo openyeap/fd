@@ -32,8 +32,8 @@
 //
 //    @Override
 //    protected void handleMessageInternal(Message<?> message) {
-//        if (this.logger.isTraceEnabled()) {
-//            this.logger.trace("Publishing message" + message);
+//        if (logger.isTraceEnabled()) {
+//            logger.trace("Publishing message" + message);
 //        }
 //        System.out.println("message.toString()");
 //        System.out.println(message.toString());

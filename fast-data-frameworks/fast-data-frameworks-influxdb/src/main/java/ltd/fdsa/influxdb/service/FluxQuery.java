@@ -1,15 +1,12 @@
 package ltd.fdsa.influxdb.service;
 
 import com.google.common.base.Strings;
-import com.google.common.geometry.S2CellId;
 import lombok.Data;
 import lombok.var;
 import ltd.fdsa.influxdb.model.Region;
 
 import java.text.MessageFormat;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 

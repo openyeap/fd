@@ -1,7 +1,5 @@
 package ltd.fdsa.database.sql.columns.datetime;
 
-import static ltd.fdsa.database.sql.domain.Placeholder.placeholder;
-
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;

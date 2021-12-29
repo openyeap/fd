@@ -7,7 +7,7 @@
     <parent>
         <groupId>ltd.fdsa</groupId>
         <artifactId>fast-data-parent</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.3</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <dependencies>
@@ -26,10 +26,12 @@
         <dependency>
             <groupId>com.caucho</groupId>
             <artifactId>hessian</artifactId>
+            <version>4.0.65</version>
         </dependency>
         <dependency>
             <groupId>com.esotericsoftware</groupId>
             <artifactId>kryo</artifactId>
+            <version>5.2.1</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

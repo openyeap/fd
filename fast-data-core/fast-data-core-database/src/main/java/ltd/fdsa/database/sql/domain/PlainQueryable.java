@@ -22,7 +22,7 @@ public class PlainQueryable implements Queryable {
         return value;
     }
 
-    public Queryable as(@SuppressWarnings("hiding") String alias) {
+    public Queryable as(String alias) {
         return new PlainQueryable(value, alias);
     }
 }

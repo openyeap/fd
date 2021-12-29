@@ -1,6 +1,5 @@
 package ltd.fdsa.starter.logger.config;
 
-
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
@@ -18,17 +17,14 @@ import org.apache.logging.log4j.util.Strings;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@ImportAutoConfiguration({LoggingProperties.class})
+@ImportAutoConfiguration({ LoggingProperties.class })
 @Slf4j
 public class LoggingAutoConfiguration implements WebMvcConfigurer, InitializingBean {
 
@@ -71,7 +67,8 @@ public class LoggingAutoConfiguration implements WebMvcConfigurer, InitializingB
                 logger.addAppender(dbAppender);
             }
             var logstash = this.properties.getLogstash();
-            if (logstash != null && Strings.isNotEmpty(logstash.getDestination()) && logger.getAppender("LOGSTASH") == null) {
+            if (logstash != null && Strings.isNotEmpty(logstash.getDestination())
+                    && logger.getAppender("LOGSTASH") == null) {
 
                 NamingUtils.formatLog(log, "Logging Factory Logstash:{}", entry);
                 var encoder = new LogstashEncoder();
@@ -80,7 +77,8 @@ public class LoggingAutoConfiguration implements WebMvcConfigurer, InitializingB
                 encoder.setIncludeMdc(true);
                 encoder.setEncoding("UTF-8");
                 var appender = new LogstashTcpSocketAppender();
-                appender.setReconnectionDelay(Duration.buildBySeconds(logstash.getDuration() < 10 ? 10 : logstash.getDuration()));
+                appender.setReconnectionDelay(
+                        Duration.buildBySeconds(logstash.getDuration() < 10 ? 10 : logstash.getDuration()));
                 appender.addDestination(logstash.getDestination());
                 appender.setEncoder(encoder);
                 appender.setContext(context);
@@ -96,7 +94,8 @@ public class LoggingAutoConfiguration implements WebMvcConfigurer, InitializingB
     public void addInterceptors(InterceptorRegistry registry) {
 
         /**
-         * 自定义拦截器，添加拦截路径和排除拦截路径 addPathPatterns():添加需要拦截的路径 excludePathPatterns():添加不需要拦截的路径
+         * 自定义拦截器，添加拦截路径和排除拦截路径 addPathPatterns():添加需要拦截的路径
+         * excludePathPatterns():添加不需要拦截的路径
          * 在括号中还可以使用集合的形式，如注释部分代码所示
          */
         InterceptorRegistration registration = registry.addInterceptor(new LogInterceptor());

@@ -9,7 +9,7 @@
     <parent>
         <groupId>ltd.fdsa</groupId>
         <artifactId>spring-boot-starter</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.3</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -32,7 +32,7 @@
         <dependency>
             <groupId>ltd.fdsa</groupId>
             <artifactId>fast-data-frameworks-consul</artifactId>
-            <version>1.0.1</version>
+            <version>1.0.3</version>
         </dependency>
     </dependencies>
 </project>

@@ -19,7 +19,7 @@ public class PlainSelectable implements Selectable
     @Getter
     private String alias;
 
-    public Selectable as(@SuppressWarnings("hiding") String alias)
+    public Selectable as(String alias)
     {
         return new PlainSelectable(value, alias);
     }

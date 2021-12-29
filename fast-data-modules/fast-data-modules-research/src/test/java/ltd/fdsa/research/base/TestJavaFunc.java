@@ -1,11 +1,8 @@
 package ltd.fdsa.research.base;
 
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.test.context.junit4.SpringRunner;
 
 

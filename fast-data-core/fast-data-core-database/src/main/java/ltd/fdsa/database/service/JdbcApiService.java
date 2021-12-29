@@ -9,18 +9,20 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import ltd.fdsa.database.model.RowDataMapper;
+import ltd.fdsa.database.properties.JdbcApiProperties;
 import ltd.fdsa.database.sql.columns.Column;
+import ltd.fdsa.database.sql.dialect.Dialect;
 import ltd.fdsa.database.sql.dialect.Dialects;
+import ltd.fdsa.database.sql.queries.Query;
 import ltd.fdsa.database.sql.queries.Select;
 import ltd.fdsa.database.sql.schema.Table;
-import ltd.fdsa.database.properties.JdbcApiProperties;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.lang.Nullable;
 import org.springframework.util.AntPathMatcher;
 
 import javax.sql.DataSource;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,6 +36,10 @@ public class JdbcApiService {
     final Map<String, JdbcApiProperties.Acl[]> namedAcl;
     @Getter
     final Map<String, Map<String, Column>> namedColumns;
+    @Getter
+    final Map<String, List<String>> namedKeyColumns;
+
+    final Dialect dialect;
 
     public JdbcApiService(JdbcApiProperties properties, DataSource dataSource) {
         this.dataSource = dataSource;
@@ -42,8 +48,13 @@ public class JdbcApiService {
         this.namedAcl = new HashMap<>();
 
         var mataData = new DataSourceMataData(this.dataSource);
+
+        this.dialect = Dialect.forName(this.getDatabaseProductName());
+
         var tables = mataData.listAllTables(this.properties.getCatalog(), this.properties.getSchema());
-        rename(tables);
+        this.namedKeyColumns = new HashMap<>();
+        rename(tables, mataData);
+
         this.namedTables.putAll(tables.stream().collect(Collectors.toMap(k -> k.getAlias(), v -> v)));
 
         this.namedColumns = new HashMap<>();
@@ -51,8 +62,17 @@ public class JdbcApiService {
             if (!this.namedColumns.containsKey(entry.getKey())) {
                 this.namedColumns.put(entry.getKey(), new HashMap<>());
             }
-            var table = Arrays.stream(entry.getValue().getColumns()).collect(Collectors.toMap(k -> k.getAlias(), c -> c));
+            var table = Arrays.stream(entry.getValue().getColumns())
+                    .collect(Collectors.toMap(k -> k.getAlias(), c -> c));
             this.namedColumns.get(entry.getKey()).putAll(table);
+        }
+    }
+
+    String getDatabaseProductName() {
+        try {
+            return this.dataSource.getConnection().getMetaData().getDatabaseProductName();
+        } catch (SQLException e) {
+            return "null";
         }
     }
 
@@ -61,9 +81,9 @@ public class JdbcApiService {
         var sql = select.build(Dialects.MYSQL);
         System.out.println(sql);
         try (var conn = this.dataSource.getConnection();
-             var pst = conn.prepareStatement(sql);
-             var rs = pst.executeQuery();) {
-            //取得ResultSet的列名
+                var pst = conn.prepareStatement(sql);
+                var rs = pst.executeQuery()) {
+            // 取得ResultSet的列名
             ResultSetMetaData resultSetMetaData = rs.getMetaData();
             int columnsCount = resultSetMetaData.getColumnCount();
             String[] columnNames = new String[columnsCount];
@@ -88,14 +108,9 @@ public class JdbcApiService {
         return jdbcTemplate.query(sql, args, new RowDataMapper());
     }
 
-    public int create(String sql, Map<String, ?> args) {
+    public int update(Query sql, Map<String, ?> args) {
         NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(this.dataSource);
-        return jdbcTemplate.update(sql, args);
-    }
-
-    public int update(String sql, @Nullable Object... args) {
-        var jdbcTemplate = new JdbcTemplate(this.dataSource);
-        return jdbcTemplate.update(sql, args);
+        return jdbcTemplate.update(sql.build(this.dialect), args);
     }
 
     public Swagger getApiDocs(String host, String basePath) {
@@ -176,7 +191,8 @@ public class JdbcApiService {
                         break;
                     default:
                         log.warn("没有考虑到的类型：{}", column.getColumnDefinition().getDefinitionName());
-                        model.property(column.getName() + ":" + column.getColumnDefinition().getDefinitionName(), new StringProperty().description(column.getRemark()));
+                        model.property(column.getName() + ":" + column.getColumnDefinition().getDefinitionName(),
+                                new StringProperty().description(column.getRemark()));
                         break;
 
                 }
@@ -264,7 +280,8 @@ public class JdbcApiService {
         var responseSchema = new ModelImpl();
         responseSchema.description("");
         responseSchema.name("data");
-        responseSchema.property("data", new ArrayProperty().description("列表").items(new ObjectProperty(model.getProperties())));
+        responseSchema.property("data",
+                new ArrayProperty().description("列表").items(new ObjectProperty(model.getProperties())));
         responseSchema.property("code", new IntegerProperty().description("code"));
         response.setResponseSchema(responseSchema);
         return operation.response(200, response);
@@ -421,18 +438,18 @@ public class JdbcApiService {
         return operation.response(200, response);
     }
 
-    private List<Table> rename(List<Table> list) {
+   
+    private List<Table> rename(List<Table> list, DataSourceMataData mataData) {
         AntPathMatcher pathMatcher = new AntPathMatcher();
         for (var table : list) {
             for (var entry : this.properties.getTables().entrySet()) {
-
                 if (pathMatcher.match(entry.getKey(), table.getName())) {
                     var tableName = table.getName();
-                    var newTable = rename(table.getName(), entry.getValue());
+                    var newTable = rename(tableName, entry.getValue());
                     table.as(newTable);
                     for (var column : table.getColumns()) {
                         var columnName = column.getName();
-                        var newColumn = rename(column.getName(), entry.getValue().getColumn());
+                        var newColumn = rename(columnName, entry.getValue().getColumn());
                         column.as(newColumn);
                     }
                 }
@@ -443,10 +460,17 @@ public class JdbcApiService {
             if (Strings.isNullOrEmpty(table.getAlias())) {
                 table.as(table.getName());
             }
+            var keys = mataData.listAllForeignKey(table.getName(), this.properties.getSchema(),
+                    this.properties.getCatalog());
             for (var column : table.getColumns()) {
-
                 if (Strings.isNullOrEmpty(column.getAlias())) {
                     column.as(column.getName());
+                }
+                if (keys.containsKey(column.getName())) {
+                    if (!this.namedKeyColumns.containsKey(table.getName())) {
+                        this.namedKeyColumns.put(table.getName(), new LinkedList<String>());
+                    }
+                    this.namedKeyColumns.get(table.getName()).add(column.getAlias());
                 }
             }
         }

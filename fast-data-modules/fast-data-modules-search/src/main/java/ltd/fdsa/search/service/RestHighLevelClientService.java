@@ -46,12 +46,6 @@ public class RestHighLevelClientService {
 
     /**
      * 创建索引
-     *
-     * @param indexName
-     * @param settings
-     * @param mapping
-     * @return
-     * @throws IOException
      */
     public CreateIndexResponse createIndex(String indexName, String settings, String mapping)
             throws IOException {
@@ -67,10 +61,6 @@ public class RestHighLevelClientService {
 
     /**
      * 删除索引
-     *
-     * @param indexNames
-     * @return
-     * @throws IOException
      */
     public AcknowledgedResponse deleteIndex(String... indexNames) throws IOException {
         DeleteIndexRequest request = new DeleteIndexRequest(indexNames);
@@ -79,10 +69,6 @@ public class RestHighLevelClientService {
 
     /**
      * 判断 index 是否存在
-     *
-     * @param indexName
-     * @return
-     * @throws IOException
      */
     public boolean indexExists(String indexName) throws IOException {
         GetIndexRequest request = new GetIndexRequest(indexName);
@@ -91,14 +77,6 @@ public class RestHighLevelClientService {
 
     /**
      * 简单模糊匹配 默认分页为 0,10
-     *
-     * @param field
-     * @param key
-     * @param page
-     * @param size
-     * @param indexNames
-     * @return
-     * @throws IOException
      */
     public SearchResponse search(String field, String key, int page, int size, String... indexNames)
             throws IOException {
@@ -111,12 +89,6 @@ public class RestHighLevelClientService {
 
     /**
      * 简单模糊匹配 默认分页为 0,10
-     *
-     * @param keyword
-     * @param type
-     * @param source
-     * @return
-     * @throws IOException
      */
     public SearchResponse search(String keyword, String type, String source, int page, int size)
             throws IOException {
@@ -164,14 +136,6 @@ public class RestHighLevelClientService {
 
     /**
      * term 查询 精准匹配
-     *
-     * @param field
-     * @param key
-     * @param page
-     * @param size
-     * @param indexNames
-     * @return
-     * @throws IOException
      */
     public SearchResponse termSearch(String field, String key, int page, int size, String... indexNames) throws IOException {
         SearchRequest request = new SearchRequest(indexNames);
@@ -183,12 +147,6 @@ public class RestHighLevelClientService {
 
     /**
      * 批量导入
-     *
-     * @param indexName
-     * @param isAutoId  使用自动id 还是使用传入对象的id
-     * @param source
-     * @return
-     * @throws IOException
      */
     public BulkResponse importAll(String indexName, boolean isAutoId, String source) throws IOException {
         if (0 == source.length()) {
@@ -211,11 +169,6 @@ public class RestHighLevelClientService {
 
     /**
      * 批量导入
-     *
-     * @param indexName
-     * @param sources
-     * @return
-     * @throws IOException
      */
     public boolean importAll(String indexName, ElasticSearchDoc... sources) {
         if (sources.length <= 0) {

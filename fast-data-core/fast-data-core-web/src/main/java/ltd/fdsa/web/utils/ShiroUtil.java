@@ -5,18 +5,14 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Shiro工具类
  *
- 
+ * 
  */
 public class ShiroUtil {
 
-    /**
-     * 加密算法
-     */
+    // 加密算法
     public final static String HASH_ALGORITHM_NAME = EncryptUtil.HASH_ALGORITHM_NAME;
 
-    /**
-     * 循环次数
-     */
+    // 循环次数
     public final static int HASH_ITERATIONS = EncryptUtil.HASH_ITERATIONS;
 
     /**
@@ -26,22 +22,18 @@ public class ShiroUtil {
      *
      * @param password 密码
      * @param salt     密码盐
+     * @return String
      */
     public static String encrypt(String password, String salt) {
         return EncryptUtil.encrypt(password, salt, HASH_ALGORITHM_NAME, HASH_ITERATIONS);
     }
 
-    /**
-     * 获取随机盐值
-     */
+    // 获取随机盐值
     public static String getRandomSalt() {
         return EncryptUtil.getRandomSalt();
     }
 
-
-    /**
-     * 获取用户IP地址
-     */
+    // 获取用户IP地址
     public static String getIp() {
         HttpServletRequest request = HttpServletUtil.getRequest();
         // 反向代理时获取真实ip

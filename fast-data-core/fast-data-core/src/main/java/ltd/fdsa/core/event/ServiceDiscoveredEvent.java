@@ -1,7 +1,5 @@
 package ltd.fdsa.core.event;
-
-import lombok.Builder;
-import lombok.Data;
+ 
 import lombok.ToString;
 import ltd.fdsa.core.service.ServiceInfo;
 import org.springframework.context.ApplicationEvent;

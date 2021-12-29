@@ -17,11 +17,9 @@ import java.sql.SQLException;
 import lombok.var;
 import org.junit.jupiter.api.Test;
 
-class QueryTest
-{
+class QueryTest {
     @Test
-    void testPrintAndPrintln()
-    {
+    void testPrintAndPrintln() {
         var query = select().from(create("table"));
 
         assertThat(query).isNotNull();
@@ -65,15 +63,13 @@ class QueryTest
         query.println(System.out, "MYSQL", enabled());
     }
 
-    @SuppressWarnings("resource")
     @Test
-    void testPrepare() throws SQLException
-    {
+    void testPrepare() throws SQLException {
         var query = select().from(create("table"));
 
-        try (var connection = createStrictMock(Connection.class))
-        {
-            expect(connection.prepareStatement("SELECT * FROM `table`")).andReturn(createStrictMock(PreparedStatement.class));
+        try (var connection = createStrictMock(Connection.class)) {
+            expect(connection.prepareStatement("SELECT * FROM `table`"))
+                    .andReturn(createStrictMock(PreparedStatement.class));
             connection.close();
 
             replayAll();
@@ -83,15 +79,13 @@ class QueryTest
         verifyAll();
     }
 
-    @SuppressWarnings("resource")
     @Test
-    void testPrepareWithDialect() throws SQLException
-    {
+    void testPrepareWithDialect() throws SQLException {
         var query = select().from(create("table"));
 
-        try (var connection = createStrictMock(Connection.class))
-        {
-            expect(connection.prepareStatement("SELECT * FROM `table`")).andReturn(createStrictMock(PreparedStatement.class));
+        try (var connection = createStrictMock(Connection.class)) {
+            expect(connection.prepareStatement("SELECT * FROM `table`"))
+                    .andReturn(createStrictMock(PreparedStatement.class));
             connection.close();
 
             replayAll();
@@ -101,15 +95,13 @@ class QueryTest
         verifyAll();
     }
 
-    @SuppressWarnings("resource")
     @Test
-    void testPrepareWithDialectName() throws SQLException
-    {
+    void testPrepareWithDialectName() throws SQLException {
         var query = select().from(create("table"));
 
-        try (var connection = createStrictMock(Connection.class))
-        {
-            expect(connection.prepareStatement("SELECT * FROM `table`")).andReturn(createStrictMock(PreparedStatement.class));
+        try (var connection = createStrictMock(Connection.class)) {
+            expect(connection.prepareStatement("SELECT * FROM `table`"))
+                    .andReturn(createStrictMock(PreparedStatement.class));
             connection.close();
 
             replayAll();

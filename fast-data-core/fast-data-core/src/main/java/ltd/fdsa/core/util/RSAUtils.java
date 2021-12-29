@@ -28,17 +28,6 @@ public class RSAUtils {
     private static final String SIGNATURE_ALGORITHM = "SHA256withRSA";
 
     /**
-     * 获取公钥的key
-     */
-    private static final String PUBLIC_KEY = "RSAPublicKey";
-
-    /**
-     * 获取私钥的key
-     */
-    private static final String PRIVATE_KEY = "RSAPrivateKey";
-
-
-    /**
      * 生成公私钥密钥对
      *
      * @return RSAKeyPair
@@ -55,7 +44,6 @@ public class RSAUtils {
         RSAKeyPair rsaKeyPair = new RSAKeyPair(publicKeyString, privateKeyString);
         return rsaKeyPair;
     }
-
 
     /**
      * 私钥解密
@@ -108,7 +96,6 @@ public class RSAUtils {
         return decryptedData;
     }
 
-
     /**
      * 公钥解密
      *
@@ -121,7 +108,6 @@ public class RSAUtils {
         byte[] result = decryptByPrivateKey(Base64.getDecoder().decode(text), publicKey);
         return new String(result);
     }
-
 
     /**
      * 公钥加密
@@ -155,7 +141,6 @@ public class RSAUtils {
         byte[] result = encryptByPublicKey(Base64.getDecoder().decode(text), publicKey);
         return new String(result);
     }
-
 
     /**
      * 私钥加密
@@ -191,7 +176,6 @@ public class RSAUtils {
         return new String(result);
     }
 
-
     /**
      * 用私钥对信息生成数字签名
      *
@@ -212,7 +196,6 @@ public class RSAUtils {
         return Base64.getEncoder().encodeToString(signature.sign());
     }
 
-
     /**
      * 用私钥对信息生成数字签名
      *
@@ -223,7 +206,6 @@ public class RSAUtils {
     public static String sign(String text, String privateKey) {
         return sign(Base64.getDecoder().decode(text), privateKey);
     }
-
 
     /**
      * 校验数字签名
@@ -244,7 +226,6 @@ public class RSAUtils {
         signature.update(data);
         return signature.verify(Base64.getDecoder().decode(sign));
     }
-
 
     /**
      * 校验数字签名

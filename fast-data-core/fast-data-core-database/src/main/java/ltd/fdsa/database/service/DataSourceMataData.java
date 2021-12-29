@@ -9,11 +9,7 @@ import ltd.fdsa.database.sql.schema.Table;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 public class DataSourceMataData implements DatabaseMetaData {
@@ -42,7 +38,7 @@ public class DataSourceMataData implements DatabaseMetaData {
             }
             conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             var metaData = conn.getMetaData();
-            ResultSet tableSet = metaData.getTables(catalog, schema, null, new String[]{"TABLE", "VIEW"});
+            ResultSet tableSet = metaData.getTables(catalog, schema, null, new String[] { "TABLE", "VIEW" });
             while (tableSet.next()) {
                 Table table = Schema
                         .create(tableSet.getString("TABLE_SCHEM"))
@@ -50,13 +46,18 @@ public class DataSourceMataData implements DatabaseMetaData {
                         .type(tableSet.getString("TABLE_TYPE"))
                         .remark(tableSet.getString("REMARKS"));
                 ResultSet columnSet = metaData.getColumns(catalog, schema, table.getName(), null);
-                var columnsMetaData = columnSet.getMetaData();
+               
                 while (columnSet.next()) {
                     var columnRemark = columnSet.getString("REMARKS");
                     var columnType = columnSet.getString("TYPE_NAME");
                     var columnName = columnSet.getString("COLUMN_NAME");
                     var columnSize = columnSet.getInt("COLUMN_SIZE");
-                    table.column(columnName)
+                    var nullable = columnSet.getBoolean("NULLABLE");
+                    // var IS_NULLABLE = columnSet.getBoolean("IS_NULLABLE");
+                    // var IS_GENERATEDCOLUMN = columnSet.getBoolean("IS_GENERATEDCOLUMN");
+                    // var IS_AUTOINCREMENT = columnSet.getBoolean("IS_AUTOINCREMENT");
+
+                    table.column(columnName).nullable(nullable)
                             .size(columnSize)
                             .type(columnType)
                             .build()
@@ -71,19 +72,28 @@ public class DataSourceMataData implements DatabaseMetaData {
     }
 
     @Override
-    public Map<String, Object> listAllForeignKey(String tableName, String schemaPattern, String catalog) {
-        Map<String, Object> map = new HashMap<>();
+    public Map<String, Object> listAllForeignKey(String table, String schema, String catalog) {
+        Map<String, Object> map = new LinkedHashMap<>();
+
         try (var conn = this.dataSource.getConnection()) {
+            if (Strings.isNullOrEmpty(catalog)) {
+                catalog = conn.getCatalog();
+            }
+            if (catalog == "*") {
+                catalog = null;
+            }
+            if (Strings.isNullOrEmpty(schema)) {
+                schema = conn.getSchema();
+            }
+            if (schema == "*") {
+                schema = null;
+            }
             conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             var metaData = conn.getMetaData();
-            //根据表名获得外键
-            ResultSet importedKeys = metaData.getImportedKeys(catalog, schemaPattern, tableName);
-            ResultSetMetaData resultSetMetaData = importedKeys.getMetaData();
-
+            // 根据表名获得外键
+            ResultSet importedKeys = metaData.getPrimaryKeys(catalog, schema, table);
             while (importedKeys.next()) {
-                for (int i = 1; i <= resultSetMetaData.getColumnCount(); i++) {
-                    map.put(resultSetMetaData.getColumnName(i), importedKeys.getString(i));
-                }
+                map.put(importedKeys.getString("COLUMN_NAME"), importedKeys.getString("PK_NAME"));
             }
         } catch (Exception ex) {
             log.error("listAllForeignKey", ex);

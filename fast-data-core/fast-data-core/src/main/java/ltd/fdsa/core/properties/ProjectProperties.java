@@ -4,7 +4,6 @@ import com.google.common.base.Strings;
 import lombok.Data;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -27,9 +26,7 @@ import java.util.List;
 public class ProjectProperties implements InitializingBean {
     public static final String PREFIX = "project";
 
-    /**
-     * default application name.
-     */
+    // default application name.
     @Value("${project.name:${spring.application.name:project}}")
     private String name;
 
@@ -42,12 +39,12 @@ public class ProjectProperties implements InitializingBean {
     /**
      * ignored network interfaces.
      */
-    private List<String> ignoredInterfaces = new ArrayList();
+    private List<String> ignoredInterfaces = new ArrayList<String>();
     private boolean useOnlySiteLocalInterfaces = false;
     /**
      * preferred network interfaces.
      */
-    private List<String> preferredNetworks = new ArrayList();
+    private List<String> preferredNetworks = new ArrayList<String>();
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -116,7 +113,7 @@ public class ProjectProperties implements InitializingBean {
                             ifc = (NetworkInterface) nics.nextElement();
                         } while (!ifc.isUp());
 
-                        this.log.trace("Testing interface: " + ifc.getDisplayName());
+                        log.trace("Testing interface: " + ifc.getDisplayName());
                         if (ifc.getIndex() >= lowest && result != null) {
                             if (result != null) {
                                 continue;
@@ -134,13 +131,13 @@ public class ProjectProperties implements InitializingBean {
                 while (addrs.hasMoreElements()) {
                     InetAddress address = (InetAddress) addrs.nextElement();
                     if (address instanceof Inet4Address && !address.isLoopbackAddress() && this.isPreferredAddress(address)) {
-                        this.log.trace("Found non-loopback interface: " + ifc.getDisplayName());
+                        log.trace("Found non-loopback interface: " + ifc.getDisplayName());
                         result = address;
                     }
                 }
             }
         } catch (IOException var8) {
-            this.log.error("Cannot get first non-loopback address", var8);
+            log.error("Cannot get first non-loopback address", var8);
         }
 
         if (result != null) {
@@ -149,7 +146,7 @@ public class ProjectProperties implements InitializingBean {
             try {
                 return InetAddress.getLocalHost();
             } catch (UnknownHostException var7) {
-                this.log.warn("Unable to retrieve localhost");
+                log.warn("Unable to retrieve localhost");
                 return null;
             }
         }

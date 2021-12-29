@@ -2,21 +2,15 @@ package ltd.fdsa.influxdb.test.service.impl;
 
 import com.influxdb.client.InfluxDBClient;
 import lombok.var;
-import ltd.fdsa.influxdb.model.Region;
 import ltd.fdsa.influxdb.properties.InfluxProperties;
 import ltd.fdsa.influxdb.service.BaseInfluxService;
 import ltd.fdsa.influxdb.test.model.Person;
 import ltd.fdsa.influxdb.test.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
-import org.springframework.cache.ehcache.EhCacheCache;
-import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service

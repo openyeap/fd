@@ -10,8 +10,6 @@ import com.ecwid.consul.v1.event.model.Event;
 import com.ecwid.consul.v1.health.HealthServicesRequest;
 import com.ecwid.consul.v1.health.model.HealthService;
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import ltd.fdsa.consul.properties.ConsulProperties;

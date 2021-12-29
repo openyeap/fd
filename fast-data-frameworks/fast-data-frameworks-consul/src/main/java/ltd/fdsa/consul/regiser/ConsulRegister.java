@@ -1,12 +1,8 @@
 package ltd.fdsa.consul.regiser;
 
-import com.ecwid.consul.v1.agent.model.NewService;
-import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
-import ltd.fdsa.consul.properties.ConsulProperties;
 import ltd.fdsa.core.context.ApplicationContextHolder;
-import ltd.fdsa.core.properties.ProjectProperties;
 import org.springframework.context.annotation.Role;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.StringUtils;

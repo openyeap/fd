@@ -1,7 +1,6 @@
 package ltd.fdsa.core.context;
 
 import com.google.common.base.Strings;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import ltd.fdsa.core.event.RemoteEventPublisher;
@@ -11,11 +10,7 @@ import ltd.fdsa.core.lock.ReentrantLockManager;
 import ltd.fdsa.core.util.NamingUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValues;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
-import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.support.NoOpCacheManager;
 import org.springframework.context.ApplicationContext;
@@ -30,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-public class ApplicationContextHolder implements //BeanFactoryPostProcessor,
+public class ApplicationContextHolder implements // BeanFactoryPostProcessor,
         ApplicationContextAware, InstantiationAwareBeanPostProcessor, ApplicationListener<RemotingEvent> {
 
     private static final ThreadLocal<Map<String, Object>> OBJECT_HOLDER = new NamedThreadLocal<>("objectHolder");
@@ -39,31 +34,32 @@ public class ApplicationContextHolder implements //BeanFactoryPostProcessor,
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-//        NamingUtils.formatLog(log,"{} 初始化前 {}", beanName, bean);
+        // NamingUtils.formatLog(log,"{} 初始化前 {}", beanName, bean);
         return bean;
     }
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-//        NamingUtils.formatLog(log,"{} 初始化后 {}", beanName, bean);
+        // NamingUtils.formatLog(log,"{} 初始化后 {}", beanName, bean);
         return bean;
     }
 
     @Override
     public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
-//        NamingUtils.formatLog(log,"{} 实例化前 {}", beanName, beanClass);
+        // NamingUtils.formatLog(log,"{} 实例化前 {}", beanName, beanClass);
         return null;
     }
 
     @Override
     public boolean postProcessAfterInstantiation(Object bean, String beanName) throws BeansException {
-//        NamingUtils.formatLog(log,"{} 实例化后 {}", beanName, bean);
+        // NamingUtils.formatLog(log,"{} 实例化后 {}", beanName, bean);
         return true;
     }
 
     @Override
-    public PropertyValues postProcessProperties(PropertyValues pvs, Object bean, String beanName) throws BeansException {
-//        NamingUtils.formatLog(log,"{} 属性设置", beanName);
+    public PropertyValues postProcessProperties(PropertyValues pvs, Object bean, String beanName)
+            throws BeansException {
+        // NamingUtils.formatLog(log,"{} 属性设置", beanName);
         return pvs;
     }
 
@@ -153,7 +149,14 @@ public class ApplicationContextHolder implements //BeanFactoryPostProcessor,
     static class ThreadContext {
         public <T> T get(String name) {
             Map<String, Object> map = OBJECT_HOLDER.get();
-            return map != null ? (T) map.get(name) : null;
+            if (map == null) {
+                return null;
+            }
+            var result = map.get(name);
+            if (result == null) {
+                return null;
+            }
+            return (T) result;
         }
 
         public void set(String name, Object value) {
@@ -180,4 +183,3 @@ public class ApplicationContextHolder implements //BeanFactoryPostProcessor,
         }
     }
 }
-
