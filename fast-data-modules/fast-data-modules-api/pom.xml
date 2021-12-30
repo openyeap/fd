@@ -6,9 +6,9 @@
     <packaging>jar</packaging>
     <parent>
         <groupId>ltd.fdsa</groupId>
-        <artifactId>fast-data-parent</artifactId>
-        <version>1.0.3</version>
-        <relativePath /> <!-- lookup parent from repository -->
+        <artifactId>fast-data-modules</artifactId>
+        <version>1.0.4</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
 </project>

@@ -4,13 +4,13 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>fast-data-frameworks</artifactId>
     <name>fast data frameworks</name>
-    <description>聚合和父模块，定义依赖包，插件版本，公共配置信息</description>
+    <description>聚合模块，定义常用框架</description>
     <packaging>pom</packaging>
     <parent>
         <groupId>ltd.fdsa</groupId>
         <artifactId>fast-data-parent</artifactId>
-        <version>1.0.3</version>
-        <relativePath>../fast-data-core</relativePath>
+        <version>1.0.4</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modules>
         <module>fast-data-frameworks-thymeleaf</module>

@@ -1,56 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>ltd.fdsa</groupId>
     <artifactId>fast-data-cloud</artifactId>
     <name>fast data cloud</name>
-    <version>1.0.1-SNAPSHOT</version>
-    <description>微服务框架</description>
+    <description>聚合模块，定义微服务框架</description>
     <packaging>pom</packaging>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.4.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>ltd.fdsa</groupId>
+        <artifactId>fast-data-parent</artifactId>
+        <version>1.0.4</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modules>
         <module>fast-data-cloud-gateway</module>
     </modules>
     <properties>
-        <!--基本属性定义 -->
-        <encoding>UTF-8</encoding>
-        <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
         <!--主依赖版本定义 -->
         <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
         <!-- consul -->
         <consul.api.version>1.4.4</consul.api.version>
         <!-- swagger -->
         <swagger.version>2.9.2</swagger.version>
-        <fastjson.version>1.2.62</fastjson.version>
+        <!-- minio -->
         <minio.version>7.0.2</minio.version>
     </properties>
 
     <dependencies>
-        <!-- 主要配合IDE使用 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <!--精简代码 -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.18</version>
-            <scope>provided</scope>
-        </dependency>
+
     </dependencies>
     <dependencyManagement>
         <dependencies>
@@ -78,24 +55,9 @@
                 <version>${swagger.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>fastjson</artifactId>
-                <version>${fastjson.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>io.minio</groupId>
                 <artifactId>minio</artifactId>
                 <version>${minio.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.graphql-java</groupId>
-                <artifactId>graphql-spring-boot-starter</artifactId>
-                <version>5.0.2</version>
-            </dependency>
-            <dependency>
-                <groupId>com.graphql-java</groupId>
-                <artifactId>graphql-java-tools</artifactId>
-                <version>5.2.4</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

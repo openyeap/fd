@@ -7,21 +7,21 @@
     <packaging>jar</packaging>
     <parent>
         <groupId>ltd.fdsa</groupId>
-        <artifactId>fast-data-parent</artifactId>
-        <version>1.0.3</version>
-        <relativePath />
+        <artifactId>fast-data-modules</artifactId>
+        <version>1.0.4</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <properties />
     <dependencies>
         <!-- 必选，核心依赖 -->
         <dependency>
             <groupId>ltd.fdsa</groupId>
-            <artifactId>fast-data-core</artifactId>
+            <artifactId>fast-data-common</artifactId>
         </dependency>
         <!-- 必选，用于快速创建数据库访问 -->
         <dependency>
             <groupId>ltd.fdsa</groupId>
-            <artifactId>fast-data-core-database</artifactId>
+            <artifactId>fast-data-database</artifactId>
         </dependency>
 
         <dependency>
@@ -43,22 +43,22 @@
         </dependency>
         <dependency>
             <groupId>ltd.fdsa</groupId>
-            <artifactId>fast-data-core-database-jpa</artifactId>
+            <artifactId>fast-data-database-jpa</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.fdsa</groupId>
-            <artifactId>fast-data-core-database-mybatis</artifactId>
+            <artifactId>fast-data-database-mybatis</artifactId>
         </dependency>
         <!-- api -->
         <dependency>
             <groupId>ltd.fdsa</groupId>
             <artifactId>fast-data-modules-api</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
         </dependency>
         <dependency>
             <groupId>ltd.fdsa</groupId>
             <artifactId>fast-data-core-web</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
         </dependency>
         <!-- spring -->
         <dependency>

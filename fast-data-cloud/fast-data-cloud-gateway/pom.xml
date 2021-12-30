@@ -8,20 +8,20 @@
     <parent>
         <groupId>ltd.fdsa</groupId>
         <artifactId>fast-data-cloud</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.4</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <properties />
     <dependencies>
         <dependency>
             <groupId>ltd.fdsa</groupId>
-            <artifactId>fast-data-core</artifactId>
-            <version>1.0.3</version>
+            <artifactId>fast-data-common</artifactId>
+            <version>1.0.4</version>
         </dependency>
         <dependency>
             <groupId>ltd.fdsa</groupId>
             <artifactId>fast-data-core-web</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>

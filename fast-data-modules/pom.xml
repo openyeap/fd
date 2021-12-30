@@ -9,8 +9,8 @@
     <parent>
         <groupId>ltd.fdsa</groupId>
         <artifactId>fast-data-parent</artifactId>
-        <version>1.0.3</version>
-        <relativePath>../fast-data-core</relativePath>
+        <version>1.0.4</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modules>
         <module>fast-data-modules-api</module>

@@ -4,13 +4,13 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>spring-boot-starter</artifactId>
     <name>fast data starter</name>
-    <description>聚合和父模块，定义依赖包，插件版本，公共配置信息</description>
+    <description>聚合模块，定义Spring启动器</description>
     <packaging>pom</packaging>
     <parent>
         <groupId>ltd.fdsa</groupId>
         <artifactId>fast-data-parent</artifactId>
-        <version>1.0.3</version>
-        <relativePath>../fast-data-core</relativePath>
+        <version>1.0.4</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modules>
         <module>jdbc-spring-boot-starter</module>

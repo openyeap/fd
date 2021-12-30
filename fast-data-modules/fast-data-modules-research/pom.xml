@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>fast-data-modules-research</artifactId>
     <description>fast data project for Spring Boot</description>
     <packaging>jar</packaging>
     <parent>
         <groupId>ltd.fdsa</groupId>
-        <artifactId>fast-data-parent</artifactId>
-        <version>1.0.3</version>
-        <relativePath />
+        <artifactId>fast-data-modules</artifactId>
+        <version>1.0.4</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <dependencies>
         <dependency>
@@ -18,12 +19,12 @@
 
         <dependency>
             <groupId>ltd.fdsa</groupId>
-            <artifactId>fast-data-core</artifactId>
+            <artifactId>fast-data-common</artifactId>
         </dependency>
         <!-- 必选，用于快速创建数据库访问 -->
         <dependency>
             <groupId>ltd.fdsa</groupId>
-            <artifactId>fast-data-core-database</artifactId>
+            <artifactId>fast-data-database</artifactId>
         </dependency>
         <!-- 可选，自动记录日志到日志中心 -->
         <dependency>

@@ -9,18 +9,18 @@
     <parent>
         <groupId>ltd.fdsa</groupId>
         <artifactId>spring-boot-starter</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.4</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <dependencies>
         <dependency>
             <groupId>ltd.fdsa</groupId>
-            <artifactId>fast-data-core</artifactId>
+            <artifactId>fast-data-common</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.fdsa</groupId>
-            <artifactId>fast-data-core-database</artifactId>
+            <artifactId>fast-data-database</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.fdsa</groupId>

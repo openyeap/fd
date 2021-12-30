@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>monitor-spring-boot-starter</artifactId>
     <name>spring-boot-starter-monitor</name>
@@ -9,7 +8,7 @@
     <parent>
         <groupId>ltd.fdsa</groupId>
         <artifactId>spring-boot-starter</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.4</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <properties></properties>
@@ -21,7 +20,7 @@
         </dependency>
         <dependency>
             <groupId>ltd.fdsa</groupId>
-            <artifactId>fast-data-core</artifactId>
+            <artifactId>fast-data-common</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
