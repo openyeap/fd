@@ -4,25 +4,29 @@ spring:
   application:
     name: gateway
   cloud:
-    discovery:
-      locator:
-      enabled: true
-      lower-case-service-id: true
     gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
       routes:
         # 路由规则的唯一标识，任意齐名，建议和服务名一致
-        - id: sc-web-admin-back
+        - id: baidu
           # 转发到的节点，lb:// 为 http，lb:ws:// 为 websocket
-          uri: http://www.baidu.com
+          uri: http://baidu.com
           predicates:
             # 断言规则，这里设置匹配的路由规则
-            - Path=/search/**
+            - Path=/baidu/**
           # 过滤规则
           filters:
             # 转发到具体项目去掉路由首单词，如 /search/a 转发为 /a
             - StripPrefix=1
     register:
       enabled: false
+
+    loadbalancer: 
+      ribbon: 
+        enabled: false
     consul:
       # Consul 服务器地址
       host: 10.168.4.14

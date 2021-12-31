@@ -482,14 +482,14 @@ public class JdbcApiService {
                 newName = newName.substring(i.getPrefix().length());
             }
             if (newName.endsWith(i.getSuffix())) {
-                newName.substring(0, newName.length() - i.getSuffix().length());
+                newName = newName.substring(0, newName.length() - i.getSuffix().length());
             }
         }
         for (var i : rule.getAppends()) {
             newName = i.getPrefix() + newName + i.getSuffix();
         }
         for (var i : rule.getReplaces().entrySet()) {
-            newName.replace(i.getKey(), i.getValue());
+            newName = newName.replace(i.getKey(), i.getValue());
         }
         return newName;
     }
@@ -501,7 +501,7 @@ public class JdbcApiService {
                 newName = newName.substring(i.getPrefix().length());
             }
             if (newName.endsWith(i.getSuffix())) {
-                newName.substring(0, newName.length() - i.getSuffix().length());
+                newName = newName.substring(0, newName.length() - i.getSuffix().length());
             }
         }
         for (var i : rule.getAppends()) {
@@ -509,7 +509,7 @@ public class JdbcApiService {
         }
 
         for (var i : rule.getReplaces().entrySet()) {
-            newName.replace(i.getKey(), i.getValue());
+            newName = newName.replace(i.getKey(), i.getValue());
         }
         return newName;
     }
