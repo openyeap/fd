@@ -5,12 +5,12 @@ import ltd.fdsa.cloud.model.MockRule;
 
 import ltd.fdsa.cloud.service.IMockRuleService;
 import ltd.fdsa.cloud.service.impl.MockRuleServiceImpl;
-
-import ltd.fdsa.web.enums.HttpCode;
-import ltd.fdsa.web.view.Result;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
@@ -23,9 +23,11 @@ public class MockRuleController {
     private IMockRuleService mockRuleService;
 
     @PostMapping("/addOrUpdateMockRule")
-    public  Result addOrUpdateMockRule(@RequestBody MockRule mockRule) {
+    public Mono<ResponseEntity<Object>> addOrUpdateMockRule(@RequestBody MockRule mockRule) {
+
+
         if (StringUtils.isBlank(mockRule.getRequestPath())) {
-            return Result.fail(HttpCode.PARAMETER_EMPTY);
+            return Mono.just((new ResponseEntity<Object>(HttpStatus.BAD_REQUEST)));
         }
         Map<String, MockRule> mockRuleMap = MockRuleServiceImpl.mockRuleMap;
         try {
@@ -36,38 +38,39 @@ public class MockRuleController {
             }
         } catch (Exception e) {
             log.error("addOrUpdateMockRule", e);
-            return Result.fail(HttpCode.INTERNAL_SERVER_ERROR);
+            return Mono.just((new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR)));
         }
-        return Result.success();
+        return Mono.just((new ResponseEntity<Object>(HttpStatus.OK)));
     }
 
     @DeleteMapping("/deleteMockRule")
-    public Result deleteMockRule(@RequestBody MockRule mockRule) {
+    public Mono<ResponseEntity<Object>> deleteMockRule(@RequestBody MockRule mockRule) {
         String requestPath = mockRule.getRequestPath();
         if (StringUtils.isEmpty(requestPath)) {
-            return Result.fail(HttpCode.PARAMETER_EMPTY);
+            return Mono.just((new ResponseEntity<Object>(HttpStatus.BAD_REQUEST)));
         }
         Map<String, MockRule> mockRuleMap = MockRuleServiceImpl.mockRuleMap;
         try {
             if (mockRuleMap.containsKey(requestPath)) {
                 mockRuleService.deleteMockRule(requestPath);
             } else {
-                return Result.fail(HttpCode.NO_CONTENT);
+                return Mono.just((new ResponseEntity<Object>(HttpStatus.NO_CONTENT)));
             }
         } catch (Exception e) {
             log.error("deleteMockRule", e);
-            return Result.fail(HttpCode.INTERNAL_SERVER_ERROR);
+            return Mono.just((new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR)));
+
         }
-        return Result.success();
+        return Mono.just((new ResponseEntity<Object>( HttpStatus.OK)));
     }
 
     @GetMapping("/getMockRuleList")
-    public Result getMockRuleList(String requestPathKeyword) {
+    public Mono<ResponseEntity<Object>> getMockRuleList(String requestPathKeyword) {
         try {
-            return Result.success(mockRuleService.getMockRuleList(requestPathKeyword));
+            return Mono.just((new ResponseEntity<Object>(mockRuleService.getMockRuleList(requestPathKeyword), HttpStatus.OK)));
         } catch (Exception e) {
             log.error("getMockRuleList", e);
-            return Result.fail(HttpCode.INTERNAL_SERVER_ERROR);
+            return Mono.just((new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR)));
         }
     }
 }

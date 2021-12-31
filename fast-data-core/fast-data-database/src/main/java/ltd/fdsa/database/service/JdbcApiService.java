@@ -118,28 +118,17 @@ public class JdbcApiService {
         Swagger swagger = new Swagger();
         {
             Info info = new Info();
-            info.title("rest-ful api for database");
-            info.description("It is simple to open the rest-ful api for database");
+            info.title(this.properties.getTitle());
+            info.description(this.properties.getDescription());
             Contact contact = new Contact();
-            contact.email("zhumingwu@zhumingwu.cn");
-            contact.name("zhumingwu");
-            contact.url("http://blog.zhumingwu.cn");
+            contact.email(this.properties.getEmail());
+            contact.name(this.properties.getName());
+            contact.url(this.properties.getUrl());
             info.contact(contact);
             swagger.info(info);
         }
         swagger.host(host);
         swagger.basePath(basePath);
-
-        Response response401 = new Response();
-        response401.description("Unauthorized");
-        Response response403 = new Response();
-        response403.description("Forbidden");
-        Response response404 = new Response();
-        response404.description("Not Found");
-        swagger.response("401", response401);
-        swagger.response("403", response403);
-        swagger.response("404", response404);
-
         for (var table : this.namedTables.values()) {
             // api 接口列表
             var tag = new Tag();
@@ -151,47 +140,47 @@ public class JdbcApiService {
             for (var column : table.getColumns()) {
                 switch (column.getColumnDefinition().getDefinitionName()) {
                     case "DATE":
-                        model.property(column.getName(), new DateProperty().description(column.getRemark()));
+                        model.property(column.getAlias(), new DateProperty().description(column.getRemark()));
                         break;
                     case "TIME":
                     case "TIMESTAMP":
                     case "DATETIME":
-                        model.property(column.getName(), new DateTimeProperty().description(column.getRemark()));
+                        model.property(column.getAlias(), new DateTimeProperty().description(column.getRemark()));
                         break;
                     case "CHAR":
                     case "VARCHAR":
                     case "NCHAR":
                     case "NVARCHAR":
-                        model.property(column.getName(), new StringProperty().description(column.getRemark()));
+                        model.property(column.getAlias(), new StringProperty().description(column.getRemark()));
                         break;
                     case "BOOLEAN":
                     case "BOOL":
-                        model.property(column.getName(), new BooleanProperty().description(column.getRemark()));
+                        model.property(column.getAlias(), new BooleanProperty().description(column.getRemark()));
                         break;
                     case "BIGINT":
                     case "LONG":
                     case "BIGSERIAL":
-                        model.property(column.getName(), new LongProperty().description(column.getRemark()));
+                        model.property(column.getAlias(), new LongProperty().description(column.getRemark()));
                         break;
                     case "SMALLINT":
                     case "TINYINT":
                     case "INTEGER":
                     case "INT":
-                        model.property(column.getName(), new IntegerProperty().description(column.getRemark()));
+                        model.property(column.getAlias(), new IntegerProperty().description(column.getRemark()));
                         break;
                     case "FLOAT":
-                        model.property(column.getName(), new FloatProperty().description(column.getRemark()));
+                        model.property(column.getAlias(), new FloatProperty().description(column.getRemark()));
                         break;
                     case "DOUBLE":
-                        model.property(column.getName(), new DoubleProperty().description(column.getRemark()));
+                        model.property(column.getAlias(), new DoubleProperty().description(column.getRemark()));
                         break;
                     case "NUMERIC":
                     case "DECIMAL":
-                        model.property(column.getName(), new DecimalProperty().description(column.getRemark()));
+                        model.property(column.getAlias(), new DecimalProperty().description(column.getRemark()));
                         break;
                     default:
                         log.warn("没有考虑到的类型：{}", column.getColumnDefinition().getDefinitionName());
-                        model.property(column.getName() + ":" + column.getColumnDefinition().getDefinitionName(),
+                        model.property(column.getAlias() + ":" + column.getColumnDefinition().getDefinitionName(),
                                 new StringProperty().description(column.getRemark()));
                         break;
 
@@ -200,33 +189,37 @@ public class JdbcApiService {
             swagger.addDefinition(table.getAlias(), model);
 
             // api 路径
-            Path path = new Path();
-            Path path1 = new Path();
-            for (var acl : this.namedAcl.get(table.getName())) {
+            Path commonPath = new Path();
+            Path useKeyPath = new Path();
+            for (var acl : this.namedAcl.get(table.getAlias())) {
                 switch (acl) {
-                    case QUERY_BY_KEY:
-                        path1.get(queryByKeyOperation(table, model));
-                    case DELETE_BY_KEY:
-                        path1.delete(deleteByKeyOperation(table, model));
-                    case UPDATE_BY_KEY:
-                        path1.post(updateByKeyOperation(table, model));
-                    case QUERY_LIST:
-                        path.get(queryListOperation(table, model));
-                    case DELETE:
-                        path.delete(deleteOperation(table, model));
-                        break;
                     case CREATE:
-                        path.put(createOperation(table, model));
+                        commonPath.put(createOperation(table, model));
+                        break;
+                    case QUERY:
+                        commonPath.get(queryListOperation(table, model));
+                        break;
+                    case QUERY_BY_KEY:
+                        useKeyPath.get(queryByKeyOperation(table, model));
+                        break;
+                    case DELETE:
+                        commonPath.delete(deleteOperation(table, model));
+                        break;
+                    case DELETE_BY_KEY:
+                        useKeyPath.delete(deleteByKeyOperation(table, model));
+                        break;
                     case UPDATE:
-                        path.post(updateOperation(table, model));
-
+                        commonPath.post(updateOperation(table, model));
+                        break;
+                    case UPDATE_BY_KEY:
+                        useKeyPath.post(updateByKeyOperation(table, model));
+                        break;
                     default:
-
                         break;
                 }
             }
-            swagger.path("/v2/" + table.getAlias(), path);
-            swagger.path("/v2/" + table.getAlias() + "/{key}", path);
+            swagger.path("/v2/" + table.getAlias(), commonPath);
+            swagger.path("/v2/" + table.getAlias() + "/{key}", useKeyPath);
         }
 
         var path = new Path();
@@ -264,7 +257,7 @@ public class JdbcApiService {
         operation.tag(table.getAlias());
         operation.summary("query list from " + table.getAlias() + " by custom conditions");
         operation.description(table.getRemark());
-        operation.operationId(JdbcApiProperties.Acl.QUERY_LIST.name());
+        operation.operationId(JdbcApiProperties.Acl.QUERY.name());
         operation.consumes("application/json");
         operation.produces("*/*");
 
@@ -413,8 +406,8 @@ public class JdbcApiService {
     private Operation createOperation(Table table, Model model) {
         Operation operation = new Operation();
         operation.tag(table.getAlias());
-        operation.summary("新增" + table.getRemark());
-        operation.description("新增" + table.getRemark());
+        operation.summary("create data for " + table.getAlias());
+        operation.description(table.getRemark());
         operation.operationId(JdbcApiProperties.Acl.CREATE.name());
         operation.consumes("application/json");
         operation.produces("*/*");
@@ -438,7 +431,6 @@ public class JdbcApiService {
         return operation.response(200, response);
     }
 
-   
     private List<Table> rename(List<Table> list, DataSourceMataData mataData) {
         AntPathMatcher pathMatcher = new AntPathMatcher();
         for (var table : list) {
@@ -454,9 +446,7 @@ public class JdbcApiService {
                     }
                 }
             }
-            for (var entry : this.properties.getAcl().entrySet()) {
-                this.namedAcl.put(table.getName(), entry.getValue());
-            }
+
             if (Strings.isNullOrEmpty(table.getAlias())) {
                 table.as(table.getName());
             }
@@ -467,11 +457,19 @@ public class JdbcApiService {
                     column.as(column.getName());
                 }
                 if (keys.containsKey(column.getName())) {
-                    if (!this.namedKeyColumns.containsKey(table.getName())) {
-                        this.namedKeyColumns.put(table.getName(), new LinkedList<String>());
+                    if (!this.namedKeyColumns.containsKey(table.getAlias())) {
+                        this.namedKeyColumns.put(table.getAlias(), new LinkedList<String>());
                     }
-                    this.namedKeyColumns.get(table.getName()).add(column.getAlias());
+                    this.namedKeyColumns.get(table.getAlias()).add(column.getAlias());
                 }
+            }
+            for (var entry : this.properties.getAcl().entrySet()) {
+                if (pathMatcher.match(entry.getKey(), table.getName())) {
+                    this.namedAcl.put(table.getAlias(), entry.getValue());
+                }
+            }
+            if (!this.namedAcl.containsKey(table.getAlias())) {
+                this.namedAcl.put(table.getAlias(), JdbcApiProperties.Acl.values());
             }
         }
         return list;

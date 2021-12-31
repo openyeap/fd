@@ -22,13 +22,22 @@ public class ServiceInfo {
 
     private String id;
 
-    private Map<String, Object> metadata;
+    private Map<String, String> metadata;
 
     public String getUrl() {
         return NamingUtils.format("{}://{}:{}", this.schema, this.ip, this.port);
     }
 
-    ServiceInfo(String schema, String ip, int port, String name, String id, Map<String, Object> metadata) {
+    public ServiceInfo() {
+        // this.schema = schema;
+        // this.ip = ip;
+        // this.port = port;
+        // this.name = name;
+        // this.id = id;
+        // this.metadata = metadata;
+    }
+
+    ServiceInfo(String schema, String ip, int port, String name, String id, Map<String, String> metadata) {
         this.schema = schema;
         this.ip = ip;
         this.port = port;
@@ -47,7 +56,7 @@ public class ServiceInfo {
         private int port;
         private String name;
         private String id;
-        private Map<String, Object> metadata;
+        private Map<String, String> metadata;
 
         ServiceInfoBuilder() {
         }
@@ -85,7 +94,7 @@ public class ServiceInfo {
             return this;
         }
 
-        public ServiceInfoBuilder withMetadata(String key, Object data) {
+        public ServiceInfoBuilder withMetadata(String key, String data) {
             if (this.metadata == null) {
                 this.metadata = new LinkedHashMap<>();
             }

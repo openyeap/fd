@@ -4,8 +4,6 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import ltd.fdsa.cloud.constant.Constant;
 import ltd.fdsa.cloud.service.MinIOService;
-import ltd.fdsa.web.enums.HttpCode;
-import ltd.fdsa.web.view.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.buffer.DataBufferUtils;
@@ -33,26 +31,26 @@ public class MinIOController {
     private MinIOService minIOService;
 
     @PostMapping("/bucket/{bucketName}")
-    public Result<Object> makeBucket(@PathVariable String bucketName) {
+    public Mono<ResponseEntity<Object>> makeBucket(@PathVariable String bucketName) {
         if (StringUtils.isEmpty(bucketName)) {
-            return Result.fail(HttpCode.PARAMETER_EMPTY);
+            return Mono.just((new ResponseEntity<Object>(HttpStatus.BAD_REQUEST)));
         }
         minIOService.makeBucket(bucketName);
-        return Result.success();
+        return Mono.just((new ResponseEntity<Object>(HttpStatus.OK)));
     }
 
     @DeleteMapping("/bucket/{bucketName}")
-    public Result<Object> removeBucket(@PathVariable String bucketName) {
+    public Mono<ResponseEntity<Object>> removeBucket(@PathVariable String bucketName) {
         if (StringUtils.isEmpty(bucketName)) {
-            return Result.fail(HttpCode.PARAMETER_EMPTY);
+            return Mono.just((new ResponseEntity<Object>(HttpStatus.BAD_REQUEST)));
         }
         minIOService.removeBucket(bucketName);
-        return Result.success();
+        return Mono.just((new ResponseEntity<Object>(HttpStatus.OK)));
     }
 
     @PostMapping(value = "/file/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @SneakyThrows
-    public Mono<ResponseEntity> upload(@RequestPart("file") FilePart filePart, @RequestPart String bucketName, @RequestPart String path) {
+    public Mono<ResponseEntity<Object>> upload(@RequestPart("file") FilePart filePart, @RequestPart String bucketName, @RequestPart String path) {
         Map<String, String> map = new HashMap<>();
         if (StringUtils.isEmpty(bucketName)) {
             bucketName = Constant.Default_Bucket_Name;
@@ -83,39 +81,38 @@ public class MinIOController {
                         return;
                     }
                 }).subscribe();
-        return Mono.just(ResponseEntity.ok().body(Result.success(map)));
+        return Mono.just(ResponseEntity.ok().body(map));
     }
 
     @GetMapping(value = "/file/download")
-    public Mono<ResponseEntity> download(String fileId) {
-        return Mono.fromCallable(() -> {
-            try {
-                if (StringUtils.isEmpty(fileId)) {
-                    return ResponseEntity.ok().body(Result.fail(HttpCode.PARAMETER_EMPTY));
-                }
-                String[] split = fileId.split("\\" + Constant.MinIO_Split);
-                if (split == null || split.length != 3 || !Constant.MinIO_Prefix.equals(split[0])) {
-                    return ResponseEntity.ok().body(Result.fail(HttpCode.PARAMETER_INCORRECT));
-                }
-                String bucketName = split[1];
-                String objectName = new String(Base64.getUrlDecoder().decode(split[2]), Constant.UTF8);
-                String fileName = java.net.URLEncoder.encode(objectName.substring(objectName.lastIndexOf("/") + 1), Constant.UTF8);
-                InputStream inputStream = minIOService.downloadFile(bucketName, objectName);
-                if (inputStream == null) {
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Result.fail(HttpCode.NOT_FOUND));
-                }
-                InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-                HttpHeaders headers = new HttpHeaders();
-                headers.add("Content-Disposition", "attachment;filename=" + fileName);
-                headers.add("Content-Type", MediaType.APPLICATION_OCTET_STREAM_VALUE);
-                headers.add("Content-Encode", Constant.UTF8);
-                return ResponseEntity.ok()
-                        .headers(headers)
-                        .body(inputStreamResource);
-            } catch (Exception e) {
-                log.error("文件读取异常", e);
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("");
+    public Mono<ResponseEntity<Object>> download(String fileId) {
+
+        try {
+            if (StringUtils.isEmpty(fileId)) {
+                return Mono.just((new ResponseEntity<Object>(HttpStatus.BAD_REQUEST)));
             }
-        });
+            String[] split = fileId.split("\\" + Constant.MinIO_Split);
+            if (split == null || split.length != 3 || !Constant.MinIO_Prefix.equals(split[0])) {
+                return Mono.just((new ResponseEntity<Object>(HttpStatus.BAD_REQUEST)));
+            }
+            String bucketName = split[1];
+            String objectName = new String(Base64.getUrlDecoder().decode(split[2]), Constant.UTF8);
+            String fileName = java.net.URLEncoder.encode(objectName.substring(objectName.lastIndexOf("/") + 1), Constant.UTF8);
+            InputStream inputStream = minIOService.downloadFile(bucketName, objectName);
+            if (inputStream == null) {
+                return Mono.just((new ResponseEntity<Object>(HttpStatus.NO_CONTENT)));
+            }
+            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Disposition", "attachment;filename=" + fileName);
+            headers.add("Content-Type", MediaType.APPLICATION_OCTET_STREAM_VALUE);
+            headers.add("Content-Encode", Constant.UTF8);
+            return Mono.just(ResponseEntity.ok()
+                    .headers(headers)
+                    .body(inputStreamResource));
+        } catch (Exception e) {
+            log.error("文件读取异常", e);
+            return Mono.just((new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR)));
+        }
     }
 }

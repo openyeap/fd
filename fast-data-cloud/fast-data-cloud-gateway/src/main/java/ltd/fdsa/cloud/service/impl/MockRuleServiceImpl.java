@@ -12,7 +12,6 @@ import ltd.fdsa.cloud.model.MockRule;
 import ltd.fdsa.cloud.model.MockRuleConsul;
 import ltd.fdsa.cloud.service.IMockRuleService;
 import ltd.fdsa.cloud.util.DateTimeUtil;
-import ltd.fdsa.core.util.NamingUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +88,7 @@ public class MockRuleServiceImpl implements IMockRuleService {
                         if (!StringUtils.equals(updateTime, mockRuleConsul.getUpdateTime())) {
                             updateTime = mockRuleConsul.getUpdateTime();
                             listToMap(mockRuleConsul.getData());
-                            NamingUtils.formatLog(log, "拉取 mock 规则数据成功。");
+                            log.info("拉取 mock 规则数据成功。");
                         }
 
                         Thread.sleep(8000L);//8s加载一次;
@@ -132,7 +131,7 @@ public class MockRuleServiceImpl implements IMockRuleService {
                 }
 
             }
-            NamingUtils.formatLog(log, "mock规则同步删除本地缓存数据成功。");
+            log.info("mock规则同步删除本地缓存数据成功。");
         }
 
     }

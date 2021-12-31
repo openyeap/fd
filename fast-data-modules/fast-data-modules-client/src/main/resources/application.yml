@@ -2,7 +2,7 @@ server:
   port: 8080
 spring:
   application:
-    name: client
+    name: ming-client
   profiles:
     active: dev
   jpa:
@@ -68,23 +68,31 @@ project:
     minutes: 1
     host: 10.168.4.14
     port: 8500
-    health:
+    registry:
+      enabled: true
+      # services:
+      #   - name: rest-api
+      #     schema: http
+      #     ip: 192.168.7.222
+      #     port: 8080
+    healthCheck:
+      path: /v2/api-docs
+      delay: 10s
       enabled: true
   rest-api:
     enabled: true
     catalog:
     schema: public
     tables:
-      "[bm_*]":
+      "[t_*]":
         removes:
-          - prefix: bm_
+          - prefix: t_
             suffix: _event
         appends:
           - prefix: entity_
             suffix: controller
         replaces:
-          - key1: value1
-          - key2: value2
+          - _: B
         column:
           removes:
             - prefix:
@@ -95,12 +103,25 @@ project:
           replaces:
             - key1: value1
             - key2: value2
-    acl:
+      "[bm_*]":
+        removes:
+          - prefix: bm_
+            suffix: _event
+        appends:
+          - prefix: entity_
+            suffix: controller
+        replaces:
+          - key1: value1
+          - key2: value2
+  acl:
       "[bm_*]":
         - CREATE
-        - UPDATE
-        - QUERY_LIST
         - DELETE
+        - DELETE_BY_KEY
+        - QUERY
+        - QUERY_BY_KEY
+        - UPDATE
+        - UPDATE_BY_KEY
 
 logging:
   path: /var/log/${spring.application.name}-${server.port}
@@ -108,4 +129,4 @@ logging:
     web: INFO
     ltd.fdsa: DEBUG
   pattern:
-    console: '[%highlight(%-4level)] %msg%n'
+    console: "[%highlight(%-4level)] %msg%n"

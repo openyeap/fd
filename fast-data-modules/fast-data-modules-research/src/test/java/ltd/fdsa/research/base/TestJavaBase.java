@@ -17,7 +17,7 @@ import java.util.Arrays;
  * @ClassName:
  * @description:
  * @since 2020-10-28
- **/
+ */
 @RunWith(SpringRunner.class)
 @Slf4j
 public class TestJavaBase {

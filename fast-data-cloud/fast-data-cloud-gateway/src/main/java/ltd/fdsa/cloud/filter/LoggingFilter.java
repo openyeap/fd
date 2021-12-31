@@ -2,7 +2,6 @@ package ltd.fdsa.cloud.filter;
 
 import lombok.extern.slf4j.Slf4j;
 import ltd.fdsa.cloud.util.RequestUtil;
-import ltd.fdsa.core.util.NamingUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -20,7 +19,7 @@ public class LoggingFilter implements GlobalFilter, Ordered {
     private static final String START_TIME = "startTime";
 
     public LoggingFilter() {
-        NamingUtils.formatLog(log,"Loaded GlobalFilter Logging");
+        log.info("Loaded GlobalFilter Logging");
     }
 
     @Override

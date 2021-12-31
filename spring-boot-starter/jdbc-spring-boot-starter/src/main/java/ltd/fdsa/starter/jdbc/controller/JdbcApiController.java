@@ -1,5 +1,7 @@
 package ltd.fdsa.starter.jdbc.controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.common.base.Strings;
 import io.swagger.models.Swagger;
 import lombok.extern.slf4j.Slf4j;
@@ -36,11 +38,12 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/v2")
 @Slf4j
-public class JdbcController extends BaseController {
+public class JdbcApiController extends BaseController {
 
     @Autowired
     JdbcApiService service;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @RequestMapping(value = "/api-docs", method = RequestMethod.GET)
     public Swagger getApiDocs(@RequestParam(value = "group", required = false) String group,
             HttpServletRequest request) {

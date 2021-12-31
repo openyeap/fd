@@ -22,14 +22,15 @@ import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
+import ch.qos.logback.core.recovery.ResilientFileOutputStream;
+
 @Configuration
 @Slf4j
-@EnableConfigurationProperties({ConsulProperties.class})
+@EnableConfigurationProperties({ ConsulProperties.class })
 @EnableRetry
 public class ConsulAutoConfiguration {
 
     static final String CONSUL_WATCH_TASK_SCHEDULER_NAME = "consulWatchTaskExecutor";
-
 
     @Bean
     @Primary
@@ -55,7 +56,8 @@ public class ConsulAutoConfiguration {
     }
 
     @Bean
-    public ConsulWatchThread consulWatch(ProjectProperties projectProperties, ConsulProperties properties, ConsulClient consul, @Qualifier(CONSUL_WATCH_TASK_SCHEDULER_NAME) TaskScheduler taskScheduler) {
+    public ConsulWatchThread consulWatch(ProjectProperties projectProperties, ConsulProperties properties,
+            ConsulClient consul, @Qualifier(CONSUL_WATCH_TASK_SCHEDULER_NAME) TaskScheduler taskScheduler) {
         NamingUtils.formatLog(log, "ConsulWatch Started");
         return new ConsulWatchThread(projectProperties, properties, consul, taskScheduler);
     }
@@ -68,6 +70,7 @@ public class ConsulAutoConfiguration {
     @Bean(name = CONSUL_WATCH_TASK_SCHEDULER_NAME)
     public TaskScheduler configWatchTaskScheduler() {
         var result = new ThreadPoolTaskScheduler();
+        result.setPoolSize(3);
         return result;
     }
 }

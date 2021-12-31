@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 * @description:
 * @author zhumingwu
 * @since 2020-12-09
-**/
+*/
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ContextConfiguration(classes = {ClientApplication.class})

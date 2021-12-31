@@ -18,7 +18,7 @@
         <module>logger-spring-boot-starter</module>
         <module>limiter-spring-boot-starter</module>
         <module>remote-spring-boot-starter</module>
-        <module>remote-consul-spring-boot-starter</module>
+        <module>consul-spring-boot-starter</module>
     </modules>
 
     <properties></properties>

@@ -113,7 +113,7 @@
             </dependency>
             <dependency>
                 <groupId>ltd.fdsa</groupId>
-                <artifactId>remote-consul-spring-boot-starter</artifactId>
+                <artifactId>consul-spring-boot-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

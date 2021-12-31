@@ -8,10 +8,10 @@ import ltd.fdsa.cloud.jwt.constant.JwtConstant;
 import ltd.fdsa.cloud.jwt.model.JwtValidationResult;
 import ltd.fdsa.cloud.jwt.model.JwtValidationResultType;
 import ltd.fdsa.cloud.service.ConsulService;
-import ltd.fdsa.web.view.Result;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 
@@ -85,14 +85,8 @@ public class AuthorizeFilter extends BaseFilter {
     }
 
     @Override
-    protected HttpStatus errorStatus() {
-        return httpStatus;
-    }
-
-    @Override
-    protected Result errorBody() {
-        var result = Result.fail(httpStatus.value(), httpStatus.getReasonPhrase());
-        return result;
+    protected ResponseEntity<Object> result() {
+        return ResponseEntity.status(this.httpStatus).build();
     }
 
     @Override

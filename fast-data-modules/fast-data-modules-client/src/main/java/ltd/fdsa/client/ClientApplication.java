@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * @author:zhumingwu
  * @since:2020-12-09
- **/
+ */
 @SpringBootApplication
 @Slf4j
 public class ClientApplication {

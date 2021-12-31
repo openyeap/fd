@@ -71,20 +71,12 @@ public class ConsulProperties {
          * If the watch is enabled. Defaults to true.
          */
         private boolean enabled = true;
-        /**
-         * The number of seconds to wait (or block) for watch query, defaults to 55. Needs
-         * to be less than default ConsulClient (defaults to 60). To increase ConsulClient
-         * timeout create a ConsulClient bean with a custom ConsulRawClient with a custom
-         * HttpClient.
-         */
-        private Duration waitTime = Duration.ofSeconds(55);
+ 
+        private Duration waitTime = Duration.ofSeconds(5);
+ 
+        private Duration delay = Duration.ofSeconds(10);
 
-        /**
-         * The default value of the fixed delay for the check in Minutes is 1.
-         */
-        private Duration delay = Duration.ofMinutes(1);
-
-        private String removeAfter;
+        private Duration removeAfter =Duration.ofSeconds(5);
     }
 
 

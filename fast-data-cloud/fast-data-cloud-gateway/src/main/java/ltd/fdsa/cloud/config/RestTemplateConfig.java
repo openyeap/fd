@@ -1,7 +1,6 @@
 package ltd.fdsa.cloud.config;
 
 import lombok.extern.slf4j.Slf4j;
-import ltd.fdsa.core.util.NamingUtils;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,13 +32,13 @@ public class RestTemplateConfig {
     @Order(-1)
     public GlobalFilter a() {
         return (exchange, chain) -> {
-            NamingUtils.formatLog(log,"first pre filter");
+            log.info("first pre filter");
             return ServerRequest.create(exchange, HandlerStrategies.withDefaults().messageReaders())
                     .bodyToMono(String.class)
                     .doOnNext(bodyData -> {
-                        NamingUtils.formatLog(log, bodyData);
+                        log.info(bodyData);
                     }).then(chain.filter(exchange)).then(Mono.fromRunnable(() -> {
-                        NamingUtils.formatLog(log,"third post filter");
+                        log.info("third post filter");
                     }));
         };
     }
@@ -48,9 +47,9 @@ public class RestTemplateConfig {
     @Order(0)
     public GlobalFilter b() {
         return (exchange, chain) -> {
-            NamingUtils.formatLog(log,"second pre filter");
+            log.info("second pre filter");
             return chain.filter(exchange).then(Mono.fromRunnable(() -> {
-                NamingUtils.formatLog(log,"second post filter");
+                log.info("second post filter");
             }));
         };
     }
@@ -59,9 +58,9 @@ public class RestTemplateConfig {
     @Order(1)
     public GlobalFilter c() {
         return (exchange, chain) -> {
-            NamingUtils.formatLog(log,"third pre filter");
+            log.info("third pre filter");
             return chain.filter(exchange).then(Mono.fromRunnable(() -> {
-                NamingUtils.formatLog(log,"first post filter");
+                log.info("first post filter");
             }));
         };
     }

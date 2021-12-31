@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @ClassName:
  * @description:
  * @since 2020-10-28
- **/
+ */
 @RunWith(SpringRunner.class)
 @Slf4j
 public class TestJavaFunc {

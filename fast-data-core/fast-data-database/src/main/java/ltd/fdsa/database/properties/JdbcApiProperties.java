@@ -10,25 +10,31 @@ import java.util.LinkedHashMap;
 public class JdbcApiProperties {
     public static final String PREFIX = "project.rest-api";
     private boolean enabled = true;
-    private LinkedHashMap<String, TableNameRule> tables;
+
+    private String title = "rest-ful api for database";
+    private String description = "It is simple to open the rest-ful api for database";
+    private String email = "zhumingwu@zhumingwu.cn";
+    private String name = "zhumingwu";
+    private String url = "http://blog.zhumingwu.cn";
+    private LinkedHashMap<String, TableNameRule> tables = new LinkedHashMap<String, TableNameRule>();
     private String catalog;
     private String schema;
-    private LinkedHashMap<String, Acl[]> acl;
+    private LinkedHashMap<String, Acl[]> acl = new LinkedHashMap<String, Acl[]>();
 
     @Data
     public static class TableNameRule {
-        private NameFix[] removes;
-        private NameFix[] appends;
-        private LinkedHashMap<String, String> replaces;
+        private NameFix[] removes = new NameFix[0];
+        private NameFix[] appends = new NameFix[0];
+        private LinkedHashMap<String, String> replaces = new LinkedHashMap<String, String>();
         private ColumnNameRule column;
 
     }
 
     @Data
     public static class ColumnNameRule {
-        private NameFix[] removes;
-        private NameFix[] appends;
-        private LinkedHashMap<String, String> replaces;
+        private NameFix[] removes = new NameFix[0];
+        private NameFix[] appends = new NameFix[0];
+        private LinkedHashMap<String, String> replaces = new LinkedHashMap<String, String>();
     }
 
     @Data
@@ -38,12 +44,12 @@ public class JdbcApiProperties {
     }
 
     public enum Acl {
-        QUERY_LIST,
-        QUERY_BY_KEY,
-        UPDATE_BY_KEY,
         CREATE,
+        QUERY,
+        QUERY_BY_KEY,
         UPDATE,
+        UPDATE_BY_KEY,
         DELETE,
-        DELETE_BY_KEY
+        DELETE_BY_KEY,
     }
 }

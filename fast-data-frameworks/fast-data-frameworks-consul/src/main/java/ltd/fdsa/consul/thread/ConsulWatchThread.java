@@ -1,3 +1,4 @@
+
 package ltd.fdsa.consul.thread;
 
 import com.ecwid.consul.v1.ConsulClient;
@@ -19,6 +20,7 @@ import ltd.fdsa.core.event.RemotingEvent;
 import ltd.fdsa.core.event.ServiceDiscoveredEvent;
 import ltd.fdsa.core.properties.ProjectProperties;
 import ltd.fdsa.core.service.ServiceInfo;
+import ltd.fdsa.core.util.NamingUtils;
 import ltd.fdsa.core.util.YamlUtils;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.SmartLifecycle;
@@ -48,77 +50,90 @@ public class ConsulWatchThread implements SmartLifecycle {
     private ScheduledFuture<?> configWatchFuture;
     private ScheduledFuture<?> serviceRegisterFuture;
 
-    public ConsulWatchThread(ProjectProperties projectProperties, ConsulProperties consulProperties, ConsulClient consul, TaskScheduler taskScheduler) {
+    public ConsulWatchThread(ProjectProperties projectProperties, ConsulProperties consulProperties,
+            ConsulClient consul, TaskScheduler taskScheduler) {
         this.properties = projectProperties;
         this.consulProperties = consulProperties;
         this.consulClient = consul;
         this.taskScheduler = taskScheduler;
+        var registry = this.consulProperties.getRegistry();
+        if (registry.isEnabled()) {
+            if (registry.getServices() == null) {
+                registry.setServices(new LinkedList<ServiceInfo>());
+            }
+            var list = registry.getServices();
+            var serviceInfo = ServiceInfo.builder()
+                    .name(this.properties.getName())
+                    .ip(this.properties.getAddress())
+                    .port(this.properties.getPort())
+                    .schema("http")
+                    .build();
+            list.add(serviceInfo);
+        }
     }
-
 
     @Override
     public void start() {
         if (this.running.compareAndSet(false, true)) {
             if (this.consulProperties.getEventWatch().isEnabled()) {
-                this.eventListIndex.set(BigInteger.valueOf(this.consulClient.eventList(EventListRequest.newBuilder().setQueryParams(QueryParams.DEFAULT).build()).getConsulIndex()));
-                this.eventWatchFuture = this.taskScheduler.scheduleWithFixedDelay(this::eventWatch, this.consulProperties.getEventWatch().getDelay());
+                this.eventListIndex.set(BigInteger.valueOf(this.consulClient
+                        .eventList(EventListRequest.newBuilder().setQueryParams(QueryParams.DEFAULT).build())
+                        .getConsulIndex()));
+                this.eventWatchFuture = this.taskScheduler.scheduleWithFixedDelay(this::eventWatch,
+                        this.consulProperties.getEventWatch().getDelay());
             }
             if (this.consulProperties.getServiceWatch().isEnabled()) {
-                this.serviceWatchFuture = this.taskScheduler.scheduleWithFixedDelay(this::serviceWatch, this.consulProperties.getServiceWatch().getDelay());
+                this.serviceWatchFuture = this.taskScheduler.scheduleWithFixedDelay(this::serviceWatch,
+                        this.consulProperties.getServiceWatch().getDelay());
             }
             if (this.consulProperties.getConfigWatch().isEnabled()) {
-                this.configWatchFuture = this.taskScheduler.scheduleWithFixedDelay(this::configWatch, this.consulProperties.getConfigWatch().getDelay());
+                this.configWatchFuture = this.taskScheduler.scheduleWithFixedDelay(this::configWatch,
+                        this.consulProperties.getConfigWatch().getDelay());
             }
             if (this.consulProperties.getRegistry().isEnabled()) {
-                this.serviceRegisterFuture = this.taskScheduler.scheduleWithFixedDelay(this::serviceRegister, this.consulProperties.getRegistry().getDelay());
+                this.serviceRegisterFuture = this.taskScheduler.scheduleWithFixedDelay(this::serviceRegister,
+                        this.consulProperties.getRegistry().getDelay());
             }
         }
     }
 
     public void serviceRegister() {
-        //判断服务是否已经启动
+        // 判断服务是否已经启动
         if (!this.running.get()) {
-            return;
+            return; 
         }
         try {
             var registry = this.consulProperties.getRegistry();
             if (registry.isEnabled()) {
-                if (registry.getServices() == null) {
-                    registry.setServices(new LinkedList<ServiceInfo>());
-                }
-                var list = registry.getServices();
 
-                var serviceInfo = ServiceInfo.builder()
-                        .name(this.properties.getName())
-                        .ip(this.properties.getAddress())
-                        .port(this.properties.getPort())
-                        .build();
-                list.add(serviceInfo);
+                var list = registry.getServices();
                 var healthCheck = this.consulProperties.getHealthCheck();
                 for (var item : list) {
                     NewService service = new NewService();
+                    service.setAddress(item.getIp());
+                    service.setId(item.getId());
+                    service.setName(item.getName());
+                    service.setPort(item.getPort());
+                    service.setMeta(item.getMetadata());
                     if (healthCheck.isEnabled()) {
                         NewService.Check check = new NewService.Check();
-                        check.setHttp(item.getUrl() + "/" + healthCheck.getPath());
+                        check.setHttp(item.getUrl() + healthCheck.getPath());
                         check.setMethod(healthCheck.getMethod());
                         check.setInterval(healthCheck.getDelay().getSeconds() + "s");
-                        check.setTimeout(healthCheck.getWaitTime() + "s");
-                        check.setDeregisterCriticalServiceAfter(healthCheck.getRemoveAfter());
+                        check.setTimeout(healthCheck.getWaitTime().getSeconds() + "s");
+                        check.setDeregisterCriticalServiceAfter(healthCheck.getRemoveAfter().getSeconds() + "s");
                         service.setCheck(check);
                     }
-
                     this.consulClient.agentServiceRegister(service, this.consulProperties.getAclToken());
-
                 }
             }
-        } catch (
-                Exception e) {
+        } catch (Exception e) {
             log.error("Error Consul register", e);
         }
     }
 
     public void serviceWatch() {
-        //判断服务是否已经启动
+        // 判断服务是否已经启动
         if (!this.running.get()) {
             return;
         }
@@ -129,7 +144,8 @@ public class ConsulWatchThread implements SmartLifecycle {
             }
 
             CatalogServicesRequest request = CatalogServicesRequest.newBuilder()
-                    .setQueryParams(new QueryParams(this.consulProperties.getServiceWatch().getWaitTime().toMillis(), index))
+                    .setQueryParams(
+                            new QueryParams(this.consulProperties.getServiceWatch().getWaitTime().toMillis(), index))
                     .setToken(this.consulProperties.getAclToken())
                     .build();
             Response<Map<String, List<String>>> response = this.consulClient.getCatalogServices(request);
@@ -155,11 +171,15 @@ public class ConsulWatchThread implements SmartLifecycle {
                     if (Strings.isNullOrEmpty(address)) {
                         address = item.getNode().getAddress();
                     }
+                    var metadata = service.getMeta();
+                    if (metadata == null) {
+                        metadata = Collections.emptyMap();
+                    }
                     var serviceModel = ServiceInfo.builder()
                             .port(service.getPort())
                             .ip(address)
                             .id(service.getId())
-                            .metadata(service.getMeta())
+                            .metadata(metadata)
                             .build();
                     list.add(serviceModel);
                 }
@@ -172,21 +192,22 @@ public class ConsulWatchThread implements SmartLifecycle {
     }
 
     public void eventWatch() {
-        //判断服务是否已经启动
+        // 判断服务是否已经启动
         if (!this.running.get()) {
             return;
         }
 
         try {
-            //得到最新index
+            // 得到最新index
             long index = -1;
             if (this.eventListIndex.get() != null) {
                 index = this.eventListIndex.get().longValue();
             }
 
-            //构建请求
+            // 构建请求
             var request = EventListRequest.newBuilder()
-                    .setQueryParams(new QueryParams(this.consulProperties.getEventWatch().getWaitTime().toMillis(), index))
+                    .setQueryParams(
+                            new QueryParams(this.consulProperties.getEventWatch().getWaitTime().toMillis(), index))
                     .setToken(this.consulProperties.getAclToken())
                     .build();
             Response<List<Event>> response = this.consulClient.eventList(request);
@@ -213,7 +234,8 @@ public class ConsulWatchThread implements SmartLifecycle {
                 if (clazz == null) {
                     continue;
                 }
-                var payload = new String(Base64.getDecoder().decode(event.getPayload().getBytes(StandardCharsets.UTF_8)));
+                var payload = new String(
+                        Base64.getDecoder().decode(event.getPayload().getBytes(StandardCharsets.UTF_8)));
                 var applicationEvent = RemotingEvent.getApplicationEvent(payload, clazz);
                 if (applicationEvent == null) {
                     continue;
@@ -226,21 +248,22 @@ public class ConsulWatchThread implements SmartLifecycle {
     }
 
     public void configWatch() {
-        //判断服务是否已经启动
+        // 判断服务是否已经启动
         if (!this.running.get()) {
             return;
         }
 
         try {
-            //得到最新index
+            // 得到最新index
             long index = -1;
             if (this.configIndex.get() != null) {
                 index = this.configIndex.get().longValue();
             }
 
-            //构建请求
+            // 构建请求
             String keyPrefix = this.consulProperties.getConfigWatch().getKeyPrefix() + "/" + this.properties.getName();
-            var response = this.consulClient.getKVValues(keyPrefix, this.consulProperties.getAclToken(), new QueryParams(this.consulProperties.getConfigWatch().getWaitTime().toMillis(), index));
+            var response = this.consulClient.getKVValues(keyPrefix, this.consulProperties.getAclToken(),
+                    new QueryParams(this.consulProperties.getConfigWatch().getWaitTime().toMillis(), index));
             Long consulIndex = response.getConsulIndex();
             if (consulIndex != null) {
                 this.configIndex.set(BigInteger.valueOf(consulIndex));
@@ -266,7 +289,6 @@ public class ConsulWatchThread implements SmartLifecycle {
         }
     }
 
-
     @Override
     public boolean isAutoStartup() {
         return true;
@@ -288,7 +310,6 @@ public class ConsulWatchThread implements SmartLifecycle {
         callback.run();
     }
 
-
     @Override
     public void stop() {
         if (this.running.compareAndSet(true, false)) {
@@ -307,4 +328,3 @@ public class ConsulWatchThread implements SmartLifecycle {
         }
     }
 }
-

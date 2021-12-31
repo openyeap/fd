@@ -5,24 +5,15 @@ import lombok.var;
 import ltd.fdsa.api.service.HiService;
 import ltd.fdsa.core.context.ApplicationContextHolder;
 import ltd.fdsa.core.util.NamingUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
-
-import java.util.Collections;
-import java.util.List;
 
 @Service
 @Slf4j
 public class HiServiceImpl implements HiService {
-    @Value("${spring.application.name:defa}")
-    String applicationName;
-
-
-    @Autowired(required = false)
-    private List<CacheManager> cacheManagerList = Collections.emptyList();
+    @Value("${spring.application.name:default}")
+    String applicationName; 
 
     @Override
     public String hi(String message) {

@@ -31,7 +31,7 @@ public class AuthController {
     @IgnorePermissions
     @PostMapping("/api/auth")
     @ApiOperation(value = "jwt登录")
-    public Result auth(
+    public Result<Object> auth(
             @ApiParam(value = "用户名", required = true) String username,
             @ApiParam(value = "密码", required = true) String password) {
         // 根据用户名获取系统用户数据

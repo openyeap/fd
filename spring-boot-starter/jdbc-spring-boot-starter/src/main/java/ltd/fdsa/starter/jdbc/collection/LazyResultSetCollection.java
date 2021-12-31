@@ -94,12 +94,10 @@ public class LazyResultSetCollection<E> implements Collection<E> {
 
     private class ResultSetIterator<C> implements Iterator<C> {
         private final ResultSet rs;
-        private final Class<C> clazz;
         private C next;
 
         public ResultSetIterator(ResultSet resultSet, Class<C> clazz) {
             rs = resultSet;
-            this.clazz = clazz;
         }
 
         @Override

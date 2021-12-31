@@ -19,7 +19,6 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URLEncoder;
@@ -46,7 +45,6 @@ public class HomeController {
         ResponseEntity<String> response = new ResponseEntity<String>("", headers, HttpStatus.TEMPORARY_REDIRECT);
         return Mono.just(response);
     }
-
 
     @RequestMapping(value = "/routes", method = RequestMethod.GET)
     public Object listRoute() {
@@ -100,12 +98,7 @@ public class HomeController {
         DataBufferUtils.write(filePart.content(), outputStream)
                 .doOnComplete(
                         () -> {
-                            String objectName = filePart.filename();
-                            String contentType = filePart.headers().getContentType().toString();
-                            InputStream stream = new ByteArrayInputStream(outputStream.toByteArray());
                             try {
-                                long size = stream.available();
-//                                minioService.putObject(bucketName, objectName, stream, size, contentType);
                             } catch (Exception ex) {
                                 log.error(ex.getMessage());
                             }
@@ -113,10 +106,8 @@ public class HomeController {
                 .subscribe();
     }
 
-    @RequestMapping(
-            value = {"/file/{bucket}/{path}", "/file/{bucket}/**/{path}"},
-            method = RequestMethod.GET)
-    public Mono<ResponseEntity> file(
+    @RequestMapping(value = { "/file/{bucket}/{path}", "/file/{bucket}/*/{path}" }, method = RequestMethod.GET)
+    public Mono<ResponseEntity<Object>> file(
             @PathVariable(value = "bucket") String bucketName,
             @PathVariable(value = "path") String fileName,
             ServerHttpRequest request) {

@@ -18,6 +18,7 @@ public class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
      */
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+/*
         beanFactory.registerSingleton("myBeanName", ">> BeanFactoryPostProcessor 开始执行了");
         System.out.println(">> BeanFactoryPostProcessor 开始执行了");
         String[] names = beanFactory.getBeanDefinitionNames();
@@ -34,5 +35,6 @@ public class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
             }
         }
         System.out.println(">> BeanFactoryPostProcessor 执行结束");
+         */
     }
 }

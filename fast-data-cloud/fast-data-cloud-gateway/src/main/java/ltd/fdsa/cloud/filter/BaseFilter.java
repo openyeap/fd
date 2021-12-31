@@ -1,12 +1,14 @@
 package ltd.fdsa.cloud.filter;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import ltd.fdsa.web.view.Result;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.util.StringUtils;
@@ -40,12 +42,21 @@ public abstract class BaseFilter implements GlobalFilter, Ordered {
         }
         ServerHttpResponse response = exchange.getResponse();
         if (!access(request)) {
-            byte[] bits = errorBody().toString().getBytes(StandardCharsets.UTF_8);
-            DataBuffer buffer = response.bufferFactory().wrap(bits);
-            response.setStatusCode(errorStatus());
+            response.setStatusCode(result().getStatusCode());
+            response.getHeaders().addAll(result().getHeaders());
             // 指定编码，否则在浏览器中会中文乱码
             response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
-            return response.writeWith(Mono.just(buffer));
+            if (result().hasBody()) {
+                ObjectMapper mapper = new ObjectMapper();
+                try {
+                    DataBuffer buffer = response.bufferFactory().wrap(mapper.writeValueAsBytes(result()));
+                    return response.writeWith(Mono.just(buffer));
+                } catch (JsonProcessingException e) {
+                    response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
+                    return response.setComplete();
+                }
+            }
+
         }
         if (newRequest != null) {
             return chain.filter(exchange.mutate().request(newRequest).build());
@@ -53,11 +64,7 @@ public abstract class BaseFilter implements GlobalFilter, Ordered {
         return chain.filter(exchange);
     }
 
-
     protected abstract boolean access(ServerHttpRequest request);
 
-
-    protected abstract HttpStatus errorStatus();
-
-    protected abstract Result<Object> errorBody();
+    protected abstract ResponseEntity<Object> result();
 }
