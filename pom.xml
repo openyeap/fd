@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>ltd.fdsa</groupId>
     <artifactId>fast-data-parent</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5-SNAPSHOT</version>
     <name>fast data parent</name>
     <description>聚合父模块，核心模块，定义依赖包</description>
     <packaging>pom</packaging>
