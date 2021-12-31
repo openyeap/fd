@@ -1,20 +1,17 @@
 package ltd.fdsa.database.sql.columns.datetime;
 
-import static ltd.fdsa.database.sql.domain.Placeholder.placeholder;
+import ltd.fdsa.database.sql.columns.ColumnTest;
+import ltd.fdsa.database.sql.domain.LikeType;
+import ltd.fdsa.database.sql.domain.Placeholder;
+import ltd.fdsa.database.sql.schema.Table;
+import ltd.fdsa.database.sql.testsupport.ColumnAliasTestSupport;
+import ltd.fdsa.database.sql.testsupport.Consumers;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.function.BiFunction;
-
-import ltd.fdsa.database.sql.columns.ColumnTest;
-import ltd.fdsa.database.sql.domain.LikeType;
-import ltd.fdsa.database.sql.domain.Placeholder;
-import ltd.fdsa.database.sql.testsupport.ColumnAliasTestSupport;
-import ltd.fdsa.database.sql.testsupport.Consumers;
-import org.junit.jupiter.api.Test;
-
-import ltd.fdsa.database.sql.schema.Table;
 
 class DateTimeColumnTest extends ColumnTest<DateTimeColumn, DateTimeColumnBuilder, LocalDateTime>
         implements ColumnAliasTestSupport<DateTimeColumn, DateTimeColumnBuilder, LocalDateTime>

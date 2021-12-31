@@ -1,16 +1,15 @@
 package ltd.fdsa.database.sql.functions;
 
-import static ltd.fdsa.database.sql.dialect.Dialects.MYSQL;
-import static ltd.fdsa.database.sql.queries.Queries.select;
-import static java.sql.Types.DOUBLE;
-import static java.sql.Types.INTEGER;
-import static org.assertj.core.api.Assertions.assertThat;
-
+import ltd.fdsa.database.sql.schema.Table;
 import ltd.fdsa.database.sql.testsupport.OtherColumnTestSupport;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import ltd.fdsa.database.sql.schema.Table;
+import static java.sql.Types.DOUBLE;
+import static java.sql.Types.INTEGER;
+import static ltd.fdsa.database.sql.dialect.Dialects.MYSQL;
+import static ltd.fdsa.database.sql.queries.Queries.select;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class MaxTest implements OtherColumnTestSupport
 {

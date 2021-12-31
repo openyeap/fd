@@ -1,11 +1,10 @@
 package ltd.fdsa.starter.jdbc.model;
 
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import lombok.Builder;
 import lombok.Data;
+
+import java.util.Map;
 
 @Data
 @Builder

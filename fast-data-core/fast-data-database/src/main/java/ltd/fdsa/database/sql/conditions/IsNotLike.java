@@ -1,12 +1,12 @@
 package ltd.fdsa.database.sql.conditions;
 
-import java.text.MessageFormat;
-
+import lombok.ToString;
 import ltd.fdsa.database.sql.domain.BuildingContext;
 import ltd.fdsa.database.sql.domain.LikeType;
 import ltd.fdsa.database.sql.utils.BuilderUtils;
 import ltd.fdsa.database.sql.utils.Indentation;
-import lombok.ToString;
+
+import java.text.MessageFormat;
 
 /**
  * @author zhumingwu

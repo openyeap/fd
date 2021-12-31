@@ -1,16 +1,16 @@
 package ltd.fdsa.database.sql.conditions;
 
-import static java.util.stream.Collectors.joining;
-
-import java.text.MessageFormat;
-import java.util.Collection;
-
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import ltd.fdsa.database.sql.domain.BuildingContext;
 import ltd.fdsa.database.sql.domain.Placeholder;
 import ltd.fdsa.database.sql.utils.BuilderUtils;
 import ltd.fdsa.database.sql.utils.Indentation;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+
+import java.text.MessageFormat;
+import java.util.Collection;
+
+import static java.util.stream.Collectors.joining;
 
 /**
  * @author zhumingwu

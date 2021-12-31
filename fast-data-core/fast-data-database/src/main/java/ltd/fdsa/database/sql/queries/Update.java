@@ -1,33 +1,29 @@
 package ltd.fdsa.database.sql.queries;
 
-import static ltd.fdsa.database.sql.domain.ConditionType.WHERE;
-import static ltd.fdsa.database.sql.domain.ConditionType.WHERE_NOT;
-import static lombok.AccessLevel.PACKAGE;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+import ltd.fdsa.database.sql.columns.Column;
+import ltd.fdsa.database.sql.columns.datetime.DateColumn;
+import ltd.fdsa.database.sql.columns.datetime.DateTimeColumn;
+import ltd.fdsa.database.sql.columns.number.NumberColumn;
+import ltd.fdsa.database.sql.columns.string.StringColumn;
+import ltd.fdsa.database.sql.conditions.CombinedCondition;
+import ltd.fdsa.database.sql.conditions.Condition;
+import ltd.fdsa.database.sql.dialect.Dialect;
+import ltd.fdsa.database.sql.domain.*;
+import ltd.fdsa.database.sql.functions.Function;
+import ltd.fdsa.database.sql.schema.Table;
+import ltd.fdsa.database.sql.utils.Indentation;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import ltd.fdsa.database.sql.columns.Column;
-import ltd.fdsa.database.sql.columns.datetime.DateColumn;
-import ltd.fdsa.database.sql.columns.datetime.DateTimeColumn;
-import ltd.fdsa.database.sql.columns.number.NumberColumn;
-import ltd.fdsa.database.sql.columns.string.StringColumn;
-import ltd.fdsa.database.sql.conditions.Condition;
-import ltd.fdsa.database.sql.dialect.Dialect;
-import ltd.fdsa.database.sql.domain.ConditionType;
-import ltd.fdsa.database.sql.domain.PlainValuable;
-import ltd.fdsa.database.sql.domain.Valuable;
-import ltd.fdsa.database.sql.domain.ValuableColumn;
-import ltd.fdsa.database.sql.domain.ValuableFunction;
-import ltd.fdsa.database.sql.functions.Function;
-import ltd.fdsa.database.sql.schema.Table;
-import ltd.fdsa.database.sql.utils.Indentation;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
-import ltd.fdsa.database.sql.conditions.CombinedCondition;
+import static lombok.AccessLevel.PACKAGE;
+import static ltd.fdsa.database.sql.domain.ConditionType.WHERE;
+import static ltd.fdsa.database.sql.domain.ConditionType.WHERE_NOT;
 
 /**
  * @author zhumingwu

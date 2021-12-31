@@ -1,15 +1,14 @@
 package ltd.fdsa.database.sql.queries;
 
-import static ltd.fdsa.database.sql.queries.Queries.insertInto;
-import static ltd.fdsa.database.sql.queries.Queries.update;
-import static org.assertj.core.api.Assertions.assertThat;
-
 import lombok.var;
+import ltd.fdsa.database.sql.columns.string.VarCharColumn;
+import ltd.fdsa.database.sql.schema.Table;
 import ltd.fdsa.database.sql.testsupport.QueryExecutorTestSupport;
 import org.junit.jupiter.api.Test;
 
-import ltd.fdsa.database.sql.columns.string.VarCharColumn;
-import ltd.fdsa.database.sql.schema.Table;
+import static ltd.fdsa.database.sql.queries.Queries.insertInto;
+import static ltd.fdsa.database.sql.queries.Queries.update;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class UpdatebleQueryTest extends QueryExecutorTestSupport
 {

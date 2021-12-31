@@ -1,7 +1,8 @@
 package ltd.fdsa.database.sql.queries;
 
-import static lombok.AccessLevel.PACKAGE;
-
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import ltd.fdsa.database.sql.conditions.CombinedCondition;
 import ltd.fdsa.database.sql.conditions.Condition;
 import ltd.fdsa.database.sql.dialect.Dialect;
@@ -9,9 +10,8 @@ import ltd.fdsa.database.sql.domain.ConditionType;
 import ltd.fdsa.database.sql.domain.Limit;
 import ltd.fdsa.database.sql.schema.Table;
 import ltd.fdsa.database.sql.utils.Indentation;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+
+import static lombok.AccessLevel.PACKAGE;
 
 /**
  * @author zhumingwu

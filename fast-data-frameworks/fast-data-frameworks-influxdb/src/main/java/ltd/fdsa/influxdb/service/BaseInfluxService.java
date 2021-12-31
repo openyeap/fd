@@ -10,7 +10,6 @@ import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.client.write.Point;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
-import ltd.fdsa.core.context.ApplicationContextHolder;
 import ltd.fdsa.influxdb.entity.InfluxEntity;
 import ltd.fdsa.influxdb.model.EntityInfo;
 import ltd.fdsa.influxdb.model.Location;

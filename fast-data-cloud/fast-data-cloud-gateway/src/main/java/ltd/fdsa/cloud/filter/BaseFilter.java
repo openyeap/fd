@@ -15,8 +15,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.StandardCharsets;
-
 @Slf4j
 public abstract class BaseFilter implements GlobalFilter, Ordered {
 

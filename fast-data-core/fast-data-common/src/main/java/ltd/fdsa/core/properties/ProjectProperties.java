@@ -18,7 +18,6 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
-
 @Data
 @ConfigurationProperties(prefix = ProjectProperties.PREFIX)
 @ToString
@@ -65,7 +64,8 @@ public class ProjectProperties implements InitializingBean {
                 Enumeration<InetAddress> addresses = netInterface.getInetAddresses();
                 while (addresses.hasMoreElements()) {
                     InetAddress ip = addresses.nextElement();
-                    if (ip != null && ip instanceof Inet4Address && !ip.isLoopbackAddress() && ip.getHostAddress().indexOf(":") == -1) {
+                    if (ip != null && ip instanceof Inet4Address && !ip.isLoopbackAddress()
+                            && ip.getHostAddress().indexOf(":") == -1) {
                         return ip.getHostAddress();
                     }
                 }
@@ -98,10 +98,9 @@ public class ProjectProperties implements InitializingBean {
 
         try {
             int lowest = 2147483647;
-            Enumeration nics = NetworkInterface.getNetworkInterfaces();
+            Enumeration<NetworkInterface> nics = NetworkInterface.getNetworkInterfaces();
 
-            label61:
-            while (true) {
+            label61: while (true) {
                 NetworkInterface ifc;
                 do {
                     while (true) {
@@ -118,7 +117,6 @@ public class ProjectProperties implements InitializingBean {
                             if (result != null) {
                                 continue;
                             }
-                            break;
                         }
 
                         lowest = ifc.getIndex();
@@ -126,11 +124,12 @@ public class ProjectProperties implements InitializingBean {
                     }
                 } while (this.ignoreInterface(ifc.getDisplayName()));
 
-                Enumeration addrs = ifc.getInetAddresses();
+                Enumeration<InetAddress> addrs = ifc.getInetAddresses();
 
                 while (addrs.hasMoreElements()) {
                     InetAddress address = (InetAddress) addrs.nextElement();
-                    if (address instanceof Inet4Address && !address.isLoopbackAddress() && this.isPreferredAddress(address)) {
+                    if (address instanceof Inet4Address && !address.isLoopbackAddress()
+                            && this.isPreferredAddress(address)) {
                         log.trace("Found non-loopback interface: " + ifc.getDisplayName());
                         result = address;
                     }
@@ -152,9 +151,8 @@ public class ProjectProperties implements InitializingBean {
         }
     }
 
-
     boolean ignoreInterface(String interfaceName) {
-        Iterator iterator = this.ignoredInterfaces.iterator();
+        Iterator<String> iterator = this.ignoredInterfaces.iterator();
 
         String regex;
         do {
@@ -169,7 +167,6 @@ public class ProjectProperties implements InitializingBean {
         return true;
     }
 
-
     private boolean isPreferredAddress(InetAddress address) {
         if (this.useOnlySiteLocalInterfaces) {
             boolean siteLocalAddress = address.isSiteLocalAddress();
@@ -183,7 +180,7 @@ public class ProjectProperties implements InitializingBean {
             if (preferredNetworks.isEmpty()) {
                 return true;
             } else {
-                Iterator var3 = preferredNetworks.iterator();
+                Iterator<String> var3 = preferredNetworks.iterator();
 
                 String regex;
                 String hostAddress;

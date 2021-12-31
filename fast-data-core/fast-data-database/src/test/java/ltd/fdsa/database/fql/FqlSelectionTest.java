@@ -2,10 +2,10 @@ package ltd.fdsa.database.fql;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
-import ltd.fdsa.database.properties.JdbcApiProperties;
-import ltd.fdsa.database.service.JdbcApiService;
 import ltd.fdsa.database.fql.antlr.FqlLexer;
 import ltd.fdsa.database.fql.antlr.FqlParser;
+import ltd.fdsa.database.properties.JdbcApiProperties;
+import ltd.fdsa.database.service.JdbcApiService;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;

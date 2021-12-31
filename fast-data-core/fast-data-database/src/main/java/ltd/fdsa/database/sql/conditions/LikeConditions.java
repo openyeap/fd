@@ -1,12 +1,12 @@
 package ltd.fdsa.database.sql.conditions;
 
-import static ltd.fdsa.database.sql.conditions.GenericCondition.GenericConditionType.IS_NOT_NULL;
-import static ltd.fdsa.database.sql.conditions.GenericCondition.GenericConditionType.IS_NULL;
-import static ltd.fdsa.database.sql.domain.LikeType.NONE;
-
 import ltd.fdsa.database.sql.columns.Column;
 import ltd.fdsa.database.sql.domain.LikeType;
 import ltd.fdsa.database.sql.domain.Placeholder;
+
+import static ltd.fdsa.database.sql.conditions.GenericCondition.GenericConditionType.IS_NOT_NULL;
+import static ltd.fdsa.database.sql.conditions.GenericCondition.GenericConditionType.IS_NULL;
+import static ltd.fdsa.database.sql.domain.LikeType.NONE;
 
 /**
  * @author zhumingwu

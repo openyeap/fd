@@ -1,11 +1,11 @@
 package ltd.fdsa.database.sql.functions;
 
-import static java.sql.Types.INTEGER;
-
+import lombok.ToString;
 import ltd.fdsa.database.sql.columns.Column;
 import ltd.fdsa.database.sql.domain.BuildingContext;
 import ltd.fdsa.database.sql.utils.Indentation;
-import lombok.ToString;
+
+import static java.sql.Types.INTEGER;
 
 /**
  * @author zhumingwu

@@ -1,7 +1,7 @@
 package ltd.fdsa.database.sql.columns.string;
 
-import ltd.fdsa.database.sql.domain.IntSize;
 import ltd.fdsa.database.sql.columns.ColumnDefinition;
+import ltd.fdsa.database.sql.domain.IntSize;
 import ltd.fdsa.database.sql.schema.Table;
 
 /**

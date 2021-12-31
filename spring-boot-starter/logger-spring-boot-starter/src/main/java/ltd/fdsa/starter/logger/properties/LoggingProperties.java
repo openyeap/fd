@@ -2,7 +2,6 @@ package ltd.fdsa.starter.logger.properties;
 
 import lombok.Data;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.HashMap;

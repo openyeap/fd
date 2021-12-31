@@ -1,14 +1,13 @@
 package ltd.fdsa.database.sql.columns;
 
-import static ltd.fdsa.database.sql.conditions.GenericCondition.GenericConditionType.IS_BETWEEN;
-import static ltd.fdsa.database.sql.domain.Placeholder.placeholder;
-
-import ltd.fdsa.database.sql.testsupport.ColumnTestSupport;
-import org.junit.jupiter.api.Test;
-
 import ltd.fdsa.database.sql.columns.string.VarCharColumnBuilder;
 import ltd.fdsa.database.sql.conditions.GenericCondition;
 import ltd.fdsa.database.sql.schema.Table;
+import ltd.fdsa.database.sql.testsupport.ColumnTestSupport;
+import org.junit.jupiter.api.Test;
+
+import static ltd.fdsa.database.sql.conditions.GenericCondition.GenericConditionType.IS_BETWEEN;
+import static ltd.fdsa.database.sql.domain.Placeholder.placeholder;
 
 public abstract class ColumnTest<C extends Column, B extends ColumnBuilder<C, B, V>, V> extends ColumnTestSupport<C, B, V>
 {

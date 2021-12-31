@@ -9,7 +9,10 @@ import ltd.fdsa.database.sql.schema.Table;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 public class DataSourceMataData implements DatabaseMetaData {

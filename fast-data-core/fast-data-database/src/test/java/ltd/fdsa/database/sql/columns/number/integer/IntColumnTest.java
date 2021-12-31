@@ -1,12 +1,11 @@
 package ltd.fdsa.database.sql.columns.number.integer;
 
-import java.util.function.BiFunction;
-
+import ltd.fdsa.database.sql.schema.Table;
 import ltd.fdsa.database.sql.testsupport.ColumnAliasTestSupport;
 import ltd.fdsa.database.sql.testsupport.Consumers;
 import org.junit.jupiter.api.Test;
 
-import ltd.fdsa.database.sql.schema.Table;
+import java.util.function.BiFunction;
 
 class IntColumnTest extends IntegerColumnTest<IntColumn, IntColumnBuilder> implements ColumnAliasTestSupport<IntColumn, IntColumnBuilder, Integer>
 {

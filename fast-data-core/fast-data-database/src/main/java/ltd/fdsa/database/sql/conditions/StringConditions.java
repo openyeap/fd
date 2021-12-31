@@ -1,15 +1,12 @@
 package ltd.fdsa.database.sql.conditions;
 
-import static ltd.fdsa.database.sql.conditions.GenericCondition.GenericConditionType.IS_EQUAL_TO;
-import static ltd.fdsa.database.sql.conditions.GenericCondition.GenericConditionType.IS_NOT_EQUAL_TO;
-import static ltd.fdsa.database.sql.conditions.GenericCondition.GenericConditionType.IS_NOT_NULL;
-import static ltd.fdsa.database.sql.conditions.GenericCondition.GenericConditionType.IS_NULL;
+import ltd.fdsa.database.sql.domain.Placeholder;
+import ltd.fdsa.database.sql.utils.ArrayUtils;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import ltd.fdsa.database.sql.domain.Placeholder;
-import ltd.fdsa.database.sql.utils.ArrayUtils;
+import static ltd.fdsa.database.sql.conditions.GenericCondition.GenericConditionType.*;
 
 /**
  * @author zhumingwu

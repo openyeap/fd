@@ -1,9 +1,5 @@
 package ltd.fdsa.starter.jdbc.sql;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-
 public class Parameterizer {
 //    public JoinSql parameterizeSql(String sql) {
 //        StringBuilder sb = new StringBuilder();

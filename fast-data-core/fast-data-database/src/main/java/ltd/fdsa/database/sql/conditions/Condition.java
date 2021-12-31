@@ -1,23 +1,19 @@
 package ltd.fdsa.database.sql.conditions;
 
-import static ltd.fdsa.database.sql.domain.ConcatenationType.AND;
-import static ltd.fdsa.database.sql.domain.ConcatenationType.OR;
-import static ltd.fdsa.database.sql.domain.ConditionType.WHERE;
-import static ltd.fdsa.database.sql.domain.ConditionType.WHERE_NOT;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.var;
+import ltd.fdsa.database.sql.domain.*;
+import ltd.fdsa.database.sql.utils.Indentation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.var;
-import ltd.fdsa.database.sql.domain.BuildingContext;
-import ltd.fdsa.database.sql.domain.ConcatenationType;
-import ltd.fdsa.database.sql.domain.ConditionType;
-import ltd.fdsa.database.sql.domain.Placeholder;
-import ltd.fdsa.database.sql.domain.SqlTypeSupplier;
-import ltd.fdsa.database.sql.utils.Indentation;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import static ltd.fdsa.database.sql.domain.ConcatenationType.AND;
+import static ltd.fdsa.database.sql.domain.ConcatenationType.OR;
+import static ltd.fdsa.database.sql.domain.ConditionType.WHERE;
+import static ltd.fdsa.database.sql.domain.ConditionType.WHERE_NOT;
 
 /**
  * @author zhumingwu

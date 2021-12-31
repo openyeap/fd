@@ -2,7 +2,6 @@ package ltd.fdsa.cloud.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import ltd.fdsa.cloud.model.MockRule;
-
 import ltd.fdsa.cloud.service.IMockRuleService;
 import ltd.fdsa.cloud.service.impl.MockRuleServiceImpl;
 import org.apache.commons.lang.StringUtils;

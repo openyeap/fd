@@ -1,12 +1,10 @@
 package ltd.fdsa.database.sql.columns.number.doubletype;
 
-import java.util.function.BiFunction;
-
+import ltd.fdsa.database.sql.schema.Table;
 import ltd.fdsa.database.sql.testsupport.ColumnAliasTestSupport;
-import ltd.fdsa.database.sql.testsupport.Consumers;
 import org.junit.jupiter.api.Test;
 
-import ltd.fdsa.database.sql.schema.Table;
+import java.util.function.BiFunction;
 
 class DecimalColumnTest extends DoubleTypeColumnTest<DecimalColumn, DecimalColumnBuilder>
         implements ColumnAliasTestSupport<DecimalColumn, DecimalColumnBuilder, Double>
@@ -26,7 +24,6 @@ class DecimalColumnTest extends DoubleTypeColumnTest<DecimalColumn, DecimalColum
     @Test
     void testDecimalColumnDefinition()
     {
-        assertBuild(Consumers::noAction).isEqualTo("DECIMAL DEFAULT NULL");
         assertBuild(builder -> builder.nullable(false)).isEqualTo("DECIMAL NOT NULL");
         assertBuild(builder -> builder.defaultNull()).isEqualTo("DECIMAL DEFAULT NULL");
         assertBuild(builder -> builder.noDefault()).isEqualTo("DECIMAL");

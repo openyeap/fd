@@ -1,18 +1,18 @@
 package ltd.fdsa.database.sql.dialect;
 
-import java.util.Map;
-
 import lombok.var;
 import ltd.fdsa.database.sql.columns.Column;
 import ltd.fdsa.database.sql.domain.BuildingContext;
 import ltd.fdsa.database.sql.domain.Limit;
 import ltd.fdsa.database.sql.domain.Valuable;
 import ltd.fdsa.database.sql.domain.ValuableColumn;
+import ltd.fdsa.database.sql.queries.Delete;
+import ltd.fdsa.database.sql.queries.Insert;
 import ltd.fdsa.database.sql.queries.Select;
 import ltd.fdsa.database.sql.utils.BuilderUtils;
 import ltd.fdsa.database.sql.utils.Indentation;
-import ltd.fdsa.database.sql.queries.Delete;
-import ltd.fdsa.database.sql.queries.Insert;
+
+import java.util.Map;
 
 /**
  * @author zhumingwu

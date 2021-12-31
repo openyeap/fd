@@ -20,7 +20,6 @@ import ltd.fdsa.core.event.RemotingEvent;
 import ltd.fdsa.core.event.ServiceDiscoveredEvent;
 import ltd.fdsa.core.properties.ProjectProperties;
 import ltd.fdsa.core.service.ServiceInfo;
-import ltd.fdsa.core.util.NamingUtils;
 import ltd.fdsa.core.util.YamlUtils;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.SmartLifecycle;

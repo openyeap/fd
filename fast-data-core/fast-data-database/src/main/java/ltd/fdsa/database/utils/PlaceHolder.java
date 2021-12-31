@@ -1,8 +1,8 @@
 package ltd.fdsa.database.utils;
 
 import lombok.var;
-import ltd.fdsa.database.model.FieldInfo;
 import ltd.fdsa.database.model.EntityInfo;
+import ltd.fdsa.database.model.FieldInfo;
 import org.springframework.util.ReflectionUtils;
 
 import javax.persistence.Column;

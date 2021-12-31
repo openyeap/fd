@@ -11,7 +11,7 @@ import java.lang.reflect.Type;
 import java.sql.Statement;
 import java.util.*;
 
-@Intercepts({@Signature(type = ResultSetHandler.class, method = "handleResultSets", args = {Statement.class})})
+@Intercepts({ @Signature(type = ResultSetHandler.class, method = "handleResultSets", args = { Statement.class }) })
 @Slf4j
 public class DecryptResultFieldInterceptor implements Interceptor {
 
@@ -68,12 +68,12 @@ public class DecryptResultFieldInterceptor implements Interceptor {
         field.setAccessible(true);
         if (Collection.class.isAssignableFrom(field.getType())) {
             // 字段类型为List 或 Set集合
-            Collection childCollection;
+            Collection<?> childCollection;
             Type type = field.getGenericType();
             // 判断是不是参数化类型
             if (type instanceof ParameterizedType) {
                 // 集合的参数类型
-                Class clazz = (Class) ((ParameterizedType) type).getActualTypeArguments()[0];
+                Class<?> clazz = (Class<?>) ((ParameterizedType) type).getActualTypeArguments()[0];
                 childCollection = setElementValue(obj, field, clazz, field.getType());
                 field.set(obj, childCollection);
             }
@@ -93,14 +93,18 @@ public class DecryptResultFieldInterceptor implements Interceptor {
      * @return
      * @throws Exception
      */
-    private <T> Collection<T> setElementValue(Object obj, Field field, T elementType, Class collectionType) throws Exception {
+    private <T> Collection<T> setElementValue(Object obj, Field field, T elementType, Class<?> collectionType)
+            throws Exception {
         Collection<T> collection;
         if (collectionType == List.class) {
-            collection = new ArrayList();
+            collection = new ArrayList<T>();
         } else {
-            collection = new HashSet();
+            collection = new HashSet<T>();
         }
         Collection<T> originalElements = (Collection<T>) field.get(obj);
+        if (originalElements == null) {
+            return null;
+        }
         if (CollectionUtils.isEmpty(originalElements)) {
             return null;
         }

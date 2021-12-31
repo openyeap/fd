@@ -2,6 +2,8 @@ package ltd.fdsa.database.fql;
 
 import com.google.common.base.Strings;
 import lombok.var;
+import ltd.fdsa.database.fql.antlr.FqlParser;
+import ltd.fdsa.database.model.*;
 import ltd.fdsa.database.service.JdbcApiService;
 import ltd.fdsa.database.sql.columns.Column;
 import ltd.fdsa.database.sql.conditions.Condition;
@@ -10,8 +12,6 @@ import ltd.fdsa.database.sql.domain.OrderBy;
 import ltd.fdsa.database.sql.domain.OrderDirection;
 import ltd.fdsa.database.sql.queries.Queries;
 import ltd.fdsa.database.sql.schema.Table;
-import ltd.fdsa.database.fql.antlr.FqlParser;
-import ltd.fdsa.database.model.*;
 
 import java.util.ArrayList;
 import java.util.List;

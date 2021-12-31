@@ -1,19 +1,6 @@
 package ltd.fdsa.database.sql.queries;
 
-import static ltd.fdsa.database.sql.dialect.Dialects.MYSQL;
-import static ltd.fdsa.database.sql.dialect.Dialects.SYBASE;
-import static ltd.fdsa.database.sql.queries.Queries.insertInto;
-import static ltd.fdsa.database.sql.utils.Indentation.enabled;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-
 import lombok.var;
-import ltd.fdsa.database.sql.functions.Function;
-import org.junit.jupiter.api.Test;
-
 import ltd.fdsa.database.sql.columns.datetime.DateColumn;
 import ltd.fdsa.database.sql.columns.datetime.DateTimeColumn;
 import ltd.fdsa.database.sql.columns.datetime.TimeColumn;
@@ -22,7 +9,19 @@ import ltd.fdsa.database.sql.columns.number.integer.BigIntColumn;
 import ltd.fdsa.database.sql.columns.number.integer.IntColumn;
 import ltd.fdsa.database.sql.columns.string.VarCharColumn;
 import ltd.fdsa.database.sql.domain.Placeholder;
+import ltd.fdsa.database.sql.functions.Function;
 import ltd.fdsa.database.sql.schema.Table;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
+import static ltd.fdsa.database.sql.dialect.Dialects.MYSQL;
+import static ltd.fdsa.database.sql.dialect.Dialects.SYBASE;
+import static ltd.fdsa.database.sql.queries.Queries.insertInto;
+import static ltd.fdsa.database.sql.utils.Indentation.enabled;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class InsertTest
 {

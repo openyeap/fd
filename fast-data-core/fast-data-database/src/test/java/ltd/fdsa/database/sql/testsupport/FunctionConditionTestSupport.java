@@ -1,15 +1,14 @@
 package ltd.fdsa.database.sql.testsupport;
 
-import static ltd.fdsa.database.sql.dialect.Dialects.MYSQL;
-import static ltd.fdsa.database.sql.queries.Queries.select;
-import static org.assertj.core.api.Assertions.assertThat;
+import ltd.fdsa.database.sql.conditions.Condition;
+import ltd.fdsa.database.sql.schema.Table;
+import org.assertj.core.api.AbstractStringAssert;
 
 import java.util.function.Supplier;
 
-import ltd.fdsa.database.sql.conditions.Condition;
-import org.assertj.core.api.AbstractStringAssert;
-
-import ltd.fdsa.database.sql.schema.Table;
+import static ltd.fdsa.database.sql.dialect.Dialects.MYSQL;
+import static ltd.fdsa.database.sql.queries.Queries.select;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class FunctionConditionTestSupport implements OtherColumnTestSupport
 {

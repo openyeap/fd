@@ -1,15 +1,12 @@
 package ltd.fdsa.database.sql.columns.string;
 
-import static ltd.fdsa.database.sql.domain.Placeholder.placeholder;
-
-import java.util.Arrays;
-
 import ltd.fdsa.database.sql.columns.ColumnTest;
 import ltd.fdsa.database.sql.domain.LikeType;
 import ltd.fdsa.database.sql.domain.Placeholder;
+import ltd.fdsa.database.sql.schema.Table;
 import org.junit.jupiter.api.Test;
 
-import ltd.fdsa.database.sql.schema.Table;
+import java.util.Arrays;
 
 class StringColumnTest<C extends StringColumn<?>, B extends StringColumnBuilder<B, C>> extends ColumnTest<C, B, CharSequence>
 {

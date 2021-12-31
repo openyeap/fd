@@ -8,10 +8,10 @@ import ltd.fdsa.consul.event.ConsulEventService;
 import ltd.fdsa.consul.lock.ConsulLockManager;
 import ltd.fdsa.consul.properties.ConsulProperties;
 import ltd.fdsa.consul.thread.ConsulWatchThread;
+import ltd.fdsa.core.event.RemoteEventPublisher;
 import ltd.fdsa.core.lock.LockManager;
 import ltd.fdsa.core.properties.ProjectProperties;
 import ltd.fdsa.core.util.NamingUtils;
-import ltd.fdsa.core.event.RemoteEventPublisher;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -21,8 +21,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-
-import ch.qos.logback.core.recovery.ResilientFileOutputStream;
 
 @Configuration
 @Slf4j

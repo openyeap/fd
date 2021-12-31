@@ -1,9 +1,9 @@
 package ltd.fdsa.database.sql.domain;
 
-import ltd.fdsa.database.sql.dialect.Dialect;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
+import ltd.fdsa.database.sql.dialect.Dialect;
 
 /**
  * @author zhumingwu

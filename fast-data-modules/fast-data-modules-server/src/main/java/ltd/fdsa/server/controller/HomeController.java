@@ -2,14 +2,16 @@ package ltd.fdsa.server.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
+import ltd.fdsa.api.service.HiService;
 import ltd.fdsa.core.context.ApplicationContextHolder;
 import ltd.fdsa.core.event.RefreshedEvent;
-import ltd.fdsa.api.service.HiService;
 import ltd.fdsa.core.util.ProxyUtils;
 import ltd.fdsa.server.service.impl.HiServiceImpl;
 import ltd.fdsa.web.view.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;

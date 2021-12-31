@@ -1,13 +1,13 @@
 package ltd.fdsa.database.sql.functions;
 
-import ltd.fdsa.database.sql.columns.Column;
-import ltd.fdsa.database.sql.conditions.EqualityConditions;
-import ltd.fdsa.database.sql.domain.BuildingContext;
-import ltd.fdsa.database.sql.utils.Indentation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import ltd.fdsa.database.sql.columns.Column;
+import ltd.fdsa.database.sql.conditions.EqualityConditions;
+import ltd.fdsa.database.sql.domain.BuildingContext;
+import ltd.fdsa.database.sql.utils.Indentation;
 
 /**
  * @author zhumingwu

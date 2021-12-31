@@ -1,14 +1,11 @@
 package ltd.fdsa.database.sql.columns.number;
 
-import static ltd.fdsa.database.sql.domain.Placeholder.placeholder;
-
-import ltd.fdsa.database.sql.columns.ColumnTest;
-import ltd.fdsa.database.sql.domain.Placeholder;
-import org.junit.jupiter.api.Test;
-
 import ltd.fdsa.database.sql.columns.ColumnBuilder;
+import ltd.fdsa.database.sql.columns.ColumnTest;
 import ltd.fdsa.database.sql.columns.number.doubletype.DoubleColumnBuilder;
+import ltd.fdsa.database.sql.domain.Placeholder;
 import ltd.fdsa.database.sql.schema.Table;
+import org.junit.jupiter.api.Test;
 
 public class NumberColumnTest<C extends NumberColumn<C, T>, B extends ColumnBuilder<C, B, T>, T extends Number> extends ColumnTest<C, B, T>
 {

@@ -1,14 +1,14 @@
 package ltd.fdsa.database.sql.queries;
 
-import static ltd.fdsa.database.sql.utils.Indentation.disabled;
+import ltd.fdsa.database.sql.dialect.Dialect;
+import ltd.fdsa.database.sql.utils.Indentation;
 
 import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import ltd.fdsa.database.sql.dialect.Dialect;
-import ltd.fdsa.database.sql.utils.Indentation;
+import static ltd.fdsa.database.sql.utils.Indentation.disabled;
 
 /**
  * @author zhumingwu

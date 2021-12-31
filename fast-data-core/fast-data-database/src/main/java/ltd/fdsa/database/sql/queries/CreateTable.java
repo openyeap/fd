@@ -1,9 +1,9 @@
 package ltd.fdsa.database.sql.queries;
 
+import lombok.Getter;
 import ltd.fdsa.database.sql.dialect.Dialect;
 import ltd.fdsa.database.sql.schema.Table;
 import ltd.fdsa.database.sql.utils.Indentation;
-import lombok.Getter;
 
 /**
  * @author zhumingwu

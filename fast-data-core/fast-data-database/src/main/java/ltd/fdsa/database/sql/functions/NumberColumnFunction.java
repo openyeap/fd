@@ -1,8 +1,8 @@
 package ltd.fdsa.database.sql.functions;
 
-import ltd.fdsa.database.sql.conditions.NumberConditions;
-import ltd.fdsa.database.sql.columns.Column;
 import lombok.ToString;
+import ltd.fdsa.database.sql.columns.Column;
+import ltd.fdsa.database.sql.conditions.NumberConditions;
 
 /**
  * @author zhumingwu

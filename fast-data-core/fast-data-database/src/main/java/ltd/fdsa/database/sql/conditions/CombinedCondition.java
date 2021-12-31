@@ -1,16 +1,16 @@
 package ltd.fdsa.database.sql.conditions;
 
-import static lombok.AccessLevel.PRIVATE;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.var;
+import ltd.fdsa.database.sql.domain.BuildingContext;
+import ltd.fdsa.database.sql.utils.Indentation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.var;
-import ltd.fdsa.database.sql.domain.BuildingContext;
-import ltd.fdsa.database.sql.utils.Indentation;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import static lombok.AccessLevel.PRIVATE;
 
 /**
  * @author zhumingwu

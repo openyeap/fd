@@ -1,22 +1,21 @@
 package ltd.fdsa.database.sql.utils;
 
-import static ltd.fdsa.database.sql.dialect.Dialects.MYSQL;
-import static ltd.fdsa.database.sql.domain.Placeholder.placeholder;
-import static ltd.fdsa.database.sql.utils.BuilderUtils.getValued;
-import static ltd.fdsa.database.sql.utils.Indentation.disabled;
-import static org.assertj.core.api.Assertions.assertThat;
+import lombok.var;
+import ltd.fdsa.database.sql.domain.BuildingContext;
+import ltd.fdsa.database.sql.domain.Plain;
+import ltd.fdsa.database.sql.functions.Function;
+import ltd.fdsa.database.sql.schema.Schema;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import lombok.var;
-import ltd.fdsa.database.sql.functions.Function;
-import org.junit.jupiter.api.Test;
-
-import ltd.fdsa.database.sql.domain.BuildingContext;
-import ltd.fdsa.database.sql.domain.Plain;
-import ltd.fdsa.database.sql.schema.Schema;
+import static ltd.fdsa.database.sql.dialect.Dialects.MYSQL;
+import static ltd.fdsa.database.sql.domain.Placeholder.placeholder;
+import static ltd.fdsa.database.sql.utils.BuilderUtils.getValued;
+import static ltd.fdsa.database.sql.utils.Indentation.disabled;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class BuilderUtilsTest
 {

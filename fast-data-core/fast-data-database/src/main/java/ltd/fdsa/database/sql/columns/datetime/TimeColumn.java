@@ -1,25 +1,17 @@
 package ltd.fdsa.database.sql.columns.datetime;
 
-import static ltd.fdsa.database.sql.conditions.GenericCondition.GenericConditionType.IS_BETWEEN;
-import static ltd.fdsa.database.sql.conditions.GenericCondition.GenericConditionType.IS_EQUAL_TO;
-import static ltd.fdsa.database.sql.conditions.GenericCondition.GenericConditionType.IS_GREATER_THAN;
-import static ltd.fdsa.database.sql.conditions.GenericCondition.GenericConditionType.IS_GREATER_THAN_OR_EQUAL_TO;
-import static ltd.fdsa.database.sql.conditions.GenericCondition.GenericConditionType.IS_LESS_THAN;
-import static ltd.fdsa.database.sql.conditions.GenericCondition.GenericConditionType.IS_LESS_THAN_OR_EQUAL_TO;
-import static ltd.fdsa.database.sql.conditions.GenericCondition.GenericConditionType.IS_NOT_EQUAL_TO;
-import static ltd.fdsa.database.sql.conditions.GenericCondition.GenericConditionType.IS_NOT_NULL;
-import static ltd.fdsa.database.sql.conditions.GenericCondition.GenericConditionType.IS_NULL;
-import static java.sql.Types.DATE;
+import lombok.ToString;
+import ltd.fdsa.database.sql.columns.Column;
+import ltd.fdsa.database.sql.columns.ColumnDefinition;
+import ltd.fdsa.database.sql.conditions.Condition;
+import ltd.fdsa.database.sql.conditions.GenericCondition;
+import ltd.fdsa.database.sql.domain.Placeholder;
+import ltd.fdsa.database.sql.schema.Table;
 
 import java.time.LocalTime;
 
-import ltd.fdsa.database.sql.conditions.Condition;
-import ltd.fdsa.database.sql.domain.Placeholder;
-import ltd.fdsa.database.sql.columns.Column;
-import ltd.fdsa.database.sql.columns.ColumnDefinition;
-import ltd.fdsa.database.sql.conditions.GenericCondition;
-import ltd.fdsa.database.sql.schema.Table;
-import lombok.ToString;
+import static java.sql.Types.DATE;
+import static ltd.fdsa.database.sql.conditions.GenericCondition.GenericConditionType.*;
 
 /**
  * @author zhumingwu

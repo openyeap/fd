@@ -1,15 +1,15 @@
 package ltd.fdsa.database.sql.conditions;
 
-import static java.util.Arrays.asList;
+import lombok.ToString;
+import ltd.fdsa.database.sql.dialect.Labels;
+import ltd.fdsa.database.sql.domain.BuildingContext;
+import ltd.fdsa.database.sql.utils.BuilderUtils;
+import ltd.fdsa.database.sql.utils.Indentation;
 
 import java.text.MessageFormat;
 import java.util.function.Function;
 
-import ltd.fdsa.database.sql.domain.BuildingContext;
-import ltd.fdsa.database.sql.utils.BuilderUtils;
-import ltd.fdsa.database.sql.utils.Indentation;
-import ltd.fdsa.database.sql.dialect.Labels;
-import lombok.ToString;
+import static java.util.Arrays.asList;
 
 /**
  * @author zhumingwu

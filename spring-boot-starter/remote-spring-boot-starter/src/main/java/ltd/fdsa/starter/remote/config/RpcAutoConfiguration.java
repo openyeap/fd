@@ -5,12 +5,10 @@ import lombok.var;
 import ltd.fdsa.core.context.ApplicationContextHolder;
 import ltd.fdsa.core.util.NamingUtils;
 import ltd.fdsa.starter.remote.RpcApiBeanDefinitionRegistry;
-
 import ltd.fdsa.starter.remote.RpcService;
 import ltd.fdsa.starter.remote.properties.RpcProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-
 import org.springframework.remoting.caucho.HessianServiceExporter;
 import org.springframework.remoting.rmi.RmiServiceExporter;
 

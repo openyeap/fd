@@ -1,13 +1,13 @@
 package ltd.fdsa.database.sql.columns.number.doubletype;
 
+import lombok.ToString;
+import ltd.fdsa.database.sql.columns.ColumnDefinition;
+import ltd.fdsa.database.sql.columns.number.NumberColumn;
+import ltd.fdsa.database.sql.schema.Table;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
-
-import ltd.fdsa.database.sql.columns.number.NumberColumn;
-import ltd.fdsa.database.sql.columns.ColumnDefinition;
-import ltd.fdsa.database.sql.schema.Table;
-import lombok.ToString;
 
 /**
  * @author zhumingwu

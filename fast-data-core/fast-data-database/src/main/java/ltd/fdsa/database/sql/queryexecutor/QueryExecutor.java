@@ -1,8 +1,8 @@
 package ltd.fdsa.database.sql.queryexecutor;
 
-import ltd.fdsa.database.sql.queries.UpdatebleQuery;
 import ltd.fdsa.database.sql.queries.ExecutableQuery;
 import ltd.fdsa.database.sql.queries.Insert;
+import ltd.fdsa.database.sql.queries.UpdatebleQuery;
 
 /**
  * @author zhumingwu

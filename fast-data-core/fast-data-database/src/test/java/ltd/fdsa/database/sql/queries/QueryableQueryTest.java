@@ -1,19 +1,18 @@
 package ltd.fdsa.database.sql.queries;
 
-import static ltd.fdsa.database.sql.queries.Queries.select;
-import static org.assertj.core.api.Assertions.assertThat;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import ltd.fdsa.database.sql.queryexecutor.SelectQueryExecutor;
+import ltd.fdsa.database.sql.schema.Table;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import ltd.fdsa.database.sql.queryexecutor.SelectQueryExecutor;
-import org.junit.jupiter.api.Test;
-
-import ltd.fdsa.database.sql.schema.Table;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
+import static ltd.fdsa.database.sql.queries.Queries.select;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class QueryableQueryTest
 {

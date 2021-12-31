@@ -2,8 +2,8 @@ package ltd.fdsa.client;
 
 import lombok.extern.slf4j.Slf4j;
 import ltd.fdsa.client.mybatis.plus.service.RoleService;
-import org.junit.Test;
 import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

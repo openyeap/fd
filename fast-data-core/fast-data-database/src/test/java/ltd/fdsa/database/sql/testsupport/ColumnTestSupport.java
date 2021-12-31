@@ -1,24 +1,23 @@
 package ltd.fdsa.database.sql.testsupport;
 
-import static ltd.fdsa.database.sql.dialect.Dialects.MYSQL;
-import static org.assertj.core.api.Assertions.assertThat;
+import lombok.var;
+import ltd.fdsa.database.sql.columns.Column;
+import ltd.fdsa.database.sql.columns.ColumnBuilder;
+import ltd.fdsa.database.sql.conditions.Condition;
+import ltd.fdsa.database.sql.dialect.DialectBuilderTestSupport;
+import ltd.fdsa.database.sql.dialect.MySqlDialect;
+import ltd.fdsa.database.sql.domain.BuildingContext;
+import ltd.fdsa.database.sql.queries.Queries;
+import ltd.fdsa.database.sql.schema.Table;
+import ltd.fdsa.database.sql.utils.Indentation;
+import org.assertj.core.api.AbstractStringAssert;
+import org.assertj.core.api.Assertions;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import lombok.var;
-import ltd.fdsa.database.sql.conditions.Condition;
-import ltd.fdsa.database.sql.dialect.DialectBuilderTestSupport;
-import ltd.fdsa.database.sql.domain.BuildingContext;
-import ltd.fdsa.database.sql.utils.Indentation;
-import org.assertj.core.api.AbstractStringAssert;
-
-import ltd.fdsa.database.sql.columns.Column;
-import ltd.fdsa.database.sql.columns.ColumnBuilder;
-import ltd.fdsa.database.sql.dialect.MySqlDialect;
-import ltd.fdsa.database.sql.queries.Queries;
-import ltd.fdsa.database.sql.schema.Table;
-import org.assertj.core.api.Assertions;
+import static ltd.fdsa.database.sql.dialect.Dialects.MYSQL;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class ColumnTestSupport<C extends Column, B extends ColumnBuilder<C, B, V>, V>
 {

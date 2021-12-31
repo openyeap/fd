@@ -1,5 +1,12 @@
 package ltd.fdsa.database.sql.queries;
 
+import lombok.var;
+import ltd.fdsa.database.sql.columns.number.integer.IntColumn;
+import ltd.fdsa.database.sql.columns.string.VarCharColumn;
+import ltd.fdsa.database.sql.functions.Function;
+import ltd.fdsa.database.sql.schema.Table;
+import org.junit.jupiter.api.Test;
+
 import static ltd.fdsa.database.sql.dialect.Dialects.MYSQL;
 import static ltd.fdsa.database.sql.dialect.Dialects.SYBASE;
 import static ltd.fdsa.database.sql.domain.LikeType.AFTER;
@@ -8,14 +15,6 @@ import static ltd.fdsa.database.sql.queries.Delete.clearWheres;
 import static ltd.fdsa.database.sql.queries.Queries.deleteFrom;
 import static ltd.fdsa.database.sql.utils.Indentation.enabled;
 import static org.assertj.core.api.Assertions.assertThat;
-
-import lombok.var;
-import ltd.fdsa.database.sql.functions.Function;
-import org.junit.jupiter.api.Test;
-
-import ltd.fdsa.database.sql.columns.number.integer.IntColumn;
-import ltd.fdsa.database.sql.columns.string.VarCharColumn;
-import ltd.fdsa.database.sql.schema.Table;
 
 class DeleteTest
 {

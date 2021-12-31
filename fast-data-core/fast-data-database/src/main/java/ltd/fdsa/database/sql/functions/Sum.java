@@ -1,7 +1,7 @@
 package ltd.fdsa.database.sql.functions;
 
-import ltd.fdsa.database.sql.columns.Column;
 import lombok.ToString;
+import ltd.fdsa.database.sql.columns.Column;
 
 /**
  * @author zhumingwu

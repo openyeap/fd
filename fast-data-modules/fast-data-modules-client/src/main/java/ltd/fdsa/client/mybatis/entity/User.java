@@ -5,7 +5,9 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import ltd.fdsa.database.entity.BaseEntity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.LocalDate;
 
 @EqualsAndHashCode(callSuper = true)

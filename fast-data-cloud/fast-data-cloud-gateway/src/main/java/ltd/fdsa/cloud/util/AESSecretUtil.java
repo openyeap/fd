@@ -3,7 +3,6 @@ package ltd.fdsa.cloud.util;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.yaml.snakeyaml.scanner.Constant;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;

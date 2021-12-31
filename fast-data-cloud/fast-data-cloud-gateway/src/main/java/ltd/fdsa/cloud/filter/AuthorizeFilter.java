@@ -1,7 +1,6 @@
 package ltd.fdsa.cloud.filter;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
 import ltd.fdsa.cloud.constant.Constant;
 import ltd.fdsa.cloud.jwt.IJwtToken;
 import ltd.fdsa.cloud.jwt.constant.JwtConstant;

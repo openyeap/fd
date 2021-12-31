@@ -1,9 +1,9 @@
 package ltd.fdsa.database.sql.queries;
 
+import ltd.fdsa.database.sql.queryexecutor.SelectQueryExecutor;
+
 import java.util.List;
 import java.util.Optional;
-
-import ltd.fdsa.database.sql.queryexecutor.SelectQueryExecutor;
 
 /**
  * @author zhumingwu

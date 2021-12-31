@@ -1,15 +1,12 @@
 package ltd.fdsa.database.sql.queries;
 
-import static ltd.fdsa.database.sql.queries.Queries.createTable;
-import static org.powermock.api.easymock.PowerMock.createStrictMock;
-import static org.powermock.api.easymock.PowerMock.replayAll;
-import static org.powermock.api.easymock.PowerMock.verifyAll;
-
 import lombok.var;
+import ltd.fdsa.database.sql.schema.Table;
 import ltd.fdsa.database.sql.testsupport.QueryExecutorTestSupport;
 import org.junit.jupiter.api.Test;
 
-import ltd.fdsa.database.sql.schema.Table;
+import static ltd.fdsa.database.sql.queries.Queries.createTable;
+import static org.powermock.api.easymock.PowerMock.*;
 
 class ExecutableQueryTest extends QueryExecutorTestSupport
 {

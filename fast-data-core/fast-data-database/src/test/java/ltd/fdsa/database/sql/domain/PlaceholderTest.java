@@ -1,12 +1,11 @@
 package ltd.fdsa.database.sql.domain;
 
-import static ltd.fdsa.database.sql.domain.Placeholder.placeholder;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.jupiter.api.Test;
-
 import ltd.fdsa.database.sql.columns.string.VarCharColumn;
 import ltd.fdsa.database.sql.schema.Table;
+import org.junit.jupiter.api.Test;
+
+import static ltd.fdsa.database.sql.domain.Placeholder.placeholder;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class PlaceholderTest
 {

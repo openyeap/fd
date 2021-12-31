@@ -1,6 +1,5 @@
 package ltd.fdsa.starter.jdbc.controller;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.common.base.Strings;
 import io.swagger.models.Swagger;
@@ -11,11 +10,8 @@ import ltd.fdsa.database.fql.antlr.FqlLexer;
 import ltd.fdsa.database.fql.antlr.FqlParser;
 import ltd.fdsa.database.service.JdbcApiService;
 import ltd.fdsa.database.sql.conditions.Condition;
-import ltd.fdsa.database.sql.dialect.Dialects;
 import ltd.fdsa.database.sql.domain.Placeholder;
 import ltd.fdsa.database.sql.queries.Queries;
-import ltd.fdsa.database.sql.schema.Table;
-import ltd.fdsa.database.sql.utils.Indentation;
 import ltd.fdsa.starter.jdbc.model.ViewResult;
 import ltd.fdsa.starter.jdbc.model.ViewUpdate;
 import ltd.fdsa.web.controller.BaseController;
@@ -32,8 +28,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.LinkedHashMap;
+import java.util.Locale;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/v2")

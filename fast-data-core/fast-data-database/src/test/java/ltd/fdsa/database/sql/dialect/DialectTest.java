@@ -1,12 +1,11 @@
 package ltd.fdsa.database.sql.dialect;
 
+import ltd.fdsa.database.sql.domain.exceptions.UnknownDialectException;
+import org.junit.jupiter.api.Test;
+
 import static ltd.fdsa.database.sql.dialect.Dialects.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
-import org.junit.jupiter.api.Test;
-
-import ltd.fdsa.database.sql.domain.exceptions.UnknownDialectException;
 
 class DialectTest
 {

@@ -1,15 +1,11 @@
 package ltd.fdsa.database.sql.dialect;
 
-import static java.lang.System.getProperty;
+import ltd.fdsa.database.sql.queries.*;
+import ltd.fdsa.database.sql.utils.Indentation;
 
 import java.time.format.DateTimeFormatter;
 
-import ltd.fdsa.database.sql.queries.Select;
-import ltd.fdsa.database.sql.queries.Update;
-import ltd.fdsa.database.sql.utils.Indentation;
-import ltd.fdsa.database.sql.queries.CreateTable;
-import ltd.fdsa.database.sql.queries.Delete;
-import ltd.fdsa.database.sql.queries.Insert;
+import static java.lang.System.getProperty;
 
 /**
  * @author zhumingwu

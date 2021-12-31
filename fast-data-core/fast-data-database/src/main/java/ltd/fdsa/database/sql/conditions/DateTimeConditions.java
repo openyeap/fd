@@ -1,5 +1,8 @@
 package ltd.fdsa.database.sql.conditions;
 
+import ltd.fdsa.database.sql.columns.Column;
+import ltd.fdsa.database.sql.domain.Placeholder;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -7,9 +10,6 @@ import java.time.ZonedDateTime;
 import java.time.temporal.Temporal;
 import java.util.Date;
 import java.util.function.Function;
-
-import ltd.fdsa.database.sql.columns.Column;
-import ltd.fdsa.database.sql.domain.Placeholder;
 
 /**
  * @author zhumingwu

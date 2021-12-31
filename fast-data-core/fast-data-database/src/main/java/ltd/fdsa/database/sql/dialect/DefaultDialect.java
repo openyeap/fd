@@ -1,36 +1,23 @@
 package ltd.fdsa.database.sql.dialect;
 
-import static java.util.stream.Collectors.joining;
-
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
+import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import ltd.fdsa.database.sql.columns.Column;
 import ltd.fdsa.database.sql.columns.ColumnDefinition;
 import ltd.fdsa.database.sql.conditions.CombinedCondition;
 import ltd.fdsa.database.sql.conditions.Condition;
 import ltd.fdsa.database.sql.conditions.EmptyCondition;
-import ltd.fdsa.database.sql.queries.Select;
-import ltd.fdsa.database.sql.queries.Update;
+import ltd.fdsa.database.sql.domain.*;
+import ltd.fdsa.database.sql.queries.*;
 import ltd.fdsa.database.sql.utils.BuilderUtils;
 import ltd.fdsa.database.sql.utils.Indentation;
-import ltd.fdsa.database.sql.domain.BuildingContext;
-import ltd.fdsa.database.sql.domain.ConditionType;
-import ltd.fdsa.database.sql.domain.Groupable;
-import ltd.fdsa.database.sql.domain.Joinable;
-import ltd.fdsa.database.sql.domain.Limit;
-import ltd.fdsa.database.sql.domain.OrderBy;
-import ltd.fdsa.database.sql.domain.Queryable;
-import ltd.fdsa.database.sql.domain.QueryableSelect;
-import ltd.fdsa.database.sql.domain.Selectable;
-import ltd.fdsa.database.sql.domain.Valuable;
-import ltd.fdsa.database.sql.queries.CreateTable;
-import ltd.fdsa.database.sql.queries.Delete;
-import ltd.fdsa.database.sql.queries.Insert;
-import lombok.extern.slf4j.Slf4j;
+
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import static java.util.stream.Collectors.joining;
 
 /**
  * @author zhumingwu

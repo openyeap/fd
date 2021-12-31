@@ -1,13 +1,13 @@
 package ltd.fdsa.database.sql.testsupport;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import ltd.fdsa.database.sql.queries.ExecutableQuery;
+import ltd.fdsa.database.sql.queries.Insert;
 import ltd.fdsa.database.sql.queries.UpdatebleQuery;
 import ltd.fdsa.database.sql.queryexecutor.QueryExecutor;
 import ltd.fdsa.database.sql.queryexecutor.RowExtractor;
 import ltd.fdsa.database.sql.queryexecutor.SelectQueryExecutor;
-import ltd.fdsa.database.sql.queries.ExecutableQuery;
-import ltd.fdsa.database.sql.queries.Insert;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 public class QueryExecutorTestSupport
 {

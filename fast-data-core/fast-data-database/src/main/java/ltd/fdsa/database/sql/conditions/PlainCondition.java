@@ -1,9 +1,9 @@
 package ltd.fdsa.database.sql.conditions;
 
-import ltd.fdsa.database.sql.domain.BuildingContext;
-import ltd.fdsa.database.sql.utils.Indentation;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
+import ltd.fdsa.database.sql.domain.BuildingContext;
+import ltd.fdsa.database.sql.utils.Indentation;
 
 /**
  * @author zhumingwu

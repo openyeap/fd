@@ -1,11 +1,11 @@
 package ltd.fdsa.database.sql.domain;
 
-import lombok.var;
-import ltd.fdsa.database.sql.queries.Select;
-import ltd.fdsa.database.sql.utils.Indentation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.var;
+import ltd.fdsa.database.sql.queries.Select;
+import ltd.fdsa.database.sql.utils.Indentation;
 
 /**
  * @author zhumingwu

@@ -1,26 +1,21 @@
 package ltd.fdsa.database.sql.schema;
 
-import static ltd.fdsa.database.sql.dialect.Dialects.MYSQL;
-import static ltd.fdsa.database.sql.utils.Indentation.disabled;
-import static org.assertj.core.api.Assertions.assertThat;
-
 import lombok.var;
-import org.junit.jupiter.api.Test;
-
 import ltd.fdsa.database.sql.columns.datetime.DateColumnBuilder;
 import ltd.fdsa.database.sql.columns.datetime.DateTimeColumnBuilder;
 import ltd.fdsa.database.sql.columns.number.doubletype.DecimalColumnBuilder;
 import ltd.fdsa.database.sql.columns.number.doubletype.DoubleColumnBuilder;
 import ltd.fdsa.database.sql.columns.number.doubletype.FloatColumnBuilder;
-import ltd.fdsa.database.sql.columns.number.integer.BigIntColumnBuilder;
-import ltd.fdsa.database.sql.columns.number.integer.IntColumnBuilder;
-import ltd.fdsa.database.sql.columns.number.integer.MediumIntColumnBuilder;
-import ltd.fdsa.database.sql.columns.number.integer.SmallIntColumnBuilder;
-import ltd.fdsa.database.sql.columns.number.integer.TinyIntColumnBuilder;
+import ltd.fdsa.database.sql.columns.number.integer.*;
 import ltd.fdsa.database.sql.columns.string.CharColumnBuilder;
 import ltd.fdsa.database.sql.columns.string.TextColumnBuilder;
 import ltd.fdsa.database.sql.columns.string.VarCharColumnBuilder;
 import ltd.fdsa.database.sql.domain.BuildingContext;
+import org.junit.jupiter.api.Test;
+
+import static ltd.fdsa.database.sql.dialect.Dialects.MYSQL;
+import static ltd.fdsa.database.sql.utils.Indentation.disabled;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class TableTest
 {

@@ -1,17 +1,18 @@
 package ltd.fdsa.starter.jdbc.config;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.extern.slf4j.Slf4j;
 import ltd.fdsa.core.util.NamingUtils;
-import ltd.fdsa.starter.jdbc.controller.JdbcApiController;
 import ltd.fdsa.database.properties.JdbcApiProperties;
 import ltd.fdsa.database.service.JdbcApiService;
+import ltd.fdsa.starter.jdbc.controller.JdbcApiController;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RestController;
-import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.sql.DataSource;
 
 @Configuration

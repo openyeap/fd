@@ -1,21 +1,19 @@
 package ltd.fdsa.database.sql.queries;
 
+import lombok.var;
+import org.junit.jupiter.api.Test;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 import static ltd.fdsa.database.sql.dialect.Dialects.MYSQL;
 import static ltd.fdsa.database.sql.queries.Queries.select;
 import static ltd.fdsa.database.sql.schema.Table.create;
 import static ltd.fdsa.database.sql.utils.Indentation.enabled;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.easymock.EasyMock.expect;
-import static org.powermock.api.easymock.PowerMock.createStrictMock;
-import static org.powermock.api.easymock.PowerMock.replayAll;
-import static org.powermock.api.easymock.PowerMock.verifyAll;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
-import lombok.var;
-import org.junit.jupiter.api.Test;
+import static org.powermock.api.easymock.PowerMock.*;
 
 class QueryTest {
     @Test

@@ -1,10 +1,10 @@
 package ltd.fdsa.database.sql.columns.datetime;
 
-import java.time.LocalDate;
-
 import ltd.fdsa.database.sql.columns.ColumnBuilder;
 import ltd.fdsa.database.sql.columns.ColumnDefinition;
 import ltd.fdsa.database.sql.schema.Table;
+
+import java.time.LocalDate;
 
 /**
  * @author zhumingwu

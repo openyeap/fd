@@ -1,18 +1,17 @@
 package ltd.fdsa.database.sql.testsupport;
 
-import static ltd.fdsa.database.sql.dialect.Dialects.MYSQL;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.function.BiFunction;
-
 import lombok.var;
+import ltd.fdsa.database.sql.columns.Column;
+import ltd.fdsa.database.sql.columns.ColumnBuilder;
 import ltd.fdsa.database.sql.domain.BuildingContext;
+import ltd.fdsa.database.sql.schema.Table;
 import ltd.fdsa.database.sql.utils.Indentation;
 import org.junit.jupiter.api.Test;
 
-import ltd.fdsa.database.sql.columns.Column;
-import ltd.fdsa.database.sql.columns.ColumnBuilder;
-import ltd.fdsa.database.sql.schema.Table;
+import java.util.function.BiFunction;
+
+import static ltd.fdsa.database.sql.dialect.Dialects.MYSQL;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public interface ColumnAliasTestSupport<C extends Column, B extends ColumnBuilder<C, B, V>, V>
 {

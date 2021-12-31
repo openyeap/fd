@@ -1,26 +1,25 @@
 package ltd.fdsa.database.sql.queries;
 
+import lombok.var;
+import ltd.fdsa.database.sql.columns.datetime.DateColumn;
+import ltd.fdsa.database.sql.columns.datetime.DateTimeColumn;
+import ltd.fdsa.database.sql.columns.number.doubletype.DoubleColumn;
+import ltd.fdsa.database.sql.columns.number.integer.IntColumn;
+import ltd.fdsa.database.sql.columns.string.VarCharColumn;
+import ltd.fdsa.database.sql.conditions.Condition;
+import ltd.fdsa.database.sql.functions.Function;
+import ltd.fdsa.database.sql.schema.Table;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import static ltd.fdsa.database.sql.dialect.Dialects.MYSQL;
 import static ltd.fdsa.database.sql.dialect.Dialects.SYBASE;
 import static ltd.fdsa.database.sql.domain.LikeType.AFTER;
 import static ltd.fdsa.database.sql.queries.Queries.update;
 import static ltd.fdsa.database.sql.utils.Indentation.enabled;
 import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-import lombok.var;
-import ltd.fdsa.database.sql.conditions.Condition;
-import ltd.fdsa.database.sql.functions.Function;
-import org.junit.jupiter.api.Test;
-
-import ltd.fdsa.database.sql.columns.datetime.DateColumn;
-import ltd.fdsa.database.sql.columns.datetime.DateTimeColumn;
-import ltd.fdsa.database.sql.columns.number.doubletype.DoubleColumn;
-import ltd.fdsa.database.sql.columns.number.integer.IntColumn;
-import ltd.fdsa.database.sql.columns.string.VarCharColumn;
-import ltd.fdsa.database.sql.schema.Table;
 
 class UpdateTest
 {
