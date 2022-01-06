@@ -75,7 +75,7 @@ logging:
     ltd.fdsa: info
   pattern:
     # console: "%msg%n"
-    console: '[%highlight(%-4level)] %msg%n'
+    console: '[%d{HH:mm:ss.SSS}] [%highlight(%-4level)] [%32.32logger{16}] %msg%n'
 
 project:
   minio:
