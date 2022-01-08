@@ -18,4 +18,9 @@ steps:
   - mvn versions:set -DnewVersion=1.0.${DRONE_BUILD_NUMBER}
   - mvn deploy -Dmaven.test.skip=true
   - mvn versions:revert
- 
+
+trigger:
+  event:
+  - promote
+  target:
+  - production 
