@@ -11,14 +11,25 @@ steps:
 - name: greeting
   commands:
   - echo ${DRONE_BUILD_NUMBER}
-  - echo $HOME  
-- name: maven
+  - echo $HOME
+- name: release
   commands:
   - export HOME=/root
   - mvn versions:set -DnewVersion=1.0.${DRONE_BUILD_NUMBER}
   - mvn deploy -Dmaven.test.skip=true
   - mvn versions:revert
-
+  when:
+    branch:
+    - master
+   
+- name: dev
+  commands:
+  - export HOME=/root
+  - mvn package
+  when:
+    branch:
+    - dev
+ 
 # trigger:
 #   event:
 #   - promote
