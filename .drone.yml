@@ -19,8 +19,8 @@ steps:
   - mvn deploy -Dmaven.test.skip=true
   - mvn versions:revert
 
-trigger:
-  event:
-  - promote
-  target:
-  - production 
+# trigger:
+#   event:
+#   - promote
+#   target:
+#   - production 
