@@ -15,5 +15,7 @@ steps:
 - name: maven
   commands:
   - export HOME=/root
-  - mvn clean package -DskipTests -Dmaven.test.skip=true -Dgpg.skip
+  - mvn versions:set -DnewVersion=1.0.${DRONE_BUILD_NUMBER}
+  - mvn deploy -Dmaven.test.skip=true
+  - mvn versions:revert
  
