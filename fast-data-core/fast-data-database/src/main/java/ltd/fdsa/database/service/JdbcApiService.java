@@ -78,7 +78,8 @@ public class JdbcApiService {
 
     public List<Map<String, Object>> query(Select select) {
         var data = new ArrayList<Map<String, Object>>();
-        var sql = select.build(Dialects.MYSQL);
+        var sql = select.build(this.dialect);
+
         System.out.println(sql);
         try (var conn = this.dataSource.getConnection();
              var pst = conn.prepareStatement(sql);

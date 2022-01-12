@@ -13,9 +13,8 @@ import javax.sql.DataSource;
 @Slf4j
 public class ApplicationConfig {
     @Primary
-    @Bean(name = "/test")
-    public DataSource invokerExporter(@Qualifier(DataSourceConfig.WRITER_DATASOURCE) DataSource dataSource) {
+    @Bean(name = "test")
+    public DataSource dataSource(@Qualifier(DataSourceConfig.WRITER_DATASOURCE) DataSource dataSource) {
         return dataSource;
     }
-
 }

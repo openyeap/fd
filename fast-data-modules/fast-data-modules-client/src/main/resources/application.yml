@@ -4,7 +4,7 @@ spring:
   application:
     name: ming-client
   profiles:
-    active: dev
+    active: uat
   jpa:
     open-in-view: false
   devtools:
@@ -81,6 +81,11 @@ project:
       enabled: true
   rest-api:
     enabled: true
+    title: 优雅的restful API
+    description: 优雅的restful API
+    name: zhumingwu
+    url: https://zhumingwu.cn
+    email: zhumingwu@hotmail.com
     catalog:
     schema: public
     tables:
@@ -104,18 +109,8 @@ project:
           replaces:
             - key1: value1
             - key2: value2
-      "[bm_*]":
-        removes:
-          - prefix: bm_
-            suffix: _event
-        appends:
-          - prefix: entity_
-            suffix: controller
-        replaces:
-          _r: R
-          _u: U
   acl:
-      "[bm_*]":
+      "[t_*]":
         - CREATE
         - DELETE
         - DELETE_BY_KEY
