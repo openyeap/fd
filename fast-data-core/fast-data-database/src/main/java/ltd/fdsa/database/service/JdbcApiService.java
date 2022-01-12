@@ -81,8 +81,8 @@ public class JdbcApiService {
         var sql = select.build(Dialects.MYSQL);
         System.out.println(sql);
         try (var conn = this.dataSource.getConnection();
-                var pst = conn.prepareStatement(sql);
-                var rs = pst.executeQuery()) {
+             var pst = conn.prepareStatement(sql);
+             var rs = pst.executeQuery()) {
             // 取得ResultSet的列名
             ResultSetMetaData resultSetMetaData = rs.getMetaData();
             int columnsCount = resultSetMetaData.getColumnCount();
@@ -196,9 +196,6 @@ public class JdbcApiService {
                     case CREATE:
                         commonPath.put(createOperation(table, model));
                         break;
-                    case QUERY:
-                        commonPath.get(queryListOperation(table, model));
-                        break;
                     case QUERY_BY_KEY:
                         useKeyPath.get(queryByKeyOperation(table, model));
                         break;
@@ -229,52 +226,72 @@ public class JdbcApiService {
         return swagger;
     }
 
-    private Operation queryOperation() {
+    private Operation createOperation(Table table, Model model) {
         Operation operation = new Operation();
-        operation.tag("query");
-        operation.summary("query multi-resources by fql");
-        operation.description("");
-        operation.operationId("query");
+        operation.tag(table.getAlias());
+        operation.summary("Create data for " + table.getAlias());
+        operation.description(table.getRemark());
+        operation.operationId(JdbcApiProperties.Acl.CREATE.name());
         operation.consumes("application/json");
         operation.produces("*/*");
-
         // parameter
-        operation.parameter(new BodyParameter().name("query").description("fql").example("application/json", ""));
+        var parameter = new BodyParameter();
+        parameter.name("data");
+        parameter.description("data (k-v pairs):\n\n" +
+                "{\n" +
+                "&nbsp;&nbsp;&nbsp;&nbsp;\"key1\":\"value1\",\n" +
+                "&nbsp;&nbsp;&nbsp;&nbsp;\"key2\":\"value2\" \n" +
+                "}");
+        parameter.schema(model);
+        parameter.setRequired(true);
+        operation.parameter(parameter);
+
         // response
         Response response = new Response();
         response.description("OK");
         var responseSchema = new ModelImpl();
         responseSchema.description("");
         responseSchema.name("data");
-        responseSchema.property("data", new ArrayProperty().description("列表").items(new MapProperty()));
+        responseSchema.property("data", new BooleanProperty().description("data"));
         responseSchema.property("code", new IntegerProperty().description("code"));
         response.setResponseSchema(responseSchema);
         return operation.response(200, response);
     }
 
-    private Operation queryListOperation(Table table, ModelImpl model) {
+    private Operation queryOperation() {
         Operation operation = new Operation();
-        operation.tag(table.getAlias());
-        operation.summary("query list from " + table.getAlias() + " by custom conditions");
-        operation.description(table.getRemark());
-        operation.operationId(JdbcApiProperties.Acl.QUERY.name());
-        operation.consumes("application/json");
+        operation.tag("Multi Resources Query");
+        operation.summary("Query multi-resources by fast query language");
+        operation.description("Fast query language is one member of GraphQL family");
+        operation.operationId("query");
+        operation.consumes("application/fql");
         operation.produces("*/*");
 
         // parameter
-        operation.parameter(new PathParameter().name("select").description("列名逗号隔开，不传默认为*").required(false));
-        operation.parameter(new PathParameter().name("where").description("查询条件"));
-        operation.parameter(new PathParameter().name("order").description("排序规则").required(false));
-        operation.parameter(new PathParameter().name("page").description("分页-页").required(false).type("int32"));
-        operation.parameter(new PathParameter().name("size").description("分页-页").required(false).type("int32"));
+        operation.parameter(new BodyParameter()
+                .name("query")
+                .description("Fast query language：\n\n" +
+                        "{\n" +
+                        "&nbsp;&nbsp;&nbsp;&nbsp;user : t_user(user_id_eq:1) {\n" +
+                        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name\n" +
+                        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user_id\n" +
+                        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;roles : t_user_role(user_id_eq:$user_id) {\n" +
+                        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;role_id\n" +
+                        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;role_name : t_role(role_id_eq: $role_id) {\n" +
+                        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name\n" +
+                        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}\n" +
+                        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}\n" +
+                        "&nbsp;&nbsp;&nbsp;&nbsp;}\n" +
+                        "}")
+
+        );
         // response
         Response response = new Response();
         response.description("OK");
         var responseSchema = new ModelImpl();
         responseSchema.description("");
         responseSchema.name("data");
-        responseSchema.property("data",
-                new ArrayProperty().description("列表").items(new ObjectProperty(model.getProperties())));
+        responseSchema.property("data", new ArrayProperty().description("list").items(new MapProperty()));
         responseSchema.property("code", new IntegerProperty().description("code"));
         response.setResponseSchema(responseSchema);
         return operation.response(200, response);
@@ -283,13 +300,13 @@ public class JdbcApiService {
     private Operation deleteByKeyOperation(Table table, ModelImpl model) {
         Operation operation = new Operation();
         operation.tag(table.getAlias());
-        operation.summary("delete" + table.getAlias() + "by key");
+        operation.summary("Delete data from " + table.getAlias() + " by unique keys");
         operation.description(table.getRemark());
         operation.operationId(JdbcApiProperties.Acl.DELETE.name());
         operation.consumes("application/json");
         operation.produces("*/*");
         // parameter
-        operation.parameter(new PathParameter().name("id").description("唯一编号").required(true));
+        operation.parameter(new PathParameter().name("key").description("unique keys").required(true));
         // response
         Response response = new Response();
         response.description("OK");
@@ -305,13 +322,22 @@ public class JdbcApiService {
     private Operation deleteOperation(Table table, ModelImpl model) {
         Operation operation = new Operation();
         operation.tag(table.getAlias());
-        operation.summary("delete" + table.getAlias() + "by key");
+        operation.summary("Delete data from" + table.getAlias());
         operation.description(table.getRemark());
         operation.operationId(JdbcApiProperties.Acl.DELETE.name());
         operation.consumes("application/json");
         operation.produces("*/*");
         // parameter
-        operation.parameter(new PathParameter().name("where").description("条件").required(true));
+        var parameter = new BodyParameter();
+        parameter.name("where");
+        parameter.description("where (k-v pairs):\n\n" +
+                "{\n" +
+                "&nbsp;&nbsp;&nbsp;&nbsp;\"key1\":\"value1\",\n" +
+                "&nbsp;&nbsp;&nbsp;&nbsp;\"key2\":\"value2\" \n" +
+                "}");
+        parameter.schema(model);
+        parameter.setRequired(true);
+        operation.parameter(parameter);
         // response
         Response response = new Response();
         response.description("OK");
@@ -327,16 +353,20 @@ public class JdbcApiService {
     private Operation updateByKeyOperation(Table table, ModelImpl model) {
         Operation operation = new Operation();
         operation.tag(table.getAlias());
-        operation.summary("update " + table.getAlias() + " using json object by key");
+        operation.summary("Update " + table.getAlias() + " using json object by by unique keys");
         operation.description(table.getRemark());
         operation.operationId(JdbcApiProperties.Acl.UPDATE.name());
         operation.consumes("application/json");
         operation.produces("*/*");
         // parameter
-        operation.parameter(new PathParameter().name("id").description("唯一编号").required(true));
+        operation.parameter(new PathParameter().name("key").description("unique keys").required(true));
         var parameter = new BodyParameter();
         parameter.name("data");
-        parameter.description("属性名:属性值的键值对");
+        parameter.description("data (k-v pairs):\n" +
+                "{\n" +
+                "&nbsp;&nbsp;&nbsp;&nbsp;\"key1\":\"value1\",\n" +
+                "&nbsp;&nbsp;&nbsp;&nbsp;\"key2\":\"value2\" \n" +
+                "}");
         parameter.schema(model);
         parameter.setRequired(true);
         operation.parameter(parameter);
@@ -355,17 +385,30 @@ public class JdbcApiService {
     private Operation updateOperation(Table table, ModelImpl model) {
         Operation operation = new Operation();
         operation.tag(table.getAlias());
-        operation.summary("update " + table.getAlias() + " using json object by custom conditions");
+        operation.summary("Update " + table.getAlias() + " using json object by custom conditions");
         operation.description(table.getRemark());
         operation.operationId(JdbcApiProperties.Acl.UPDATE.name());
         operation.consumes("application/json");
         operation.produces("*/*");
         // parameter
-        operation.parameter(new PathParameter().name("where").description("条件").required(true));
         var parameter = new BodyParameter();
-        parameter.name("data");
-        parameter.description("{\"属性\":\"值\"}");
-        parameter.schema(model);
+        parameter.name("update");
+        parameter.description("Update data and custom conditions");
+        ModelImpl updateModel = new ModelImpl();
+        ObjectProperty data = new ObjectProperty(model.getProperties());
+        updateModel.property("data", data);
+
+        ObjectProperty where = new ObjectProperty();
+        for (var entry : model.getProperties().entrySet()) {
+            if (entry.getKey().contains("key") || entry.getKey().contains("id")) {
+                where.property(entry.getKey(), entry.getValue());
+            }
+        }
+        if (where.getProperties().size() == 0) {
+            where.property("id", new IntegerProperty());
+        }
+        updateModel.property("where", where);
+        parameter.schema(updateModel);
         parameter.setRequired(true);
         operation.parameter(parameter);
         // response
@@ -383,13 +426,13 @@ public class JdbcApiService {
     private Operation queryByKeyOperation(Table table, Model model) {
         Operation operation = new Operation();
         operation.tag(table.getAlias());
-        operation.summary("query one data from " + table.getAlias() + " by key");
+        operation.summary("Query one data from " + table.getAlias() + " by unique keys");
         operation.description(table.getRemark());
         operation.operationId(JdbcApiProperties.Acl.QUERY_BY_KEY.name());
         operation.consumes("application/json");
         operation.produces("*/*");
         // parameter
-        operation.parameter(new PathParameter().name("id").description("唯一编号").required(true));
+        operation.parameter(new PathParameter().name("key").description("unique keys").required(true));
 
         // response
         Response response = new Response();
@@ -403,33 +446,6 @@ public class JdbcApiService {
         return operation.response(200, response);
     }
 
-    private Operation createOperation(Table table, Model model) {
-        Operation operation = new Operation();
-        operation.tag(table.getAlias());
-        operation.summary("create data for " + table.getAlias());
-        operation.description(table.getRemark());
-        operation.operationId(JdbcApiProperties.Acl.CREATE.name());
-        operation.consumes("application/json");
-        operation.produces("*/*");
-        // parameter
-        var parameter = new BodyParameter();
-        parameter.name("data");
-        parameter.description("属性名:属性值的键值对");
-        parameter.schema(model);
-        parameter.setRequired(true);
-        operation.parameter(parameter);
-
-        // response
-        Response response = new Response();
-        response.description("OK");
-        var responseSchema = new ModelImpl();
-        responseSchema.description("");
-        responseSchema.name("data");
-        responseSchema.property("data", new BooleanProperty().description("data"));
-        responseSchema.property("code", new IntegerProperty().description("code"));
-        response.setResponseSchema(responseSchema);
-        return operation.response(200, response);
-    }
 
     private List<Table> rename(List<Table> list, DataSourceMataData mataData) {
         AntPathMatcher pathMatcher = new AntPathMatcher();

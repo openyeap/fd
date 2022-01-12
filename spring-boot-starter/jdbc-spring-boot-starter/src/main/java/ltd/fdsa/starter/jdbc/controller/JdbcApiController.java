@@ -94,7 +94,7 @@ public class JdbcApiController extends BaseController {
         return Result.success(result);
     }
 
-    @RequestMapping(value = "/create/{model}", method = RequestMethod.PUT, produces = "application/json")
+    @RequestMapping(value = "/{model}", method = RequestMethod.PUT, produces = "application/json")
     public Result<Object> create(@PathVariable String model, @RequestBody Map<String, Object> data) {
         var table = this.service.getNamedTables().get(model);
         if (table == null) {

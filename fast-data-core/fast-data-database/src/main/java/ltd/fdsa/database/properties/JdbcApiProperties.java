@@ -45,7 +45,6 @@ public class JdbcApiProperties {
 
     public enum Acl {
         CREATE,
-        QUERY,
         QUERY_BY_KEY,
         UPDATE,
         UPDATE_BY_KEY,
