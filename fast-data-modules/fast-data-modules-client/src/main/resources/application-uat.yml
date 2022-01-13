@@ -1,17 +1,17 @@
 database:
   master:
     driver: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5321/dev_database?currentSchema=public
+    url: jdbc:postgresql://pgsql.dev:5321/dev?currentSchema=public
     username: postgres
     password: postgres
   slave1:
     driver: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5321/dev_database?currentSchema=public
+    url: jdbc:postgresql://pgsql.dev:5321/dev?currentSchema=public
     username: postgres
     password: postgres
   slave2:
     driver: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5321/dev_database?currentSchema=public
+    url: jdbc:postgresql://pgsql.dev:5321/dev?currentSchema=public
     username: postgres
     password: postgres 
     
