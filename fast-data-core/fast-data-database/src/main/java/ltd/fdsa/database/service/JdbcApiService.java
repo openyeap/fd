@@ -80,7 +80,7 @@ public class JdbcApiService {
         var data = new ArrayList<Map<String, Object>>();
         var sql = select.build(this.dialect);
 
-        System.out.println(sql);
+        log.info(sql);
         try (var conn = this.dataSource.getConnection();
                 var pst = conn.prepareStatement(sql);
                 var rs = pst.executeQuery()) {
@@ -99,7 +99,7 @@ public class JdbcApiService {
                 data.add(item);
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.error("Exception", e);
         }
         return data;
     }
@@ -139,7 +139,7 @@ public class JdbcApiService {
 
             ModelImpl model = new ModelImpl();
             for (var column : table.getColumns()) {
-                switch (column.getColumnDefinition().getDefinitionName().toUpper()) {
+                switch (column.getColumnDefinition().getDefinitionName().toUpperCase(Locale.ROOT)) {
                     case "DATE":
                         model.property(column.getAlias(), new DateProperty().description(column.getRemark()));
                         break;

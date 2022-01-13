@@ -43,10 +43,7 @@ public class OtherTest {
     @Test
     public void test() {
         var address = this.findFirstNonLoopbackAddress().getHostAddress();
-        log.info("{}", address);
-        System.out.println("address");
-        System.out.println(address);
-        System.out.println("address");
+        log.info("address:{}", address);
     }
 
     private InetUtilsProperties properties = new InetUtilsProperties();
@@ -63,7 +60,7 @@ public class OtherTest {
             regex = (String) var2.next();
         } while (!interfaceName.matches(regex));
 
-        log.trace("Ignoring interface: " + interfaceName);
+        log.trace("Ignoring interface:{}", interfaceName);
         return true;
     }
 

@@ -2,14 +2,16 @@ package ltd.fdsa.core.util;
 
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.FileImageOutputStream;
+
+import com.esotericsoftware.minlog.Log;
+
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
-
- * 图片工具类
- */
+@Slf4j
 public class ImageUtils {
 
     public static byte[] image2byte(String path) {
@@ -50,24 +52,25 @@ public class ImageUtils {
         return data;
     }
 
-    //byte数组到图片
+    // byte数组到图片
     public static void byte2image(byte[] data, String path) {
-        if (data.length < 3 || path.equals("")) return;
+        if (data.length < 3 || path.equals("")) {
+            return;
+        }
         FileImageOutputStream imageOutput = null;
         try {
             imageOutput = new FileImageOutputStream(new File(path));
             imageOutput.write(data, 0, data.length);
             imageOutput.close();
-            System.out.println("Make Picture success,Please find image in " + path);
+            log.info("Make Picture success,Please find image in {}", path);
         } catch (Exception ex) {
-            System.out.println("Exception: " + ex);
-            ex.printStackTrace();
+            log.error("Exception", ex);
         } finally {
             if (imageOutput != null) {
                 try {
                     imageOutput.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.error("Exception", e);
                 }
             }
         }
@@ -87,15 +90,15 @@ public class ImageUtils {
             fops.write(img);
             fops.flush();
             fops.close();
-            System.out.println("图片已经写入到本地，文件名:" + fileName);
+            log.info("图片已经写入到本地，文件名:{}", fileName);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Exception", e);
         } finally {
             if (fops != null) {
                 try {
                     fops.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.error("Exception", e);
                 }
             }
 
@@ -114,11 +117,11 @@ public class ImageUtils {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setConnectTimeout(5 * 1000);
-            InputStream inStream = conn.getInputStream();//通过输入流获取图片数据
-            byte[] btImg = readInputStream(inStream);//得到图片的二进制数据
+            InputStream inStream = conn.getInputStream();// 通过输入流获取图片数据
+            byte[] btImg = readInputStream(inStream);// 得到图片的二进制数据
             return btImg;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Exception", e);
         }
         return null;
     }

@@ -4,14 +4,16 @@ import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-
+@Slf4j
 public class ProxyUtils {
     public static <T> T getProxyByJDK(T service, Class<T>... serviceType) {
         long begin = System.currentTimeMillis();
-        System.out.println("记录程序开始时间getProxyByJDK => " + begin);
+        log.info("记录程序开始时间getProxyByJDK => " + begin);
         if (serviceType.length <= 0) {
             serviceType = (Class<T>[]) service.getClass().getInterfaces();
         }
@@ -22,8 +24,8 @@ public class ProxyUtils {
 
                         Object object = method.invoke(service, args);
                         long end = System.currentTimeMillis();
-                        System.out.println("记录程序结束时间getProxyByJDK => " + end);
-                        System.out.println("记录程序运行总时长getProxyByJDK => " + (end - begin));
+                        log.info("记录程序结束时间getProxyByJDK => " + end);
+                        log.info("记录程序运行总时长getProxyByJDK => " + (end - begin));
                         return object;
                     }
                 });
@@ -33,7 +35,7 @@ public class ProxyUtils {
     public static <T> T getProxyByCglib(T service) {
 
         long begin = System.currentTimeMillis();
-        System.out.println("记录程序开始时间getProxyByCglib => " + begin);
+        log.info("记录程序开始时间getProxyByCglib => " + begin);
 
         // 创建增强器
         Enhancer enhancer = new Enhancer();
@@ -46,8 +48,8 @@ public class ProxyUtils {
 
                 Object object = methodProxy.invokeSuper(o, args);
                 long end = System.currentTimeMillis();
-                System.out.println("记录程序结束时间getProxyByCglib => " + end);
-                System.out.println("记录程序运行总时长getProxyByCglib => " + (end - begin));
+                log.info("记录程序结束时间getProxyByCglib => " + end);
+                log.info("记录程序运行总时长getProxyByCglib => " + (end - begin));
                 return object;
             }
         });
