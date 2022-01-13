@@ -91,14 +91,38 @@ project:
     tables:
       "[t_*]":
         removes:
-          - prefix: t_
-            suffix: _event
+          - prefix: t
+            suffix: 
         appends:
-          - prefix: Entity_
-            suffix: Controller
+          - prefix: 
+            suffix: 
         replaces:
-          _r: R
-          _u: U
+          - _a: A
+          - _b: B
+          - _c: C
+          - _d: D
+          - _e: E
+          - _f: F
+          - _g: G
+          - _h: H
+          - _i: I
+          - _j: J
+          - _k: K
+          - _l: L
+          - _m: M
+          - _n: N
+          - _o: O
+          - _p: P
+          - _q: Q
+          - _r: R
+          - _s: S
+          - _t: T
+          - _u: U
+          - _v: V
+          - _w: W
+          - _x: X
+          - _y: Y
+          - _z: Z
         column:
           removes:
             - prefix:
@@ -107,8 +131,32 @@ project:
             - prefix:
               suffix:
           replaces:
-            - key1: value1
-            - key2: value2
+            - _a: A
+            - _b: B
+            - _c: C
+            - _d: D
+            - _e: E
+            - _f: F
+            - _g: G
+            - _h: H
+            - _i: I
+            - _j: J
+            - _k: K
+            - _l: L
+            - _m: M
+            - _n: N
+            - _o: O
+            - _p: P
+            - _q: Q
+            - _r: R
+            - _s: S
+            - _t: T
+            - _u: U
+            - _v: V
+            - _w: W
+            - _x: X
+            - _y: Y
+            - _z: Z
   acl:
       "[t_*]":
         - CREATE
