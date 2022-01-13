@@ -9,6 +9,7 @@ import ltd.fdsa.database.sql.domain.ValuableColumn;
 import ltd.fdsa.database.sql.queries.Delete;
 import ltd.fdsa.database.sql.queries.Insert;
 import ltd.fdsa.database.sql.queries.Select;
+import ltd.fdsa.database.sql.queries.Update;
 import ltd.fdsa.database.sql.utils.BuilderUtils;
 import ltd.fdsa.database.sql.utils.Indentation;
 
@@ -117,6 +118,33 @@ public class PostgreSqlDialect extends DefaultDialect {
         builder.append(context.getDialect().getLabels().getFrom()).append(indentation.getDelimiter());
         builder.append(indentation.indent().getIndent()).append(delete.getTable().getFullName(context));
         appendConditions(context.getDialect().getLabels().getWhere(), builder, delete.getWhere(), delete.getWhereConditionType(), context, indentation);
+    }
+
+    @Override
+    protected void appendUpdateStatement(StringBuilder builder, Update update, BuildingContext context, Indentation indentation) {
+        builder.append(context.getDialect().getLabels().getUpdate()).append(indentation.getDelimiter());
+        builder.append(indentation.indent().getIndent()).append(update.getTable().getFullName(context));
+//        appendAlias(builder, update.getTable().getAlias(), context);
+        builder.append(indentation.getDelimiter());
+        builder.append(context.getDialect().getLabels().getSet()).append(indentation.getDelimiter());
+        appendUpdateValues(builder, update.getValues(), context, indentation.indent());
+        appendConditions(context.getDialect().getLabels().getWhere(), builder, update.getWhere(), update.getWhereConditionType(), context, indentation);
+    }
+
+    @Override
+    protected void appendUpdateValues(StringBuilder builder, Map<Column, Valuable> values, BuildingContext context, Indentation indentation) {
+        var counter = 0;
+        for (var entry : values.entrySet()) {
+            var column = entry.getKey();
+            var value = entry.getValue();
+            builder.append(indentation.getIndent())
+                    .append(column.getFullName(context))
+                    .append(" = ")
+                    .append(value.getValue(context, indentation));
+            if (++counter < values.size()) {
+                builder.append(",").append(indentation.getDelimiter());
+            }
+        }
     }
 
     @Override

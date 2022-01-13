@@ -15,7 +15,7 @@ steps:
 - name: release
   commands:
   - export HOME=/root
-  - mvn versions:set -DnewVersion=1.0.${DRONE_BUILD_NUMBER}
+  - mvn versions:set -DnewVersion=1.1.${DRONE_BUILD_NUMBER}
   - mvn deploy -Dmaven.test.skip=true -Possrh
   - mvn versions:revert
   when:

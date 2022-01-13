@@ -12,11 +12,9 @@ import ltd.fdsa.database.model.RowDataMapper;
 import ltd.fdsa.database.properties.JdbcApiProperties;
 import ltd.fdsa.database.sql.columns.Column;
 import ltd.fdsa.database.sql.dialect.Dialect;
-import ltd.fdsa.database.sql.dialect.Dialects;
 import ltd.fdsa.database.sql.queries.Query;
 import ltd.fdsa.database.sql.queries.Select;
 import ltd.fdsa.database.sql.schema.Table;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.util.AntPathMatcher;
 
@@ -79,11 +77,10 @@ public class JdbcApiService {
     public List<Map<String, Object>> query(Select select) {
         var data = new ArrayList<Map<String, Object>>();
         var sql = select.build(this.dialect);
-
-        log.info(sql);
+        log.debug("sql: {}", sql);
         try (var conn = this.dataSource.getConnection();
-                var pst = conn.prepareStatement(sql);
-                var rs = pst.executeQuery()) {
+             var pst = conn.prepareStatement(sql);
+             var rs = pst.executeQuery()) {
             // 取得ResultSet的列名
             ResultSetMetaData resultSetMetaData = rs.getMetaData();
             int columnsCount = resultSetMetaData.getColumnCount();
@@ -104,14 +101,18 @@ public class JdbcApiService {
         return data;
     }
 
-    public List<Map<String, Object>> query(String sql, Object[] args) {
-        var jdbcTemplate = new JdbcTemplate(this.dataSource);
+    public List<Map<String, Object>> query(Query query, Map<String, ?> args) {
+        var jdbcTemplate = new NamedParameterJdbcTemplate(this.dataSource);
+        var sql = query.build(this.dialect);
+        log.debug("sql: {}", sql);
         return jdbcTemplate.query(sql, args, new RowDataMapper());
     }
 
-    public int update(Query sql, Map<String, ?> args) {
-        NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(this.dataSource);
-        return jdbcTemplate.update(sql.build(this.dialect), args);
+    public int update(Query query, Map<String, ?> args) {
+        var jdbcTemplate = new NamedParameterJdbcTemplate(this.dataSource);
+        var sql = query.build(this.dialect);
+        log.debug("query: {}", sql);
+        return jdbcTemplate.update(sql, args);
     }
 
     public Swagger getApiDocs(String host, String basePath) {
@@ -154,6 +155,7 @@ public class JdbcApiService {
                     case "NCHAR":
                     case "NVARCHAR":
                     case "BPCHAR":
+                    case "LONGTEXT":
                         model.property(column.getAlias(), new StringProperty().description(column.getRemark()));
                         break;
                     case "BOOLEAN":
@@ -178,6 +180,7 @@ public class JdbcApiService {
                         model.property(column.getAlias(), new FloatProperty().description(column.getRemark()));
                         break;
                     case "DOUBLE":
+                    case "FLOAT8":
                         model.property(column.getAlias(), new DoubleProperty().description(column.getRemark()));
                         break;
                     case "NUMERIC":

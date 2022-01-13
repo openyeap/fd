@@ -63,7 +63,7 @@ public class Table implements Queryable {
     }
 
     public String getFullName(BuildingContext context) {
-        return (getSchema() != null ? BuilderUtils.columnApostrophe(getSchema().getName(), context) + "." : "") + BuilderUtils
+        return ((getSchema() != null && getSchema().getName()!=null) ? BuilderUtils.columnApostrophe(getSchema().getName(), context) + "." : "") + BuilderUtils
                 .columnApostrophe(getName(), context);
     }
 

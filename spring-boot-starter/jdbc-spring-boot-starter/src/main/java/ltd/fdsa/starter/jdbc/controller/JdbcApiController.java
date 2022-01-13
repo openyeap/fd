@@ -1,6 +1,5 @@
 package ltd.fdsa.starter.jdbc.controller;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.common.base.Strings;
 import io.swagger.models.Swagger;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +8,7 @@ import ltd.fdsa.database.fql.JdbcFqlVisitor;
 import ltd.fdsa.database.fql.antlr.FqlLexer;
 import ltd.fdsa.database.fql.antlr.FqlParser;
 import ltd.fdsa.database.service.JdbcApiService;
+import ltd.fdsa.database.sql.columns.Column;
 import ltd.fdsa.database.sql.conditions.Condition;
 import ltd.fdsa.database.sql.domain.Placeholder;
 import ltd.fdsa.database.sql.queries.Queries;
@@ -40,10 +40,8 @@ public class JdbcApiController extends BaseController {
     @Autowired
     JdbcApiService service;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @RequestMapping(value = "/api-docs", method = RequestMethod.GET)
-    public Swagger getApiDocs(@RequestParam(value = "group", required = false) String group,
-            HttpServletRequest request) {
+    public Swagger getApiDocs(@RequestParam(value = "group", required = false) String group, HttpServletRequest request) {
         UriComponents components = UriComponentsBuilder.fromHttpRequest(new ServletServerHttpRequest(request)).build();
         String host = components.getHost();
         if (components.getPort() > 0) {
@@ -92,6 +90,39 @@ public class JdbcApiController extends BaseController {
         }
         var result = this.service.getNamedKeyColumns().get(table.getAlias());
         return Result.success(result);
+    }
+
+    @RequestMapping(value = "/{model}/{key}", method = RequestMethod.GET, produces = "application/json")
+    public Result<Object> queryByKey(@PathVariable String model, @PathVariable String key) {
+        var table = this.service.getNamedTables().get(model);
+        if (table == null) {
+            return Result.fail(HttpCode.NOT_FOUND, "No data resource！");
+        }
+        // 数据库字段名
+        var columns = this.service.getNamedColumns().get(table.getAlias());
+        if (columns == null) {
+            return Result.fail(HttpCode.NOT_FOUND, "No data description！");
+        }
+        if (Strings.isNullOrEmpty(key)) {
+            return Result.fail(HttpCode.BAD_REQUEST, "Condition can not be empty");
+        }
+        try {
+            var sql = Queries.select(columns.values().toArray(new Column[0])).from(table);
+            var map = new LinkedHashMap<String, Object>();
+
+            var condition = Condition.emptyCondition();
+            for (var entry : this.service.getNamedKeyColumns().get(table.getAlias())) {
+                var column = columns.get(entry);
+                if (column != null) {
+                    condition = condition.and(column.eq(Placeholder.placeholder(column)));
+                    map.put(column.getName(), convertColumnData(column.getColumnDefinition().getDefinitionName(), key));
+                }
+            }
+            sql.where(condition);
+            return Result.success(this.service.query(sql, map));
+        } catch (Exception ex) {
+            return Result.error(ex);
+        }
     }
 
     @RequestMapping(value = "/{model}", method = RequestMethod.PUT, produces = "application/json")
@@ -189,6 +220,7 @@ public class JdbcApiController extends BaseController {
                             convertColumnData(column.getColumnDefinition().getDefinitionName(), key));
                 }
             }
+            sql.where(condition);
             return Result.success(this.service.update(sql, map));
         } catch (Exception ex) {
             return Result.error(ex);
@@ -213,7 +245,7 @@ public class JdbcApiController extends BaseController {
         if (data == null || data.size() == 0) {
             return Result.fail(HttpCode.BAD_REQUEST, "Update data can not be empty");
         }
-        var where = update.getData();
+        var where = update.getWhere();
         if (where == null || where.size() == 0) {
             return Result.fail(HttpCode.BAD_REQUEST, "Condition can not be empty");
         }
@@ -253,7 +285,7 @@ public class JdbcApiController extends BaseController {
 
     @RequestMapping(value = "/{model}/{key}", method = RequestMethod.POST, produces = "application/json")
     public Result<Object> updateByKey(@PathVariable String model, @RequestBody Map<String, Object> data,
-            @PathVariable String key) {
+                                      @PathVariable String key) {
         var table = this.service.getNamedTables().get(model);
         if (table == null) {
             return Result.fail(HttpCode.NOT_FOUND, "No data resource！");
@@ -294,6 +326,7 @@ public class JdbcApiController extends BaseController {
                             convertColumnData(column.getColumnDefinition().getDefinitionName(), key));
                 }
             }
+            sql.where(condition);
             return Result.success(this.service.update(sql, map));
         } catch (Exception ex) {
             return Result.error(ex);
@@ -304,7 +337,7 @@ public class JdbcApiController extends BaseController {
     public Result<Object> query(@RequestBody String query) {
         try {
             if (Strings.isNullOrEmpty(query)) {
-                return Result.fail(400, "QUERY string can not be empty");
+                return Result.fail(HttpCode.BAD_REQUEST, "query can not be empty");
             }
             query = query.trim();
             if (!query.startsWith("{") && !query.endsWith("}")) {
@@ -335,12 +368,24 @@ public class JdbcApiController extends BaseController {
                     return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(data.toString());
                 case "TIME":
                     return new SimpleDateFormat("HH:mm:ss").parse(data.toString());
-
                 case "BOOLEAN":
                 case "BOOL":
                     return Boolean.valueOf(data.toString());
+
+                case "INT":
+                case "INT4":
+                case "INT8":
+                case "LONG":
+                    return Long.valueOf(data.toString());
+                case "FLOAT":
+                case "DOUBLE":
+                    return Double.valueOf(data.toString());
+                case "CHAR":
+                case "BPCHAR":
+                case "VARCHAR":
+                    return data.toString();
                 default:
-                    log.warn("没有考虑到的类型：{}", type);
+                    log.warn("没有考虑到的类型：{},暂不处理", type);
                     return data;
             }
         } catch (Exception ex) {

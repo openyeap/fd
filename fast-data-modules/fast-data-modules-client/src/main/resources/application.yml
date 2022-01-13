@@ -4,7 +4,7 @@ spring:
   application:
     name: ming-client
   profiles:
-    active: uat
+    active: dev
   jpa:
     open-in-view: false
   devtools:
