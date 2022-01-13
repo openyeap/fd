@@ -82,8 +82,8 @@ public class JdbcApiService {
 
         System.out.println(sql);
         try (var conn = this.dataSource.getConnection();
-             var pst = conn.prepareStatement(sql);
-             var rs = pst.executeQuery()) {
+                var pst = conn.prepareStatement(sql);
+                var rs = pst.executeQuery()) {
             // 取得ResultSet的列名
             ResultSetMetaData resultSetMetaData = rs.getMetaData();
             int columnsCount = resultSetMetaData.getColumnCount();
@@ -139,7 +139,7 @@ public class JdbcApiService {
 
             ModelImpl model = new ModelImpl();
             for (var column : table.getColumns()) {
-                switch (column.getColumnDefinition().getDefinitionName()) {
+                switch (column.getColumnDefinition().getDefinitionName().toUpper()) {
                     case "DATE":
                         model.property(column.getAlias(), new DateProperty().description(column.getRemark()));
                         break;
@@ -149,9 +149,11 @@ public class JdbcApiService {
                         model.property(column.getAlias(), new DateTimeProperty().description(column.getRemark()));
                         break;
                     case "CHAR":
+                    case "TEXT":
                     case "VARCHAR":
                     case "NCHAR":
                     case "NVARCHAR":
+                    case "BPCHAR":
                         model.property(column.getAlias(), new StringProperty().description(column.getRemark()));
                         break;
                     case "BOOLEAN":
@@ -160,6 +162,7 @@ public class JdbcApiService {
                         break;
                     case "BIGINT":
                     case "LONG":
+                    case "INT8":
                     case "BIGSERIAL":
                         model.property(column.getAlias(), new LongProperty().description(column.getRemark()));
                         break;
@@ -167,6 +170,8 @@ public class JdbcApiService {
                     case "TINYINT":
                     case "INTEGER":
                     case "INT":
+                    case "INT2":
+                    case "INT4":
                         model.property(column.getAlias(), new IntegerProperty().description(column.getRemark()));
                         break;
                     case "FLOAT":
@@ -278,8 +283,10 @@ public class JdbcApiService {
                         "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user_id\n" +
                         "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;roles : t_user_role(user_id_eq:$user_id) {\n" +
                         "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;role_id\n" +
-                        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;role_name : t_role(role_id_eq: $role_id) {\n" +
-                        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name\n" +
+                        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;role_name : t_role(role_id_eq: $role_id) {\n"
+                        +
+                        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name\n"
+                        +
                         "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}\n" +
                         "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}\n" +
                         "&nbsp;&nbsp;&nbsp;&nbsp;}\n" +
@@ -446,7 +453,6 @@ public class JdbcApiService {
         response.setResponseSchema(responseSchema);
         return operation.response(200, response);
     }
-
 
     private List<Table> rename(List<Table> list, DataSourceMataData mataData) {
         AntPathMatcher pathMatcher = new AntPathMatcher();
