@@ -371,7 +371,6 @@ public class JdbcApiController extends BaseController {
                 case "BOOLEAN":
                 case "BOOL":
                     return Boolean.valueOf(data.toString());
-
                 case "INT":
                 case "INT4":
                 case "INT8":
@@ -389,9 +388,7 @@ public class JdbcApiController extends BaseController {
                     return data;
             }
         } catch (Exception ex) {
-
+            return Result.error(ex);
         }
-        return null;
     }
-
 }

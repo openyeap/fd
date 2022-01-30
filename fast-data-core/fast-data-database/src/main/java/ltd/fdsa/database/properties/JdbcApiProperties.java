@@ -16,6 +16,7 @@ public class JdbcApiProperties {
     private String email = "zhumingwu@zhumingwu.cn";
     private String name = "zhumingwu";
     private String url = "http://blog.zhumingwu.cn";
+    private String version = "1.1.0";
     private LinkedHashMap<String, TableNameRule> tables = new LinkedHashMap<String, TableNameRule>();
     private String catalog;
     private String schema;

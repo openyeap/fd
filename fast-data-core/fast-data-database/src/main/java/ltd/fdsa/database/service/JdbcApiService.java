@@ -121,6 +121,7 @@ public class JdbcApiService {
         {
             Info info = new Info();
             info.title(this.properties.getTitle());
+            info.version(this.properties.getVersion());
             info.description(this.properties.getDescription());
             Contact contact = new Contact();
             contact.email(this.properties.getEmail());
