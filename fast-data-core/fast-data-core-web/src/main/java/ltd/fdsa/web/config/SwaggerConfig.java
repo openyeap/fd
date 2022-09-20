@@ -1,7 +1,7 @@
 package ltd.fdsa.web.config;
 
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
+import java.util.function.Predicate;
+
 import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
@@ -21,7 +21,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-
 @Configuration
 @EnableSwagger2
 @ConditionalOnProperty(name = "project.swagger.enabled", havingValue = "true", matchIfMissing = true)
@@ -31,7 +30,6 @@ public class SwaggerConfig {
     private SwaggerProperties properties;
     @Value("${spring.application.name:default}")
     private String applicationName;
-
 
     @Bean
     public Docket swaggerDocket() {
@@ -70,7 +68,7 @@ public class SwaggerConfig {
         for (var basePackage : this.properties.getBasePackages()) {
             if (!Strings.isNullOrEmpty(basePackage)) {
                 Predicate<RequestHandler> tempPredicate = RequestHandlerSelectors.basePackage(basePackage);
-                predicate = predicate == null ? tempPredicate : Predicates.or(tempPredicate, predicate);
+                predicate = predicate == null ? tempPredicate : predicate.or(tempPredicate);
             }
         }
         if (predicate == null) {
