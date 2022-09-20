@@ -18,7 +18,7 @@ database:
 logging:
   path: /var/log/${spring.application.name}-${server.port}
   level:
-    ltd.fdsa: DEBUG
+    ltd.fdsa: INFO
 #  pattern:
 #    console: '[%highlight(%-4level)] %msg%n'
  

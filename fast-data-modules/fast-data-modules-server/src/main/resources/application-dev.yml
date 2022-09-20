@@ -1,24 +1,23 @@
 database:
   master:
-    driver: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/dev_database?useSSL=false&characterEncoding=utf-8&serverTimezone=GMT
-    username: root
-    password: MySQL123$
+    driver: org.postgresql.Driver
+    url: jdbc:postgresql://pgsql.dev:5432/dev?currentSchema=public
+    username: postgres
+    password: postgres
   slave1:
-    driver: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/dev_database?useSSL=false&characterEncoding=utf-8&serverTimezone=GMT
-    username: root
-    password: MySQL123$
+    driver: org.postgresql.Driver
+    url: jdbc:postgresql://pgsql.dev:5432/dev?currentSchema=public
+    username: postgres
+    password: postgres
   slave2:
-    driver: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/dev_database?useSSL=false&characterEncoding=utf-8&serverTimezone=GMT
-    username: root
-    password: MySQL123$
-
+    driver: org.postgresql.Driver
+    url: jdbc:postgresql://pgsql.dev:5432/dev?currentSchema=public
+    username: postgres
+    password: postgres 
+    
 logging:
   path: /var/log/${spring.application.name}-${server.port}
   level:
-    ltd.fdsa: INFO
+    ltd.fdsa: DEBUG
   pattern:
-#    console: '[%highlight(%-4level)] %msg%n'
     console: '[%highlight(%-4level)] [%20.20logger] %msg%n'

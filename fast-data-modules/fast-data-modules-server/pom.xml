@@ -24,6 +24,11 @@
             <artifactId>fast-data-database</artifactId>
         </dependency>
 
+        <!-- 可选，自动生成数据库的增删改查 -->
+        <dependency>
+            <groupId>ltd.fdsa</groupId>
+            <artifactId>jdbc-spring-boot-starter</artifactId>
+        </dependency>
         <dependency>
             <groupId>ltd.fdsa</groupId>
             <artifactId>remote-spring-boot-starter</artifactId>
@@ -74,4 +79,12 @@
             <artifactId>ehcache</artifactId>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

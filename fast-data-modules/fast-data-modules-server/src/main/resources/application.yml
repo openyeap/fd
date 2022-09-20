@@ -7,7 +7,8 @@ spring:
     active: dev
   jpa:
     open-in-view: false
-
+  devtools:
+    add-properties: true
   datasource:
     master:
       type: com.alibaba.druid.pool.DruidDataSource
@@ -67,22 +68,104 @@ project:
     minutes: 1
     host: 10.168.4.14
     port: 8500
-    health:
+    registry:
       enabled: true
-  tables:
+      # services:
+      #   - name: rest-api
+      #     schema: http
+      #     ip: 192.168.7.222
+      #     port: 8080
+    healthCheck:
+      path: /v2/api-docs
+      delay: 10s
+      enabled: true
+  rest-api:
     enabled: true
-    prefix-matches:
-      - s*_
-      - t*_
-      - us*_
-    changes:
-      append:
-        - t_: { prefix: 'test_', suffix: '_result' } #以t_开头的表，前增test_，后增_result
-        - s_: { suffix: '_test' } #以s开头的表，后增_test
-        - us_: { prefix: 'user_' } #以us_开头的表，前增user_
-    remove:
-      - _ #移除 _
-    replace: { land: 'plan', jiefang: 'liberate' }
+    title: 优雅的restful API
+    description: 优雅的restful API
+    name: zhumingwu
+    url: https://zhumingwu.cn
+    email: zhumingwu@hotmail.com
+    catalog:
+    schema: public
+    tables:
+      "[t_*]":
+        removes:
+          - prefix: t
+            suffix: 
+        appends:
+          - prefix: 
+            suffix: 
+        replaces:
+          - _a: A
+          - _b: B
+          - _c: C
+          - _d: D
+          - _e: E
+          - _f: F
+          - _g: G
+          - _h: H
+          - _i: I
+          - _j: J
+          - _k: K
+          - _l: L
+          - _m: M
+          - _n: N
+          - _o: O
+          - _p: P
+          - _q: Q
+          - _r: R
+          - _s: S
+          - _t: T
+          - _u: U
+          - _v: V
+          - _w: W
+          - _x: X
+          - _y: Y
+          - _z: Z
+        column:
+          removes:
+            - prefix:
+              suffix:
+          appends:
+            - prefix:
+              suffix:
+          replaces:
+            - _a: A
+            - _b: B
+            - _c: C
+            - _d: D
+            - _e: E
+            - _f: F
+            - _g: G
+            - _h: H
+            - _i: I
+            - _j: J
+            - _k: K
+            - _l: L
+            - _m: M
+            - _n: N
+            - _o: O
+            - _p: P
+            - _q: Q
+            - _r: R
+            - _s: S
+            - _t: T
+            - _u: U
+            - _v: V
+            - _w: W
+            - _x: X
+            - _y: Y
+            - _z: Z
+  acl:
+      "[t_*]":
+        - CREATE
+        - DELETE
+        - DELETE_BY_KEY
+        - QUERY
+        - QUERY_BY_KEY
+        - UPDATE
+        - UPDATE_BY_KEY
 
 logging:
   path: /var/log/${spring.application.name}-${server.port}
@@ -90,4 +173,4 @@ logging:
     web: INFO
     ltd.fdsa: DEBUG
   pattern:
-    console: '[%highlight(%-4level)] %msg%n'
+    console: "[%highlight(%-4level)] %msg%n"
