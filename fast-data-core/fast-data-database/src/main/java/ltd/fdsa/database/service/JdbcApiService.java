@@ -79,8 +79,8 @@ public class JdbcApiService {
         var sql = select.build(this.dialect);
         log.debug("sql: {}", sql);
         try (var conn = this.dataSource.getConnection();
-             var pst = conn.prepareStatement(sql);
-             var rs = pst.executeQuery()) {
+                var pst = conn.prepareStatement(sql);
+                var rs = pst.executeQuery()) {
             // 取得ResultSet的列名
             ResultSetMetaData resultSetMetaData = rs.getMetaData();
             int columnsCount = resultSetMetaData.getColumnCount();
@@ -111,7 +111,7 @@ public class JdbcApiService {
     public int update(Query query, Map<String, ?> args) {
         var jdbcTemplate = new NamedParameterJdbcTemplate(this.dataSource);
         var sql = query.build(this.dialect);
-        log.debug("query: {}", sql);
+        log.debug("query: {}, args: {}", sql, args);
         return jdbcTemplate.update(sql, args);
     }
 
@@ -173,7 +173,6 @@ public class JdbcApiService {
                     case "TINYINT":
                     case "INTEGER":
                     case "INT":
-                    case "INT2":
                     case "INT4":
                         model.property(column.getAlias(), new IntegerProperty().description(column.getRemark()));
                         break;
@@ -190,8 +189,7 @@ public class JdbcApiService {
                         break;
                     default:
                         log.warn("没有考虑到的类型：{}", column.getColumnDefinition().getDefinitionName());
-                        model.property(column.getAlias() + ":" + column.getColumnDefinition().getDefinitionName(),
-                                new StringProperty().description(column.getRemark()));
+                        model.property(column.getAlias(), new StringProperty().description(column.getRemark()));
                         break;
 
                 }
@@ -412,9 +410,9 @@ public class JdbcApiService {
 
         ObjectProperty where = new ObjectProperty();
         for (var entry : model.getProperties().entrySet()) {
-            if (entry.getKey().contains("key") || entry.getKey().contains("id")) {
+            // if (entry.getKey().contains("key") || entry.getKey().contains("id")) {
                 where.property(entry.getKey(), entry.getValue());
-            }
+            // }
         }
         if (where.getProperties().size() == 0) {
             where.property("id", new IntegerProperty());

@@ -43,6 +43,7 @@ public class QueryInfo {
         private String name;
         private String alias;
         private String code;
+        @Getter
         private ColumnSet columns = new ColumnSet();
         int limit = Integer.MAX_VALUE;
         int offset = 0;

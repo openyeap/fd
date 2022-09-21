@@ -13,6 +13,7 @@ import ltd.fdsa.database.sql.domain.OrderDirection;
 import ltd.fdsa.database.sql.queries.Queries;
 import ltd.fdsa.database.sql.schema.Table;
 
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,10 +38,10 @@ public class JdbcFqlVisitor {
 
     void process(Node parent, Node node) {
         if (node.isList()) {
-            //集合
+            // 集合
             parent.getValue().put(node.getName(), node.getValues());
         } else {
-            //单体
+            // 单体
             parent.getValue().put(node.getName(), node.getValue());
         }
     }
@@ -54,7 +55,6 @@ public class JdbcFqlVisitor {
         var ddd = service.getNamedTables().get(name);
         return new TableInfo(name, alias, ddd.getName());
     }
-
 
     ColumnInfo getColumnInfo(FqlParser.SelectionContext ctx, String table) {
         var alias = ctx.alias() == null ? "" : ctx.alias().name().getText();
@@ -84,7 +84,6 @@ public class JdbcFqlVisitor {
         return columnSet;
     }
 
-
     void visitSelection(FqlParser.SelectionContext ctx, Node node) {
         var builder = QueryInfo.builder();
         var todoList = new ArrayList<FqlParser.SelectionContext>();
@@ -94,7 +93,7 @@ public class JdbcFqlVisitor {
         // 选择信息
         if (ctx.selectionSet() != null) {
             for (var selection : ctx.selectionSet().selection()) {
-                //子选择
+                // 子选择
                 if (selection.arguments().size() > 0) {
                     // 延迟处理
                     todoList.add(selection);
@@ -111,7 +110,8 @@ public class JdbcFqlVisitor {
                     }
                 }
             }
-        } else {
+        }
+        if (builder.getColumns().size() == 0) {
             var columns = this.getColumnSet(builder.getName());
             for (var column : columns.entrySet()) {
                 builder.column(column.getValue());
@@ -121,16 +121,16 @@ public class JdbcFqlVisitor {
         visitArguments(ctx.arguments(), builder, node.getValue());
         // 执行
         var queryInfo = builder.build();
-        //table
+        // table
         var table = Table.create(queryInfo.getCode()).as(queryInfo.getName());
-        //select
+        // select
         Column[] columns = new Column[queryInfo.getColumns().size()];
         var values = queryInfo.getColumns().values();
         for (int i = 0; i < columns.length; i++) {
             var column = values[i];
             columns[i] = table.column(column.getCode()).alias(column.getAlias()).build();
         }
-        //where
+        // where
         var where = Condition.emptyCondition();
         for (var orFilter : queryInfo.getFilters()) {
             var condition = Condition.emptyCondition();
@@ -143,14 +143,17 @@ public class JdbcFqlVisitor {
                         }
                         if (andFilter.getValue() instanceof Number) {
                             if (andFilter.getValue().toString().contains(".")) {
-                                condition = condition.and(table.doubleColumn(andFilter.getName()).build().eq(Double.valueOf(andFilter.getValue().toString())));
+                                condition = condition.and(table.doubleColumn(andFilter.getName()).build()
+                                        .eq(Double.valueOf(andFilter.getValue().toString())));
                             } else {
-                                condition = condition.and(table.intColumn(andFilter.getName()).build().eq(Long.valueOf(andFilter.getValue().toString())));
+                                condition = condition.and(table.intColumn(andFilter.getName()).build()
+                                        .eq(Long.valueOf(andFilter.getValue().toString())));
                             }
                             break;
                         }
 
-                        condition = condition.and(table.column(andFilter.getName()).build().eq(andFilter.getValue().toString()));
+                        condition = condition
+                                .and(table.column(andFilter.getName()).build().eq(andFilter.getValue().toString()));
                         break;
                     case neq:
                         if (andFilter.getValue() == null) {
@@ -159,13 +162,16 @@ public class JdbcFqlVisitor {
                         }
                         if (andFilter.getValue() instanceof Number) {
                             if (andFilter.getValue().toString().contains(".")) {
-                                condition = condition.and(table.doubleColumn(andFilter.getName()).build().nEq(Double.valueOf(andFilter.getValue().toString())));
+                                condition = condition.and(table.doubleColumn(andFilter.getName()).build()
+                                        .nEq(Double.valueOf(andFilter.getValue().toString())));
                             } else {
-                                condition = condition.and(table.intColumn(andFilter.getName()).build().nEq(Long.valueOf(andFilter.getValue().toString())));
+                                condition = condition.and(table.intColumn(andFilter.getName()).build()
+                                        .nEq(Long.valueOf(andFilter.getValue().toString())));
                             }
                             break;
                         }
-                        condition = condition.and(table.column(andFilter.getName()).build().nEq(andFilter.getValue().toString()));
+                        condition = condition
+                                .and(table.column(andFilter.getName()).build().nEq(andFilter.getValue().toString()));
                         break;
                     case lt:
                         if (andFilter.getValue() == null) {
@@ -173,9 +179,11 @@ public class JdbcFqlVisitor {
                         }
                         if (andFilter.getValue() instanceof Number) {
                             if (andFilter.getValue().toString().contains(".")) {
-                                condition = condition.and(table.doubleColumn(andFilter.getName()).build().lt(Double.valueOf(andFilter.getValue().toString())));
+                                condition = condition.and(table.doubleColumn(andFilter.getName()).build()
+                                        .lt(Double.valueOf(andFilter.getValue().toString())));
                             } else {
-                                condition = condition.and(table.intColumn(andFilter.getName()).build().lt(Long.valueOf(andFilter.getValue().toString())));
+                                condition = condition.and(table.intColumn(andFilter.getName()).build()
+                                        .lt(Long.valueOf(andFilter.getValue().toString())));
                             }
                             break;
                         }
@@ -186,9 +194,11 @@ public class JdbcFqlVisitor {
                         }
                         if (andFilter.getValue() instanceof Number) {
                             if (andFilter.getValue().toString().contains(".")) {
-                                condition = condition.and(table.doubleColumn(andFilter.getName()).build().ltEq(Double.valueOf(andFilter.getValue().toString())));
+                                condition = condition.and(table.doubleColumn(andFilter.getName()).build()
+                                        .ltEq(Double.valueOf(andFilter.getValue().toString())));
                             } else {
-                                condition = condition.and(table.intColumn(andFilter.getName()).build().ltEq(Long.valueOf(andFilter.getValue().toString())));
+                                condition = condition.and(table.intColumn(andFilter.getName()).build()
+                                        .ltEq(Long.valueOf(andFilter.getValue().toString())));
 
                             }
                             break;
@@ -200,9 +210,11 @@ public class JdbcFqlVisitor {
                         }
                         if (andFilter.getValue() instanceof Number) {
                             if (andFilter.getValue().toString().contains(".")) {
-                                condition = condition.and(table.doubleColumn(andFilter.getName()).build().gt(Double.valueOf(andFilter.getValue().toString())));
+                                condition = condition.and(table.doubleColumn(andFilter.getName()).build()
+                                        .gt(Double.valueOf(andFilter.getValue().toString())));
                             } else {
-                                condition = condition.and(table.intColumn(andFilter.getName()).build().gt(Long.valueOf(andFilter.getValue().toString())));
+                                condition = condition.and(table.intColumn(andFilter.getName()).build()
+                                        .gt(Long.valueOf(andFilter.getValue().toString())));
                             }
                             break;
                         }
@@ -213,9 +225,11 @@ public class JdbcFqlVisitor {
                         }
                         if (andFilter.getValue() instanceof Number) {
                             if (andFilter.getValue().toString().contains(".")) {
-                                condition = condition.and(table.doubleColumn(andFilter.getName()).build().gtEq(Double.valueOf(andFilter.getValue().toString())));
+                                condition = condition.and(table.doubleColumn(andFilter.getName()).build()
+                                        .gtEq(Double.valueOf(andFilter.getValue().toString())));
                             } else {
-                                condition = condition.and(table.intColumn(andFilter.getName()).build().gtEq(Long.valueOf(andFilter.getValue().toString())));
+                                condition = condition.and(table.intColumn(andFilter.getName()).build()
+                                        .gtEq(Long.valueOf(andFilter.getValue().toString())));
                             }
                             break;
                         }
@@ -227,7 +241,8 @@ public class JdbcFqlVisitor {
                         if (andFilter.getValue() instanceof Number) {
                             break;
                         }
-                        condition = condition.and(table.column(andFilter.getName()).build().isLike(andFilter.getValue().toString(), LikeType.BOTH));
+                        condition = condition.and(table.column(andFilter.getName()).build()
+                                .isLike(andFilter.getValue().toString(), LikeType.BOTH));
                         break;
                     case start:
                         if (andFilter.getValue() == null) {
@@ -236,7 +251,8 @@ public class JdbcFqlVisitor {
                         if (andFilter.getValue() instanceof Number) {
                             break;
                         }
-                        condition = condition.and(table.column(andFilter.getName()).build().isLike(andFilter.getValue().toString(), LikeType.BEFORE));
+                        condition = condition.and(table.column(andFilter.getName()).build()
+                                .isLike(andFilter.getValue().toString(), LikeType.BEFORE));
                         break;
                     case end:
                         if (andFilter.getValue() == null) {
@@ -245,7 +261,8 @@ public class JdbcFqlVisitor {
                         if (andFilter.getValue() instanceof Number) {
                             break;
                         }
-                        condition = condition.and(table.column(andFilter.getName()).build().isLike(andFilter.getValue().toString(), LikeType.AFTER));
+                        condition = condition.and(table.column(andFilter.getName()).build()
+                                .isLike(andFilter.getValue().toString(), LikeType.AFTER));
                         break;
                     case in:
                         if (andFilter.getValue() == null) {
@@ -254,9 +271,11 @@ public class JdbcFqlVisitor {
                         }
                         if (andFilter.getValue() instanceof Number) {
                             if (andFilter.getValue().toString().contains(".")) {
-                                condition = condition.and(table.doubleColumn(andFilter.getName()).build().eq(Double.valueOf(andFilter.getValue().toString())));
+                                condition = condition.and(table.doubleColumn(andFilter.getName()).build()
+                                        .eq(Double.valueOf(andFilter.getValue().toString())));
                             } else {
-                                condition = condition.and(table.intColumn(andFilter.getName()).build().eq(Long.valueOf(andFilter.getValue().toString())));
+                                condition = condition.and(table.intColumn(andFilter.getName()).build()
+                                        .eq(Long.valueOf(andFilter.getValue().toString())));
                             }
                             break;
                         }
@@ -265,7 +284,8 @@ public class JdbcFqlVisitor {
                             condition = condition.and(table.column(andFilter.getName()).build().isIn(list));
                             break;
                         }
-                        condition = condition.and(table.column(andFilter.getName()).build().eq(andFilter.getValue().toString()));
+                        condition = condition
+                                .and(table.column(andFilter.getName()).build().eq(andFilter.getValue().toString()));
                         break;
                     case nin:
                         if (andFilter.getValue() == null) {
@@ -274,9 +294,11 @@ public class JdbcFqlVisitor {
                         }
                         if (andFilter.getValue() instanceof Number) {
                             if (andFilter.getValue().toString().contains(".")) {
-                                condition = condition.and(table.doubleColumn(andFilter.getName()).build().nEq(Double.valueOf(andFilter.getValue().toString())));
+                                condition = condition.and(table.doubleColumn(andFilter.getName()).build()
+                                        .nEq(Double.valueOf(andFilter.getValue().toString())));
                             } else {
-                                condition = condition.and(table.intColumn(andFilter.getName()).build().nEq(Long.valueOf(andFilter.getValue().toString())));
+                                condition = condition.and(table.intColumn(andFilter.getName()).build()
+                                        .nEq(Long.valueOf(andFilter.getValue().toString())));
                             }
                             break;
                         }
@@ -285,20 +307,21 @@ public class JdbcFqlVisitor {
                             condition = condition.and(table.column(andFilter.getName()).build().isNotIn(list));
                             break;
                         }
-                        condition = condition.and(table.column(andFilter.getName()).build().nEq(andFilter.getValue().toString()));
+                        condition = condition
+                                .and(table.column(andFilter.getName()).build().nEq(andFilter.getValue().toString()));
                         break;
                 }
             }
             where = where.or(condition);
         }
 
-        //order
+        // order
         var orders = new ArrayList<OrderBy>();
         for (var entry : queryInfo.getOrders().entrySet()) {
             orders.add(new OrderBy(table.column(entry.getKey()).build(), entry.getValue()));
         }
 
-        //other
+        // other
         var select = Queries
                 .select(columns)
                 .from(table)
@@ -334,7 +357,8 @@ public class JdbcFqlVisitor {
         }
     }
 
-    void visitArguments(List<FqlParser.ArgumentsContext> contextList, QueryInfo.QueryBuilder builder, Map<String, Object> data) {
+    void visitArguments(List<FqlParser.ArgumentsContext> contextList, QueryInfo.QueryBuilder builder,
+            Map<String, Object> data) {
         for (var ctx : contextList) {
             if (ctx.argument() != null && !ctx.argument().isEmpty()) {
                 var filters = new FilterSet();
@@ -346,7 +370,8 @@ public class JdbcFqlVisitor {
         }
     }
 
-    void visitArgument(FqlParser.ArgumentContext ctx, QueryInfo.QueryBuilder builder, FilterSet filters, Map<String, Object> data) {
+    void visitArgument(FqlParser.ArgumentContext ctx, QueryInfo.QueryBuilder builder, FilterSet filters,
+            Map<String, Object> data) {
         var text = ctx.name().getText();
         var lastIndexOf = text.lastIndexOf('_');
         String operator = "eq";
@@ -355,7 +380,11 @@ public class JdbcFqlVisitor {
             operator = text.substring(lastIndexOf + 1);
             name = text.substring(0, lastIndexOf);
         }
-
+        var column = this.service.getNamedColumns().get(builder.getName()).get(name);
+        if(column!=null)
+        {
+            name= column.getName();
+        }
         switch (operator) {
             case "eq":
             case "gt":
@@ -394,8 +423,7 @@ public class JdbcFqlVisitor {
                 break;
             case "order":
                 if ("desc".equals(ctx.valueWithVariable().getText())
-                        || "false".equals(ctx.valueWithVariable().getText())
-                ) {
+                        || "false".equals(ctx.valueWithVariable().getText())) {
                     builder.order(name, OrderDirection.DESC);
                     break;
                 }
