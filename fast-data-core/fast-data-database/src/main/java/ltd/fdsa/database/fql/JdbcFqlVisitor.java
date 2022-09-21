@@ -13,7 +13,6 @@ import ltd.fdsa.database.sql.domain.OrderDirection;
 import ltd.fdsa.database.sql.queries.Queries;
 import ltd.fdsa.database.sql.schema.Table;
 
-import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +27,7 @@ public class JdbcFqlVisitor {
         this.service = service;
     }
 
-    public Node visit(FqlParser.DocumentContext ctx) {
+    public Node visit(FqlParser.DocumentContext ctx) throws Exception {
         var parent = new Node(new TreeMap<>(), "data");
         for (var selection : ctx.selectionSet().selection()) {
             visitSelection(selection, parent);
@@ -56,7 +55,7 @@ public class JdbcFqlVisitor {
         return new TableInfo(name, alias, ddd.getName());
     }
 
-    ColumnInfo getColumnInfo(FqlParser.SelectionContext ctx, String table) {
+    ColumnInfo getColumnInfo(FqlParser.SelectionContext ctx, String table) throws Exception {
         var alias = ctx.alias() == null ? "" : ctx.alias().name().getText();
         var name = ctx.name() == null ? "" : ctx.name().getText();
         if ("...".equals(name)) {
@@ -68,11 +67,11 @@ public class JdbcFqlVisitor {
         if (!this.service.getNamedColumns().containsKey(table)) {
             return null;
         }
-        var code = this.service.getNamedColumns().get(table).get(name);
-        if (code == null) {
-            return null;
+        var column = this.service.getNamedColumns().get(table).get(name);
+        if (column == null) {
+            throw new Exception(name + "不存在");
         }
-        return new ColumnInfo(name, alias, code.getName(), false);
+        return new ColumnInfo(name, alias, column.getName(), false);
     }
 
     ColumnSet getColumnSet(String table) {
@@ -84,7 +83,7 @@ public class JdbcFqlVisitor {
         return columnSet;
     }
 
-    void visitSelection(FqlParser.SelectionContext ctx, Node node) {
+    void visitSelection(FqlParser.SelectionContext ctx, Node node) throws Exception {
         var builder = QueryInfo.builder();
         var todoList = new ArrayList<FqlParser.SelectionContext>();
         // 表名信息
@@ -358,7 +357,7 @@ public class JdbcFqlVisitor {
     }
 
     void visitArguments(List<FqlParser.ArgumentsContext> contextList, QueryInfo.QueryBuilder builder,
-            Map<String, Object> data) {
+            Map<String, Object> data) throws Exception {
         for (var ctx : contextList) {
             if (ctx.argument() != null && !ctx.argument().isEmpty()) {
                 var filters = new FilterSet();
@@ -371,7 +370,7 @@ public class JdbcFqlVisitor {
     }
 
     void visitArgument(FqlParser.ArgumentContext ctx, QueryInfo.QueryBuilder builder, FilterSet filters,
-            Map<String, Object> data) {
+            Map<String, Object> data) throws Exception {
         var text = ctx.name().getText();
         var lastIndexOf = text.lastIndexOf('_');
         String operator = "eq";
@@ -381,10 +380,10 @@ public class JdbcFqlVisitor {
             name = text.substring(0, lastIndexOf);
         }
         var column = this.service.getNamedColumns().get(builder.getName()).get(name);
-        if(column!=null)
-        {
-            name= column.getName();
+        if (column == null) {
+            throw new Exception(name + "不存在");
         }
+        name = column.getName();
         switch (operator) {
             case "eq":
             case "gt":

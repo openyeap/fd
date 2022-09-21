@@ -41,7 +41,8 @@ public class JdbcApiController extends BaseController {
     JdbcApiService service;
 
     @RequestMapping(value = "/api-docs", method = RequestMethod.GET)
-    public Swagger getApiDocs(@RequestParam(value = "group", required = false) String group, HttpServletRequest request) {
+    public Swagger getApiDocs(@RequestParam(value = "group", required = false) String group,
+            HttpServletRequest request) {
         UriComponents components = UriComponentsBuilder.fromHttpRequest(new ServletServerHttpRequest(request)).build();
         String host = components.getHost();
         if (components.getPort() > 0) {
@@ -285,7 +286,7 @@ public class JdbcApiController extends BaseController {
 
     @RequestMapping(value = "/{model}/{key}", method = RequestMethod.POST, produces = "application/json")
     public Result<Object> updateByKey(@PathVariable String model, @RequestBody Map<String, Object> data,
-                                      @PathVariable String key) {
+            @PathVariable String key) {
         var table = this.service.getNamedTables().get(model);
         if (table == null) {
             return Result.fail(HttpCode.NOT_FOUND, "No data resource！");
@@ -373,10 +374,15 @@ public class JdbcApiController extends BaseController {
                     return Boolean.valueOf(data.toString());
                 case "INT":
                 case "INT4":
+                    return Integer.valueOf(data.toString());
+                case "INT2":
+                    return Byte.valueOf(data.toString());
                 case "INT8":
                 case "LONG":
+                case "BIGSERIAL":
                     return Long.valueOf(data.toString());
                 case "FLOAT":
+                    return Float.valueOf(data.toString());
                 case "DOUBLE":
                     return Double.valueOf(data.toString());
                 case "CHAR":
