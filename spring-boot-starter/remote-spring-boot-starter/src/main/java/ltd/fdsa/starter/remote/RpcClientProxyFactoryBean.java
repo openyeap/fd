@@ -24,7 +24,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
-public class RpcClientProxyFactoryBean<T> implements FactoryBean<T>, EnvironmentAware, ApplicationListener<ServiceDiscoveredEvent>, InitializingBean {
+public class RpcClientProxyFactoryBean<T>
+        implements FactoryBean<T>, EnvironmentAware, ApplicationListener<ServiceDiscoveredEvent>, InitializingBean {
     private static Retryable DEFAULT_RETRY;
 
     static {
@@ -58,11 +59,11 @@ public class RpcClientProxyFactoryBean<T> implements FactoryBean<T>, Environment
     public T getObject() {
         var proxy = Proxy.newProxyInstance(
                 this.getClass().getClassLoader(),
-                new Class<?>[]{proxyClass},
+                new Class<?>[] { proxyClass },
                 new InvocationHandler() {
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
-                        //获取拦截的方法中的@Retryable
+                        // 获取拦截的方法中的@Retryable
                         Retryable retryable = method.getAnnotation(Retryable.class);
                         if (retryable == null) {
                             retryable = DEFAULT_RETRY;
@@ -89,12 +90,11 @@ public class RpcClientProxyFactoryBean<T> implements FactoryBean<T>, Environment
                         }
                         return service.invoke(proxyClass, method.getName(), args);
                     }
-                }
-        );
+                });
         if (proxy == null) {
             return null;
         }
-        return (T) proxy;
+        return this.proxyClass.cast(proxy);
     }
 
     @Override
