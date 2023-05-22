@@ -6,7 +6,7 @@ import ltd.fdsa.cloud.jwt.IJwtToken;
 import ltd.fdsa.cloud.jwt.constant.JwtConstant;
 import ltd.fdsa.cloud.jwt.model.JwtValidationResult;
 import ltd.fdsa.cloud.jwt.model.JwtValidationResultType;
-import ltd.fdsa.cloud.service.ConsulService;
+import ltd.fdsa.cloud.service.AuthorizeService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ import java.util.List;
 public class AuthorizeFilter extends BaseFilter {
 
     @Autowired
-    private ConsulService consulService;
+    private AuthorizeService consulService;
 
     @Autowired
     private IJwtToken jwt;

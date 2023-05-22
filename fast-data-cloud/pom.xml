@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>fast-data-cloud</artifactId>
     <name>fast data cloud</name>
@@ -11,17 +11,16 @@
         <artifactId>fast-data-parent</artifactId>
         <version>1.1.0</version>
         <relativePath>../pom.xml</relativePath>
-    </parent>
+    </parent> 
     <modules>
         <module>fast-data-cloud-gateway</module>
+        <module>fast-data-cloud-service</module>
     </modules>
     <properties>
         <!--主依赖版本定义 -->
         <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
-        <!-- consul -->
-        <consul.api.version>1.4.4</consul.api.version>
-        <!-- swagger -->
-        <swagger.version>2.9.2</swagger.version>
+        <!-- 服务注册发现解决方案 -->
+        <netflix.version>2.2.10.RELEASE</netflix.version>
         <!-- minio -->
         <minio.version>7.0.2</minio.version>
     </properties>
@@ -38,11 +37,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>com.ecwid.consul</groupId>
-                <artifactId>consul-api</artifactId>
-                <version>${consul.api.version}</version>
-            </dependency>
+
             <!--swagger -->
             <dependency>
                 <groupId>io.springfox</groupId>
@@ -55,10 +50,30 @@
                 <version>${swagger.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+                <version>${netflix.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+                <version>${netflix.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>io.minio</groupId>
                 <artifactId>minio</artifactId>
                 <version>${minio.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

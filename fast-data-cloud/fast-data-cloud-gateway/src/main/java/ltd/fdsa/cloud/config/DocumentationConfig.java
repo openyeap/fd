@@ -18,7 +18,7 @@ import java.util.List;
 public class DocumentationConfig implements SwaggerResourcesProvider {
     public static final String API_URI = "/v2/api-docs";
 
-    @Value("${spring.cloud.name:consul}")
+    @Value("${spring.cloud.name:gateway}")
     private String name;
 
     @Autowired

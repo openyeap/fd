@@ -1,0 +1,23 @@
+server:
+  port: 8765
+spring:
+  application:
+    name: eureka
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+  server:
+    waitTimeInMsWhenSyncEmpty: 0
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+logging:
+  level:
+    web: info
+    ltd.fdsa: info
+  pattern:
+    # console: "%msg%n"
+    console: '[%d{HH:mm:ss.SSS}] [%highlight(%-4level)] [%32.32logger{16}] %msg%n'

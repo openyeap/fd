@@ -1,8 +1,5 @@
 package ltd.fdsa.cloud.service.impl;
-
-import com.ecwid.consul.v1.ConsulClient;
-import com.ecwid.consul.v1.Response;
-import com.ecwid.consul.v1.kv.model.GetValue;
+ 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
@@ -15,6 +12,7 @@ import ltd.fdsa.cloud.util.DateTimeUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.client.RestTemplate;
@@ -36,7 +34,7 @@ public class MockRuleServiceImpl implements IMockRuleService {
     public static Map<String, MockRule> mockRuleMap = new ConcurrentHashMap<String, MockRule>();
     private static String updateTime = "";
     @Autowired
-    private ConsulClient consulClient;
+    private DiscoveryClient consulClient;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -71,27 +69,27 @@ public class MockRuleServiceImpl implements IMockRuleService {
             public void run() {
                 while (true) {
 
-                    Response<GetValue> kvValue = consulClient.getKVValue(Constant.MOCK_RULE_KEY_CONSUL);
+                    // Response<GetValue> kvValue = consulClient.getKVValue(Constant.MOCK_RULE_KEY_CONSUL);
 
                     try {
 
-                        if (null == kvValue.getValue()) {
-                            Thread.sleep(5000L);
-                            continue;
-                        }
+                        // if (null == kvValue.getValue()) {
+                        //     Thread.sleep(5000L);
+                        //     continue;
+                        // }
 
-                        String value = kvValue.getValue().getValue();
+                        // String value = kvValue.getValue().getValue();
 
-                        String mockRuleConfig = new String(Base64Utils.decodeFromString(value), "UTF-8");
+                        // String mockRuleConfig = new String(Base64Utils.decodeFromString(value), "UTF-8");
 
-                        MockRuleConsul mockRuleConsul = new ObjectMapper().readValue(mockRuleConfig, MockRuleConsul.class);
-                        if (!StringUtils.equals(updateTime, mockRuleConsul.getUpdateTime())) {
-                            updateTime = mockRuleConsul.getUpdateTime();
-                            listToMap(mockRuleConsul.getData());
-                            log.info("拉取 mock 规则数据成功。");
-                        }
+                        // MockRuleConsul mockRuleConsul = new ObjectMapper().readValue(mockRuleConfig, MockRuleConsul.class);
+                        // if (!StringUtils.equals(updateTime, mockRuleConsul.getUpdateTime())) {
+                        //     updateTime = mockRuleConsul.getUpdateTime();
+                        //     listToMap(mockRuleConsul.getData());
+                        //     log.info("拉取 mock 规则数据成功。");
+                        // }
 
-                        Thread.sleep(8000L);//8s加载一次;
+                        // Thread.sleep(8000L);//8s加载一次;
 
                     } catch (Exception e) {
                         log.error("mock 规则信息初始化 异常，请检查。", e);
@@ -149,7 +147,7 @@ public class MockRuleServiceImpl implements IMockRuleService {
 
         MockRuleConsul value = new MockRuleConsul(DateTimeUtil.getCurrentDateTimeStr(), mockValues);
 
-        this.consulClient.setKVValue(Constant.MOCK_RULE_KEY_CONSUL, new ObjectMapper().writeValueAsString(value));
+        // this.consulClient.setKVValue(Constant.MOCK_RULE_KEY_CONSUL, new ObjectMapper().writeValueAsString(value));
 
         mockRuleMap.put(mockRule.getRequestPath(), mockRule);
 
@@ -166,7 +164,7 @@ public class MockRuleServiceImpl implements IMockRuleService {
 
         MockRuleConsul value = new MockRuleConsul(DateTimeUtil.getCurrentDateTimeStr(), new ArrayList<MockRule>(map.values()));
 
-        this.consulClient.setKVValue(Constant.MOCK_RULE_KEY_CONSUL, new ObjectMapper().writeValueAsString(value));
+        // this.consulClient.setKVValue(Constant.MOCK_RULE_KEY_CONSUL, new ObjectMapper().writeValueAsString(value));
 
         mockRuleMap.put(mockRule.getRequestPath(), mockRule);
 
@@ -182,7 +180,7 @@ public class MockRuleServiceImpl implements IMockRuleService {
 
         MockRuleConsul value = new MockRuleConsul(DateTimeUtil.getCurrentDateTimeStr(), new ArrayList<MockRule>(map.values()));
 
-        this.consulClient.setKVValue(Constant.MOCK_RULE_KEY_CONSUL, new ObjectMapper().writeValueAsString(value));
+        // this.consulClient.setKVValue(Constant.MOCK_RULE_KEY_CONSUL, new ObjectMapper().writeValueAsString(value));
 
         mockRuleMap.remove(requestPath);
 

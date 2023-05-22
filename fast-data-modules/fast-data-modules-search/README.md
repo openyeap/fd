@@ -4,7 +4,7 @@
 keep live + nginx/traefik
 
 ## 接入层
-spring cloud gateway + consul
+spring cloud gateway + eureka
 
 ## 服务层
 spring boot applications

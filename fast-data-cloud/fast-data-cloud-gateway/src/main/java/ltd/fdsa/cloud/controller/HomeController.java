@@ -1,6 +1,5 @@
 package ltd.fdsa.cloud.controller;
-
-import com.ecwid.consul.v1.ConsulClient;
+ 
 import com.google.common.base.Strings;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -34,8 +33,7 @@ public class HomeController {
     MinIOService minioService;
     @Autowired
     private DiscoveryClient discoveryClient;
-    @Autowired
-    private ConsulClient consulClient;
+ 
 
     @GetMapping(value = "/")
     public Mono<ResponseEntity<String>> echo() {
@@ -79,13 +77,6 @@ public class HomeController {
         return list;
     }
 
-    @RequestMapping(value = "/configs", method = RequestMethod.GET)
-    public Object getConsulConfig(@RequestParam(required = false) String key) {
-        if (Strings.isNullOrEmpty(key)) {
-            return this.consulClient.getKVKeysOnly("").getValue();
-        }
-        return this.consulClient.getKVValue(key).getValue();
-    }
 
     @RequestMapping(value = "/file", method = RequestMethod.POST)
     @SneakyThrows

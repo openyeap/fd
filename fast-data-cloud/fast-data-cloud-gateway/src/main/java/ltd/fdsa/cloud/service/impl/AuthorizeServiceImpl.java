@@ -1,16 +1,17 @@
 package ltd.fdsa.cloud.service.impl;
 
-import com.ecwid.consul.v1.ConsulClient;
-import com.ecwid.consul.v1.QueryParams;
-import com.ecwid.consul.v1.Response;
-import com.ecwid.consul.v1.kv.model.GetValue;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.netflix.appinfo.InstanceInfo;
+
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import ltd.fdsa.cloud.constant.Constant;
-import ltd.fdsa.cloud.service.ConsulService;
+import ltd.fdsa.cloud.service.AuthorizeService;
 import org.bouncycastle.util.encoders.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.discovery.event.InstanceRegisteredEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 import org.springframework.util.AntPathMatcher;
@@ -23,11 +24,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @Slf4j
-public class ConsulServiceImpl implements ApplicationListener<ApplicationStartedEvent>, ConsulService {
+public class AuthorizeServiceImpl implements ApplicationListener<InstanceRegisteredEvent<InstanceInfo>>, AuthorizeService {
 
     private static ConcurrentHashMap<String, String> authList = new ConcurrentHashMap<String, String>();
     @Autowired
-    private ConsulClient consulClient;
+    private DiscoveryClient discoveryClient;
 
     @Override
     public boolean checkAuthorize(String path, String[] userRoles) {
@@ -58,35 +59,13 @@ public class ConsulServiceImpl implements ApplicationListener<ApplicationStarted
         return true;
     }
 
-
     @Override
-    public void onApplicationEvent(ApplicationStartedEvent event) {
-        Thread authThread = new Thread(() -> {
-            long index = 0;
-            while (true) {
-                try {
-                    QueryParams queryParams = QueryParams.Builder.builder().setIndex(index).build();
-                    Response<List<GetValue>> result = this.consulClient.getKVValues(Constant.AUTH + "/", queryParams);
-                    index = result.getConsulIndex();
-                    if (result != null && result.getValue() != null && result.getValue().size() != 0) {
-                        for (GetValue gv : result.getValue()) {
-                            String value = gv.getValue();
-                            if (StringUtils.isEmpty(value)) {
-                                continue;
-                            }
-                            value = new String(Base64.decode(gv.getValue()));
-                            Map<String, String> map = new ObjectMapper().readValue(value, Map.class);
-                            for (Map.Entry<String, String> entry : map.entrySet()) {
-                                authList.put(entry.getKey(), entry.getValue());
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    log.info(e.getMessage());
-                }
-            }
-        });
-        authThread.start();
+    public void onApplicationEvent(InstanceRegisteredEvent<InstanceInfo> event) {
+        var config = event.getConfig();
+        var map = (Map<String, String>) config.getMetadata();
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            authList.put(entry.getKey(), entry.getValue());
+        }
 
     }
 }
