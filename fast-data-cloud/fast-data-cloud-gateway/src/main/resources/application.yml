@@ -22,7 +22,7 @@ spring:
             # 转发到具体项目去掉路由首单词，如 /search/a 转发为 /a
             - StripPrefix=1
     register:
-      enabled: false
+      enabled: true
               
   # 静态文件请求匹配方式
   # mvc:
@@ -30,14 +30,14 @@ spring:
   #   # 修改默认的静态寻址资源目录 多个使用逗号分隔
   #   resources:
   #     static-locations: file:/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/META-INF/resources/webjars/
-#management:
-#  endpoint:
-#    gateway:
-#      enabled: true # default value
-#  endpoints:
-#    web:
-#      exposure:
-#        include: gateway
+management:
+ endpoint:
+   gateway:
+     enabled: true # default value
+ endpoints:
+   web:
+     exposure:
+       include: *
 
 logging:
   level:
@@ -55,8 +55,8 @@ project:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8765/eureka/
-    registerWithEureka: false
+      defaultZone: http://localhost:8761/eureka/
+    registerWithEureka: true
     fetchRegistry: true
 #
 #filters:
