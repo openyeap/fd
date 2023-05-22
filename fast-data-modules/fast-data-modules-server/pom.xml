@@ -35,7 +35,7 @@
         </dependency>
         <dependency>
             <groupId>ltd.fdsa</groupId>
-            <artifactId>consul-spring-boot-starter</artifactId>
+            <artifactId>register-spring-boot-starter</artifactId>
         </dependency>
         <!-- 根据实现情况选择数据库 -->
         <dependency>
