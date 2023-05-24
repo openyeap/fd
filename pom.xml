@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>ltd.fdsa</groupId>
-    <artifactId>fast-data-parent</artifactId>
+    <groupId>cn.zhumingwu</groupId>
+    <artifactId>fast-parent</artifactId>
     <version>1.1.0</version>
-    <name>fast data parent</name>
+    <name>fast parent</name>
     <description>聚合父模块，核心模块，定义依赖包</description>
     <packaging>pom</packaging>
     <parent>
@@ -14,11 +14,11 @@
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
     <modules>
-        <module>fast-data-core</module>
-        <module>fast-data-frameworks</module>
+        <module>fast-core</module>
+        <module>fast-frameworks</module>
         <module>spring-boot-starter</module>
-        <module>fast-data-cloud</module>
-        <module>fast-data-modules</module>
+        <module>fast-cloud</module>
+        <module>fast-modules</module>
     </modules>
     <properties>
         <!--基本属性定义 -->
@@ -30,7 +30,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
         <!-- 常用jar -->
-        <swagger.version>2.9.2</swagger.version>
+        <swagger.version>3.0.0</swagger.version>
         <guava.version>31.0-jre</guava.version>
         <alibaba.druid.version>1.2.1</alibaba.druid.version>
         <mybatis.starter.version>2.1.3</mybatis.starter.version>
@@ -67,62 +67,62 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>ltd.fdsa</groupId>
-                <artifactId>fast-data-common</artifactId>
+                <groupId>cn.zhumingwu</groupId>
+                <artifactId>fast-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>ltd.fdsa</groupId>
-                <artifactId>fast-data-core-web</artifactId>
+                <groupId>cn.zhumingwu</groupId>
+                <artifactId>fast-core-web</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>ltd.fdsa</groupId>
-                <artifactId>fast-data-database</artifactId>
+                <groupId>cn.zhumingwu</groupId>
+                <artifactId>fast-database</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>ltd.fdsa</groupId>
-                <artifactId>fast-data-database-jpa</artifactId>
+                <groupId>cn.zhumingwu</groupId>
+                <artifactId>fast-database-jpa</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>ltd.fdsa</groupId>
-                <artifactId>fast-data-database-mybatis</artifactId>
+                <groupId>cn.zhumingwu</groupId>
+                <artifactId>fast-database-mybatis</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>ltd.fdsa</groupId>
-                <artifactId>fast-data-database-mybatis-generic</artifactId>
+                <groupId>cn.zhumingwu</groupId>
+                <artifactId>fast-database-mybatis-generic</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>ltd.fdsa</groupId>
-                <artifactId>fast-data-database-mybatis-plus</artifactId>
+                <groupId>cn.zhumingwu</groupId>
+                <artifactId>fast-database-mybatis-plus</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>ltd.fdsa</groupId>
+                <groupId>cn.zhumingwu</groupId>
                 <artifactId>jdbc-spring-boot-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>ltd.fdsa</groupId>
+                <groupId>cn.zhumingwu</groupId>
                 <artifactId>remote-spring-boot-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>ltd.fdsa</groupId>
+                <groupId>cn.zhumingwu</groupId>
                 <artifactId>register-spring-boot-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>ltd.fdsa</groupId>
+                <groupId>cn.zhumingwu</groupId>
                 <artifactId>logger-spring-boot-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>ltd.fdsa</groupId>
+                <groupId>cn.zhumingwu</groupId>
                 <artifactId>monitor-spring-boot-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>

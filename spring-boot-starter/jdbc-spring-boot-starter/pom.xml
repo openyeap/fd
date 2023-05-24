@@ -7,7 +7,7 @@
     <description>jdbc starter for spring boot</description>
     <packaging>jar</packaging>
     <parent>
-        <groupId>ltd.fdsa</groupId>
+        <groupId>cn.zhumingwu</groupId>
         <artifactId>spring-boot-starter</artifactId>
         <version>1.1.0</version>
         <relativePath>../pom.xml</relativePath>
@@ -15,16 +15,16 @@
 
     <dependencies>
         <dependency>
-            <groupId>ltd.fdsa</groupId>
-            <artifactId>fast-data-common</artifactId>
+            <groupId>cn.zhumingwu</groupId>
+            <artifactId>fast-common</artifactId>
         </dependency>
         <dependency>
-            <groupId>ltd.fdsa</groupId>
-            <artifactId>fast-data-database</artifactId>
+            <groupId>cn.zhumingwu</groupId>
+            <artifactId>fast-database</artifactId>
         </dependency>
         <dependency>
-            <groupId>ltd.fdsa</groupId>
-            <artifactId>fast-data-core-web</artifactId>
+            <groupId>cn.zhumingwu</groupId>
+            <artifactId>fast-core-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

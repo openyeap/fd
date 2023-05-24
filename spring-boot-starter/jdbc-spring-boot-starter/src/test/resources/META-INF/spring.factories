@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-   ltd.fdsa.starter.jdbc.config.JdbcApiAutoConfiguration
+   config.jdbc.starter.cn.zhumingwu.JdbcApiAutoConfiguration

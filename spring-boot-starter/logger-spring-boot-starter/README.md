@@ -13,7 +13,7 @@ logger
 <dependencies>
     ...
     <dependency>
-        <groupId>ltd.fdsa</groupId>
+        <groupId>cn.zhumingwu</groupId>
         <artifactId>logger-spring-boot-starter</artifactId>
     </dependency>
     ...

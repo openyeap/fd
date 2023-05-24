@@ -5,7 +5,7 @@
     <name>spring-boot-starter-limiter</name>
     <description>limiter-spring-boot-starter</description>
     <parent>
-        <groupId>ltd.fdsa</groupId>
+        <groupId>cn.zhumingwu</groupId>
         <artifactId>spring-boot-starter</artifactId>
         <version>1.1.0</version>
         <relativePath>../pom.xml</relativePath>

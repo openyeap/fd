@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-   ltd.fdsa.starter.monitor.config.PrometheusAutoConfiguration
+   config.monitor.starter.cn.zhumingwu.PrometheusAutoConfiguration

@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    ltd.fdsa.starter.register.config.AutoConfiguration
+    config.register.starter.cn.zhumingwu.AutoConfiguration

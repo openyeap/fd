@@ -3,12 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>spring-boot-starter</artifactId>
-    <name>fast data starter</name>
+    <name>fast starter</name>
     <description>聚合模块，定义Spring启动器</description>
     <packaging>pom</packaging>
     <parent>
-        <groupId>ltd.fdsa</groupId>
-        <artifactId>fast-data-parent</artifactId>
+        <groupId>cn.zhumingwu</groupId>
+        <artifactId>fast-parent</artifactId>
         <version>1.1.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>

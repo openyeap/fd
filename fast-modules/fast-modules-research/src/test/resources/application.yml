@@ -1,0 +1,102 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: system-demo
+  profiles:
+    active: dev
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: org.postgresql.Driver #com.mysql.cj.jdbc.Driver
+    url: jdbc:postgresql://10.168.4.172:5321/dev?currentSchema=public
+    username: postgres
+    password: postgres
+    filters: stat
+    filter:
+      slf4j:
+        enabled: true
+        statement-create-after-log-enabled: false
+        statement-log-enabled: false
+        statement-executable-sql-log-enable: true
+        statement-log-error-enabled: true
+        result-set-log-enabled: false
+    maxActive: 20
+    maxWait: 10000
+    max-wait: 10000
+    min-idle: 5
+    initial-size: 5
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+    slaves:
+      - type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: org.postgresql.Driver #com.mysql.cj.jdbc.Driver
+        url: jdbc:postgresql://10.168.4.172:5321/dev?currentSchema=public
+        username: postgres
+        password: postgres
+      - type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: org.postgresql.Driver #com.mysql.cj.jdbc.Driver
+        url: jdbc:postgresql://10.168.4.172:5321/dev?currentSchema=public
+        username: postgres
+        password: postgres
+
+#context:
+#  listener:
+#    classes: cn.zhumingwu.demo.web.ApplicationEventListener
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "zhumingwu,prometheus,health"
+  endpoint:
+    health:
+      show-details: always
+
+
+project:
+  swagger:
+    enabled: false
+    basePackages:
+      - cn.zhumingwu
+    info:
+      version: 1.0
+      title: "test Document"
+      description: "test Document"
+      contact:
+        name: zhumingwu
+        email: zhumingwu@126.com
+        url: https://github.com/fdsa
+  consul:
+    enabled: true
+    host: 10.168.4.14
+    port: 8500
+    health:
+      enabled: true
+  tables:
+    enabled: true
+    prefix-matches:
+      - s*_
+      - t*_
+      - us*_
+    changes:
+      append:
+        - t_: { prefix: 'test_', suffix: '_result' } #以t_开头的表，前增test_，后增_result
+        - s_: { suffix: '_test' } #以s开头的表，后增_test
+        - us_: { prefix: 'user_' } #以us_开头的表，前增user_
+    remove:
+      - _ #移除 _
+    replace: { land: 'plan', jiefang: 'liberate' }
+
+
+logging:
+  level:
+    ROOT: OFF
+    cn.zhumingwu: INFO
+

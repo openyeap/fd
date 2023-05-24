@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-   ltd.fdsa.starter.logger.config.LoggingAutoConfiguration
+   config.logger.starter.cn.zhumingwu.LoggingAutoConfiguration

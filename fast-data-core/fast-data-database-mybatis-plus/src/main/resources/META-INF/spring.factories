@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    ltd.fdsa.database.mybatis.plus.config.ReaderConfig,\
-    ltd.fdsa.database.mybatis.plus.config.WriterConfig

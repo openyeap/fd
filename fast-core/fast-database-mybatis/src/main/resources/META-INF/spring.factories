@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    config.mybatis.database.cn.zhumingwu.WriterConfig,\
+    config.mybatis.database.cn.zhumingwu.ReaderConfig

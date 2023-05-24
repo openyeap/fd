@@ -1,0 +1,176 @@
+server:
+  port: 9080
+spring:
+  application:
+    name: server
+  profiles:
+    active: dev
+  jpa:
+    open-in-view: false
+  devtools:
+    add-properties: true
+  datasource:
+    master:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: ${database.master.driver}
+      url: ${database.master.url}
+      username: ${database.master.username}
+      password: ${database.master.password}
+      maxActive: 20
+      maxWait: 10000
+      max-wait: 10000
+      min-idle: 5
+      initial-size: 5
+      timeBetweenLogStatsMillis: 5000
+      druid:
+        maxWait: 60000
+        filter:
+          stat:
+            enabled: true
+    slaves:
+      - type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: ${database.master.driver}
+        url: ${database.slave1.url}
+        username: ${database.slave1.username}
+        password: ${database.slave1.password}
+      - type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: ${database.master.driver}
+        url: ${database.slave2.url}
+        username: ${database.slave2.username}
+        password: ${database.slave2.password}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "info,health,prometheus,druid"
+  endpoint:
+    health:
+      show-details: always
+project:
+  rpc:
+    enabled: true
+    packages: cn.zhumingwu.api.service
+  swagger:
+    enabled: true
+    basePackages:
+      - cn.zhumingwu
+    api-info:
+      title: swagger api
+      description: 优雅的restful风格
+      terms-of-service-url: http://fdsa.ltd
+      version: 1.0
+      contact:
+        name: zhumingwu
+        url: http://fdsa.ltd
+        email: zhumingwu@fdsa.ltd
+  consul:
+    enabled: true
+    minutes: 1
+    host: 10.168.4.14
+    port: 8500
+    registry:
+      enabled: true
+      # services:
+      #   - name: rest-api
+      #     schema: http
+      #     ip: 192.168.7.222
+      #     port: 8080
+    healthCheck:
+      path: /v2/api-docs
+      delay: 10s
+      enabled: true
+  rest-api:
+    enabled: true
+    title: 优雅的restful API
+    description: 优雅的restful API
+    name: zhumingwu
+    url: https://zhumingwu.cn
+    email: zhumingwu@hotmail.com
+    catalog:
+    schema: public
+    tables:
+      "[t_*]":
+        removes:
+          - prefix: t
+            suffix: 
+        appends:
+          - prefix: 
+            suffix: 
+        replaces:
+          - _a: A
+          - _b: B
+          - _c: C
+          - _d: D
+          - _e: E
+          - _f: F
+          - _g: G
+          - _h: H
+          - _i: I
+          - _j: J
+          - _k: K
+          - _l: L
+          - _m: M
+          - _n: N
+          - _o: O
+          - _p: P
+          - _q: Q
+          - _r: R
+          - _s: S
+          - _t: T
+          - _u: U
+          - _v: V
+          - _w: W
+          - _x: X
+          - _y: Y
+          - _z: Z
+        column:
+          removes:
+            - prefix:
+              suffix:
+          appends:
+            - prefix:
+              suffix:
+          replaces:
+            - _a: A
+            - _b: B
+            - _c: C
+            - _d: D
+            - _e: E
+            - _f: F
+            - _g: G
+            - _h: H
+            - _i: I
+            - _j: J
+            - _k: K
+            - _l: L
+            - _m: M
+            - _n: N
+            - _o: O
+            - _p: P
+            - _q: Q
+            - _r: R
+            - _s: S
+            - _t: T
+            - _u: U
+            - _v: V
+            - _w: W
+            - _x: X
+            - _y: Y
+            - _z: Z
+  acl:
+      "[t_*]":
+        - CREATE
+        - DELETE
+        - DELETE_BY_KEY
+        - QUERY
+        - QUERY_BY_KEY
+        - UPDATE
+        - UPDATE_BY_KEY
+
+logging:
+  path: /var/log/${spring.application.name}-${server.port}
+  level:
+    web: INFO
+    cn.zhumingwu: DEBUG
+  pattern:
+    console: "[%highlight(%-4level)] %msg%n"

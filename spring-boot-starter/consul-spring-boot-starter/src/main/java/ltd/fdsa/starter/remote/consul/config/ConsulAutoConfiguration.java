@@ -1,17 +1,17 @@
-package ltd.fdsa.starter.remote.consul.config;
+package cn.zhumingwu.starter.remote.consul.config;
 
 import com.ecwid.consul.v1.ConsulClient;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
-import ltd.fdsa.consul.client.MultiConsulRawClient;
-import ltd.fdsa.consul.event.ConsulEventService;
-import ltd.fdsa.consul.lock.ConsulLockManager;
-import ltd.fdsa.consul.properties.ConsulProperties;
-import ltd.fdsa.consul.thread.ConsulWatchThread;
-import ltd.fdsa.core.event.RemoteEventPublisher;
-import ltd.fdsa.core.lock.LockManager;
-import ltd.fdsa.core.properties.ProjectProperties;
-import ltd.fdsa.core.util.NamingUtils;
+import cn.zhumingwu.consul.client.MultiConsulRawClient;
+import cn.zhumingwu.consul.event.ConsulEventService;
+import cn.zhumingwu.consul.lock.ConsulLockManager;
+import cn.zhumingwu.consul.properties.ConsulProperties;
+import cn.zhumingwu.consul.thread.ConsulWatchThread;
+import cn.zhumingwu.core.event.RemoteEventPublisher;
+import cn.zhumingwu.core.lock.LockManager;
+import cn.zhumingwu.core.properties.ProjectProperties;
+import cn.zhumingwu.core.util.NamingUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

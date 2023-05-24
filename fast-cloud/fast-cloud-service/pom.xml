@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>fast-cloud-service</artifactId>
+    <description>cloud service project for Spring Boot</description>
+    <packaging>jar</packaging>
+    <parent>
+        <groupId>cn.zhumingwu</groupId>
+        <artifactId>fast-cloud</artifactId>
+        <version>1.1.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <properties />
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <!--
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency> -->
+
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <!--主要使用的是maven提供的assembly插件完成-->
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <!--具体的配置文件-->
+                            <descriptors>${project.basedir}/src/main/resources/assembly/package.xml</descriptors>
+                        </configuration>
+                        <id>make-assembly</id>
+                        <!--绑定到maven操作类型上-->
+                        <phase>package</phase>
+                        <!--运行一次-->
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

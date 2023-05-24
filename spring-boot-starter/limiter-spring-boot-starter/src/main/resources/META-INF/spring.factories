@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-   ltd.fdsa.starter.limiter.config.LimiterAutoConfiguration
+   config.limiter.starter.cn.zhumingwu.LimiterAutoConfiguration

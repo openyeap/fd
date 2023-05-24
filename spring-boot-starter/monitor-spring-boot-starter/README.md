@@ -21,7 +21,7 @@ It's as easy as any other Spring Boot Starter ;). Find your recipe below...
 
 ```xml
 <dependency>
-  <groupId>ltd.fdsa</groupId>
+  <groupId>cn.zhumingwu</groupId>
   <artifactId>prometheus-spring-boot-starter</artifactId>
   <version>3.0.0</version>
 </dependency>

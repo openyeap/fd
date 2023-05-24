@@ -1,0 +1,89 @@
+server:
+  port: 9080
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        # 路由规则的唯一标识，任意齐名，建议和服务名一致
+        - id: baidu
+          # 转发到的节点，lb:// 为 http，lb:ws:// 为 websocket
+          uri: http://baidu.com
+          predicates:
+            # 断言规则，这里设置匹配的路由规则
+            - Path=/baidu/**
+          # 过滤规则
+          filters:
+            # 转发到具体项目去掉路由首单词，如 /search/a 转发为 /a
+            - StripPrefix=1
+    register:
+      enabled: true
+              
+  # 静态文件请求匹配方式
+  # mvc:
+  #   static-path-pattern: /**
+  #   # 修改默认的静态寻址资源目录 多个使用逗号分隔
+  #   resources:
+  #     static-locations: file:/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/META-INF/resources/webjars/
+management:
+ endpoint:
+   gateway:
+     enabled: true # default value
+ endpoints:
+   web:
+     exposure:
+       include: *
+
+logging:
+  level:
+    web: info
+    cn.zhumingwu: info
+  pattern:
+    # console: "%msg%n"
+    console: '[%d{HH:mm:ss.SSS}] [%highlight(%-4level)] [%32.32logger{16}] %msg%n'
+
+project:
+  minio:
+    url: http://10.168.4.132:9000
+    accesskey: minioadmin
+    secretKey: minioadmin
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    registerWithEureka: true
+    fetchRegistry: true
+#
+#filters:
+#  # redis限流，filter名称必须是RequestRateLimiter
+#  - name: RequestRateLimiter
+#    args:
+#      # 使用SpEL名称引用Bean，与上面新建的RateLimiterConfig类中的bean的name相同
+#      key-resolver: '#{@remoteAddrKeyResolver}'
+#      # 每秒最大访问次数
+#      redis-rate-limiter.replenishRate: 20
+#      # 令牌桶最大容量
+#      redis-rate-limiter.burstCapacity: 20
+#
+#
+#  # 熔断降级配置
+#  - name: Hystrix
+#    args:
+#      name: default
+#      fallbackUri: 'forward:/defaultfallback'
+#
+# hystrix 信号量隔离，3秒后自动超时
+hystrix:
+ command:
+   default:
+     execution:
+     isolation:
+       strategy: SEMAPHORE
+       thread:
+       timeoutInMilliseconds: 3000
+ shareSecurityContext: true

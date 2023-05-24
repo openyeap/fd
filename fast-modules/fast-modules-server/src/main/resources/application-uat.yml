@@ -1,0 +1,24 @@
+database:
+  master:
+    driver: org.postgresql.Driver
+    url: jdbc:postgresql://pgsql.dev:5321/dev?currentSchema=public
+    username: postgres
+    password: postgres
+  slave1:
+    driver: org.postgresql.Driver
+    url: jdbc:postgresql://pgsql.dev:5321/dev?currentSchema=public
+    username: postgres
+    password: postgres
+  slave2:
+    driver: org.postgresql.Driver
+    url: jdbc:postgresql://pgsql.dev:5321/dev?currentSchema=public
+    username: postgres
+    password: postgres 
+    
+logging:
+  path: /var/log/${spring.application.name}-${server.port}
+  level:
+    cn.zhumingwu: INFO
+#  pattern:
+#    console: '[%highlight(%-4level)] %msg%n'
+ 

@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: test
+project:
+  name: test
+#  influx:
+#    url: http://localhost:8086
+#    org: org
+#    bucket: example
+#    username: username
+#    token: ik3sCrG_ysKGgRQz2SHefgkhUevJPpnf6mZeZENDE9RxQDn6jFXE_aO2jlmbR0No1uHlL0fdZsFPjqkbAfykRQ==
+  influx:
+    url: http://10.168.4.14:8086
+    org: org
+    bucket: bucket
+    token: TutHcReICu5pAPnWxq_yR2JNJHkZfrF6wXL2Uo154fLH42lIrRjmZgrHx-LnghegLBAlqrlKf2y9Y0voI93ebg==
+
+
+logging:
+  level:
+    root: error
+    cn.zhumingwu: info
