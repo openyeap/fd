@@ -31,6 +31,7 @@ public class EncryptUtil {
      *
      * @param password 密码
      * @param salt     密码盐
+     * @return string
      */
     public static String encrypt(String password, String salt) {
         return encrypt(password, salt, HASH_ALGORITHM_NAME, HASH_ITERATIONS);
@@ -43,6 +44,7 @@ public class EncryptUtil {
      * @param salt              密码盐
      * @param hashAlgorithmName 加密算法
      * @param hashIterations    加密循环次数
+     * @return string
      */
     public static String encrypt(String password, String salt, String hashAlgorithmName, int hashIterations) {
         // 将字符串转换为字节数组

@@ -48,6 +48,7 @@ public class ProjectProperties {
 
         /**
          * 拼接忽略规则
+         * @return string
          */
         public String getExcludes() {
             if (!StringUtils.isEmpty(excludes.trim())) {

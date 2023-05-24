@@ -17,6 +17,7 @@ public class CaptchaUtil {
 
     /**
      * 生成随机验证码
+     * @return string
      */
     public static String getRandomCode() {
         StringBuilder sb = new StringBuilder();
@@ -36,6 +37,7 @@ public class CaptchaUtil {
      * 生成验证码图片
      *
      * @param randomCode 验证码
+     * @return string
      */
     public static BufferedImage genCaptcha(String randomCode) {
         // 创建画布

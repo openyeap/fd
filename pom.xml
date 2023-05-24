@@ -15,9 +15,9 @@
     </parent>
     <modules>
         <module>fast-core</module>
+        <module>fast-cloud</module>
         <module>fast-frameworks</module>
         <module>spring-boot-starter</module>
-        <module>fast-cloud</module>
         <module>fast-modules</module>
     </modules>
     <properties>
