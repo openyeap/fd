@@ -35,8 +35,6 @@
         <dependency>
             <groupId>cn.zhumingwu</groupId>
             <artifactId>fast-core-web</artifactId>
-            <version>1.1.0</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

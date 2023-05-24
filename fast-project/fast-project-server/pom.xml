@@ -50,23 +50,19 @@
         <dependency>
             <groupId>cn.zhumingwu</groupId>
             <artifactId>fast-database-jpa</artifactId>
-            <version>1.1.0</version>
         </dependency>
         <dependency>
             <groupId>cn.zhumingwu</groupId>
             <artifactId>fast-database-mybatis</artifactId>
-            <version>1.1.0</version>
         </dependency>
         <!-- api -->
         <dependency>
             <groupId>cn.zhumingwu</groupId>
             <artifactId>fast-project-api</artifactId>
-            <version>1.1.0</version>
         </dependency>
         <dependency>
             <groupId>cn.zhumingwu</groupId>
             <artifactId>fast-core-web</artifactId>
-            <version>1.1.0</version>
         </dependency>
         <!-- spring -->
         <dependency>
