@@ -1,7 +1,7 @@
 package cn.zhumingwu.starter.register.model;
 
 import com.google.common.base.Strings;
-import cn.zhumingwu.core.support.CommonEnum;
+import cn.zhumingwu.base.support.CommonEnum;
 
 import java.util.Arrays;
 

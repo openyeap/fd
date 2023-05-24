@@ -2,7 +2,7 @@ package cn.zhumingwu.starter.register.model;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
-import cn.zhumingwu.core.context.ApplicationContextHolder;
+import cn.zhumingwu.base.context.ApplicationContextHolder;
 import org.springframework.context.annotation.Role;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.StringUtils;

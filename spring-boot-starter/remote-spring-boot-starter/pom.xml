@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>cn.zhumingwu</groupId>
-            <artifactId>fast-common</artifactId>
+            <artifactId>fast-core-base</artifactId>
         </dependency>
         <dependency>
             <groupId>com.caucho</groupId>

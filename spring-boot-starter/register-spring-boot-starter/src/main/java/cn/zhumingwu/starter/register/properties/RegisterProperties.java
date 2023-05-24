@@ -2,7 +2,7 @@ package cn.zhumingwu.starter.register.properties;
 
 import lombok.Data;
 import lombok.ToString;
-import cn.zhumingwu.core.service.ServiceInfo;
+import cn.zhumingwu.base.service.ServiceInfo;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.time.Duration;

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>cn.zhumingwu</groupId>
+    <artifactId>fast-database</artifactId>
+    <name>fast database</name>
+    <description>聚合模块，定义核心模块</description>
+    <packaging>pom</packaging>
+    <parent>
+        <groupId>cn.zhumingwu</groupId>
+        <artifactId>fast-parent</artifactId>
+        <version>1.1.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modules>
+        <module>fast-database-base</module>
+        <module>fast-database-jpa</module>
+        <module>fast-database-mybatis</module>
+        <module>fast-database-mybatis-plus</module>
+        <module>fast-database-mybatis-generic</module>
+    </modules>
+</project>

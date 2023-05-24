@@ -10,7 +10,7 @@ import cn.zhumingwu.starter.logger.interceptor.LogInterceptor;
 import cn.zhumingwu.starter.logger.properties.LoggingProperties;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
-import cn.zhumingwu.core.util.NamingUtils;
+import cn.zhumingwu.base.util.NamingUtils;
 import net.logstash.logback.appender.LogstashTcpSocketAppender;
 import net.logstash.logback.encoder.LogstashEncoder;
 import org.apache.logging.log4j.util.Strings;

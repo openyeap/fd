@@ -19,6 +19,7 @@
         <module>limiter-spring-boot-starter</module>
         <module>remote-spring-boot-starter</module>
         <module>register-spring-boot-starter</module>
+        <module>consul-spring-boot-starter</module>
     </modules>
 
     <properties></properties>

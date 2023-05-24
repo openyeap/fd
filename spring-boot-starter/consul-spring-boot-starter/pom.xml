@@ -18,7 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>cn.zhumingwu</groupId>
-            <artifactId>fast-common</artifactId>
+            <artifactId>fast-core-base</artifactId>
         </dependency>
 
         <dependency>
@@ -31,8 +31,7 @@
         </dependency>
         <dependency>
             <groupId>cn.zhumingwu</groupId>
-            <artifactId>fast-frameworks-consul</artifactId>
-            <version>1.1.0</version>
+            <artifactId>fast-framework-consul</artifactId>
         </dependency>
     </dependencies>
 </project>

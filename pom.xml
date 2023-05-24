@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.zhumingwu</groupId>
     <artifactId>fast-parent</artifactId>
@@ -11,14 +12,15 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.3.12.RELEASE</version>
-        <relativePath /> <!-- lookup parent from repository -->
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <modules>
         <module>fast-core</module>
         <module>fast-cloud</module>
-        <module>fast-frameworks</module>
+        <module>fast-database</module>
+        <module>fast-framework</module>
         <module>spring-boot-starter</module>
-        <module>fast-modules</module>
+        <module>fast-project</module>
     </modules>
     <properties>
         <!--基本属性定义 -->
@@ -68,7 +70,7 @@
         <dependencies>
             <dependency>
                 <groupId>cn.zhumingwu</groupId>
-                <artifactId>fast-common</artifactId>
+                <artifactId>fast-core-base</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -78,7 +80,12 @@
             </dependency>
             <dependency>
                 <groupId>cn.zhumingwu</groupId>
-                <artifactId>fast-database</artifactId>
+                <artifactId>fast-database-base</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.zhumingwu</groupId>
+                <artifactId>fast-framework-consul</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -124,6 +131,16 @@
             <dependency>
                 <groupId>cn.zhumingwu</groupId>
                 <artifactId>monitor-spring-boot-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.zhumingwu</groupId>
+                <artifactId>limiter-spring-boot-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.zhumingwu</groupId>
+                <artifactId>consul-spring-boot-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <!-- data -->

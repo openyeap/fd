@@ -3,7 +3,7 @@ package cn.zhumingwu.starter.remote;
 import cn.zhumingwu.starter.remote.annotation.RpcClient;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
-import cn.zhumingwu.core.util.NamingUtils;
+import cn.zhumingwu.base.util.NamingUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;

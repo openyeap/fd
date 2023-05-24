@@ -13,12 +13,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modules>
-        <module>fast-common</module>
-        <module>fast-database</module>
-        <module>fast-database-jpa</module>
-        <module>fast-database-mybatis</module>
-        <module>fast-database-mybatis-plus</module>
-        <module>fast-database-mybatis-generic</module>
-        <module>fast-web</module>
+        <module>fast-core-base</module>
+        <module>fast-core-web</module>
     </modules>
 </project>

@@ -5,7 +5,7 @@ import cn.zhumingwu.starter.monitor.prometheus.PrometheusDruidStatEndpoint;
 import com.alibaba.druid.pool.DruidDataSource;
 import io.prometheus.client.CollectorRegistry;
 import lombok.extern.slf4j.Slf4j;
-import cn.zhumingwu.core.util.NamingUtils;
+import cn.zhumingwu.base.util.NamingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DataSourceUnwrapper;
 import org.springframework.context.annotation.Bean;

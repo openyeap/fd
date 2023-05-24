@@ -5,7 +5,7 @@ import cn.zhumingwu.database.service.JdbcApiService;
 import cn.zhumingwu.starter.jdbc.controller.JdbcApiController;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.extern.slf4j.Slf4j;
-import cn.zhumingwu.core.util.NamingUtils;
+import cn.zhumingwu.base.util.NamingUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
