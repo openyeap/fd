@@ -12,5 +12,5 @@
                                                                                     
 || Version: ${application.formatted-version}
 || Base: Spring-boot ${spring-boot.formatted-version}
-|| Power by: FDSA, ltd.
+|| Power by: OpenFides
 >-----------------------------------------------------------------------------<

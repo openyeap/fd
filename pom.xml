@@ -201,12 +201,12 @@
     <licenses>
         <license>
             <name>MIT</name>
-            <url>https://github.com/fdsa-ltd/sdo/license.txt</url>
+            <url>https://github.com/OpenFides/sdo/license.txt</url>
         </license>
     </licenses>
     <scm>
-        <connection>https://github.com/fdsa-ltd/fd.git</connection>
-        <url>https://github.com/fdsa-ltd/fd</url>
+        <connection>https://github.com/OpenFides/fd.git</connection>
+        <url>https://github.com/OpenFides/fd</url>
     </scm>
     <developers>
         <developer>

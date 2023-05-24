@@ -20,6 +20,6 @@
         <module>fast-framework-audit</module>
         <module>fast-framework-consul</module>
         <module>fast-framework-redis</module>
-        <module>fast-framework-koffer</module>
+        <!-- <module>fast-framework-koffer</module> -->
     </modules>
 </project>

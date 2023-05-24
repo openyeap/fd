@@ -1,5 +1,5 @@
 FROM openjdk:8-jre-slim
-MAINTAINER FDSA
+MAINTAINER OpenFides
 
 
 ADD target/*.jar /app.jar

@@ -1,7 +1,8 @@
 package cn.zhumingwu.koffer;
 
-import io.loadkit.Loaders;
-import io.loadkit.Resource;
+
+import cn.zhumingwu.koffer.loadkit.Loaders;
+import cn.zhumingwu.koffer.loadkit.Resource;
 import org.apache.commons.compress.archivers.jar.JarArchiveEntry;
 import org.apache.commons.compress.archivers.jar.JarArchiveOutputStream;
 
@@ -24,7 +25,7 @@ public class XInjector {
      */
     public static void inject(JarArchiveOutputStream zos) throws IOException {
         Set<String> directories = new HashSet<>();
-        Enumeration<Resource> resources = Loaders.ant().load("ltd/fdsa/koffer/**");
+        Enumeration<Resource> resources = Loaders.ant().load("cn/zhumingwu/koffer/**");
         while (resources.hasMoreElements()) {
             Resource resource = resources.nextElement();
             String name = resource.getName();

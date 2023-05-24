@@ -56,12 +56,12 @@ project:
     api-info:
       title: swagger api
       description: 优雅的restful风格
-      terms-of-service-url: http://fdsa.ltd
+      terms-of-service-url: http://terms.zhumingwu.cn
       version: 1.0
       contact:
         name: zhumingwu
-        url: http://fdsa.ltd
-        email: zhumingwu@fdsa.ltd
+        url: https://www.zhumingwu.cn
+        email: admin@zhumingwu.cn
   consul:
     enabled: true
     minutes: 1

@@ -49,7 +49,7 @@ project:
       contact:
         name: zhumingwu
         email: zhumingwu@126.com
-        url: https://github.com/fdsa
+        url: https://www.zhumingwu.cn
   consul:
     enabled: true
     host: 10.168.4.14
