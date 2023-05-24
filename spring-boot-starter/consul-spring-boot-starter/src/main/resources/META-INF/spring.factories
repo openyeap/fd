@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    cn.zhumingwu.starter.remote.consul.config.ConsulAutoConfiguration
+    cn.zhumingwu.starter.consul.config.ConsulAutoConfiguration
