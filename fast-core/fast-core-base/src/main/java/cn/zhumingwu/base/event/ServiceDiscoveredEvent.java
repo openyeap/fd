@@ -1,6 +1,6 @@
 package cn.zhumingwu.base.event;
  
-import cn.zhumingwu.base.service.ServiceInfo;
+import cn.zhumingwu.base.service.InstanceInfo;
 import lombok.ToString;
 import org.springframework.context.ApplicationEvent;
 
@@ -17,14 +17,14 @@ import java.util.Map;
  */
 @ToString
 public class ServiceDiscoveredEvent extends ApplicationEvent {
-    private final Map<String, List<ServiceInfo>> services;
+    private final Map<String, List<InstanceInfo>> services;
 
-    public ServiceDiscoveredEvent(Object source, Map<String, List<ServiceInfo>> services) {
+    public ServiceDiscoveredEvent(Object source, Map<String, List<InstanceInfo>> services) {
         super(source);
         this.services = services;
     }
 
-    public Map<String, List<ServiceInfo>> getServices() {
+    public Map<String, List<InstanceInfo>> getServices() {
         return services;
     }
 

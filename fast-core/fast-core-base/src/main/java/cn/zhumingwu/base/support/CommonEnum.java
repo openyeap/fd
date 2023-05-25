@@ -5,13 +5,13 @@ interface CodeBasedEnum {
 }
 
 interface SelfDescribedEnum {
+    String name();
     default String getName() {
         return name();
     }
-
-    String name();
-
-    String getDescription();
+    default String getDescription() {
+        return name();
+    }
 }
 
 public interface CommonEnum extends CodeBasedEnum, SelfDescribedEnum {

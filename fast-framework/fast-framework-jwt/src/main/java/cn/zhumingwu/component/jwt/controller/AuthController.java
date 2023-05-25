@@ -1,6 +1,7 @@
 package cn.zhumingwu.component.jwt.controller;
 
 
+import cn.zhumingwu.base.model.Result;
 import cn.zhumingwu.component.jwt.properties.JwtProjectProperties;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -8,7 +9,6 @@ import io.swagger.annotations.ApiParam;
 import cn.zhumingwu.component.jwt.annotation.IgnorePermissions;
 import cn.zhumingwu.component.jwt.enums.JwtResultEnums;
 import cn.zhumingwu.web.exception.ResultException;
-import cn.zhumingwu.web.view.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;

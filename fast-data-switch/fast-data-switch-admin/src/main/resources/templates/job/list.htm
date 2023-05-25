@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <#import "../common/common.macro.ftl" as common>
+        <@common.commonStyle />
+        <title>${I18n.site_name}</title>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+        <!-- 导航栏 -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <@common.commonHeader />
+        </nav>
+        <!-- /.导航栏 -->
+
+        <!-- 主侧边栏容器 -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <@common.commonLeft "jobinfo" />
+        </aside>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>${I18n.jobinfo_name}</h1>
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+
+                <div class="row">
+                    <form id='job_form' style="width: 100%;">
+
+                    </form>
+                    <table id="job_list" class="table table-bordered table-striped" width="100%">
+                        <thead>
+                            <tr>
+                                <th name="id">${I18n.jobinfo_field_id}</th>
+                                <th name="jobGroup">${I18n.jobinfo_field_jobgroup}</th>
+                                <th name="jobDesc">${I18n.jobinfo_field_jobdesc}</th>
+                                <th name="glueType">${I18n.jobinfo_field_gluetype}</th>
+                                <th name="executorParam">${I18n.jobinfo_field_executorparam}</th>
+                                <th name="jobCron">Cron</th>
+                                <th name="addTime">addTime</th>
+                                <th name="updateTime">updateTime</th>
+                                <th name="author">${I18n.jobinfo_field_author}</th>
+                                <th name="alarmEmail">${I18n.jobinfo_field_alarmemail}</th>
+                                <th name="triggerStatus">${I18n.system_status}</th>
+                                <th>${I18n.system_opt}</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <tfoot></tfoot>
+                    </table>
+                </div>
+            </section>
+        </div>
+        <!-- footer -->
+        <@common.commonFooter />
+    </div>
+    <@common.commonScript />
+    <script type="text/javascript">
+        $('#job_form').jsonForm({
+            schema: {
+
+                "connector_class": {
+                    "type": "hidden",
+                    "title": "连接器",
+                    "value": "io.confluent.connect.jdbc.JdbcSourceConnector",
+                    "default": "io.confluent.connect.jdbc.JdbcSourceConnector"
+                },
+                "connection_url": {
+                    "type": "string",
+                    "title": "JDBC URL",
+                    "default": "jdbc:mysql://10.168.4.14:3306/dev?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC",
+                    "description": "请输入URL",
+                },
+                "connection_user": {
+                    "type": "string",
+                    "description": "",
+                    "title": "JDBC用户名"
+                },
+                "connection_password": {
+                    "type": "string",
+                    "title": "JDBC密码"
+                },
+                "catalog_pattern": {
+                    "type": "string",
+                    "title": "catalog",
+                    "default": ""
+                },
+                "schema_pattern": {
+                    "type": "string",
+                    "default": "public",
+                    "title": "schema"
+                },
+                "table_types": {
+                    "type": "array",
+                    "title": "数据类型",
+                    items: {
+                        type: "string",
+                        "enum": [
+                            "TABLE",
+                            "VIEW"
+                        ]
+                    },
+                    maxItems: 2
+                },
+                "mode": {
+                    "type": "string",
+                    "default": "bulk",
+                    "title": "采集模型",
+                    "enum": [
+                        "bulk",
+                        "timestamp",
+                        "incrementing",
+                        "timestamp+incrementing"
+                    ]
+                },
+                "topic_prefix": {
+                    "type": "string",
+                    "title": "专题前缀"
+                },
+                "incrementing_column_name": {
+                    "type": "string",
+                    "title": "增量字段"
+                },
+                "timestamp_column_name": {
+                    "type": "string",
+                    "title": "时间字段"
+                },
+
+            },
+            form: [
+                "*",
+                {
+                    "type": "submit",
+                    "title": "Submit"
+                }
+            ],
+
+            onSubmit: function (errors, values) {
+                if (errors) {
+                    alert(JSON.stringify(errors));
+                }
+                else {
+                    console.log(JSON.stringify(values));
+                    $.ajax({
+                        type: 'POST',
+                        url: "/job/add",
+                        data: JSON.stringify(values),
+                        contentType: "application/json;charset=UTF-8",
+                        success: function (result) {
+                            alert(JSON.stringify(result));
+                        },
+                    });
+
+
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

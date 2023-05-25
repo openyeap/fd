@@ -18,6 +18,7 @@
         <module>fast-core</module>
         <module>fast-cloud</module>
         <module>fast-database</module>
+        <module>fast-data-switch</module>
         <module>fast-framework</module>
         <module>spring-boot-starter</module>
         <module>fast-project</module>

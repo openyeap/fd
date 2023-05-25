@@ -1,0 +1,82 @@
+[
+  {
+    "name": "JdbcSource",
+    "description": "描述信息",
+    "type": "reader",
+    "className": "cn.zhumingwu.plugin.JdbcSource",
+    "url": "https://www.zhumingwu.cn",
+    "developer": "zhumingwu@126.com",
+    "shareWith": [
+      {
+        // if has type in system , provide drapdown list for choice
+        "type": "jdbc",
+        "name": "数据源",
+        "description": "描述信息"
+      }
+    ],
+    "config": // input fields
+    [
+      {
+        "name": "sql",
+        "description": "the sql for read data",
+        "type": "input"
+      },
+      {
+        "name": "interval",
+        "description": "job interval, default:0"
+      },
+      {
+        "name": "versionKey",
+        "description": "增量获取依据字段"
+      }
+    ]
+  },
+  {
+    "name": "AviatorExpression",
+    "description": "描述信息",
+    "type": "pipeline",
+    "className": "cn.zhumingwu.plugin.ExpressionPipeline",
+    "url": "https://www.zhumingwu.cn",
+    "developer": "zhumingwu@126.com",
+    "shareWith": [],
+    "config": [
+      {
+        "name": "expression",
+        "description": "aviator expression",
+        "type": "map"
+      }
+    ]
+  },
+  {
+    "name": "JdbcReader",
+    "description": "描述信息",
+    "type": "reader",
+    "className": "cn.zhumingwu.plugin.JdbcReader",
+    "url": "https://www.zhumingwu.cn",
+    "developer": "zhumingwu@126.com",
+    "shareWith": [
+      {
+        // if has type in system , provide drapdown list for choice
+        "type": "jdbc",
+        "name": "数据源",
+        "description": "描述信息"
+      }
+    ],
+    "config": // input fields
+    [
+      {
+        "name": "upsert",
+        "description": "update or insert sql for write",
+        "type": "input"
+      },
+      {
+        "name": "batchSize",
+        "description": "默认为1"
+      },
+      {
+        "name": "",
+        "others": "other settings"
+      }
+    ]
+  }
+]

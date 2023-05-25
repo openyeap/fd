@@ -8,7 +8,7 @@ import cn.zhumingwu.base.context.ApplicationContextHolder;
 import cn.zhumingwu.base.event.RefreshedEvent;
 import cn.zhumingwu.base.event.RemotingEvent;
 import cn.zhumingwu.base.event.ServiceDiscoveredEvent;
-import cn.zhumingwu.base.service.ServiceInfo;
+import cn.zhumingwu.base.service.InstanceInfo;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
@@ -99,10 +99,10 @@ public class RedisWatchThread implements SmartLifecycle {
     }
 
     public void serviceWatch() {
-        Map<String, List<ServiceInfo>> data = new LinkedHashMap<>();
+        Map<String, List<InstanceInfo>> data = new LinkedHashMap<>();
         for (var key : this.serviceRedisTemplate.keys(this.properties.getServiceWatch().getKeyPrefix())) {
             var services = this.serviceRedisTemplate.opsForSet().members(key).stream().map(m -> {
-                return ServiceInfo.builder().ip(m.getHost()).port(m.getPort()).build();
+                return InstanceInfo.builder().ip(m.getHost()).port(m.getPort()).build();
             }).collect(Collectors.toList());
             data.put(key.substring(this.properties.getServiceWatch().getKeyPrefix().length() - 1), services);
         }

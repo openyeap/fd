@@ -19,7 +19,7 @@ import cn.zhumingwu.base.event.RefreshedEvent;
 import cn.zhumingwu.base.event.RemotingEvent;
 import cn.zhumingwu.base.event.ServiceDiscoveredEvent;
 import cn.zhumingwu.base.properties.ProjectProperties;
-import cn.zhumingwu.base.service.ServiceInfo;
+import cn.zhumingwu.base.service.InstanceInfo;
 import cn.zhumingwu.base.util.YamlUtils;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.SmartLifecycle;
@@ -58,10 +58,10 @@ public class ConsulWatchThread implements SmartLifecycle {
         var registry = this.consulProperties.getRegistry();
         if (registry.isEnabled()) {
             if (registry.getServices() == null) {
-                registry.setServices(new LinkedList<ServiceInfo>());
+                registry.setServices(new LinkedList<InstanceInfo>());
             }
             var list = registry.getServices();
-            var serviceInfo = ServiceInfo.builder()
+            var serviceInfo = InstanceInfo.builder()
                     .name(this.properties.getName())
                     .ip(this.properties.getAddress())
                     .port(this.properties.getPort())
@@ -159,11 +159,11 @@ public class ConsulWatchThread implements SmartLifecycle {
 
             HealthServicesRequest healthServicesRequest = HealthServicesRequest.newBuilder().build();
 
-            Map<String, List<ServiceInfo>> data = new HashMap<>(response.getValue().size());
+            Map<String, List<InstanceInfo>> data = new HashMap<>(response.getValue().size());
 
             for (var serviceName : response.getValue().keySet()) {
                 var serviceList = this.consulClient.getHealthServices(serviceName, healthServicesRequest).getValue();
-                List<ServiceInfo> list = new ArrayList<>();
+                List<InstanceInfo> list = new ArrayList<>();
                 for (HealthService item : serviceList) {
                     var service = item.getService();
                     var address = service.getAddress();
@@ -174,7 +174,7 @@ public class ConsulWatchThread implements SmartLifecycle {
                     if (metadata == null) {
                         metadata = Collections.emptyMap();
                     }
-                    var serviceModel = ServiceInfo.builder()
+                    var serviceModel = InstanceInfo.builder()
                             .port(service.getPort())
                             .ip(address)
                             .id(service.getId())

@@ -1,7 +1,7 @@
 package cn.zhumingwu.starter.register.config;
 
 import cn.zhumingwu.starter.register.properties.RegisterProperties;
-import cn.zhumingwu.starter.register.thread.RegisterThread;
+import cn.zhumingwu.starter.register.thread.ServiceRegisterThread;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import cn.zhumingwu.base.properties.ProjectProperties;
@@ -33,10 +33,10 @@ public class AutoConfiguration {
     }
 
     @Bean
-    public RegisterThread consulWatch(ProjectProperties projectProperties, RegisterProperties properties,
-                                      EurekaClient eurekaClient, @Qualifier(CONSUL_WATCH_TASK_SCHEDULER_NAME) TaskScheduler taskScheduler) {
+    public ServiceRegisterThread consulWatch(ProjectProperties projectProperties, RegisterProperties properties,
+                                             EurekaClient eurekaClient, @Qualifier(CONSUL_WATCH_TASK_SCHEDULER_NAME) TaskScheduler taskScheduler) {
         NamingUtils.formatLog(log, "ConsulWatch Started");
-        return new RegisterThread(projectProperties, properties, eurekaClient, taskScheduler);
+        return new ServiceRegisterThread(projectProperties, properties, eurekaClient, taskScheduler);
     }
 
     @Bean(name = CONSUL_WATCH_TASK_SCHEDULER_NAME)

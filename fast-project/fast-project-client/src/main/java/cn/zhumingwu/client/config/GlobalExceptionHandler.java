@@ -1,8 +1,8 @@
 package cn.zhumingwu.client.config;
 
 
-import cn.zhumingwu.web.enums.HttpCode;
-import cn.zhumingwu.web.view.Result;
+import cn.zhumingwu.base.model.HttpCode;
+import cn.zhumingwu.base.model.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

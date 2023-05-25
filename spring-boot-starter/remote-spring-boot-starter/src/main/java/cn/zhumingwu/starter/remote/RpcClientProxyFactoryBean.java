@@ -7,7 +7,7 @@ import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import cn.zhumingwu.base.event.ServiceDiscoveredEvent;
-import cn.zhumingwu.base.service.ServiceInfo;
+import cn.zhumingwu.base.service.InstanceInfo;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationListener;
@@ -107,7 +107,7 @@ public class RpcClientProxyFactoryBean<T>
         return true;
     }
 
-    Map<String, List<ServiceInfo>> serviceList = Maps.newHashMap();
+    Map<String, List<InstanceInfo>> serviceList = Maps.newHashMap();
 
     private RpcService createRpcService() {
         try {
@@ -116,7 +116,7 @@ public class RpcClientProxyFactoryBean<T>
             if (!serviceList.containsKey(serviceName)) {
                 return null;
             }
-            var list = serviceList.get(serviceName).toArray(new ServiceInfo[0]);
+            var list = serviceList.get(serviceName).toArray(new InstanceInfo[0]);
             if (list.length == 0) {
                 return null;
             }

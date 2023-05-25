@@ -2,7 +2,7 @@ package cn.zhumingwu.starter.register.properties;
 
 import lombok.Data;
 import lombok.ToString;
-import cn.zhumingwu.base.service.ServiceInfo;
+import cn.zhumingwu.base.service.InstanceInfo;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.time.Duration;
@@ -52,7 +52,7 @@ public class RegisterProperties {
          */
         private Duration delay = Duration.ofMinutes(10);
 
-        private List<ServiceInfo> services;
+        private List<InstanceInfo> services;
     }
 
     /**

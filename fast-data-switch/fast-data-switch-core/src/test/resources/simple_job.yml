@@ -1,0 +1,34 @@
+# 如果觉得好用，请收藏或则分享本站
+name: simple job
+description: a simple job for demo
+pipelines:
+  - class: cn.zhumingwu.switcher.core.implement.JdbcSourcePipeline
+    description: read data
+    driver: com.mysql.cj.jdbc.Driver
+    url: 'jdbc:mysql://127.0.0.1:3306/dev?useSSL=false&characterEncoding=UTF-8'
+    username: root
+    password: MySQL123$
+    sql: select * from source
+    versionKey: id
+    remarks: other settings
+    pipelines:
+      - class: cn.zhumingwu.switcher.core.implement.ExpressionPipeline
+        description: transfer data
+        expression: >-
+          id=db.id; first_name=string.split(db.name,' ')[0];
+          last_name=string.split(db.name,' ')[1]; age=1;remark='test'
+        remarks: other settings
+        pipelines:
+          - class: cn.zhumingwu.switcher.core.implement.JdbcTargetPipeline
+            description: write data
+            driver: com.mysql.cj.jdbc.Driver
+            url: >-
+              jdbc:mysql://127.0.0.1:3306/dev?useSSL=false&characterEncoding=UTF-8
+            username: root
+            password: MySQL123$
+            table: target
+            remarks: other settings
+      - type: disruptor
+        class: cn.zhumingwu.switcher.core.implement.DefaultPipeline
+        description: nothing to do
+        remarks: other settings
