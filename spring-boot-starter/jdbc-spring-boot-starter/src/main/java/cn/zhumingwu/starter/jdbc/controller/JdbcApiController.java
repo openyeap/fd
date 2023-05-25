@@ -1,5 +1,7 @@
 package cn.zhumingwu.starter.jdbc.controller;
 
+import cn.zhumingwu.base.model.HttpCode;
+import cn.zhumingwu.base.model.Result;
 import cn.zhumingwu.database.fql.JdbcFqlVisitor;
 import cn.zhumingwu.database.fql.antlr.FqlLexer;
 import cn.zhumingwu.database.fql.antlr.FqlParser;
@@ -9,8 +11,7 @@ import cn.zhumingwu.database.sql.conditions.Condition;
 import cn.zhumingwu.database.sql.domain.Placeholder;
 import cn.zhumingwu.database.sql.queries.Queries;
 import cn.zhumingwu.web.controller.BaseController;
-import cn.zhumingwu.web.enums.HttpCode;
-import cn.zhumingwu.web.view.Result;
+
 import com.google.common.base.Strings;
 import io.swagger.models.Swagger;
 import lombok.extern.slf4j.Slf4j;

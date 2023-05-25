@@ -1,7 +1,7 @@
 package cn.zhumingwu.server.controller;
 
 import cn.zhumingwu.api.service.HiService;
-import cn.zhumingwu.web.view.Result;
+import cn.zhumingwu.base.model.Result;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import cn.zhumingwu.base.context.ApplicationContextHolder;

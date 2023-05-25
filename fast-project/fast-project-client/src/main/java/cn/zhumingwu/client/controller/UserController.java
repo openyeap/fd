@@ -6,8 +6,8 @@ import cn.zhumingwu.client.mybatis.entity.User;
 import cn.zhumingwu.client.mybatis.generic.service.UserService;
 import cn.zhumingwu.database.entity.Status;
 import cn.zhumingwu.web.controller.BaseController;
-import cn.zhumingwu.web.enums.HttpCode;
-import cn.zhumingwu.web.view.Result;
+import cn.zhumingwu.base.model.HttpCode;
+import cn.zhumingwu.base.model.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
