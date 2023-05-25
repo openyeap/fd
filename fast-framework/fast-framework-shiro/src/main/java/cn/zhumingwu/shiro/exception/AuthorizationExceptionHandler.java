@@ -1,8 +1,8 @@
 package cn.zhumingwu.shiro.exception;
 
 import cn.zhumingwu.base.context.ApplicationContextHolder;
-import cn.zhumingwu.web.enums.HttpCode;
-import cn.zhumingwu.web.view.Result;
+import cn.zhumingwu.base.model.HttpCode;
+import cn.zhumingwu.base.model.Result;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.springframework.core.annotation.Order;
