@@ -1,7 +1,6 @@
 package cn.zhumingwu.dataswitch.admin.controller;
 
 import cn.zhumingwu.dataswitch.core.job.coordinator.Coordinator;
-import cn.zhumingwu.dataswitch.admin.annotation.PermissionLimit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -33,7 +32,6 @@ public class RxController {
     }
     @RequestMapping("/uid")
     @ResponseBody
-    @PermissionLimit(limit = false)
     public String index() {
         Object obj = redisTemplate.opsForValue().get("test");
 

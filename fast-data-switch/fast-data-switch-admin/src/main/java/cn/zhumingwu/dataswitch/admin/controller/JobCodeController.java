@@ -57,12 +57,6 @@ public class JobCodeController {
         // log old code
         JobTask JobLogGlue = new JobTask();
         JobLogGlue.setJobId(exists_jobInfo.getId().intValue());
-        JobLogGlue.setGlueSource(glueSource);
-        JobLogGlue.setGlueRemark(glueRemark);
-
-//        JobLogGlueDao.save(JobLogGlue);
-        // remove code backup more than 30
-//        JobLogGlueDao.removeOld(exists_jobInfo.getId(), 30);
 
         return Result.success();
     }

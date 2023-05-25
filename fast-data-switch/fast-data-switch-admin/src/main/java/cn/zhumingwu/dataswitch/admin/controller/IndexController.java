@@ -2,7 +2,6 @@ package cn.zhumingwu.dataswitch.admin.controller;
 
 import lombok.var;
 import cn.zhumingwu.base.model.Result;
-import cn.zhumingwu.dataswitch.admin.service.impl.SystemUserService;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,9 +22,6 @@ import java.util.Map;
 public class IndexController extends BaseController {
 
 
-    @Resource
-    private SystemUserService loginService;
-
     @RequestMapping(value = {"/", "/index"})
     public String index(Model model) {
 
@@ -40,27 +36,6 @@ public class IndexController extends BaseController {
 //        Result<Map<String, Object>> chartInfo = JobService.chartInfo(startDate, endDate);
 //        return chartInfo;
         return null;
-    }
-
-    @RequestMapping("/login")
-//    @PermissionLimit(limit = false)
-    public String toLogin() {
-        if (loginService.checkLogin() != null) {
-            return "redirect:/";
-        }
-        return "login";
-    }
-
-    @RequestMapping(value = "login", method = RequestMethod.POST)
-    @ResponseBody
-//    @PermissionLimit(limit = false)
-    public Result<String> doLogin(String username, String password, String remember) {
-        var result = loginService.login(username, password);
-        if (result.getCode() == 200 || result.getCode() == 0) {
-            var cookie = ResponseCookie.from("UID", result.getData()).httpOnly(true).maxAge(Duration.ofDays(365)).build();
-//            response.addCookie(cookie);
-        }
-        return result;
     }
 
     @RequestMapping(value = "logout", method = {RequestMethod.POST, RequestMethod.GET})

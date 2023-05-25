@@ -3,7 +3,6 @@ package cn.zhumingwu.dataswitch.admin.controller;
 
 import cn.zhumingwu.dataswitch.admin.repository.JobGroupRepository;
 import cn.zhumingwu.dataswitch.admin.repository.JobInfoRepository;
-import cn.zhumingwu.dataswitch.admin.repository.JobRegistryRepository;
 import lombok.var;
 import cn.zhumingwu.dataswitch.admin.entity.JobGroup;
 import cn.zhumingwu.dataswitch.core.job.enums.RegistryConfig;
@@ -29,8 +28,6 @@ public class JobGroupController {
     public JobInfoRepository JobInfoDao;
     @Resource
     public JobGroupRepository jobGroupRepository;
-    @Resource
-    private JobRegistryRepository JobRegistryDao;
 
     @RequestMapping
     public String index(Model model) {
@@ -91,16 +88,9 @@ public class JobGroupController {
         }
         if (JobGroup.getType() == 0) {
             // 0=自动注册
-            List<String> registryList = findRegistryByAppName(JobGroup.getName());
+
             String addressListStr = null;
-            if (registryList != null && !registryList.isEmpty()) {
-                Collections.sort(registryList);
-                addressListStr = "";
-                for (String item : registryList) {
-                    addressListStr += item + ",";
-                }
-                addressListStr = addressListStr.substring(0, addressListStr.length() - 1);
-            }
+
             JobGroup.setAddressList(addressListStr);
         } else {
             // 1=手动录入
@@ -120,27 +110,6 @@ public class JobGroupController {
         return (ret != null) ? Result.success() : Result.fail(500, "error");
     }
 
-    private List<String> findRegistryByAppName(String appNameParam) {
-        HashMap<String, List<String>> appAddressMap = new HashMap<String, List<String>>();
-        List<JobRegistry> list = JobRegistryDao.findAll();
-        if (list != null) {
-            for (JobRegistry item : list) {
-                if (RegistryConfig.EXECUTOR.name().equals(item.getRegistryGroup())) {
-                    String appName = item.getRegistryKey();
-                    List<String> registryList = appAddressMap.get(appName);
-                    if (registryList == null) {
-                        registryList = new ArrayList<String>();
-                    }
-
-                    if (!registryList.contains(item.getRegistryValue())) {
-                        registryList.add(item.getRegistryValue());
-                    }
-                    appAddressMap.put(appName, registryList);
-                }
-            }
-        }
-        return appAddressMap.get(appNameParam);
-    }
 
     @RequestMapping("/remove")
     @ResponseBody

@@ -4,7 +4,6 @@ import cn.zhumingwu.base.model.HttpCode;
 import cn.zhumingwu.dataswitch.admin.repository.JobGroupRepository;
 import cn.zhumingwu.dataswitch.admin.repository.JobInfoRepository;
 import cn.zhumingwu.dataswitch.admin.repository.JobLogRepository;
-import cn.zhumingwu.dataswitch.admin.entity.User;
 import cn.zhumingwu.dataswitch.admin.scheduler.JobScheduler;
 import cn.zhumingwu.dataswitch.admin.entity.JobGroup;
 import cn.zhumingwu.dataswitch.admin.entity.JobInfo;
@@ -17,7 +16,6 @@ import cn.zhumingwu.base.model.Result;
 import cn.zhumingwu.dataswitch.core.util.DateUtil;
 import cn.zhumingwu.dataswitch.core.util.I18nUtil;
 
-import cn.zhumingwu.dataswitch.admin.service.impl.SystemUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -45,27 +43,7 @@ public class JobLogController {
     @Resource
     public JobLogRepository jobLogRepository;
 
-    @Resource
-    private SystemUserService userService;
 
-    List<JobGroup> filterJobGroupByRole(List<JobGroup> jobGroupList_all) {
-        List<JobGroup> jobGroupList = new ArrayList<>();
-        if (jobGroupList_all != null && jobGroupList_all.size() > 0) {
-            User loginUser = this.userService.checkLogin();
-            if (loginUser.getType() == 1) {
-                jobGroupList = jobGroupList_all;
-            } else {
-                List<String> groupIdStrs = new ArrayList<>();
-
-                for (JobGroup groupItem : jobGroupList_all) {
-                    if (groupIdStrs.contains(String.valueOf(groupItem.getId()))) {
-                        jobGroupList.add(groupItem);
-                    }
-                }
-            }
-        }
-        return jobGroupList;
-    }
 
     @RequestMapping
     public String index(Model model, @RequestParam(required = false, defaultValue = "0") Integer jobId) {
@@ -73,13 +51,6 @@ public class JobLogController {
         // 执行器列表
         List<JobGroup> jobGroupList_all = this.jobGroupService.findAll();
 
-        // filter group
-        List<JobGroup> jobGroupList = filterJobGroupByRole(jobGroupList_all);
-        if (jobGroupList == null || jobGroupList.size() == 0) {
-            throw new FastDataSwitchException(I18nUtil.getInstance("").getString("jobgroup_empty"));
-        }
-
-        model.addAttribute("JobGroupList", jobGroupList);
 
         // 任务
         if (jobId > 0) {
@@ -146,73 +117,8 @@ public class JobLogController {
             throw new RuntimeException(I18nUtil.getInstance("").getString("joblog_logid_invalid"));
         }
 
-        model.addAttribute("triggerCode", jobLog.getTriggerCode());
-        model.addAttribute("handleCode", jobLog.getHandleCode());
-        model.addAttribute("executorAddress", jobLog.getExecutorAddress());
-        model.addAttribute("triggerTime", jobLog.getTriggerTime().getTime());
         model.addAttribute("logId", jobLog.getId());
         return "joblog/joblog.detail";
-    }
-
-    @RequestMapping("/logDetailCat")
-    @ResponseBody
-    public Result<LogResult> logDetailCat(
-            String executorAddress, long triggerTime, Long logId, Long fromLineNum) {
-        try {
-            Executor executorBiz = JobScheduler.getExecutorClient(executorAddress);
-            Result<LogResult> logResult = executorBiz.stat(logId, fromLineNum);
-
-            // is end
-            if (logResult.getData() != null
-                    && logResult.getData().getFromLineNum() > logResult.getData().getToLineNum()) {
-                JobLog jobLog = jobLogRepository.findById(logId.intValue()).get();
-                if (jobLog.getHandleCode() > 0) {
-                    logResult.getData().setEnd(true);
-                }
-            }
-
-            return logResult;
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            return Result.fail(500, e.getMessage());
-        }
-    }
-
-    @RequestMapping("/logKill")
-    @ResponseBody
-    public Result<String> logKill(int id) {
-        // base check
-        JobLog log = jobLogRepository.findById(id).get();
-        JobInfo jobInfo = JobInfoDao.findById(log.getJobId()).get();
-        if (jobInfo == null) {
-            return Result.fail(500, I18nUtil.getInstance("").getString("jobinfo_glue_jobid_invalid"));
-        }
-        if (Result.success().getCode() != log.getTriggerCode()) {
-            return Result.fail(500, I18nUtil.getInstance("").getString("joblog_kill_log_limit"));
-        }
-
-        // request of kill
-        Result<String> runResult = null;
-        try {
-            Executor executorBiz = JobScheduler.getExecutorClient(log.getExecutorAddress());
-            runResult = executorBiz.stop(  jobInfo.getId() ,0L);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            runResult = Result.fail(500, e.getMessage());
-        }
-
-        if (Result.success().getCode() == runResult.getCode()) {
-            log.setHandleCode(HttpCode.INTERNAL_SERVER_ERROR.getCode());
-            log.setHandleMsg(
-                    I18nUtil.getInstance("").getString("joblog_kill_log_byman")
-                            + ":"
-                            + (runResult.getMessage() != null ? runResult.getMessage() : ""));
-            log.setHandleTime(new Date());
-            jobLogRepository.save(log);
-            return Result.success(runResult.getMessage());
-        } else {
-            return Result.fail(500, runResult.getMessage());
-        }
     }
 
     @RequestMapping("/clearLog")
@@ -242,14 +148,6 @@ public class JobLogController {
         } else {
             return Result.fail(500, I18nUtil.getInstance("").getString("joblog_clean_type_invalid"));
         }
-
-//        List<Long> logIds = null;
-//        do {
-//            logIds = JobLogDao.findClearLogIds(jobGroup, jobId, clearBeforeTime, clearBeforeNum, 1000);
-//            if (logIds != null && logIds.size() > 0) {
-//                JobLogDao.deleteAll(logIds.toArray(Integer[]::new));
-//            }
-//        } while (logIds != null && logIds.size() > 0);
 
         return Result.success();
     }

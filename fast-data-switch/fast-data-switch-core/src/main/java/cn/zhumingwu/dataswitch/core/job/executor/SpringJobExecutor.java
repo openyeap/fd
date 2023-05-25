@@ -49,8 +49,7 @@ public class SpringJobExecutor extends JobExecutor implements ApplicationContext
             }
             registerJobHandler(entry.getKey(), entry.getValue());
         }
-        // super start
-        super.start();
+
     }
 
     // destroy

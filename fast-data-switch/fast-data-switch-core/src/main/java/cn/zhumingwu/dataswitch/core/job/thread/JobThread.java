@@ -1,18 +1,18 @@
 package cn.zhumingwu.dataswitch.core.job.thread;
 
+import cn.zhumingwu.base.context.ApplicationContextHolder;
 import cn.zhumingwu.base.model.Result;
 import cn.zhumingwu.dataswitch.core.job.executor.JobContext;
 import cn.zhumingwu.dataswitch.core.job.executor.JobExecutor;
 import cn.zhumingwu.dataswitch.core.job.handler.IJobHandler;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
-import cn.zhumingwu.dataswitch.core.job.model.HandleCallbackParam;
+import cn.zhumingwu.dataswitch.core.job.model.CallbackParam;
 import cn.zhumingwu.dataswitch.core.job.model.TriggerParam;
+import lombok.var;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.*;
@@ -170,14 +170,12 @@ public class JobThread extends Thread {
                     // callback handler info
                     if (!isRun.get()) {
                         // commonm
-                        HandleCallbackParam p = new HandleCallbackParam(triggerParam.getTaskId(), triggerParam.getTimestamp(), Result.success());
-                        TriggerCallbackThread.pushCallBack(p);
+                        var callbackParam = new CallbackParam(triggerParam.getJobId(), triggerParam.getTaskId(), triggerParam.getHandler(), 0, 0, "common stop", true);
+                        ApplicationContextHolder.getBean(TriggerCallbackThread.class).pushCallBack(callbackParam);
                     } else {
                         // is killed
-                        Result<Object> stopResult =
-                                Result.fail(500, stopReason + " [job running, killed]");
-                        TriggerCallbackThread.pushCallBack(
-                                new HandleCallbackParam(triggerParam.getTaskId(), triggerParam.getTimestamp(), stopResult));
+                        var callbackParam = new CallbackParam(triggerParam.getJobId(), triggerParam.getTaskId(), triggerParam.getHandler(), 0, 0, stopReason + " [job running, killed]", true);
+                        ApplicationContextHolder.getBean(TriggerCallbackThread.class).pushCallBack(callbackParam);
                     }
                 }
             }
@@ -188,11 +186,8 @@ public class JobThread extends Thread {
             TriggerParam triggerParam = triggerQueue.poll();
             if (triggerParam != null) {
                 // is killed
-                Result<Object> stopResult =
-                        Result.fail(500, stopReason + " [job not executed, in the job queue, killed.]");
-                TriggerCallbackThread.pushCallBack(
-                        new HandleCallbackParam(
-                                triggerParam.getTaskId(), triggerParam.getTimestamp(), stopResult));
+                var callbackParam = new CallbackParam(triggerParam.getJobId(), triggerParam.getTaskId(), triggerParam.getHandler(), 0, 0, stopReason + " [job not executed, in the job queue, killed.]", true);
+                ApplicationContextHolder.getBean(TriggerCallbackThread.class).pushCallBack(callbackParam);
             }
         }
 

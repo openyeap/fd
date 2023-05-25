@@ -58,11 +58,7 @@ public class JobLogReportHelper {
                                             Date todayTo = itemDay.getTime();
 
                                             // refresh log-report every minute
-                                            JobLogReport JobLogReport = new JobLogReport();
-                                            JobLogReport.setTriggerDay(todayFrom);
-                                            JobLogReport.setRunningCount(0);
-                                            JobLogReport.setSucCount(0);
-                                            JobLogReport.setFailCount(0);
+
 
 //                                            Map<String, Object> triggerCountMap =
 //                                                    ApplicationContextHolder.getBean(JobAdminConfig.class)

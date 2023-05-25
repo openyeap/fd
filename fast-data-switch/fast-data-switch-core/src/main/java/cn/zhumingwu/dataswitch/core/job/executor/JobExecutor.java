@@ -4,7 +4,6 @@ package cn.zhumingwu.dataswitch.core.job.executor;
 import cn.zhumingwu.dataswitch.core.job.handler.IJobHandler;
 import lombok.extern.slf4j.Slf4j;
 import cn.zhumingwu.dataswitch.core.job.thread.JobThread;
-import cn.zhumingwu.dataswitch.core.job.thread.TriggerCallbackThread;
 import lombok.var;
 
 import java.util.Properties;
@@ -18,7 +17,7 @@ import java.util.concurrent.ConcurrentMap;
 @Slf4j
 public class JobExecutor {
     // ---------------------- job handler repository ----------------------
-    private static ConcurrentMap<String, IJobHandler> jobProcessRepository = new ConcurrentHashMap<String, IJobHandler>();
+    private static ConcurrentMap<String, IJobHandler> jobHandlerRepository = new ConcurrentHashMap<String, IJobHandler>();
     // ---------------------- job thread repository ----------------------
     private static ConcurrentMap<Long, JobThread> jobThreadRepository = new ConcurrentHashMap<Long, JobThread>();
 
@@ -32,11 +31,11 @@ public class JobExecutor {
      * 注册本地Job Handler
      */
     public static void registerJobHandler(String name, IJobHandler jobHandler) {
-        jobProcessRepository.put(name, jobHandler);
+        jobHandlerRepository.put(name, jobHandler);
     }
 
     public static IJobHandler loadJobHandler(String name) {
-        return jobProcessRepository.get(name);
+        return jobHandlerRepository.get(name);
     }
 
     public static JobThread startJob(Long jobId, IJobHandler handler, String... reasons) {
@@ -59,14 +58,6 @@ public class JobExecutor {
         return jobThreadRepository.get(jobId);
     }
 
-    public void start() throws Exception {
-        // init TriggerCallbackThread
-        TriggerCallbackThread.getInstance().start();
-
-        // init executor-server todo
-
-    }
-
     public void destroy() {
         // destory executor-server
 
@@ -77,10 +68,9 @@ public class JobExecutor {
             }
             jobThreadRepository.clear();
         }
-        jobProcessRepository.clear();
+        jobHandlerRepository.clear();
 
-        // destory TriggerCallbackThread
-        TriggerCallbackThread.getInstance().toStop();
+
     }
 
 }

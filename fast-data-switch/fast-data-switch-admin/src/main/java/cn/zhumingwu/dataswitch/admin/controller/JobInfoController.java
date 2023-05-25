@@ -8,9 +8,7 @@ import cn.zhumingwu.base.model.Result;
 import cn.zhumingwu.dataswitch.core.util.DateUtil;
 import cn.zhumingwu.dataswitch.core.util.I18nUtil;
 import cn.zhumingwu.dataswitch.admin.entity.JobGroup;
-import cn.zhumingwu.dataswitch.admin.entity.User;
 import cn.zhumingwu.dataswitch.admin.enums.ExecutorRouteStrategy;
-import cn.zhumingwu.dataswitch.admin.service.impl.SystemUserService;
 import cn.zhumingwu.dataswitch.admin.thread.JobTriggerPoolHelper;
 import cn.zhumingwu.dataswitch.admin.enums.TriggerTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,24 +33,19 @@ public class JobInfoController extends BaseController {
     @Resource
     private JobGroupRepository jobGroupService;
 
-    @Autowired
-    private SystemUserService userService;
 
     List<JobGroup> filterJobGroupByRole(List<JobGroup> jobGroupList_all) {
         List<JobGroup> jobGroupList = new ArrayList<>();
         if (jobGroupList_all != null && jobGroupList_all.size() > 0) {
-            User loginUser = this.userService.checkLogin();
-            if (loginUser.getType() == 1) {
-                jobGroupList = jobGroupList_all;
-            } else {
-                List<String> list = new ArrayList<>();
 
-                for (JobGroup groupItem : jobGroupList_all) {
-                    if (list.contains(String.valueOf(groupItem.getId()))) {
-                        jobGroupList.add(groupItem);
-                    }
+            List<String> list = new ArrayList<>();
+
+            for (JobGroup groupItem : jobGroupList_all) {
+                if (list.contains(String.valueOf(groupItem.getId()))) {
+                    jobGroupList.add(groupItem);
                 }
             }
+
         }
         return jobGroupList;
     }

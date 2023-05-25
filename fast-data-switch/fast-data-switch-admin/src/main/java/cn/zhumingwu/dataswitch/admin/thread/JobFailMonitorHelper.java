@@ -1,5 +1,6 @@
 package cn.zhumingwu.dataswitch.admin.thread;
 
+import cn.zhumingwu.base.context.ApplicationContextHolder;
 import cn.zhumingwu.dataswitch.admin.repository.JobGroupRepository;
 import cn.zhumingwu.dataswitch.admin.repository.JobInfoRepository;
 import cn.zhumingwu.dataswitch.admin.repository.JobLogRepository;
@@ -105,20 +106,20 @@ public class JobFailMonitorHelper {
                                                                 .findById(log.getJobId()).get();
 
                                                 // 1、fail retry monitor
-                                                if (log.getExecutorFailRetryCount() > 0) {
-                                                    JobTriggerPoolHelper.trigger(
-                                                            log.getJobId().longValue(),
-                                                            TriggerTypeEnum.RETRY,
-                                                            (log.getExecutorFailRetryCount() - 1),
-                                                            log.getExecutorShardingParam(),
-                                                            log.getExecutorParam());
-                                                    String retryMsg =
-                                                            "<br><br><span style=\"color:#F39C12;\" > >>>>>>>>>>>"
-                                                                    + I18nUtil.getInstance("").getString("jobconf_trigger_type_retry")
-                                                                    + "<<<<<<<<<<< </span><br>";
-                                                    log.setTriggerMsg(log.getTriggerMsg() + retryMsg);
-                                                    ApplicationContextHolder.getBean(JobLogRepository.class).save(log);
-                                                }
+//                                                if (log.getExecutorFailRetryCount() > 0) {
+//                                                    JobTriggerPoolHelper.trigger(
+//                                                            log.getJobId().longValue(),
+//                                                            TriggerTypeEnum.RETRY,
+//                                                            (log.getExecutorFailRetryCount() - 1),
+//                                                            log.getExecutorShardingParam(),
+//                                                            log.getExecutorParam());
+//                                                    String retryMsg =
+//                                                            "<br><br><span style=\"color:#F39C12;\" > >>>>>>>>>>>"
+//                                                                    + I18nUtil.getInstance("").getString("jobconf_trigger_type_retry")
+//                                                                    + "<<<<<<<<<<< </span><br>";
+//                                                    log.setTriggerMsg(log.getTriggerMsg() + retryMsg);
+//                                                    ApplicationContextHolder.getBean(JobLogRepository.class).save(log);
+//                                                }
 
                                                 // 2、fail alarm monitor
                                                 int newAlarmStatus = 0; // 告警状态：0-默认、-1=锁定状态、1-无需告警、2-告警成功、3-告警失败
@@ -188,12 +189,12 @@ public class JobFailMonitorHelper {
 
             // alarmContent
             String alarmContent = "Alarm Job LogId=" + jobLog.getId();
-            if (jobLog.getTriggerCode() != Result.success().getCode()) {
-                alarmContent += "<br>TriggerMsg=<br>" + jobLog.getTriggerMsg();
-            }
-            if (jobLog.getHandleCode() > 0 && jobLog.getHandleCode() != Result.success().getCode()) {
-                alarmContent += "<br>HandleCode=" + jobLog.getHandleMsg();
-            }
+//            if (jobLog.getTriggerCode() != Result.success().getCode()) {
+//                alarmContent += "<br>TriggerMsg=<br>" + jobLog.getTriggerMsg();
+//            }
+//            if (jobLog.getHandleCode() > 0 && jobLog.getHandleCode() != Result.success().getCode()) {
+//                alarmContent += "<br>HandleCode=" + jobLog.getHandleMsg();
+//            }
 
             // email info
             JobGroup group =
@@ -218,7 +219,7 @@ public class JobFailMonitorHelper {
                             ApplicationContextHolder.getBean(JavaMailSender.class).createMimeMessage();
 
                     MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-                    helper.setFrom(ApplicationContextHolder.getBean(JobAdminConfig.class).getEmailUserName(), personal);
+//                    helper.setFrom(ApplicationContextHolder.getBean(JobAdminConfig.class).getEmailUserName(), personal);
                     helper.setTo(email);
                     helper.setSubject(title);
                     helper.setText(content, true);

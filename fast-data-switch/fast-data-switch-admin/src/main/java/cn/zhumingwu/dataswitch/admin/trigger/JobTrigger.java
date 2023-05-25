@@ -96,22 +96,17 @@ public class JobTrigger {
 
         // 1、save log-id
         JobLog jobLog = new JobLog();
-        jobLog.setJobGroup(jobInfo.getGroupId().intValue());
         jobLog.setJobId(jobInfo.getId().intValue());
-        jobLog.setTriggerTime(new Date());
         ApplicationContextHolder.getBean(JobLogRepository.class).save(jobLog);
 
         // 2、init trigger-param
         TriggerParam triggerParam = new TriggerParam();
         triggerParam.setJobId(jobInfo.getId());
         triggerParam.setHandler(jobInfo.getExecutorHandler());
-//todo        triggerParam.setExecutorParams( jobInfo.getExecutorParam());
         triggerParam.setExecutorBlockStrategy(jobInfo.getExecutorBlockStrategy());
         triggerParam.setTimeout(jobInfo.getExecutorTimeout());
         triggerParam.setTaskId(jobLog.getId().longValue());
-        triggerParam.setLogDateTime(jobLog.getTriggerTime().getTime());
-        triggerParam.setBroadcastIndex(index);
-        triggerParam.setBroadcastTotal(total);
+
 
         // 3、init address
         String address = null;
@@ -202,14 +197,9 @@ public class JobTrigger {
                 .append(triggerResult.getMessage() != null ? triggerResult.getMessage() : "");
 
         // 6、save log trigger-info
-        jobLog.setExecutorAddress(address);
-        jobLog.setExecutorHandler(jobInfo.getExecutorHandler());
-        jobLog.setExecutorParam(jobInfo.getExecutorParam());
-        jobLog.setExecutorShardingParam(shardingParam);
-        jobLog.setExecutorFailRetryCount(finalFailRetryCount);
+
         // jobLog.setTriggerTime();
-        jobLog.setTriggerCode(triggerResult.getCode());
-        jobLog.setTriggerMsg(triggerMsgSb.toString());
+
         ApplicationContextHolder.getBean(JobLogRepository.class).save(jobLog);
     }
 
@@ -224,11 +214,7 @@ public class JobTrigger {
         Result<Long> runResult = null;
         try {
             Executor executorBiz = JobScheduler.getExecutorClient(address);
-            var config = triggerParam.getParams();
-            config.put("class", triggerParam.getHandler());
-            config.put("strategy", triggerParam.getExecutorBlockStrategy().name());
-            config.put("timeout", triggerParam.getTimeout() + "");
-            runResult = executorBiz.start(triggerParam.getJobId(), config);
+            runResult = executorBiz.start(triggerParam);
         } catch (Exception ex) {
             runResult = Result.error(ex);
         }
