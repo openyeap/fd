@@ -2,7 +2,6 @@ package cn.zhumingwu.dataswitch.admin.controller;
 
 import cn.zhumingwu.base.model.HttpCode;
 import cn.zhumingwu.dataswitch.admin.context.CoordinatorContext;
-import cn.zhumingwu.dataswitch.core.exception.FastDataSwitchException;
 import cn.zhumingwu.dataswitch.core.job.cron.CronExpression;
 import cn.zhumingwu.dataswitch.core.job.enums.ExecutorBlockStrategy;
 import cn.zhumingwu.base.model.Result;

@@ -24,7 +24,7 @@ public class JobCodeController {
     JobInfoRepository JobInfoDao;
 
     @RequestMapping
-    public String index(Model model, int jobId) {
+    public String index(Model model, Long jobId) {
         JobInfo jobInfo = JobInfoDao.findById(jobId).get();
 //        List<JobLogGlue> jobLogGlues = JobLogGlueDao.findByJobId(jobId);
 
@@ -38,7 +38,7 @@ public class JobCodeController {
 
     @RequestMapping("/save")
     @ResponseBody
-    public Result<String> save(Model model, int id, String glueSource, String glueRemark) {
+    public Result<String> save(Model model, Long id, String glueSource, String glueRemark) {
         // valid
         if (glueRemark == null) {
             return Result.fail(500, (I18nUtil.getInstance("").getString("system_please_input") + I18nUtil.getInstance("").getString("jobinfo_glue_remark")));
