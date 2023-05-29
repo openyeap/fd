@@ -26,7 +26,7 @@ public class ExecutorImpl implements Executor {
             return Result.fail(404, "no job handler");
         }
         // new job handler
-        var newJobHandler = JobExecutor.loadJobHandler(handlerName);
+        var newJobHandler = JobExecutor.getJobHandler(handlerName);
         if (newJobHandler == null) {
             return Result.fail(404, "job handler [" + handlerName + "] not found.");
         }

@@ -3,22 +3,15 @@ package cn.zhumingwu.dataswitch.core.job.thread;
 import cn.zhumingwu.base.model.Result;
 import cn.zhumingwu.dataswitch.core.job.coordinator.Coordinator;
 import lombok.extern.slf4j.Slf4j;
-import cn.zhumingwu.dataswitch.core.job.enums.RegistryConfig;
-import cn.zhumingwu.dataswitch.core.util.JobFileAppender;
 import cn.zhumingwu.dataswitch.core.job.model.CallbackParam;
-import cn.zhumingwu.dataswitch.core.serializer.HessianSerializer;
-import cn.zhumingwu.dataswitch.core.util.FileUtils;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.scheduling.TaskScheduler;
 
-import java.io.File;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Slf4j

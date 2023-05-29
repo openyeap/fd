@@ -45,9 +45,9 @@ public class JobContext {
      */
     private String handleMsg;
 
-    private static String BasePath = "/logs/job";
+    private static final String BasePath = "/logs/job";
 
-    private String logFileName;
+    private final String logFileName;
 
     public JobContext(TriggerParam param) {
         this.param = param;

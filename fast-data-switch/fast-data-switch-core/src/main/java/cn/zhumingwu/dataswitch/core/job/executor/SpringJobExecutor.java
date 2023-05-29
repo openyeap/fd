@@ -44,12 +44,11 @@ public class SpringJobExecutor extends JobExecutor implements ApplicationContext
         var map = applicationContext.getBeansOfType(IJobHandler.class);
         for (var entry : map.entrySet()) {
             var name = entry.getKey();
-            if (loadJobHandler(name) != null) {
+            if (getJobHandler(name) != null) {
                 throw new RuntimeException(MessageFormat.format(" job handler [{}] naming conflicts.", name));
             }
             registerJobHandler(entry.getKey(), entry.getValue());
         }
-
     }
 
     // destroy
@@ -78,7 +77,7 @@ public class SpringJobExecutor extends JobExecutor implements ApplicationContext
                 if (Strings.isNullOrEmpty(name)) {
                     throw new RuntimeException(MessageFormat.format("job handler name invalid, for[{}.{}].", bean.getClass(), method.getName()));
                 }
-                if (loadJobHandler(name) != null) {
+                if (getJobHandler(name) != null) {
                     throw new RuntimeException(MessageFormat.format(" job handler [{}] naming conflicts.", name));
                 }
                 // execute method

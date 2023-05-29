@@ -17,13 +17,11 @@ import java.util.concurrent.ConcurrentMap;
 @Slf4j
 public class JobExecutor {
     // ---------------------- job handler repository ----------------------
-    private static ConcurrentMap<String, IJobHandler> jobHandlerRepository = new ConcurrentHashMap<String, IJobHandler>();
+    private static final ConcurrentMap<String, IJobHandler> JOB_HANDLER_MAP = new ConcurrentHashMap<String, IJobHandler>();
     // ---------------------- job thread repository ----------------------
-    private static ConcurrentMap<Long, JobThread> jobThreadRepository = new ConcurrentHashMap<Long, JobThread>();
-
+    private static final ConcurrentMap<Long, JobThread> JOB_TASK_THREAD_MAP = new ConcurrentHashMap<Long, JobThread>();
 
     public JobExecutor(Properties properties) {
-
 
     }
 
@@ -31,11 +29,15 @@ public class JobExecutor {
      * 注册本地Job Handler
      */
     public static void registerJobHandler(String name, IJobHandler jobHandler) {
-        jobHandlerRepository.put(name, jobHandler);
+        JOB_HANDLER_MAP.put(name, jobHandler);
     }
 
-    public static IJobHandler loadJobHandler(String name) {
-        return jobHandlerRepository.get(name);
+    /**
+     * 获取本地Job Handler
+     */
+
+    public static IJobHandler getJobHandler(String name) {
+        return JOB_HANDLER_MAP.get(name);
     }
 
     public static JobThread startJob(Long jobId, IJobHandler handler, String... reasons) {
@@ -43,11 +45,11 @@ public class JobExecutor {
         stopJob(jobId, reasons);
         JobThread newJobThread = new JobThread(jobId, handler);
         newJobThread.start();
-        return jobThreadRepository.put(jobId, newJobThread);
+        return JOB_TASK_THREAD_MAP.put(jobId, newJobThread);
     }
 
     public static void stopJob(Long jobId, String... removeOldReason) {
-        JobThread oldJobThread = jobThreadRepository.remove(jobId);
+        JobThread oldJobThread = JOB_TASK_THREAD_MAP.remove(jobId);
         if (oldJobThread != null) {
             oldJobThread.toStop(String.join("\n", removeOldReason));
             oldJobThread.interrupt();
@@ -55,20 +57,20 @@ public class JobExecutor {
     }
 
     public static JobThread loadJobThread(Long jobId) {
-        return jobThreadRepository.get(jobId);
+        return JOB_TASK_THREAD_MAP.get(jobId);
     }
 
     public void destroy() {
         // destory executor-server
 
         // destory jobThreadRepository
-        if (jobThreadRepository.size() > 0) {
-            for (var item : jobThreadRepository.entrySet()) {
+        if (JOB_TASK_THREAD_MAP.size() > 0) {
+            for (var item : JOB_TASK_THREAD_MAP.entrySet()) {
                 stopJob(item.getKey(), "web container destroy and kill the job.");
             }
-            jobThreadRepository.clear();
+            JOB_TASK_THREAD_MAP.clear();
         }
-        jobHandlerRepository.clear();
+        JOB_HANDLER_MAP.clear();
 
 
     }
