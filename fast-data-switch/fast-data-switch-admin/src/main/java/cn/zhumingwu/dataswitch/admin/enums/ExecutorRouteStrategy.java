@@ -1,28 +1,26 @@
 package cn.zhumingwu.dataswitch.admin.enums;
 
+import cn.zhumingwu.base.support.CommonEnum;
 import cn.zhumingwu.dataswitch.admin.route.ExecutorRouter;
 import cn.zhumingwu.dataswitch.admin.route.strategy.*;
-import cn.zhumingwu.dataswitch.core.util.I18nUtil;
 
-public enum ExecutorRouteStrategy {
-    ROUND(I18nUtil.getInstance("").getString("jobconf_route_round"), new ExecutorRouteRound()),
-    RANDOM(I18nUtil.getInstance("").getString("jobconf_route_random"), new ExecutorRouteRandom()),
+public enum ExecutorRouteStrategy implements CommonEnum {
+    ROUND(0, "route_round", new ExecutorRouteRound()),
+    RANDOM(1, "route_random", new ExecutorRouteRandom()),
+    CONSISTENT_HASH(2, "route_consistent_hash", new ExecutorRouteConsistentHash()),
+    FIRST(3, "route_first", new ExecutorRouteFirst()),
 
-    CONSISTENT_HASH(
-            I18nUtil.getInstance("").getString("jobconf_route_consistenthash"), new ExecutorRouteConsistentHash()),
-    FIRST(I18nUtil.getInstance("").getString("jobconf_route_first"), new ExecutorRouteFirst()),
-    LAST(I18nUtil.getInstance("").getString("jobconf_route_last"), new ExecutorRouteLast()),
-    LEAST_FREQUENTLY_USED(I18nUtil.getInstance("").getString("jobconf_route_lfu"), new ExecutorRouteLFU()),
-    LEAST_RECENTLY_USED(I18nUtil.getInstance("").getString("jobconf_route_lru"), new ExecutorRouteLRU()),
-    FAILOVER(I18nUtil.getInstance("").getString("jobconf_route_failover"), new ExecutorRouteFailover()),
-    BUSYOVER(I18nUtil.getInstance("").getString("jobconf_route_busyover"), new ExecutorRouteBusyover()),
-    SHARDING_BROADCAST(I18nUtil.getInstance("").getString("jobconf_route_shard"), null);
+    LAST(4, "route_last", new ExecutorRouteLast()),
+    LEAST_FREQUENTLY_USED(6, "route_lfu", new ExecutorRouteLFU()),
+    LEAST_RECENTLY_USED(7, "route_lru", new ExecutorRouteLRU()),
+    SHARDING_BROADCAST(100, "route_shard", new ExecutorRouteShardingBroadcast());
+    private final int code;
+    private final String name;
+    private final ExecutorRouter router;
 
-    private String title;
-    private ExecutorRouter router;
-
-    ExecutorRouteStrategy(String title, ExecutorRouter router) {
-        this.title = title;
+    ExecutorRouteStrategy(int code, String name, ExecutorRouter router) {
+        this.code = code;
+        this.name = name;
         this.router = router;
     }
 
@@ -37,8 +35,19 @@ public enum ExecutorRouteStrategy {
         return defaultItem;
     }
 
-    public String getTitle() {
-        return title;
+    @Override
+    public int getCode() {
+        return this.code;
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    @Override
+    public String getDescription() {
+        return this.name;
     }
 
     public ExecutorRouter getRouter() {

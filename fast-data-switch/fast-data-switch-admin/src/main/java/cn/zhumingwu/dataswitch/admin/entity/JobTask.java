@@ -1,5 +1,7 @@
 package cn.zhumingwu.dataswitch.admin.entity;
 
+import cn.zhumingwu.dataswitch.admin.enums.TriggerType;
+import cn.zhumingwu.dataswitch.core.job.enums.JobStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -12,34 +14,32 @@ import java.util.Date;
 @Table(name = "job_task")
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-public class JobTask extends BaseEntity<Integer> {
+public class JobTask extends BaseEntity<Long> {
     @Id
     @Column(name = "task_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-
-    @Column(name = "group_id")
-    private Integer groupId; // 任务组主键ID
+    private Long id;
 
     @Column(name = "job_id")
-    private Integer jobId; // 任务主键ID
+    private Long jobId; // 任务主键ID
 
     // executor info
-    private String executorAddress;
+    private String executorInstanceId;
     private String executorHandler;
     private String executorParam;
-    private String executorShardingParam;
+    private String executorRouterExpression;
     private int executorFailRetryCount;
 
     // trigger info
     private Date triggerTime;
-    private int triggerCode;
+    private TriggerType triggerType;
     private String triggerMsg;
 
     // handle info
     private Date handleTime;
     private int handleCode;
     private String handleMsg;
+    private JobStatus handleStatus;
 
     // alarm info
     private int alarmStatus;

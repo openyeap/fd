@@ -2,7 +2,7 @@ package cn.zhumingwu.dataswitch.admin.enums;
 
 import cn.zhumingwu.base.support.CommonEnum;
 
-public enum ExpressionType implements CommonEnum {
+public enum ScheduleType implements CommonEnum {
     None(0, "None"),
     CRON(1, "Cron"),
     FIXED(2, "Fixed"),
@@ -11,7 +11,7 @@ public enum ExpressionType implements CommonEnum {
     private final int code;
     private final String name;
 
-    ExpressionType(int code, String name) {
+    ScheduleType(int code, String name) {
         this.code = code;
         this.name = name;
     }

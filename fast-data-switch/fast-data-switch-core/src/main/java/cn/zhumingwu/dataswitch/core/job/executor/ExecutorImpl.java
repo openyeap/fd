@@ -19,16 +19,16 @@ import java.util.Map;
 @Slf4j
 public class ExecutorImpl implements Executor {
     @Override
-    public Result<Long> start(TriggerParam param) {
+    public Result<String> start(TriggerParam param) {
 
         String handlerName = param.getHandler();
         if (Strings.isNullOrEmpty(handlerName)) {
-            return Result.fail(404, "no job handler", 0L);
+            return Result.fail(404, "no job handler");
         }
         // new job handler
         var newJobHandler = JobExecutor.loadJobHandler(handlerName);
         if (newJobHandler == null) {
-            return Result.fail(404, "job handler [" + handlerName + "] not found.", 0L);
+            return Result.fail(404, "job handler [" + handlerName + "] not found.");
         }
         // load old jobHandler from jobThread
         IJobHandler jobHandler = null;

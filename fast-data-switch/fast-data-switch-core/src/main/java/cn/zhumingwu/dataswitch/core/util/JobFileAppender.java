@@ -72,7 +72,7 @@ public class JobFileAppender {
                     return false;
                 }
             } catch (IOException e) {
-                log.error(e.getMessage(), e);
+                log.error("error", e);
                 return false;
             }
         }
@@ -85,14 +85,14 @@ public class JobFileAppender {
             fos.write(formatAppendLog.getBytes(StandardCharsets.UTF_8));
             fos.flush();
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            log.error("error", e);
             return false;
         } finally {
             if (fos != null) {
                 try {
                     fos.close();
                 } catch (IOException e) {
-                    log.error(e.getMessage(), e);
+                    log.error("error", e);
                 }
             }
         }
@@ -134,13 +134,13 @@ public class JobFileAppender {
                 }
             }
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            log.error("error", e);
         } finally {
             if (reader != null) {
                 try {
                     reader.close();
                 } catch (IOException e) {
-                    log.error(e.getMessage(), e);
+                    log.error("error", e);
                 }
             }
         }

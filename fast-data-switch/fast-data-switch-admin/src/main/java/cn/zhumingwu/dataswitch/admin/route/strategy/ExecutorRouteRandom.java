@@ -1,20 +1,25 @@
 package cn.zhumingwu.dataswitch.admin.route.strategy;
 
+import cn.zhumingwu.base.service.InstanceInfo;
+import cn.zhumingwu.dataswitch.admin.context.CoordinatorContext;
 import cn.zhumingwu.dataswitch.admin.route.ExecutorRouter;
 import cn.zhumingwu.base.model.Result;
 import cn.zhumingwu.dataswitch.core.job.model.TriggerParam;
+import lombok.var;
 
 
 import java.util.List;
 import java.util.Random;
 
-public class ExecutorRouteRandom extends ExecutorRouter {
+public class ExecutorRouteRandom implements ExecutorRouter {
 
-    private static Random localRandom = new Random();
+    private static final Random localRandom = new Random();
 
     @Override
-    public Result<String> route(TriggerParam triggerParam, List<String> addressList) {
-        String address = addressList.get(localRandom.nextInt(addressList.size()));
-        return Result.success(address);
+    public InstanceInfo[] route(CoordinatorContext context, TriggerParam triggerParam, List<String> expression) {
+        var list = context.getInstanceInfoList(triggerParam.getHandler(), expression);
+        return new InstanceInfo[]{
+                list.get(localRandom.nextInt(list.size()))
+        };
     }
 }

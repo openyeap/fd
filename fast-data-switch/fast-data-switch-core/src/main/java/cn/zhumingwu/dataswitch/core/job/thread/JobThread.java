@@ -2,6 +2,7 @@ package cn.zhumingwu.dataswitch.core.job.thread;
 
 import cn.zhumingwu.base.context.ApplicationContextHolder;
 import cn.zhumingwu.base.model.Result;
+import cn.zhumingwu.dataswitch.core.job.enums.JobStatus;
 import cn.zhumingwu.dataswitch.core.job.executor.JobContext;
 import cn.zhumingwu.dataswitch.core.job.executor.JobExecutor;
 import cn.zhumingwu.dataswitch.core.job.handler.IJobHandler;
@@ -18,6 +19,8 @@ import java.util.Set;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.print.attribute.standard.JobSheets;
+
 /**
  * Job Handler Thread
  */
@@ -27,7 +30,7 @@ public class JobThread extends Thread {
     private final Long jobId;
     private final IJobHandler handler;
 
-    //使用消息队列
+    // 使用消息队列
     private final LinkedBlockingQueue<TriggerParam> triggerQueue;
     private final Set<Long> triggerLogIdSet; // avoid repeat trigger for the same TRIGGER_LOG_ID
     private final AtomicBoolean isRun = new AtomicBoolean(false);
@@ -53,14 +56,14 @@ public class JobThread extends Thread {
      * @param triggerParam
      * @return
      */
-    public Result<Long> pushTriggerQueue(TriggerParam triggerParam) {
+    public Result<String> pushTriggerQueue(TriggerParam triggerParam) {
         // avoid repeat
         if (triggerLogIdSet.contains(triggerParam.getTaskId())) {
             return Result.fail(500, "repeat job task, task id:" + triggerParam.getTaskId());
         }
         triggerLogIdSet.add(triggerParam.getTaskId());
         triggerQueue.add(triggerParam);
-        return Result.success(triggerParam.getTaskId());
+        return Result.success();
     }
 
     /**
@@ -70,7 +73,8 @@ public class JobThread extends Thread {
      */
     public void toStop(String stopReason) {
         /**
-         * Thread.interrupt只支持终止线程的阻塞状态(wait、join、sleep)， 在阻塞出抛出InterruptedException异常,但是并不会终止运行的线程本身；
+         * Thread.interrupt只支持终止线程的阻塞状态(wait、join、sleep)，
+         * 在阻塞中抛出InterruptedException异常,但是并不会终止运行的线程本身；
          * 所以需要注意，此处彻底销毁本线程，需要通过共享变量方式；
          */
         this.isRun.set(false);
@@ -91,7 +95,7 @@ public class JobThread extends Thread {
         if (!this.isRun.compareAndSet(false, true)) {
             return;
         }
-        // init
+        // handler 的 init, 只一次。
         try {
             handler.init();
         } catch (Throwable e) {
@@ -101,9 +105,7 @@ public class JobThread extends Thread {
         // 为了可以检测到 toStop ,需要通过循环获取触发队列poll(timeout)
         while (this.isRun.get()) {
             idleTimes++;
-
             TriggerParam triggerParam = null;
-
             try {
                 triggerParam = triggerQueue.poll(3L, TimeUnit.SECONDS);
                 if (triggerParam != null) {
@@ -112,69 +114,57 @@ public class JobThread extends Thread {
                     triggerLogIdSet.remove(triggerParam.getTaskId());
                     // execute
                     JobContext.setJobContext(triggerParam);
-                    JobContext.getJobContext().log("<br>----------- project.job execute start -----------<br>----------- Param:" + triggerParam.getParams());
+                    JobContext.getJobContext().log("JobExecutor start\nParams:{}", triggerParam.getParams());
                     if (triggerParam.getTimeout() > 0) {
                         // limit timeout
                         Thread futureThread = null;
                         try {
-                            FutureTask<Result<Object>> futureTask =
-                                    new FutureTask<Result<Object>>(
-                                            new Callable<Result<Object>>() {
-                                                @Override
-                                                public Result<Object> call() throws Exception {
-
-                                                    handler.execute();
-                                                    return Result.success();
-                                                }
-                                            });
+                            FutureTask<Result<Object>> futureTask = new FutureTask<Result<Object>>(
+                                    new Callable<Result<Object>>() {
+                                        @Override
+                                        public Result<Object> call() throws Exception {
+                                            handler.execute();
+                                            return Result.success();
+                                        }
+                                    });
                             futureThread = new Thread(futureTask);
                             futureThread.start();
                             futureTask.get(triggerParam.getTimeout(), TimeUnit.SECONDS);
                         } catch (TimeoutException e) {
-
-                            JobContext.getJobContext().log("<br>----------- project.job execute timeout");
-                            JobContext.getJobContext().log(e);
+                            JobContext.getJobContext().log("JobExecutor execute timeout\nError:{}", e.getMessage());
 
                         } finally {
-                            if (futureThread != null)
+                            if (futureThread != null) {
                                 futureThread.interrupt();
+                            }
                         }
                     } else {
                         handler.execute();
                     }
 
-
                 } else {
                     if (idleTimes > 30) {
-                        if (triggerQueue.size() == 0) { // avoid concurrent trigger causes jobId-lost
+                        if (triggerQueue.size() == 0) { // 避免并发触发了误操作从而导致任务被中止
                             JobExecutor.stopJob(jobId, "excutor idel times over limit.");
                         }
                     }
                 }
             } catch (Throwable e) {
-
-                JobContext.getJobContext().log("<br>----------- JobThread toStop, stopReason:" + stopReason);
-
-
+                JobContext.getJobContext().log("JobThread toStop, stopReason:" + stopReason);
                 StringWriter stringWriter = new StringWriter();
                 e.printStackTrace(new PrintWriter(stringWriter));
                 String errorMsg = stringWriter.toString();
-
-
-                JobContext.getJobContext().log(
-                        "<br>----------- JobThread Exception:"
-                                + errorMsg
-                                + "<br>----------- project.job execute end(error) -----------");
+                JobContext.getJobContext().log("JobThread Exception:{}", errorMsg);
             } finally {
                 if (triggerParam != null) {
                     // callback handler info
                     if (!isRun.get()) {
                         // commonm
-                        var callbackParam = new CallbackParam(triggerParam.getJobId(), triggerParam.getTaskId(), triggerParam.getHandler(), 0, 0, "common stop", true);
+                        var callbackParam = new CallbackParam(triggerParam.getJobId(), triggerParam.getTaskId(), triggerParam.getHandler(), JobStatus.SUCCESS, 1, "common stop", System.currentTimeMillis());
                         ApplicationContextHolder.getBean(TriggerCallbackThread.class).pushCallBack(callbackParam);
                     } else {
                         // is killed
-                        var callbackParam = new CallbackParam(triggerParam.getJobId(), triggerParam.getTaskId(), triggerParam.getHandler(), 0, 0, stopReason + " [job running, killed]", true);
+                        var callbackParam = new CallbackParam(triggerParam.getJobId(), triggerParam.getTaskId(), triggerParam.getHandler(), JobStatus.FAILED, -1, stopReason + " [job running, killed]", System.currentTimeMillis());
                         ApplicationContextHolder.getBean(TriggerCallbackThread.class).pushCallBack(callbackParam);
                     }
                 }
@@ -186,7 +176,7 @@ public class JobThread extends Thread {
             TriggerParam triggerParam = triggerQueue.poll();
             if (triggerParam != null) {
                 // is killed
-                var callbackParam = new CallbackParam(triggerParam.getJobId(), triggerParam.getTaskId(), triggerParam.getHandler(), 0, 0, stopReason + " [job not executed, in the job queue, killed.]", true);
+                var callbackParam = new CallbackParam(triggerParam.getJobId(), triggerParam.getTaskId(), triggerParam.getHandler(), JobStatus.FAILED, -1, "[job not executed, in the job queue, killed.]", System.currentTimeMillis());
                 ApplicationContextHolder.getBean(TriggerCallbackThread.class).pushCallBack(callbackParam);
             }
         }
@@ -195,7 +185,7 @@ public class JobThread extends Thread {
         try {
             handler.destroy();
         } catch (Throwable e) {
-            log.error(e.getMessage(), e);
+            log.error("error", e);
         }
         log.info(">>>>>>>>>>> project.JobThread stoped, hashCode:{}", Thread.currentThread());
     }

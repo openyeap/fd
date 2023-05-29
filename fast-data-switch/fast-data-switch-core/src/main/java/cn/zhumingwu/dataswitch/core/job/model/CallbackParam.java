@@ -1,24 +1,24 @@
 package cn.zhumingwu.dataswitch.core.job.model;
 
+import cn.zhumingwu.dataswitch.core.job.enums.JobStatus;
 import lombok.*;
+
+import java.io.Serializable;
 
 
 @ToString
 @Setter
 @Getter
-public class CallbackParam extends LogResult {
-
+@Builder
+@AllArgsConstructor
+public class CallbackParam implements Serializable {
+    private static final long serialVersionUID = 42L;
     private Long jobId;
     private Long taskId;
-    private String handler;
+    private String instanceId;
+    private JobStatus status;
+    private int code;
+    private String message;
+    private long timestamp;
 
-    public CallbackParam(
-            Long jobId,
-            Long taskId,
-            String handler, int fromLineNum, int toLineNum, String logContent, boolean isEnd) {
-        super(fromLineNum, toLineNum, logContent, isEnd);
-        this.jobId = jobId;
-        this.taskId = taskId;
-        this.handler = handler;
-    }
 }

@@ -10,9 +10,9 @@ public interface Executor {
     /**
      * coordinators send a job run to executor
      *
-     * @return task id
+     * @return 成功或失败
      */
-    Result<Long> start(TriggerParam param);
+    Result<String> start(TriggerParam param);
 
     /**
      * coordinators send stop to executor

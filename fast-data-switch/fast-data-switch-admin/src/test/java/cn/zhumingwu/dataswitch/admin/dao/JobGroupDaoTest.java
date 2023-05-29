@@ -1,8 +1,6 @@
 package cn.zhumingwu.dataswitch.admin.dao;
 
 import lombok.var;
-import cn.zhumingwu.dataswitch.admin.entity.JobGroup;
-import cn.zhumingwu.dataswitch.admin.repository.JobGroupRepository;
 import cn.zhumingwu.dataswitch.admin.service.impl.JobService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,25 +21,25 @@ public class JobGroupDaoTest {
 
     @Test
     public void test() {
-        List<JobGroup> list = jobGroupRepository.findAll();
+        List<JobExecutor> list = jobGroupRepository.findAll();
 
-        List<JobGroup> list2 = jobService.findByAddressList(0);
+        List<JobExecutor> list2 = jobService.findByAddressList(0);
 
-        JobGroup group = new JobGroup();
+        JobExecutor group = new JobExecutor();
         group.setName("setAppName");
-        group.setTitle("setTitle");
+        group.setInstanceId("setTitle");
 
         group.setType((byte) 0);
-        group.setAddressList("setAddressList");
+        group.setHandlerList("setAddressList");
 
         var ret = jobGroupRepository.save(group);
 
-        JobGroup group2 = jobGroupRepository.findById(group.getId()).get();
+        JobExecutor group2 = jobGroupRepository.findById(group.getId()).get();
         group2.setName("setAppName2");
-        group2.setTitle("setTitle2");
+        group2.setInstanceId("setTitle2");
 
         group2.setType((byte) 2);
-        group2.setAddressList("setAddressList2");
+        group2.setHandlerList("setAddressList2");
 
         var  ret2 = jobGroupRepository.save(group2);
 

@@ -14,8 +14,8 @@ public interface Coordinator {
     /**
      * callback
      *
-     * @param callbackParamList
-     * @return
+     * @param callbackParamList 任务的及时状态
+     * @return 成功或失败
      */
     public Result<String> callback(List<CallbackParam> callbackParamList);
 

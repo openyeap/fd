@@ -98,7 +98,7 @@ public class IpAddressUtil {
                 return addressItem;
             }
         } catch (Throwable e) {
-            log.error(e.getMessage(), e);
+            log.error("error", e);
         }
 
         try {
@@ -126,15 +126,15 @@ public class IpAddressUtil {
                                 }
                             }
                         } catch (Throwable e) {
-                            log.error(e.getMessage(), e);
+                            log.error("error", e);
                         }
                     }
                 } catch (Throwable e) {
-                    log.error(e.getMessage(), e);
+                    log.error("error", e);
                 }
             }
         } catch (Throwable e) {
-            log.error(e.getMessage(), e);
+            log.error("error", e);
         }
         return localAddress;
     }

@@ -1,12 +1,12 @@
 package cn.zhumingwu.dataswitch.admin.repository;
 
 
-import cn.zhumingwu.dataswitch.admin.entity.JobGroup;
+import cn.zhumingwu.dataswitch.admin.entity.JobTask;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface JobGroupRepository extends JpaRepository<JobGroup, Integer> {
+public interface JobTaskRepository extends JpaRepository<JobTask, Long> {
 
 }
 

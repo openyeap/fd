@@ -1,12 +1,11 @@
 package cn.zhumingwu.dataswitch.admin.enums;
 
-import cn.zhumingwu.base.support.CommonEnum;
 import cn.zhumingwu.dataswitch.core.util.I18nUtil;
 
 /**
  * trigger type enum
  */
-public enum TriggerTypeEnum {
+public enum TriggerType {
     MANUAL(I18nUtil.getInstance("").getString("jobconf_trigger_type_manual")),
     CRON(I18nUtil.getInstance("").getString("jobconf_trigger_type_cron")),
     RETRY(I18nUtil.getInstance("").getString("jobconf_trigger_type_retry")),
@@ -15,7 +14,7 @@ public enum TriggerTypeEnum {
 
     private String title;
 
-    private TriggerTypeEnum(String title) {
+    private TriggerType(String title) {
         this.title = title;
     }
 

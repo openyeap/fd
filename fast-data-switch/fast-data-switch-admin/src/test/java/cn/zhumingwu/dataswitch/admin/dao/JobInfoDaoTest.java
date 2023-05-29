@@ -33,7 +33,7 @@ public class JobInfoDaoTest {
     public void save_load() {
         JobInfo info = new JobInfo();
         info.setGroupId(1);
-        info.setExpression("jobCron");
+        info.setScheduleExpression("jobCron");
         info.setRemark("desc");
         info.setAuthor("setAuthor");
         info.setAlarmEmail("setAlarmEmail");
@@ -47,7 +47,7 @@ public class JobInfoDaoTest {
         jobInfoRepository.save(info);
 
         JobInfo info2 = jobInfoRepository.findById(info.getId()).get();
-        info2.setExpression("jobCron2");
+        info2.setScheduleExpression("jobCron2");
         info2.setRemark("desc2");
         info2.setAuthor("setAuthor2");
         info2.setAlarmEmail("setAlarmEmail2");

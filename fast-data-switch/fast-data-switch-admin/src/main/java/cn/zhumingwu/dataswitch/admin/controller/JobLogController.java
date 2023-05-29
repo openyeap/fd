@@ -1,17 +1,10 @@
 package cn.zhumingwu.dataswitch.admin.controller;
 
-import cn.zhumingwu.base.model.HttpCode;
-import cn.zhumingwu.dataswitch.admin.repository.JobGroupRepository;
 import cn.zhumingwu.dataswitch.admin.repository.JobInfoRepository;
 import cn.zhumingwu.dataswitch.admin.repository.JobLogRepository;
-import cn.zhumingwu.dataswitch.admin.scheduler.JobScheduler;
-import cn.zhumingwu.dataswitch.admin.entity.JobGroup;
 import cn.zhumingwu.dataswitch.admin.entity.JobInfo;
 import cn.zhumingwu.dataswitch.admin.entity.JobLog;
 
-import cn.zhumingwu.dataswitch.core.exception.FastDataSwitchException;
-import cn.zhumingwu.dataswitch.core.job.executor.Executor;
-import cn.zhumingwu.dataswitch.core.job.model.LogResult;
 import cn.zhumingwu.base.model.Result;
 import cn.zhumingwu.dataswitch.core.util.DateUtil;
 import cn.zhumingwu.dataswitch.core.util.I18nUtil;
@@ -26,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * index controller
@@ -35,8 +27,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/joblog")
 public class JobLogController {
     private static Logger logger = LoggerFactory.getLogger(JobLogController.class);
-    @Resource
-    private JobGroupRepository jobGroupService;
+
 
     @Resource
     public JobInfoRepository JobInfoDao;
@@ -44,13 +35,8 @@ public class JobLogController {
     public JobLogRepository jobLogRepository;
 
 
-
     @RequestMapping
-    public String index(Model model, @RequestParam(required = false, defaultValue = "0") Integer jobId) {
-
-        // 执行器列表
-        List<JobGroup> jobGroupList_all = this.jobGroupService.findAll();
-
+    public String index(Model model, @RequestParam(required = false, defaultValue = "0") Long jobId) {
 
         // 任务
         if (jobId > 0) {
@@ -64,13 +50,6 @@ public class JobLogController {
         }
 
         return "joblog/joblog.index";
-    }
-
-    @RequestMapping("/getJobsByGroup")
-    @ResponseBody
-    public Result<List<JobInfo>> getJobsByGroup(int jobGroup) {
-        List<JobInfo> list = JobInfoDao.findAll().stream().filter(m -> m.getGroupId() == jobGroup).collect(Collectors.toList());
-        return Result.success(list);
     }
 
     @RequestMapping("/pageList")

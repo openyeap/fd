@@ -55,8 +55,8 @@ public class JobCodeController {
         JobInfoDao.save(exists_jobInfo);
 
         // log old code
-        JobTask JobLogGlue = new JobTask();
-        JobLogGlue.setJobId(exists_jobInfo.getId().intValue());
+        JobTask jobTask = new JobTask();
+        jobTask.setJobId(exists_jobInfo.getId());
 
         return Result.success();
     }

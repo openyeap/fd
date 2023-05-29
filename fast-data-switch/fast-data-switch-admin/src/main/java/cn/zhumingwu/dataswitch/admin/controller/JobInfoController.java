@@ -1,27 +1,24 @@
 package cn.zhumingwu.dataswitch.admin.controller;
 
-import cn.zhumingwu.dataswitch.admin.repository.JobGroupRepository;
+import cn.zhumingwu.base.model.HttpCode;
+import cn.zhumingwu.dataswitch.admin.context.CoordinatorContext;
 import cn.zhumingwu.dataswitch.core.exception.FastDataSwitchException;
 import cn.zhumingwu.dataswitch.core.job.cron.CronExpression;
 import cn.zhumingwu.dataswitch.core.job.enums.ExecutorBlockStrategy;
 import cn.zhumingwu.base.model.Result;
 import cn.zhumingwu.dataswitch.core.util.DateUtil;
 import cn.zhumingwu.dataswitch.core.util.I18nUtil;
-import cn.zhumingwu.dataswitch.admin.entity.JobGroup;
 import cn.zhumingwu.dataswitch.admin.enums.ExecutorRouteStrategy;
-import cn.zhumingwu.dataswitch.admin.thread.JobTriggerPoolHelper;
-import cn.zhumingwu.dataswitch.admin.enums.TriggerTypeEnum;
-import org.springframework.beans.factory.annotation.Autowired;
+import cn.zhumingwu.dataswitch.admin.enums.TriggerType;
+import com.google.common.base.Strings;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * index controller
@@ -30,25 +27,10 @@ import java.util.Map;
 @RequestMapping("job")
 public class JobInfoController extends BaseController {
 
+
     @Resource
-    private JobGroupRepository jobGroupService;
+    private CoordinatorContext context;
 
-
-    List<JobGroup> filterJobGroupByRole(List<JobGroup> jobGroupList_all) {
-        List<JobGroup> jobGroupList = new ArrayList<>();
-        if (jobGroupList_all != null && jobGroupList_all.size() > 0) {
-
-            List<String> list = new ArrayList<>();
-
-            for (JobGroup groupItem : jobGroupList_all) {
-                if (list.contains(String.valueOf(groupItem.getId()))) {
-                    jobGroupList.add(groupItem);
-                }
-            }
-
-        }
-        return jobGroupList;
-    }
 
     @RequestMapping
     public String index(Model model, @RequestParam(required = false, defaultValue = "-1") int jobGroup) {
@@ -58,16 +40,6 @@ public class JobInfoController extends BaseController {
         model.addAttribute(
                 "ExecutorBlockStrategyEnum", ExecutorBlockStrategy.values()); // 阻塞处理策略-字典
 
-        // 执行器列表
-        List<JobGroup> jobGroupList_all = jobGroupService.findAll();
-
-        // filter group
-        List<JobGroup> jobGroupList = filterJobGroupByRole(jobGroupList_all);
-        if (jobGroupList == null || jobGroupList.size() == 0) {
-            throw new FastDataSwitchException(I18nUtil.getInstance("").getString("jobgroup_empty"));
-        }
-
-        model.addAttribute("JobGroupList", jobGroupList);
         model.addAttribute("jobGroup", jobGroup);
 
         return "job/index";
@@ -107,13 +79,23 @@ public class JobInfoController extends BaseController {
     @RequestMapping("/trigger")
     @ResponseBody
     // @PermissionLimit(limit = false)
-    public Result<String> triggerJob(Long id, String executorParam) {
-        // force cover job param
-        if (executorParam == null) {
-            executorParam = "";
+    public Result<String> triggerJob(Long id, String expression, String param, Integer retryTimes) {
+        if (id == null) {
+            return Result.fail(HttpCode.NOT_FOUND);
         }
-
-        JobTriggerPoolHelper.trigger(id, TriggerTypeEnum.MANUAL, -1, null, executorParam);
+        List<String> executorParam;
+        if (Strings.isNullOrEmpty(param)) {
+            executorParam = Collections.emptyList();
+        } else {
+            executorParam = Arrays.stream(param.split(",")).filter(m -> !Strings.isNullOrEmpty(m)).collect(Collectors.toList());
+        }
+        List<String> executorExpression;
+        if (Strings.isNullOrEmpty(expression)) {
+            executorExpression = Collections.emptyList();
+        } else {
+            executorExpression = Arrays.stream(expression.split(",")).filter(m -> !Strings.isNullOrEmpty(m)).collect(Collectors.toList());
+        }
+        context.trigger(id, TriggerType.MANUAL, executorExpression, executorParam, retryTimes);
         return Result.success();
     }
 
