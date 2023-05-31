@@ -89,7 +89,7 @@ public class WriteAppendLog {
         data.put(payload);          //payload.length;
         var buffer = this.ensureCapacityInternal(length + 4);
         buffer.put(data.array());
-        buffer.put(CRCUtil.crc32(data.array()).getBytes());
+        buffer.put(CRCUtil.crc32().update(data.array()).getBytes());
         buffer.force();
         return true;
     }

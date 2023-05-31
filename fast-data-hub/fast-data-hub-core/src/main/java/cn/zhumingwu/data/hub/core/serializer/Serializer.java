@@ -27,7 +27,7 @@ public interface Serializer<T> extends Serializable {
      * @param input      instance
      * @throws IOException if an io error occurs
      */
-    public void write(DataOutput dataOutput, T input) throws IOException;
+    void write(DataOutput dataOutput, T input) throws IOException;
 
     /**
      * Reads the data input and creates the instance.
@@ -36,7 +36,7 @@ public interface Serializer<T> extends Serializable {
      * @return new instance of type <code>K</code>.
      * @throws IOException if an io error occurs
      */
-    public T read(DataInput dataInput) throws IOException;
+    T read(DataInput dataInput) throws IOException;
 
     /**
      * Serializes the input object and returns bytes
@@ -46,7 +46,7 @@ public interface Serializer<T> extends Serializable {
      * @author zhumingwu
      * @since 1/2/2022 上午10:47
      */
-    public byte[] serialize(T input);
+    byte[] serialize(T input);
 
     /**
      * Returns the object of the identify class from the binary data
@@ -54,7 +54,7 @@ public interface Serializer<T> extends Serializable {
      * @author zhumingwu
      * @since 1/2/2022 上午10:50
      */
-    public T deserialize(byte[] data, Class<T> clazz);
+    T deserialize(byte[] data, Class<T> clazz);
 
     /**
      * Returns the estimate number of bytes used to hold <code>instance</code> in memory.
@@ -64,5 +64,5 @@ public interface Serializer<T> extends Serializable {
      * @param instance instance to get weight for
      * @return the number of bytes the object uses in memory
      */
-    public int getWeight(T instance);
+    int getWeight(T instance);
 }
