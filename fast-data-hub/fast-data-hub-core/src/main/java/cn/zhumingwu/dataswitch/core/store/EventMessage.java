@@ -11,17 +11,20 @@ package cn.zhumingwu.dataswitch.core.store;
 public class EventMessage {
     private final String topic;
     private final long timestamp;
+    private final int schema;
     private long offset;
     private final byte[] payload;
 
-    public EventMessage(String topic, byte[] payload, long timestamp) {
+    public EventMessage(String topic, byte[] payload, int schema, long timestamp) {
         this.topic = topic;
+        this.schema = schema;
         this.timestamp = timestamp;
         this.payload = payload;
     }
 
-    public EventMessage(String topic, byte[] payload) {
+    public EventMessage(String topic, byte[] payload, int schema) {
         this.topic = topic;
+        this.schema = schema;
         this.timestamp = System.currentTimeMillis();
         this.payload = payload;
     }
@@ -46,5 +49,9 @@ public class EventMessage {
 
     public void setOffset(long offset) {
         this.offset = offset;
+    }
+
+    public int getSchema() {
+        return this.schema;
     }
 }

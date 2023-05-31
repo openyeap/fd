@@ -47,7 +47,6 @@ public class LogStructMerge {
     private final String topic;
     private final byte version;
     private final byte status;
-    private final int schema;
     private final long offset;
     private final long start;
     private int size;
@@ -61,7 +60,6 @@ public class LogStructMerge {
         this.status = header[1];
         this.offset = FileChannelUtil.readLong(this.lsmFile);
         this.start = FileChannelUtil.readLong(this.lsmFile);
-        this.schema = FileChannelUtil.readInt(this.lsmFile);
         FileChannelUtil.newPosition(this.lsmFile, -8);
         this.size = FileChannelUtil.readInt(this.lsmFile);
         this.end = FileChannelUtil.readInt(this.lsmFile);
@@ -92,24 +90,21 @@ public class LogStructMerge {
     public EventMessage read(long position, Long offsetExcept) {
         try {
             FileChannelUtil.newPosition(this.lsmFile, position);
-            var offset = FileChannelUtil.readVLen(this.lsmFile);
-            if (offset <= 0) {
-                return null;
-            }
             var status = FileChannelUtil.read(this.lsmFile, 1)[0];
-            switch (status) {
-                case -1:
-                    var size = FileChannelUtil.readVLen(this.lsmFile);
-//                FileChannelUtil.newPosition(this.lsmFile, this.lsmFile.position() +size);
-                    return read(this.lsmFile.position() + size, offsetExcept);
-            }
             var size = FileChannelUtil.readVLen(this.lsmFile);
-            var crc = FileChannelUtil.readInt(this.lsmFile);
+            if (status == -1) {
+                return read(this.lsmFile.position() + size, offsetExcept);
+            }
+            var offset = FileChannelUtil.readVLen(this.lsmFile);
+            if (offset <= offsetExcept) {
+                return read(this.lsmFile.position() + size, offsetExcept);
+            }
             var timestamp = FileChannelUtil.readVLen(this.lsmFile) + this.start;
-
+            var schema = (int) FileChannelUtil.readVLen(this.lsmFile);
             var content = FileChannelUtil.readVarByte(this.lsmFile);
+            var crc = FileChannelUtil.readInt(this.lsmFile);
             if (CRCUtil.crc32(content).check(crc)) {
-                return new EventMessage(this.topic, content, timestamp);
+                return new EventMessage(this.topic, content, schema, timestamp);
             }
         } catch (IOException e) {
             log.error("error", e);
@@ -119,22 +114,31 @@ public class LogStructMerge {
 
     public boolean write(EventMessage message, long offset) {
         var offsetDelta = VIntUtil.vintEncode(offset - this.offset);
-        var tsDelta = VIntUtil.vintEncode(message.getTimestamp() - this.start);
-
+        var timestampDelta = VIntUtil.vintEncode(message.getTimestamp() - this.start);
+        var schema = VIntUtil.vintEncode(message.getSchema());
         var payload = message.getPayload();
         var payloadLength = VIntUtil.vintEncode(payload.length);
 
-        var crc = CRCUtil.crc32(offsetDelta);
-        crc.update(tsDelta);
-        crc.update(payload);
+        var crc = CRCUtil.crc32(offsetDelta).update(timestampDelta).update(payload).getBytes();
+
         try {
             FileChannelUtil.newPosition(this.lsmFile, -8);
-            FileChannelUtil.writeVarByte(this.lsmFile, offsetDelta);
+            //status
             FileChannelUtil.writeByte(this.lsmFile, new byte[]{1});
-
-            FileChannelUtil.writeByte(this.lsmFile, crc.getBytes());
-            FileChannelUtil.writeVarByte(this.lsmFile, tsDelta);
-            FileChannelUtil.writeVarByte(this.lsmFile, payload);
+            //size
+            var contentLength = VIntUtil.vintEncode(offsetDelta.length + timestampDelta.length + schema.length + payloadLength.length + payload.length + 4);
+            FileChannelUtil.writeByte(this.lsmFile, contentLength);
+            //offset
+            FileChannelUtil.writeByte(this.lsmFile, offsetDelta);
+            //timestamp
+            FileChannelUtil.writeByte(this.lsmFile, timestampDelta);
+            //schema
+            FileChannelUtil.writeByte(this.lsmFile, schema);
+            //payload
+            FileChannelUtil.writeByte(this.lsmFile, payloadLength);
+            FileChannelUtil.writeByte(this.lsmFile, payload);
+            //crc
+            FileChannelUtil.writeByte(this.lsmFile, crc);
             this.size++;
             this.end = (int) (message.getTimestamp() - this.start);
             FileChannelUtil.writeInt(this.lsmFile, this.size);
