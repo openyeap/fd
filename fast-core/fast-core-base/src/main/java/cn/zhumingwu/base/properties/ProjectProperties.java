@@ -29,12 +29,15 @@ public class ProjectProperties implements InitializingBean {
     @Value("${project.name:${spring.application.name:project}}")
     private String name;
 
-    @Value("${server.address:${spring.application.address:}}")
-    private String address;
+    @Value("${server.address:${spring.application.ip:}}")
+    private String ip;
 
     @Value("${server.port:8080}")
     private int port;
-
+//    @EventListener
+//    public void onApplicationEvent(final ServletWebServerInitializedEvent event) {
+//        port = event.getWebServer().getPort();
+//    }
     /**
      * ignored network interfaces.
      */
@@ -48,13 +51,12 @@ public class ProjectProperties implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
 
-        if (Strings.isNullOrEmpty(this.address)) {
+        if (Strings.isNullOrEmpty(this.ip)) {
 
-            this.address = getHostAddress();
+            this.ip = getHostAddress();
         }
         log.info("{}", this);
     }
-
     private String getHostAddress() {
 
         try {
@@ -64,8 +66,7 @@ public class ProjectProperties implements InitializingBean {
                 Enumeration<InetAddress> addresses = netInterface.getInetAddresses();
                 while (addresses.hasMoreElements()) {
                     InetAddress ip = addresses.nextElement();
-                    if (ip != null && ip instanceof Inet4Address && !ip.isLoopbackAddress()
-                            && ip.getHostAddress().indexOf(":") == -1) {
+                    if (ip instanceof Inet4Address && !ip.isLoopbackAddress() && !ip.getHostAddress().contains(":")) {
                         return ip.getHostAddress();
                     }
                 }
@@ -100,7 +101,8 @@ public class ProjectProperties implements InitializingBean {
             int lowest = 2147483647;
             Enumeration<NetworkInterface> nics = NetworkInterface.getNetworkInterfaces();
 
-            label61: while (true) {
+            label61:
+            while (true) {
                 NetworkInterface ifc;
                 do {
                     while (true) {

@@ -2,12 +2,13 @@ package cn.zhumingwu.dataswitch.core.job.handler.impl;
 
 import cn.zhumingwu.dataswitch.core.job.executor.JobContext;
 import cn.zhumingwu.dataswitch.core.job.handler.IJobHandler;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
+@Slf4j
 public class CommandJobHandler extends IJobHandler {
 
     @Override
@@ -36,7 +37,7 @@ public class CommandJobHandler extends IJobHandler {
                             try {
                                 bufferedReader.close();
                             } catch (IOException e) {
-                                e.printStackTrace();
+                                log.error("error", e);
                             }
                         }
                     }

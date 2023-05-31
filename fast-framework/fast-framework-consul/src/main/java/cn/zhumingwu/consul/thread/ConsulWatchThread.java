@@ -63,7 +63,7 @@ public class ConsulWatchThread implements SmartLifecycle {
             var list = registry.getServices();
             var serviceInfo = InstanceInfo.builder()
                     .name(this.properties.getName())
-                    .ip(this.properties.getAddress())
+                    .ip(this.properties.getIp())
                     .port(this.properties.getPort())
                     .schema("http")
                     .build();

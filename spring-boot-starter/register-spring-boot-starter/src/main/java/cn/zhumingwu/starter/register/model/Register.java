@@ -1,5 +1,6 @@
 package cn.zhumingwu.starter.register.model;
 
+import cn.zhumingwu.base.service.ServiceMetaDataProvider;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import cn.zhumingwu.base.context.ApplicationContextHolder;
@@ -12,23 +13,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
-public class Register {
-    static Map<String, String> urlRoles;
+public class Register implements ServiceMetaDataProvider {
+    static Map<String, String> urlRoles = new HashMap<>();
 
-    private Map<String, String> createAuthConfig() {
-        if (urlRoles != null) {
+    @Override
+    public Map<String, String> metadata() {
+        if (!urlRoles.isEmpty() ) {
             return urlRoles;
         }
-        urlRoles = new HashMap<>();
-
         Map<String, Object> restControllers = ApplicationContextHolder.getBeansWithAnnotation(RestController.class);
-        if (restControllers == null || restControllers.isEmpty()) {
+        if (restControllers.isEmpty()) {
             return null;
         }
 
@@ -45,21 +42,15 @@ public class Register {
                 Set<String> methodUrls = new HashSet<>();
                 RequestMapping requestMapping = AnnotationUtils.findAnnotation(method, RequestMapping.class);
                 if (requestMapping != null) {
-                    for (var item : requestMapping.value()) {
-                        methodUrls.add(item);
-                    }
+                    methodUrls.addAll(Arrays.asList(requestMapping.value()));
                 }
                 PostMapping postMapping = AnnotationUtils.findAnnotation(method, PostMapping.class);
                 if (postMapping != null) {
-                    for (var item : postMapping.value()) {
-                        methodUrls.add(item);
-                    }
+                    methodUrls.addAll(Arrays.asList(postMapping.value()));
                 }
                 GetMapping getMapping = AnnotationUtils.findAnnotation(method, GetMapping.class);
                 if (getMapping != null) {
-                    for (var item : getMapping.value()) {
-                        methodUrls.add(item);
-                    }
+                    methodUrls.addAll(Arrays.asList(getMapping.value()));
                 }
                 if (methodUrls.size() <= 0) {
                     continue;

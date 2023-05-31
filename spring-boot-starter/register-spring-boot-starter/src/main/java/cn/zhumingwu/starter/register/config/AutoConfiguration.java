@@ -1,12 +1,13 @@
 package cn.zhumingwu.starter.register.config;
 
+import cn.zhumingwu.base.service.ServiceMetaDataProvider;
 import cn.zhumingwu.starter.register.properties.RegisterProperties;
 import cn.zhumingwu.starter.register.thread.ServiceRegisterThread;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import cn.zhumingwu.base.properties.ProjectProperties;
 import cn.zhumingwu.base.util.NamingUtils;
-import cn.zhumingwu.starter.register.client.EurekaClient;
+import cn.zhumingwu.starter.register.client.ServiceCenterClient;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -16,33 +17,35 @@ import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
+import java.util.List;
+
 @Configuration
 @Slf4j
-@EnableConfigurationProperties({ RegisterProperties.class })
+@EnableConfigurationProperties({RegisterProperties.class})
 @EnableRetry
 public class AutoConfiguration {
 
-    static final String CONSUL_WATCH_TASK_SCHEDULER_NAME = "registerTaskExecutor";
+    static final String SERVICE_CENTER_CLIENT_TASK_EXECUTOR = "ServiceCenterClientTaskExecutor";
 
     @Bean
     @Primary
-    public EurekaClient createMultiConsulRawClient(RegisterProperties properties) {
-        NamingUtils.formatLog(log, "MultiConsulRawClient Started");
-        var rawClient = new EurekaClient(properties);
-        return rawClient;
+    public ServiceCenterClient serviceCenterClient(RegisterProperties properties) {
+        NamingUtils.formatLog(log, "Service Center Client initialed");
+        return new ServiceCenterClient(properties);
     }
 
     @Bean
-    public ServiceRegisterThread consulWatch(ProjectProperties projectProperties, RegisterProperties properties,
-                                             EurekaClient eurekaClient, @Qualifier(CONSUL_WATCH_TASK_SCHEDULER_NAME) TaskScheduler taskScheduler) {
-        NamingUtils.formatLog(log, "ConsulWatch Started");
-        return new ServiceRegisterThread(projectProperties, properties, eurekaClient, taskScheduler);
+    public ServiceRegisterThread serviceDiscovery(ProjectProperties projectProperties, RegisterProperties properties,
+                                                  ServiceCenterClient eurekaClient,
+                                                  List<ServiceMetaDataProvider> serviceMetaDataProviders,
+                                                  @Qualifier(SERVICE_CENTER_CLIENT_TASK_EXECUTOR) TaskScheduler taskScheduler) {
+        NamingUtils.formatLog(log, "ServiceRegisterThread Started");
+        return new ServiceRegisterThread(projectProperties, properties, eurekaClient, serviceMetaDataProviders, taskScheduler);
     }
-
-    @Bean(name = CONSUL_WATCH_TASK_SCHEDULER_NAME)
+    @Bean(name = SERVICE_CENTER_CLIENT_TASK_EXECUTOR)
     public TaskScheduler configWatchTaskScheduler() {
         var result = new ThreadPoolTaskScheduler();
-        result.setPoolSize(3);
+        result.setPoolSize(1);
         return result;
     }
 }

@@ -26,7 +26,6 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
-
 @Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -94,7 +93,7 @@ public class SerializerTests {
 
     }
 
-    //    @Test
+    // @Test
     public void Test_Serializable() throws IOException {
 
         var targetEvent = new InnerClass();
@@ -109,15 +108,13 @@ public class SerializerTests {
                 var sss = Base64.getEncoder().encodeToString(data);
                 data = sss.getBytes(StandardCharsets.UTF_8);
 
-
                 log.info("length:{},data:{}", data.length, new String(data));
 
-
             } catch (IOException e) {
-                log.info("", e);
+                log.error("error", e);
             }
         } catch (IOException e) {
-            log.info("", e);
+            log.error("error", e);
         }
         try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
             Hessian2Output output = new Hessian2Output(os);
@@ -127,7 +124,7 @@ public class SerializerTests {
             log.info("length:{},data:{}", data.length, new String(data));
 
         } catch (IOException e) {
-            log.info("", e);
+            log.error("error", e);
         }
 
         Kryo kryo = new Kryo();
@@ -139,7 +136,7 @@ public class SerializerTests {
             var data = os.toByteArray();
             log.info("length:{},data:{}", data.length, new String(data));
         } catch (IOException e) {
-            log.info("", e);
+            log.error("error", e);
         }
     }
 

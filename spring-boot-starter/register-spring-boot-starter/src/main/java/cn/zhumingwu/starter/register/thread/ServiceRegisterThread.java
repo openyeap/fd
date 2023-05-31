@@ -1,5 +1,6 @@
 package cn.zhumingwu.starter.register.thread;
 
+import cn.zhumingwu.base.service.ServiceMetaDataProvider;
 import cn.zhumingwu.starter.register.model.ServiceInstanceInfo;
 import cn.zhumingwu.starter.register.properties.RegisterProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -8,51 +9,64 @@ import cn.zhumingwu.base.context.ApplicationContextHolder;
 import cn.zhumingwu.base.event.ServiceDiscoveredEvent;
 import cn.zhumingwu.base.properties.ProjectProperties;
 import cn.zhumingwu.base.service.InstanceInfo;
-import cn.zhumingwu.starter.register.client.EurekaClient;
+import cn.zhumingwu.starter.register.client.ServiceCenterClient;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.scheduling.TaskScheduler;
 
-import java.math.BigInteger;
+import java.text.MessageFormat;
 import java.util.*;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
 public class ServiceRegisterThread implements SmartLifecycle {
 
     private final RegisterProperties registerProperties;
-    private final ProjectProperties properties;
-    private final EurekaClient eurekaClient;
+    private final ServiceCenterClient eurekaClient;
     private final TaskScheduler taskScheduler;
     private final AtomicBoolean running = new AtomicBoolean(false);
-    private final AtomicReference<BigInteger> catalogServicesIndex = new AtomicReference<>();
-    private final AtomicReference<BigInteger> eventListIndex = new AtomicReference<>();
-    private final AtomicReference<BigInteger> configIndex = new AtomicReference<>();
     private ScheduledFuture<?> serviceWatchFuture;
-    private ScheduledFuture<?> eventWatchFuture;
-    private ScheduledFuture<?> configWatchFuture;
+    //    private ScheduledFuture<?> eventWatchFuture;
+//    private ScheduledFuture<?> configWatchFuture;
     private ScheduledFuture<?> serviceRegisterFuture;
+    private final List<InstanceInfo> services;
 
-    public ServiceRegisterThread(ProjectProperties projectProperties, RegisterProperties consulProperties,
-                                 EurekaClient eurekaClient, TaskScheduler taskScheduler) {
-        this.properties = projectProperties;
-        this.registerProperties = consulProperties;
+    private final List<ServiceMetaDataProvider> serviceMetaDataProviders;
+
+    public ServiceRegisterThread(ProjectProperties projectProperties, RegisterProperties registerProperties,
+                                 ServiceCenterClient eurekaClient, List<ServiceMetaDataProvider> serviceMetaDataProviders, TaskScheduler taskScheduler) {
+        this.registerProperties = registerProperties;
         this.eurekaClient = eurekaClient;
         this.taskScheduler = taskScheduler;
+        this.serviceMetaDataProviders = serviceMetaDataProviders;
+
         var registry = this.registerProperties.getRegistry();
+
         if (registry.isEnabled()) {
-            if (registry.getServices() == null) {
-                registry.setServices(new LinkedList<InstanceInfo>());
+            Map<String, String> metaData;
+            if (this.serviceMetaDataProviders != null) {
+                metaData = new TreeMap<>();
+                for (var item : this.serviceMetaDataProviders) {
+                    metaData.putAll(item.metadata());
+                }
+            } else {
+                metaData = Collections.emptyMap();
             }
-            var list = registry.getServices();
             var serviceInfo = InstanceInfo.builder()
-                    .name(this.properties.getName())
-                    .ip(this.properties.getAddress())
-                    .port(this.properties.getPort())
+                    .name(projectProperties.getName())
+                    .ip(projectProperties.getIp())
+                    .port(projectProperties.getPort())
                     .schema("http")
+                    .metadata(metaData)
                     .build();
-            list.add(serviceInfo);
+            if (registry.getServices() == null) {
+                this.services = Collections.singletonList(serviceInfo);
+            } else {
+                this.services = registry.getServices();
+                this.services.add(serviceInfo);
+            }
+        } else {
+            this.services = Collections.emptyList();
         }
     }
 
@@ -60,13 +74,11 @@ public class ServiceRegisterThread implements SmartLifecycle {
     public void start() {
         if (this.running.compareAndSet(false, true)) {
             if (this.registerProperties.getServiceWatch().isEnabled()) {
-                this.serviceWatchFuture = this.taskScheduler.scheduleWithFixedDelay(this::serviceWatch,
-                        this.registerProperties.getServiceWatch().getDelay());
+                this.serviceWatchFuture = this.taskScheduler.scheduleWithFixedDelay(this::serviceWatch, this.registerProperties.getServiceWatch().getDelay());
             }
 
             if (this.registerProperties.getRegistry().isEnabled()) {
-                this.serviceRegisterFuture = this.taskScheduler.scheduleWithFixedDelay(this::serviceRegister,
-                        this.registerProperties.getRegistry().getDelay());
+                this.serviceRegisterFuture = this.taskScheduler.scheduleWithFixedDelay(this::serviceRegister, this.registerProperties.getRegistry().getDelay());
             }
         }
     }
@@ -77,30 +89,18 @@ public class ServiceRegisterThread implements SmartLifecycle {
             return;
         }
         try {
-            var registry = this.registerProperties.getRegistry();
-            if (registry.isEnabled()) {
-
-                var list = registry.getServices();
-                var healthCheck = this.registerProperties.getHealthCheck();
-                for (var item : list) {
-                    ServiceInstanceInfo service = new ServiceInstanceInfo();
-
-                    service.setIpAddr(item.getIp());
-                    service.setApp(item.getId());
-                    service.setApp(item.getName());
-                    service.setPort(item.getPort());
-                    service.setMetadata(item.getMetadata());
-                    if (healthCheck.isEnabled()) {
-//                        NewService.Check check = new NewService.Check();
-//                        check.setHttp(item.getUrl() + healthCheck.getPath());
-//                        check.setMethod(healthCheck.getMethod());
-//                        check.setInterval(healthCheck.getDelay().getSeconds() + "s");
-//                        check.setTimeout(healthCheck.getWaitTime().getSeconds() + "s");
-//                        check.setDeregisterCriticalServiceAfter(healthCheck.getRemoveAfter().getSeconds() + "s");
-//                        service.setCheck(check);
-                    }
-                    this.eurekaClient.registerInstance(service.getApp(), service);
+            var healthCheck = this.registerProperties.getHealthCheck();
+            for (var item : this.services) {
+                ServiceInstanceInfo service = new ServiceInstanceInfo();
+                service.setIpAddr(item.getIp());
+                service.setApp(item.getId());
+                service.setApp(item.getName());
+                service.setPort(item.getPort());
+                service.setMetadata(item.getMetadata());
+                if (healthCheck.isEnabled()) {
+                    service.setHealthCheckUrl(MessageFormat.format("{}://{}:{}/{}", item.getSchema(), item.getIp(), item.getPort(), healthCheck.getPath()));
                 }
+                this.eurekaClient.registerInstance(service.getApp(), service);
             }
         } catch (Exception e) {
             log.error("Error Consul register", e);
@@ -113,51 +113,33 @@ public class ServiceRegisterThread implements SmartLifecycle {
             return;
         }
         try {
-            long index = -1;
-            if (this.catalogServicesIndex.get() != null) {
-                index = this.catalogServicesIndex.get().longValue();
+            var serviceInstanceInfoList = this.eurekaClient.queryInstances();
+            if (serviceInstanceInfoList == null || serviceInstanceInfoList.size() == 0) {
+                return;
             }
+            Map<String, List<InstanceInfo>> services = new HashMap<>();
+            var event = new ServiceDiscoveredEvent(this, null);
+            for (var item : serviceInstanceInfoList) {
+                var name = item.getApp();
+                var serviceModel = InstanceInfo.builder()
+                        .port(item.getPort())
+                        .ip(item.getIpAddr())
+                        .id(item.getApp())
+                        .metadata(item.getMetadata())
+                        .build();
 
-            var response = this.eurekaClient.queryInstances();
-//             if (response != null) {
-//                this.catalogServicesIndex.set(BigInteger.valueOf(consulIndex));
-//            }
-
-//            if (log.isTraceEnabled()) {
-//                log.trace("Received services update from consul: " + response.getValue() + ", index: " + consulIndex);
-//            }
-//
-//            HealthServicesRequest healthServicesRequest = HealthServicesRequest.newBuilder().build();
-//
-//            Map<String, List<ServiceInfo>> data = new HashMap<>(response.getValue().size());
-//
-//            for (var serviceName : response.getValue().keySet()) {
-//                var serviceList = this.eurekaClient.getHealthServices(serviceName, healthServicesRequest).getValue();
-//                List<ServiceInfo> list = new ArrayList<>();
-//                for (HealthService item : serviceList) {
-//                    var service = item.getService();
-//                    var address = service.getAddress();
-//                    if (Strings.isNullOrEmpty(address)) {
-//                        address = item.getNode().getAddress();
-//                    }
-//                    var metadata = service.getMeta();
-//                    if (metadata == null) {
-//                        metadata = Collections.emptyMap();
-//                    }
-//                    var serviceModel = ServiceInfo.builder()
-//                            .port(service.getPort())
-//                            .ip(address)
-//                            .id(service.getId())
-//                            .metadata(metadata)
-//                            .build();
-//                    list.add(serviceModel);
-//                }
-//                data.put(serviceName, list);
-//            }
-            ApplicationContextHolder.publishLocal(new ServiceDiscoveredEvent(this, null));
-        } catch (Exception e) {
+                if (!services.containsKey(name)) {
+                    services.put(name, Collections.singletonList(serviceModel));
+                } else {
+                    services.get(name).add(serviceModel);
+                }
+            }
+            ApplicationContextHolder.publishLocal(event);
+        } catch (
+                Exception e) {
             log.error("Error watching Consul CatalogServices", e);
         }
+
     }
 
     @Override
@@ -186,12 +168,6 @@ public class ServiceRegisterThread implements SmartLifecycle {
         if (this.running.compareAndSet(true, false)) {
             if (this.serviceWatchFuture != null) {
                 this.serviceWatchFuture.cancel(true);
-            }
-            if (this.eventWatchFuture != null) {
-                this.eventWatchFuture.cancel(true);
-            }
-            if (this.configWatchFuture != null) {
-                this.configWatchFuture.cancel(true);
             }
             if (this.serviceRegisterFuture != null) {
                 this.serviceRegisterFuture.cancel(true);

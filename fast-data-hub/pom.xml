@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>cn.zhumingwu</groupId>
+    <artifactId>fast-data-hub</artifactId>
+    <name>fast data hub</name>
+    <description>数据交换的聚合和父模块，定义依赖包，插件版本，公共配置信息</description>
+    <packaging>pom</packaging>
+    <parent>
+        <groupId>cn.zhumingwu</groupId>
+        <artifactId>fast-parent</artifactId>
+        <version>1.1.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modules>
+        <module>fast-data-hub-core</module>
+        <module>fast-data-hub-admin</module>
+    </modules>
+    <properties>
+        <kafka.version>3.4.0</kafka.version>
+        <aviator.version>5.3.3</aviator.version>
+    </properties>
+    <dependencies>
+    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <!-- 常用jar -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.googlecode.aviator</groupId>
+                <artifactId>aviator</artifactId>
+                <version>${aviator.version}</version>
+            </dependency>
+            <!-- 项目 -->
+            <dependency>
+                <groupId>cn.zhumingwu</groupId>
+                <artifactId>fast-data-hub-core</artifactId>
+                <version>1.1.0</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

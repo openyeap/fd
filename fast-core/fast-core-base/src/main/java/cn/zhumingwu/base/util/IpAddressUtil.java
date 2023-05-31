@@ -122,7 +122,7 @@ public class IpAddressUtil {
                                         return addressItem;
                                     }
                                 } catch (IOException e) {
-                                    // ignore
+                                    log.error("getLocalAddress0 failed", e);
                                 }
                             }
                         } catch (Throwable e) {

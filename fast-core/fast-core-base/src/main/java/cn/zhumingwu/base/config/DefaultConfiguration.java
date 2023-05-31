@@ -30,7 +30,7 @@ public class DefaultConfiguration implements Configuration {
             var map = PM.writeValueAsMap(jsonNode);
             return new DefaultConfiguration(map);
         } catch (IOException e) {
-            log.error("getPropsConfig failed", e);
+            log.error("fromProps failed", e);
         }
         return null;
     }
@@ -41,7 +41,7 @@ public class DefaultConfiguration implements Configuration {
             var map = PM.writeValueAsMap(jsonNode);
             return new DefaultConfiguration(map);
         } catch (IOException e) {
-            log.error("getJsonConfig failed", e);
+            log.error("fromJson failed", e);
         }
         return null;
     }
@@ -52,7 +52,7 @@ public class DefaultConfiguration implements Configuration {
             var map = PM.writeValueAsMap(jsonNode);
             return new DefaultConfiguration(map);
         } catch (IOException e) {
-            log.error("getYamlConfig failed", e);
+            log.error("fromYaml failed", e);
         }
         return null;
     }
