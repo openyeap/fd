@@ -94,16 +94,17 @@ public class LogStructMerge {
             if (status == -1) {
                 return read(this.lsmFile.position() + size, offsetExcept);
             }
-            var offset = FileChannelUtil.readVLen(this.lsmFile);
+            var offset = FileChannelUtil.readVLen(this.lsmFile) + this.offset;
             if (offset <= offsetExcept) {
                 return read(this.lsmFile.position() + size, offsetExcept);
             }
             var timestamp = FileChannelUtil.readVLen(this.lsmFile) + this.start;
             var schema = (int) FileChannelUtil.readVLen(this.lsmFile);
-            var content = FileChannelUtil.readVarByte(this.lsmFile);
+            var payload = FileChannelUtil.readVarByte(this.lsmFile);
             var crc = FileChannelUtil.readInt(this.lsmFile);
-            if (CRCUtil.crc32(content).check(crc)) {
-                return new EventMessage(this.topic, content, schema, timestamp);
+
+            if (CRCUtil.crc32().update(offset).update( timestamp).update(payload).check(crc)) {
+                return new EventMessage(this.topic, payload, schema, timestamp);
             }
         } catch (IOException e) {
             log.error("error", e);
@@ -118,7 +119,7 @@ public class LogStructMerge {
         var payload = message.getPayload();
         var payloadLength = VIntUtil.vintEncode(payload.length);
 
-        var crc = CRCUtil.crc32(offsetDelta).update(timestampDelta).update(payload).getBytes();
+        var crc = CRCUtil.crc32().update(offset).update(message.getTimestamp()).update(payload).getBytes();
 
         try {
             FileChannelUtil.newPosition(this.lsmFile, -8);

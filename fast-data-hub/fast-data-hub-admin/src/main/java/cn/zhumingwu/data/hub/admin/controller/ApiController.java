@@ -22,7 +22,7 @@ public class ApiController extends BaseController {
     @RequestMapping("/push")
     @ResponseBody
     public Result<Long> save(String topic, String body) {
-        var eventMessage = new EventMessage(topic, body.getBytes(StandardCharsets.UTF_8));
+        var eventMessage = new EventMessage(topic, body.getBytes(StandardCharsets.UTF_8),0);
         return Result.success(eventMemoryTable.put(eventMessage));
     }
 

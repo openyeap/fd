@@ -2,6 +2,7 @@ package cn.zhumingwu.data.hub.core.util;
 
 import lombok.var;
 
+import java.nio.ByteBuffer;
 import java.util.zip.CRC32;
 
 public class CRCUtil {
@@ -11,18 +12,20 @@ public class CRCUtil {
     private CRCUtil() {
     }
 
-    public static CRCUtil crc32(byte[] content) {
-        CRCUtil crcUtil = new CRCUtil();
-        if (content.length > 0) {
-            crcUtil.update(content);
-        }
-        return crcUtil;
+    public static CRCUtil crc32() {
+        return new CRCUtil();
     }
 
     public CRCUtil update(byte[] content) {
         if (content.length > 0) {
             crc32.update(content);
         }
+        return this;
+    }
+    public CRCUtil update(long value) {
+        ByteBuffer buffer = ByteBuffer.allocate(8);
+        buffer.putLong(value);
+        crc32.update(buffer.array());
         return this;
     }
 
@@ -38,7 +41,7 @@ public class CRCUtil {
     public byte[] getBytes() {
         var value = this.crc32.getValue();
         byte[] src = new byte[4];
-        src[3] = (byte) ((value & 0xFF000000) >> 24);
+        src[3] = (byte) ((value & 0xFF000000L) >> 24);
         src[2] = (byte) ((value & 0x00FF0000) >> 16);
         src[1] = (byte) ((value & 0x0000FF00) >> 8);
         src[0] = (byte) ((value & 0x000000FF));
