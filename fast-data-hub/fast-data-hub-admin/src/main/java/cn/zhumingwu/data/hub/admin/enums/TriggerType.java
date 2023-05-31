@@ -1,20 +1,18 @@
 package cn.zhumingwu.data.hub.admin.enums;
 
-import cn.zhumingwu.data.hub.core.util.I18nUtil;
-
 /**
  * trigger type enum
  */
 public enum TriggerType {
-    MANUAL(I18nUtil.getInstance("").getString("jobconf_trigger_type_manual")),
-    CRON(I18nUtil.getInstance("").getString("jobconf_trigger_type_cron")),
-    RETRY(I18nUtil.getInstance("").getString("jobconf_trigger_type_retry")),
-    PARENT(I18nUtil.getInstance("").getString("jobconf_trigger_type_parent")),
-    API(I18nUtil.getInstance("").getString("jobconf_trigger_type_api"));
+    MANUAL("trigger_type_manual"),
+    CRON("trigger_type_cron"),
+    RETRY("trigger_type_retry"),
+    PARENT("trigger_type_parent"),
+    API("trigger_type_api");
 
-    private String title;
+    private final String title;
 
-    private TriggerType(String title) {
+    TriggerType(String title) {
         this.title = title;
     }
 

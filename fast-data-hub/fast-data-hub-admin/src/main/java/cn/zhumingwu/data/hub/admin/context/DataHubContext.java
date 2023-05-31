@@ -2,8 +2,6 @@ package cn.zhumingwu.data.hub.admin.context;
 
 import cn.zhumingwu.base.event.ServiceDiscoveredEvent;
 import cn.zhumingwu.base.service.InstanceInfo;
-import cn.zhumingwu.data.hub.admin.entity.JobInfo;
-import cn.zhumingwu.data.hub.admin.entity.JobTask;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.springframework.context.ApplicationListener;
