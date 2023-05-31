@@ -20,14 +20,10 @@ import java.util.Properties;
 public class SpringJobExecutor extends JobExecutor implements ApplicationContextAware, InitializingBean, DisposableBean {
 
     // ---------------------- applicationContext ----------------------
-    private static ApplicationContext applicationContext;
+    private ApplicationContext applicationContext;
 
     public SpringJobExecutor(Properties properties) {
         super(properties);
-    }
-
-    public static ApplicationContext getApplicationContext() {
-        return applicationContext;
     }
 
     @Override
@@ -35,21 +31,6 @@ public class SpringJobExecutor extends JobExecutor implements ApplicationContext
         this.applicationContext = applicationContext;
     }
 
-    // start
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        // init JobHandler Repository (for method)
-        initJobHandlerMethodRepository(applicationContext);
-        // init JobHandler Repository (for class)
-        var map = applicationContext.getBeansOfType(IJobHandler.class);
-        for (var entry : map.entrySet()) {
-            var name = entry.getKey();
-            if (getJobHandler(name) != null) {
-                throw new RuntimeException(MessageFormat.format(" job handler [{}] naming conflicts.", name));
-            }
-            registerJobHandler(entry.getKey(), entry.getValue());
-        }
-    }
 
     // destroy
     @Override
@@ -116,20 +97,31 @@ public class SpringJobExecutor extends JobExecutor implements ApplicationContext
         }
     }
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        // init JobHandler Repository (for method)
+        initJobHandlerMethodRepository(applicationContext);
+        // init JobHandler Repository (for class)
+        var map = applicationContext.getBeansOfType(IJobHandler.class);
+        for (var entry : map.entrySet()) {
+            var name = entry.getKey();
+            if (getJobHandler(name) != null) {
+                throw new RuntimeException(MessageFormat.format(" job handler [{}] naming conflicts.", name));
+            }
+            registerJobHandler(entry.getKey(), entry.getValue());
+        }
+    }
     private static class MethodJobHandler extends IJobHandler {
-
         private final Object target;
         private final Method executeMethod;
         private final Method initMethod;
         private final Method destroyMethod;
-
         public MethodJobHandler(Object target, Method executeMethod, Method initMethod, Method destroyMethod) {
             this.target = target;
             this.executeMethod = executeMethod;
             this.initMethod = initMethod;
             this.destroyMethod = destroyMethod;
         }
-
 
         @Override
         public void init() throws Exception {

@@ -32,7 +32,6 @@ public class RpcAutoConfiguration {
         NamingUtils.formatLog(log,"HessianServiceExporter Started");
         HessianServiceExporter exporter = new HessianServiceExporter();
         exporter.setService(defaultRpcService());
-
         exporter.setServiceInterface(RpcService.class);
         return exporter;
     }

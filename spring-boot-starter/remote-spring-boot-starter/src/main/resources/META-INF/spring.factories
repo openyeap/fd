@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    config.remote.starter.cn.zhumingwu.RpcAutoConfiguration
+    cn.zhumingwu.starter.remote.config.RpcAutoConfiguration

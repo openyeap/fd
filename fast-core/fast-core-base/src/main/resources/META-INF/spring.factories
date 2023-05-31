@@ -1,5 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    config.core.cn.zhumingwu.ProjectAutoConfiguration
+    cn.zhumingwu.base.config.ProjectAutoConfiguration
 
 org.springframework.context.ApplicationContextInitializer=\
-    context.core.cn.zhumingwu.DefaultApplicationContextAware
+    cn.zhumingwu.base.context.DefaultApplicationContextAware
