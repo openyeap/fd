@@ -2,7 +2,7 @@ package cn.zhumingwu.dataswitch.core.util;
 
 import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;

@@ -2,7 +2,7 @@ package cn.zhumingwu.database.sql.utils;
 
 import lombok.Getter;
 import lombok.ToString;
-import lombok.var;
+
 
 /**
  * @author zhumingwu

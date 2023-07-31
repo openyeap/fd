@@ -3,7 +3,7 @@ package cn.zhumingwu.starter.logger.influxdb;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;
 import lombok.Data;
-import lombok.var;
+
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
 import org.influxdb.dto.Query;

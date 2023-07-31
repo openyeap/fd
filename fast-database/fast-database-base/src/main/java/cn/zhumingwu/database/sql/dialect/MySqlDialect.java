@@ -5,7 +5,7 @@ import cn.zhumingwu.database.sql.conditions.Condition;
 import cn.zhumingwu.database.sql.conditions.EmptyCondition;
 import cn.zhumingwu.database.sql.queries.Delete;
 import cn.zhumingwu.database.sql.queries.Insert;
-import lombok.var;
+
 import cn.zhumingwu.database.sql.columns.Column;
 import cn.zhumingwu.database.sql.domain.BuildingContext;
 import cn.zhumingwu.database.sql.domain.ConditionType;

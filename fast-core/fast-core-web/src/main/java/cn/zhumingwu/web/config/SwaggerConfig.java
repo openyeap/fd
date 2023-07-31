@@ -6,7 +6,7 @@ import cn.zhumingwu.web.properties.SwaggerProperties;
 import java.util.function.Predicate;
 import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

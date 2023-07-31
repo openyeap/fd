@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import cn.zhumingwu.dataswitch.core.job.coordinator.Coordinator;
 import cn.zhumingwu.dataswitch.core.job.model.CallbackParam;
 import cn.zhumingwu.dataswitch.admin.context.CoordinatorContext;
-import lombok.var;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

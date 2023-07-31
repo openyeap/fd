@@ -23,19 +23,19 @@ public class MinIOServiceImpl implements MinIOService {
     @Autowired
     private MinioClient minioClient;
 
-    @SneakyThrows
+
     public void createBucket(String bucketName) {
         if (!minioClient.bucketExists(bucketName)) {
             minioClient.makeBucket(bucketName);
         }
     }
 
-    @SneakyThrows
+
     public List<Bucket> getAllBuckets() {
         return minioClient.listBuckets();
     }
 
-    @SneakyThrows
+
     public Optional<Bucket> getBucket(String bucketName) {
         return minioClient.listBuckets().stream().filter(b -> b.name().equals(bucketName)).findFirst();
     }
@@ -137,7 +137,7 @@ public class MinIOServiceImpl implements MinIOService {
         return null;
     }
 
-    @SneakyThrows
+
     public List<Result<Item>> getAllObjectsByPrefix(
             String bucketName, String prefix, boolean recursive) {
         List<Result<Item>> objectList = new ArrayList<>();
@@ -149,22 +149,22 @@ public class MinIOServiceImpl implements MinIOService {
         return objectList;
     }
 
-    @SneakyThrows
+
     public String getObjectURL(String bucketName, String objectName, Integer expires) {
         return minioClient.presignedGetObject(bucketName, objectName, expires);
     }
 
-    @SneakyThrows
+
     public InputStream getObject(String bucketName, String objectName) {
         return minioClient.getObject(bucketName, objectName);
     }
 
-    @SneakyThrows(Exception.class)
+(Exception.class)
     public ObjectStat getObjectInfo(String bucketName, String objectName) {
         return minioClient.statObject(bucketName, objectName);
     }
 
-    @SneakyThrows(Exception.class)
+(Exception.class)
     public void removeObject(String bucketName, String objectName) {
         minioClient.removeObject(bucketName, objectName);
     }

@@ -1,7 +1,7 @@
 package cn.zhumingwu.base.util;
 
 import com.google.common.base.Strings;
-import lombok.var;
+
 import org.yaml.snakeyaml.Yaml;
 
 import java.util.LinkedHashMap;

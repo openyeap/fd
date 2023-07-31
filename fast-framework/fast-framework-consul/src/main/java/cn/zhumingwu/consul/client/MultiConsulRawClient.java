@@ -7,7 +7,7 @@ import com.ecwid.consul.transport.*;
 import com.ecwid.consul.v1.ConsulRawClient;
 import com.ecwid.consul.v1.Request;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.base.event.ServiceDiscoveredEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.retry.RetryException;

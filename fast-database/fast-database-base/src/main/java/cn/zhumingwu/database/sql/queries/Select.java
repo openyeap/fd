@@ -5,7 +5,7 @@ import cn.zhumingwu.database.sql.conditions.Condition;
 import cn.zhumingwu.database.sql.domain.*;
 import lombok.Getter;
 import lombok.ToString;
-import lombok.var;
+
 import cn.zhumingwu.database.sql.columns.Column;
 import cn.zhumingwu.database.sql.dialect.Dialect;
 import cn.zhumingwu.database.sql.domain.*;

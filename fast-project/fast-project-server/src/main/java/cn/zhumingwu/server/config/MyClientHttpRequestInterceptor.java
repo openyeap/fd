@@ -2,7 +2,7 @@ package cn.zhumingwu.server.config;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ import java.net.URI;
 @Slf4j
 public class MyClientHttpRequestInterceptor implements ClientHttpRequestInterceptor {
 
-    @SneakyThrows
+
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
         var response = execution.execute(request, body);

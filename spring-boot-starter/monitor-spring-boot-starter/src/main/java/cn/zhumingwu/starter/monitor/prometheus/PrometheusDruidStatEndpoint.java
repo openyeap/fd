@@ -5,7 +5,7 @@ import com.alibaba.druid.pool.DruidDataSourceStatLoggerAdapter;
 import com.alibaba.druid.pool.DruidDataSourceStatValue;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.starter.monitor.converter.DruidStatConverter;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;

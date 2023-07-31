@@ -1,7 +1,7 @@
 package cn.zhumingwu.database.mybatis.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.base.util.NamingUtils;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;

@@ -5,7 +5,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalNotification;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.data.hub.core.util.CRCUtil;
 import cn.zhumingwu.data.hub.core.util.FileChannelUtil;
 import cn.zhumingwu.data.hub.core.util.VIntUtil;

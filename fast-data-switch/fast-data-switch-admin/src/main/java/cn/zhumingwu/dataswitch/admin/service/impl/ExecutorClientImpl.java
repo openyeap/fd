@@ -6,7 +6,7 @@ import cn.zhumingwu.dataswitch.core.job.executor.Executor;
 import cn.zhumingwu.dataswitch.core.job.model.LogResult;
 import cn.zhumingwu.dataswitch.core.job.model.TriggerParam;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;

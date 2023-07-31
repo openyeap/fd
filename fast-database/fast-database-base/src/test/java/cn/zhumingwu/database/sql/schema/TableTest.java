@@ -1,7 +1,7 @@
 package cn.zhumingwu.database.sql.schema;
 
 import cn.zhumingwu.database.sql.columns.number.integer.*;
-import lombok.var;
+
 import cn.zhumingwu.database.sql.columns.datetime.DateColumnBuilder;
 import cn.zhumingwu.database.sql.columns.datetime.DateTimeColumnBuilder;
 import cn.zhumingwu.database.sql.columns.number.doubletype.DecimalColumnBuilder;

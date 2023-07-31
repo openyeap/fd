@@ -1,6 +1,6 @@
 package cn.zhumingwu.data.hub.core.store;
 
-import lombok.var;
+
 import cn.zhumingwu.data.hub.core.util.CRCUtil;
 
 import java.io.*;

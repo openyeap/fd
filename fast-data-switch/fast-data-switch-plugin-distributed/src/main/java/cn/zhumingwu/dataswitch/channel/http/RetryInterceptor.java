@@ -2,7 +2,7 @@ package cn.zhumingwu.dataswitch.channel.http;
 
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import okhttp3.*;
 
 import java.io.IOException;

@@ -1,7 +1,7 @@
 package cn.zhumingwu.database.service;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.base.util.NamingUtils;
 import cn.zhumingwu.database.config.DataSourceConfig;
 import cn.zhumingwu.database.entity.BaseEntity;

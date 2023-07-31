@@ -2,7 +2,7 @@ package cn.zhumingwu.research.algorithm;
 
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;

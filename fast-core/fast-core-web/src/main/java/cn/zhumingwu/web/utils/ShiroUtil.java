@@ -1,6 +1,7 @@
 package cn.zhumingwu.web.utils;
 
-import javax.servlet.http.HttpServletRequest;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Shiro工具类

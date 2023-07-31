@@ -2,7 +2,7 @@ package cn.zhumingwu.dataswitch.reader.kafka;
 
 import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.dataswitch.core.model.Column;
 import cn.zhumingwu.dataswitch.core.model.Record;
 import cn.zhumingwu.dataswitch.core.pipeline.Reader;

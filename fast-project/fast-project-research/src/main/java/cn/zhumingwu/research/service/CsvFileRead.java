@@ -2,7 +2,7 @@ package cn.zhumingwu.research.service;
 
 import com.opencsv.CSVReader;
 import lombok.Data;
-import lombok.var;
+
 
 import java.io.*;
 import java.util.Map;

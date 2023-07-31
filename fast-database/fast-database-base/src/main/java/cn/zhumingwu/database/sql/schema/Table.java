@@ -11,7 +11,7 @@ import cn.zhumingwu.database.sql.conditions.Condition;
 import cn.zhumingwu.database.sql.queries.Select;
 import lombok.Getter;
 import lombok.ToString;
-import lombok.var;
+
 import cn.zhumingwu.database.sql.columns.datetime.*;
 import cn.zhumingwu.database.sql.columns.number.doubletype.*;
 import cn.zhumingwu.database.sql.columns.number.integer.*;

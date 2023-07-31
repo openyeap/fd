@@ -3,7 +3,7 @@ package cn.zhumingwu.database.test;
 import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.util.JdbcConstants;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.database.sql.dialect.Dialects;
 import cn.zhumingwu.database.sql.queries.Queries;
 import cn.zhumingwu.database.sql.schema.Table;

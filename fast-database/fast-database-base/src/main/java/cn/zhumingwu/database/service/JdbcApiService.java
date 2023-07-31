@@ -8,7 +8,7 @@ import io.swagger.models.parameters.PathParameter;
 import io.swagger.models.properties.*;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.database.model.RowDataMapper;
 import cn.zhumingwu.database.sql.columns.Column;
 import cn.zhumingwu.database.sql.dialect.Dialect;

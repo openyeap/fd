@@ -3,7 +3,7 @@ package cn.zhumingwu.starter.register.client;
 import cn.zhumingwu.starter.register.model.ServiceInstanceInfo;
 import cn.zhumingwu.starter.register.properties.RegisterProperties;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.base.event.ServiceDiscoveredEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.http.ResponseEntity;

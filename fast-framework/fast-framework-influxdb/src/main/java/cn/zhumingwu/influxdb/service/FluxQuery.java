@@ -2,7 +2,7 @@ package cn.zhumingwu.influxdb.service;
 
 import com.google.common.base.Strings;
 import lombok.Data;
-import lombok.var;
+
 import cn.zhumingwu.influxdb.model.Region;
 
 import java.text.MessageFormat;

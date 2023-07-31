@@ -1,7 +1,7 @@
 package cn.zhumingwu.database.sql.queries;
 
 import cn.zhumingwu.database.sql.testsupport.QueryExecutorTestSupport;
-import lombok.var;
+
 import cn.zhumingwu.database.sql.schema.Table;
 import org.junit.jupiter.api.Test;
 

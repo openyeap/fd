@@ -2,7 +2,7 @@ package cn.zhumingwu.server.service.impl;
 
 import cn.zhumingwu.api.service.HiService;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.base.context.ApplicationContextHolder;
 import cn.zhumingwu.base.util.NamingUtils;
 import org.springframework.beans.factory.annotation.Value;

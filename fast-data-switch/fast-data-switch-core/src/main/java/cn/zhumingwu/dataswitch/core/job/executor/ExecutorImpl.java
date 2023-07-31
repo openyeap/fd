@@ -5,7 +5,7 @@ import cn.zhumingwu.dataswitch.core.job.handler.IJobHandler;
 import cn.zhumingwu.dataswitch.core.util.JobFileAppender;
 import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.dataswitch.core.job.enums.ExecutorBlockStrategy;
 import cn.zhumingwu.dataswitch.core.job.model.LogResult;
 import cn.zhumingwu.dataswitch.core.job.model.TriggerParam;

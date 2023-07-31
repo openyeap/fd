@@ -1,11 +1,10 @@
 package cn.zhumingwu.web.utils;
 
-import org.springframework.util.StringUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 // 获取HttpServlet子对象
 public class HttpServletUtil {
@@ -26,14 +25,14 @@ public class HttpServletUtil {
     }
 
     // 获取请求参数
-        public static String getParameter(String param) {
+    public static String getParameter(String param) {
         return getRequest().getParameter(param);
     }
 
     //  获取请求参数，带默认值
     public static String getParameter(String param, String defaultValue) {
         String parameter = getRequest().getParameter(param);
-        return StringUtils.isEmpty(parameter) ? defaultValue : parameter;
+        return parameter == null || parameter.isEmpty() ? defaultValue : parameter;
     }
 
     // 获取请求参数转换为int类型

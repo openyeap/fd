@@ -11,7 +11,7 @@ import cn.zhumingwu.dataswitch.core.util.I18nUtil;
 import cn.zhumingwu.dataswitch.admin.entity.JobInfo;
 import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.springframework.context.SmartLifecycle;
 import org.springframework.data.domain.Example;
 import org.springframework.mail.javamail.JavaMailSender;

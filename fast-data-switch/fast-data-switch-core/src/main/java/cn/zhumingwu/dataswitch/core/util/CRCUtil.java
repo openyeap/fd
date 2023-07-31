@@ -1,6 +1,6 @@
 package cn.zhumingwu.dataswitch.core.util;
 
-import lombok.var;
+
 
 import java.util.zip.CRC32;
 

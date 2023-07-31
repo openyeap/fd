@@ -4,7 +4,7 @@ import cn.zhumingwu.dataswitch.core.job.model.LogResult;
 import cn.zhumingwu.dataswitch.core.util.DateUtil;
 import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.slf4j.Logger;
 
 import java.io.*;

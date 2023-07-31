@@ -4,7 +4,7 @@ import cn.zhumingwu.database.sql.queries.Select;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
-import lombok.var;
+
 import cn.zhumingwu.database.sql.utils.Indentation;
 
 /**

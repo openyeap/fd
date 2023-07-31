@@ -1,7 +1,7 @@
 package cn.zhumingwu.base.support;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.base.AOPMethodTests;
 import cn.zhumingwu.base.util.NamingUtils;
 import org.springframework.beans.BeansException;

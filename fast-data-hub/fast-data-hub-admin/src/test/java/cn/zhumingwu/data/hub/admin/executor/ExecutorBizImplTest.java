@@ -1,7 +1,7 @@
 package cn.zhumingwu.data.hub.admin.executor;
 
 import cn.zhumingwu.base.model.Result;
-import lombok.var;
+
 import cn.zhumingwu.dataswitch.core.job.enums.ExecutorBlockStrategy;
 import cn.zhumingwu.dataswitch.core.job.executor.Executor;
 import cn.zhumingwu.dataswitch.core.job.executor.JobExecutor;

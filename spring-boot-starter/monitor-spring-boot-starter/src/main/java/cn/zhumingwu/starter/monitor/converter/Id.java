@@ -3,7 +3,7 @@ package cn.zhumingwu.starter.monitor.converter;
 import com.alibaba.druid.support.json.JSONUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.var;
+
 
 import java.util.HashMap;
 import java.util.Map;

@@ -4,7 +4,7 @@ import cn.zhumingwu.influxdb.model.Box;
 import cn.zhumingwu.influxdb.model.Circle;
 import cn.zhumingwu.influxdb.model.Polygon;
 import com.google.common.geometry.*;
-import lombok.var;
+
 
 import java.util.Arrays;
 import java.util.LinkedList;

@@ -6,7 +6,7 @@ import cn.zhumingwu.base.properties.ProjectProperties;
 import cn.zhumingwu.base.util.NamingUtils;
 import com.ecwid.consul.v1.ConsulClient;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.consul.client.MultiConsulRawClient;
 import cn.zhumingwu.consul.event.ConsulEventService;
 import cn.zhumingwu.consul.lock.ConsulLockManager;

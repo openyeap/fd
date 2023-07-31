@@ -3,7 +3,7 @@ package cn.zhumingwu.base.util;
 
 import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.slf4j.Logger;
 import org.slf4j.helpers.MessageFormatter;
 

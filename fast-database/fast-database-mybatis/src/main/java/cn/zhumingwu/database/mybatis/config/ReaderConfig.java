@@ -1,13 +1,13 @@
 package cn.zhumingwu.database.mybatis.config;
 
+import cn.zhumingwu.database.config.DataSourceConfig;
 import cn.zhumingwu.database.mybatis.handler.LongArrayTypeHandler;
 import cn.zhumingwu.database.mybatis.handler.StringArrayTypeHandler;
 import cn.zhumingwu.database.mybatis.interceptor.DecryptResultFieldInterceptor;
 import cn.zhumingwu.database.mybatis.interceptor.EncryptParameterInterceptor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.base.util.NamingUtils;
-import cn.zhumingwu.database.config.DataSourceConfig;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;

@@ -3,11 +3,12 @@ package cn.zhumingwu.starter.jdbc.sql;
 import cn.zhumingwu.starter.jdbc.mappers.GenericMapper;
 import cn.zhumingwu.starter.jdbc.mappers.PojoMapper;
 import lombok.SneakyThrows;
-import lombok.var;
+
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
 import java.util.*;
 
 public final class SingleSql<T> {
@@ -62,9 +63,13 @@ public final class SingleSql<T> {
         return this;
     }
 
-    @SneakyThrows
+
     public static <T> List<T> exec(String sql, Object args, Class<T> clazz) {
-        var db = dataSource.getConnection().createStatement();
+        try {
+            var db = dataSource.getConnection().createStatement();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         var jdbcTemplate = new JdbcTemplate(dataSource);
         var list = jdbcTemplate.query(sql, new Object[0], GenericMapper.build(clazz));
 

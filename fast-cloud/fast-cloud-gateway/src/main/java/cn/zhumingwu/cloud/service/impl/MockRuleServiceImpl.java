@@ -7,7 +7,7 @@ import cn.zhumingwu.cloud.service.IMockRuleService;
 import cn.zhumingwu.cloud.util.DateTimeUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;

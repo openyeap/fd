@@ -2,7 +2,7 @@ package cn.zhumingwu.dataswitch.core;
 
 import com.google.iot.cbor.*;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;

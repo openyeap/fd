@@ -1,6 +1,5 @@
 package cn.zhumingwu.base.config;
 
-import lombok.var;
 
 public interface Configuration {
     String get(String path);

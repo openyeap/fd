@@ -2,14 +2,14 @@ package cn.zhumingwu.database.mybatis.plus.interceptor;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.google.common.base.Strings;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 
 @Slf4j

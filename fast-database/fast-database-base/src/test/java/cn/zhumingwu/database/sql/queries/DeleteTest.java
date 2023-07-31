@@ -1,6 +1,6 @@
 package cn.zhumingwu.database.sql.queries;
 
-import lombok.var;
+
 import cn.zhumingwu.database.sql.columns.number.integer.IntColumn;
 import cn.zhumingwu.database.sql.columns.string.VarCharColumn;
 import cn.zhumingwu.database.sql.functions.Function;

@@ -1,7 +1,7 @@
 package cn.zhumingwu.dataswitch.reader.jdbc;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.dataswitch.core.model.Record;
 import cn.zhumingwu.dataswitch.core.pipeline.Reader;
 

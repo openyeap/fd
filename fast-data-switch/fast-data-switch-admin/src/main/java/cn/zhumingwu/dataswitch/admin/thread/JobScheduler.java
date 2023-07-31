@@ -7,7 +7,7 @@ import cn.zhumingwu.dataswitch.admin.enums.TriggerType;
 import cn.zhumingwu.dataswitch.admin.entity.JobInfo;
 import cn.zhumingwu.dataswitch.core.job.cron.CronExpression;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.springframework.context.SmartLifecycle;
 
 import javax.sql.DataSource;

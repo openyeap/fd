@@ -3,7 +3,7 @@ package cn.zhumingwu.influxdb.test.service.impl;
 import cn.zhumingwu.influxdb.properties.InfluxProperties;
 import cn.zhumingwu.influxdb.service.BaseInfluxService;
 import com.influxdb.client.InfluxDBClient;
-import lombok.var;
+
 import cn.zhumingwu.influxdb.test.model.Person;
 import cn.zhumingwu.influxdb.test.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package cn.zhumingwu.database.fql;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.database.fql.antlr.FqlLexer;
 import cn.zhumingwu.database.fql.antlr.FqlParser;
 import cn.zhumingwu.database.properties.JdbcApiProperties;

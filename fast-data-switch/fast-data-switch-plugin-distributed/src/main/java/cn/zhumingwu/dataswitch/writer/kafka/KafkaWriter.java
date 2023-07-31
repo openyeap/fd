@@ -1,7 +1,7 @@
 package cn.zhumingwu.dataswitch.writer.kafka;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.dataswitch.core.model.Record;
 import cn.zhumingwu.dataswitch.core.pipeline.Writer;
 import org.apache.kafka.clients.producer.KafkaProducer;

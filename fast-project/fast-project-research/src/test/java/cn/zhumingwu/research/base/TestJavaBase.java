@@ -3,7 +3,7 @@ package cn.zhumingwu.research.base;
 import cn.zhumingwu.research.algorithm.BitMap;
 import cn.zhumingwu.research.algorithm.Solution;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

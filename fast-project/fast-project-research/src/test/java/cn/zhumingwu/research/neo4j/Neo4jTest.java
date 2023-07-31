@@ -7,7 +7,7 @@ import cn.zhumingwu.research.repository.PersonNeo4jRepository;
 import cn.zhumingwu.research.service.CsvFileRead;
 import cn.zhumingwu.research.service.Neo4jServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

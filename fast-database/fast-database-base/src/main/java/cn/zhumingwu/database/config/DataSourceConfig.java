@@ -4,7 +4,7 @@ import cn.zhumingwu.database.datasource.DataSourceProperties;
 import cn.zhumingwu.database.datasource.DynamicDataSource;
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

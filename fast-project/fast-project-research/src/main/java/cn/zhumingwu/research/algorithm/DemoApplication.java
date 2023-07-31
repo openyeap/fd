@@ -9,7 +9,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 @Slf4j
 public class DemoApplication {
-    @SneakyThrows
+
     public void Demo(String[] args) {
         // hello h = new hello("test");
         // h.start();

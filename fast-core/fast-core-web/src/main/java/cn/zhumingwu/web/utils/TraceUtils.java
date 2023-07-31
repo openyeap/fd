@@ -2,15 +2,16 @@ package cn.zhumingwu.web.utils;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
-import lombok.var;
+
 import cn.zhumingwu.base.util.IdUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
+
 import java.util.Map;
 import java.util.UUID;
 

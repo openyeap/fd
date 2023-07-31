@@ -1,6 +1,6 @@
 package cn.zhumingwu.database.sql.testsupport;
 
-import lombok.var;
+
 import cn.zhumingwu.database.sql.domain.BuildingContext;
 import cn.zhumingwu.database.sql.functions.Function;
 import cn.zhumingwu.database.sql.utils.Indentation;

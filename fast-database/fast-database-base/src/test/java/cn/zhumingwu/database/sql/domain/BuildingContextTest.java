@@ -1,6 +1,6 @@
 package cn.zhumingwu.database.sql.domain;
 
-import lombok.var;
+
 import org.junit.jupiter.api.Test;
 
 import static java.lang.System.lineSeparator;

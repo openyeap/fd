@@ -11,7 +11,7 @@ import com.alibaba.druid.sql.dialect.postgresql.ast.stmt.PGInsertStatement;
 import com.alibaba.druid.sql.dialect.postgresql.ast.stmt.PGUpdateStatement;
 import com.alibaba.druid.sql.dialect.postgresql.visitor.PGSchemaStatVisitor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.assertj.core.util.Strings;
 
 import java.util.HashMap;

@@ -1,11 +1,11 @@
 package cn.zhumingwu.web.config;
 
 import cn.zhumingwu.web.properties.ProjectProperties;
+import jakarta.servlet.Filter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.servlet.Filter;
 import java.util.HashMap;
 import java.util.Map;
 

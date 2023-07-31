@@ -3,7 +3,7 @@ package cn.zhumingwu.database.service;
 import cn.zhumingwu.database.repository.DatabaseMetaData;
 import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.database.sql.schema.Schema;
 import cn.zhumingwu.database.sql.schema.Table;
 

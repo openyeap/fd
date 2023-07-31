@@ -5,7 +5,7 @@
 // import javassist.CtMethod;
 // import jdk.internal.org.objectweb.asm.*;
 // import lombok.extern.slf4j.Slf4j;
-// import lombok.var;
+// 
 // import cn.zhumingwu.core.config.ProjectAutoConfiguration;
 // import cn.zhumingwu.core.support.MyClassLoader;
 // import cn.zhumingwu.core.support.TestClass;

@@ -5,7 +5,7 @@ import com.lmax.disruptor.EventTranslator;
 import com.lmax.disruptor.dsl.Disruptor;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.dataswitch.core.model.Record;
 import cn.zhumingwu.dataswitch.core.pipeline.Channel;
 import cn.zhumingwu.dataswitch.core.pipeline.Pipeline;

@@ -1,6 +1,6 @@
 package cn.zhumingwu.database.sql.utils;
 
-import lombok.var;
+
 import cn.zhumingwu.database.sql.domain.BuildingContext;
 import cn.zhumingwu.database.sql.domain.Plain;
 import cn.zhumingwu.database.sql.functions.Function;

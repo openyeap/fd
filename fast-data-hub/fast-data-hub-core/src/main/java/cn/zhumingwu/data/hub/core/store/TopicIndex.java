@@ -3,7 +3,7 @@ package cn.zhumingwu.data.hub.core.store;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.data.hub.core.util.FileChannelUtil;
 
 import java.io.IOException;

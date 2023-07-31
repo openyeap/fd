@@ -1,7 +1,7 @@
 package cn.zhumingwu.client.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.client.jpa.entity.Group;
 import cn.zhumingwu.client.jpa.service.GroupService;
 import cn.zhumingwu.database.entity.Status;

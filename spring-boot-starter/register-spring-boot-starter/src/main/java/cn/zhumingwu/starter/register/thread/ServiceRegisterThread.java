@@ -4,7 +4,7 @@ import cn.zhumingwu.base.service.ServiceMetaDataProvider;
 import cn.zhumingwu.starter.register.model.ServiceInstanceInfo;
 import cn.zhumingwu.starter.register.properties.RegisterProperties;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.base.context.ApplicationContextHolder;
 import cn.zhumingwu.base.event.ServiceDiscoveredEvent;
 import cn.zhumingwu.base.properties.ProjectProperties;

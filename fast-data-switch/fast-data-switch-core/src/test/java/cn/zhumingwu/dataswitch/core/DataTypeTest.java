@@ -1,7 +1,7 @@
 package cn.zhumingwu.dataswitch.core;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.junit.Test;
 
 import java.util.Iterator;

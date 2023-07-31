@@ -4,7 +4,7 @@ import cn.zhumingwu.database.sql.queries.Delete;
 import cn.zhumingwu.database.sql.queries.Insert;
 import cn.zhumingwu.database.sql.queries.Select;
 import cn.zhumingwu.database.sql.queries.Update;
-import lombok.var;
+
 import cn.zhumingwu.database.sql.columns.Column;
 import cn.zhumingwu.database.sql.domain.BuildingContext;
 import cn.zhumingwu.database.sql.domain.Limit;

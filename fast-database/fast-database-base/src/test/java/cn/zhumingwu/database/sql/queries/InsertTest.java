@@ -1,6 +1,6 @@
 package cn.zhumingwu.database.sql.queries;
 
-import lombok.var;
+
 import cn.zhumingwu.database.sql.columns.datetime.DateColumn;
 import cn.zhumingwu.database.sql.columns.datetime.DateTimeColumn;
 import cn.zhumingwu.database.sql.columns.datetime.TimeColumn;

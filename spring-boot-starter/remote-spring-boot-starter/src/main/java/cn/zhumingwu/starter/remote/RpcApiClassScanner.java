@@ -2,7 +2,7 @@ package cn.zhumingwu.starter.remote;
 
 import cn.zhumingwu.starter.remote.annotation.RpcApis;
 import lombok.SneakyThrows;
-import lombok.var;
+
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
@@ -24,7 +24,7 @@ public class RpcApiClassScanner extends ClassPathBeanDefinitionScanner {
         addIncludeFilter(new AnnotationTypeFilter(Component.class));
     }
 
-    @SneakyThrows
+
     @Override
     protected Set<BeanDefinitionHolder> doScan(String... basePackages) {
         Set<BeanDefinitionHolder> beanDefinitions = super.doScan(basePackages);

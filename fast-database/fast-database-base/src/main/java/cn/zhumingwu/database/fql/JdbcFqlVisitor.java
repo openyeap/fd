@@ -11,7 +11,7 @@ import cn.zhumingwu.database.sql.domain.OrderDirection;
 import cn.zhumingwu.database.sql.queries.Queries;
 import cn.zhumingwu.database.sql.schema.Table;
 import com.google.common.base.Strings;
-import lombok.var;
+
 import cn.zhumingwu.database.model.*;
 
 import java.util.ArrayList;

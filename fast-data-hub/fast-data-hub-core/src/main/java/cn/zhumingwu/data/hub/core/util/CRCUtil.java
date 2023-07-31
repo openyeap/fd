@@ -1,6 +1,6 @@
 package cn.zhumingwu.data.hub.core.util;
 
-import lombok.var;
+
 
 import java.nio.ByteBuffer;
 import java.util.zip.CRC32;

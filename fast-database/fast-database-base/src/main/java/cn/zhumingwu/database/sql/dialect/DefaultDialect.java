@@ -6,7 +6,7 @@ import cn.zhumingwu.database.sql.conditions.EmptyCondition;
 import cn.zhumingwu.database.sql.domain.*;
 import cn.zhumingwu.database.sql.queries.*;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.database.sql.columns.Column;
 import cn.zhumingwu.database.sql.columns.ColumnDefinition;
 import cn.zhumingwu.database.sql.domain.*;

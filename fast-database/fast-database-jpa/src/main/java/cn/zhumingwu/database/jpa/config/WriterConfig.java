@@ -3,6 +3,7 @@ package cn.zhumingwu.database.jpa.config;
 import cn.zhumingwu.database.config.DataSourceConfig;
 import cn.zhumingwu.database.datasource.DataSourceProperties;
 import cn.zhumingwu.database.jpa.registrar.UserIdAuditorAware;
+import jakarta.persistence.EntityManagerFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,8 +21,8 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+
 
 @Configuration
 @EnableJpaRepositories(basePackages = {"**.jpa.repository.writer.**"}, entityManagerFactoryRef = WriterConfig.WRITER_ENTITY_MANAGER_FACTORY, transactionManagerRef = WriterConfig.WRITER_TRANSACTION_MANAGER)

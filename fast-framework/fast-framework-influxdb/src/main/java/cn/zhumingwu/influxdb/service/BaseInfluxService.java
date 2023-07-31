@@ -10,7 +10,7 @@ import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.client.write.Point;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.influxdb.entity.InfluxEntity;
 import cn.zhumingwu.influxdb.model.EntityInfo;
 import cn.zhumingwu.influxdb.model.Location;

@@ -1,7 +1,7 @@
 package cn.zhumingwu.dataswitch.core.container;
 
 import com.google.common.base.Strings;
-import lombok.var;
+
 import cn.zhumingwu.dataswitch.core.pipeline.Pipeline;
 import cn.zhumingwu.base.config.Configuration;
 import org.aopalliance.intercept.MethodInterceptor;

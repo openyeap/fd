@@ -2,7 +2,7 @@ package cn.zhumingwu.base.support;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.base.util.LicenseUtils;
 import cn.zhumingwu.base.util.RSAUtils;
 
@@ -17,7 +17,7 @@ import java.util.Calendar;
 @Slf4j
 public class LicenseClientUtils {
 
-    @SneakyThrows
+
     public static String generateSerialNumber(String machineCode, String privateKey, int hours) {
         machineCode = machineCode.replace("-", "");
         // 得到过期时间
@@ -35,7 +35,7 @@ public class LicenseClientUtils {
         return body + checkSum;
     }
 
-    @SneakyThrows
+
     public static boolean generatePKI(String root) {
         var kp = RSAUtils.genKeyPair();
         String privateKey = kp.getPrivateKey();

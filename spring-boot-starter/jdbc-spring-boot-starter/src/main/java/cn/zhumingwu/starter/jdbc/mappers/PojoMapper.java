@@ -1,11 +1,12 @@
 package cn.zhumingwu.starter.jdbc.mappers;
 
 import lombok.SneakyThrows;
-import lombok.var;
+
 import org.springframework.jdbc.core.RowMapper;
 
 import java.lang.reflect.ParameterizedType;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 
 public class PojoMapper<T> implements RowMapper<T> {
@@ -18,13 +19,29 @@ public class PojoMapper<T> implements RowMapper<T> {
 
 
     @Override
-    @SneakyThrows
+
     public T mapRow(ResultSet resultSet, int rowNum) {
-        T o = clazz.newInstance();
+        T o = null;
+        try {
+            o = clazz.newInstance();
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
         for (var f : clazz.getFields()) {
             var name = f.getName();
-            var value = resultSet.getObject(name);
-            f.set(o, value);
+            Object value = null;
+            try {
+                value = resultSet.getObject(name);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            try {
+                f.set(o, value);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
         }
         return o;
     }

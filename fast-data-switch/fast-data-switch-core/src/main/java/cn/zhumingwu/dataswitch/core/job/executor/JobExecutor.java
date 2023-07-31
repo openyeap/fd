@@ -4,7 +4,7 @@ package cn.zhumingwu.dataswitch.core.job.executor;
 import cn.zhumingwu.dataswitch.core.job.handler.IJobHandler;
 import lombok.extern.slf4j.Slf4j;
 import cn.zhumingwu.dataswitch.core.job.thread.JobThread;
-import lombok.var;
+
 
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;

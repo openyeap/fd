@@ -2,7 +2,7 @@ package cn.zhumingwu.base.lock;
 
 import cn.zhumingwu.base.context.ApplicationContextHolder;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;

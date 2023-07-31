@@ -1,6 +1,6 @@
 package cn.zhumingwu.database.sql.queries;
 
-import lombok.var;
+
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;

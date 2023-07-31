@@ -49,7 +49,6 @@ public class MinIOController {
     }
 
     @PostMapping(value = "/file/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @SneakyThrows
     public Mono<ResponseEntity<Object>> upload(@RequestPart("file") FilePart filePart, @RequestPart String bucketName, @RequestPart String path) {
         Map<String, String> map = new HashMap<>();
         if (StringUtils.isEmpty(bucketName)) {

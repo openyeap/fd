@@ -1,7 +1,7 @@
 package cn.zhumingwu.influxdb.service;
 
 import com.influxdb.client.write.Point;
-import lombok.var;
+
 import cn.zhumingwu.influxdb.entity.InfluxEntity;
 import cn.zhumingwu.influxdb.model.Region;
 import org.apache.commons.beanutils.BeanUtils;

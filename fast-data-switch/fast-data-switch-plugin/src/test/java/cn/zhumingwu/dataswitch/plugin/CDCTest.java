@@ -9,7 +9,7 @@ import io.debezium.connector.postgresql.PostgresConnector;
 import io.debezium.embedded.Connect;
 import io.debezium.engine.DebeziumEngine;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.apache.kafka.connect.data.*;
 import org.junit.Test;
 

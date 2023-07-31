@@ -1,7 +1,7 @@
 package cn.zhumingwu.dataswitch.admin.thread;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 
 import java.util.*;
 import java.util.stream.Collectors;

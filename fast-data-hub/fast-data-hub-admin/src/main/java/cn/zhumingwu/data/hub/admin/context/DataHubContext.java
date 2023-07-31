@@ -3,7 +3,7 @@ package cn.zhumingwu.data.hub.admin.context;
 import cn.zhumingwu.base.event.ServiceDiscoveredEvent;
 import cn.zhumingwu.base.service.InstanceInfo;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.stereotype.Component;

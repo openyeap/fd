@@ -3,7 +3,7 @@ package cn.zhumingwu.base.serializer;
 import com.caucho.hessian.io.Hessian2Input;
 import com.caucho.hessian.io.Hessian2Output;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;

@@ -4,7 +4,7 @@ import cn.zhumingwu.database.mybatis.plus.annotation.MybatisPlusMapper;
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.base.util.NamingUtils;
 import cn.zhumingwu.database.config.DataSourceConfig;
 import org.apache.ibatis.session.SqlSessionFactory;

@@ -2,7 +2,7 @@ package cn.zhumingwu.web.exception;
 
 import cn.zhumingwu.base.model.HttpCode;
 import cn.zhumingwu.base.model.Result;
-import lombok.var;
+
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ControllerAdvice;

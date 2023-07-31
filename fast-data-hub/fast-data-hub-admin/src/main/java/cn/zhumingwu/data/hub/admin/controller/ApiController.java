@@ -4,7 +4,7 @@ package cn.zhumingwu.data.hub.admin.controller;
 import cn.zhumingwu.base.model.Result;
 import cn.zhumingwu.data.hub.core.store.EventMemoryTable;
 import cn.zhumingwu.data.hub.core.store.EventMessage;
-import lombok.var;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;

@@ -4,7 +4,7 @@ import com.google.iot.cbor.CborConversionException;
 import com.google.iot.cbor.CborMap;
 import com.google.iot.cbor.CborParseException;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 
 import java.util.HashMap;
 import java.util.Map;

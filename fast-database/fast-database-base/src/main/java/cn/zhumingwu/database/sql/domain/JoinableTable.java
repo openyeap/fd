@@ -6,7 +6,7 @@ import cn.zhumingwu.database.sql.schema.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
-import lombok.var;
+
 import cn.zhumingwu.database.sql.utils.BuilderUtils;
 import cn.zhumingwu.database.sql.utils.Indentation;
 

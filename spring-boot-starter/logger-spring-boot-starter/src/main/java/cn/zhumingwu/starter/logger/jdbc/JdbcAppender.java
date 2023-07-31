@@ -2,7 +2,7 @@ package cn.zhumingwu.starter.logger.jdbc;
 
 import ch.qos.logback.classic.spi.CallerData;
 import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.db.DBAppenderBase;
+import ch.qos.logback.core.AsyncAppenderBase;
 
 import java.lang.reflect.Method;
 import java.sql.Connection;
@@ -10,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-public class JdbcAppender extends DBAppenderBase<ILoggingEvent> {
+public class JdbcAppender extends AsyncAppenderBase<ILoggingEvent> {
 
     private String insertSQL;
     private static final Method GET_GENERATED_KEYS_METHOD;
@@ -68,16 +68,7 @@ public class JdbcAppender extends DBAppenderBase<ILoggingEvent> {
         stmt.setString(CALLER_LINE_INDEX, Integer.toString(caller.getLineNumber()));
     }
 
-    @Override
-    protected void subAppend(ILoggingEvent event, Connection connection, PreparedStatement insertStatement) throws Throwable {
-        bindLoggingEventWithInsertStatement(insertStatement, event);
-        // This is expensive... should we do it every time?
-        bindCallerDataWithPreparedStatement(insertStatement, event.getCallerData());
-        int updateCount = insertStatement.executeUpdate();
-        if (updateCount != 1) {
-            addWarn("Failed to insert loggingEvent");
-        }
-    }
+
 
     private StackTraceElement extractFirstCaller(StackTraceElement[] callerDataArray) {
         StackTraceElement caller = EMPTY_CALLER_DATA;
@@ -90,15 +81,6 @@ public class JdbcAppender extends DBAppenderBase<ILoggingEvent> {
         return callerDataArray != null && callerDataArray.length > 0 && callerDataArray[0] != null;
     }
 
-    @Override
-    protected Method getGeneratedKeysMethod() {
-        return GET_GENERATED_KEYS_METHOD;
-    }
-
-    @Override
-    protected String getInsertSQL() {
-        return insertSQL;
-    }
 
     protected void secondarySubAppend(ILoggingEvent event, Connection connection, long eventId) throws Throwable {
     }

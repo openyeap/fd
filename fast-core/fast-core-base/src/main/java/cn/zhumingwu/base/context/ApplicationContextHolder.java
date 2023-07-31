@@ -2,7 +2,7 @@ package cn.zhumingwu.base.context;
 
 import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.base.event.RemoteEventPublisher;
 import cn.zhumingwu.base.event.RemotingEvent;
 import cn.zhumingwu.base.lock.LockManager;

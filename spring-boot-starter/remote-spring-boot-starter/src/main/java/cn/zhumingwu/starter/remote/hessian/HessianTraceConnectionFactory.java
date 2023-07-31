@@ -3,7 +3,7 @@ package cn.zhumingwu.starter.remote.hessian;
 import cn.zhumingwu.web.utils.TraceUtils;
 import com.caucho.hessian.client.HessianConnection;
 import com.caucho.hessian.client.HessianURLConnectionFactory;
-import lombok.var;
+
 
 import java.io.IOException;
 import java.net.URL;

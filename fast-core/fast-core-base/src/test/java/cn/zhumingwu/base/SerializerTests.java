@@ -4,7 +4,7 @@ import com.caucho.hessian.io.Hessian2Output;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Output;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.base.config.ProjectAutoConfiguration;
 import cn.zhumingwu.base.event.RefreshedEvent;
 import cn.zhumingwu.base.event.RemotingEvent;

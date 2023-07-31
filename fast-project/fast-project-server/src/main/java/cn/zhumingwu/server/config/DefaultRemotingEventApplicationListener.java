@@ -2,7 +2,7 @@ package cn.zhumingwu.server.config;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.base.event.RemotingEvent;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -16,7 +16,7 @@ import org.springframework.util.ClassUtils;
 public class DefaultRemotingEventApplicationListener implements ApplicationListener<RemotingEvent> {
 
 
-    @SneakyThrows
+
     @Override
     public void onApplicationEvent(RemotingEvent event) {
         log.info(event.toString());

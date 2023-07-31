@@ -3,7 +3,7 @@ package cn.zhumingwu.database.sql.conditions;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.var;
+
 import cn.zhumingwu.database.sql.domain.BuildingContext;
 import cn.zhumingwu.database.sql.utils.Indentation;
 

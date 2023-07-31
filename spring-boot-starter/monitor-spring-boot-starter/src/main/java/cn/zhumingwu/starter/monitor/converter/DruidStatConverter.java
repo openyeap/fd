@@ -3,7 +3,7 @@ package cn.zhumingwu.starter.monitor.converter;
 import com.alibaba.druid.pool.DruidDataSourceStatValue;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 
 import java.util.ArrayList;
 import java.util.Map;

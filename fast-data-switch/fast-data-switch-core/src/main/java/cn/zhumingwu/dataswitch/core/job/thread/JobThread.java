@@ -9,7 +9,7 @@ import cn.zhumingwu.dataswitch.core.job.handler.IJobHandler;
 import lombok.extern.slf4j.Slf4j;
 import cn.zhumingwu.dataswitch.core.job.model.CallbackParam;
 import cn.zhumingwu.dataswitch.core.job.model.TriggerParam;
-import lombok.var;
+
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

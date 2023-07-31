@@ -1,7 +1,7 @@
 package cn.zhumingwu.database.fql;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.database.properties.JdbcApiProperties;
 import cn.zhumingwu.database.service.JdbcApiService;
 import org.junit.Test;

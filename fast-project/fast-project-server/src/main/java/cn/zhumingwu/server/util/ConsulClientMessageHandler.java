@@ -8,7 +8,7 @@
 //import com.ecwid.consul.v1.event.model.EventParams;
 //import com.ecwid.consul.v1.kv.model.GetValue;
 //import lombok.extern.slf4j.Slf4j;
-//import lombok.var;
+//
 //import org.springframework.context.annotation.Configuration;
 //import org.springframework.integration.handler.AbstractMessageHandler;
 //import org.springframework.messaging.Message;

@@ -4,7 +4,7 @@ import cn.zhumingwu.base.util.NamingUtils;
 import cn.zhumingwu.database.config.DataSourceConfig;
 import cn.zhumingwu.database.mybatis.generic.annotation.MybatisGenericMapper;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.type.EnumOrdinalTypeHandler;
 import org.mybatis.spring.SqlSessionFactoryBean;

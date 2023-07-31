@@ -5,7 +5,7 @@ import cn.zhumingwu.base.model.Result;
 import cn.zhumingwu.dataswitch.core.job.handler.IJobHandler;
 import cn.zhumingwu.dataswitch.core.job.handler.annotation.JobHandler;
 import com.google.common.base.Strings;
-import lombok.var;
+
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;

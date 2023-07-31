@@ -4,7 +4,7 @@ import cn.zhumingwu.database.sql.domain.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.var;
+
 import cn.zhumingwu.database.sql.domain.*;
 import cn.zhumingwu.database.sql.utils.Indentation;
 

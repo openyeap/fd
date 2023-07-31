@@ -3,7 +3,7 @@ package cn.zhumingwu.starter.monitor.converter;
 import com.alibaba.druid.pool.DruidDataSource;
 import io.prometheus.client.Collector;
 import io.prometheus.client.GaugeMetricFamily;
-import lombok.var;
+
 
 import java.util.Arrays;
 import java.util.Collections;

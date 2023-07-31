@@ -14,8 +14,9 @@ import cn.zhumingwu.web.controller.BaseController;
 
 import com.google.common.base.Strings;
 import io.swagger.models.Swagger;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.starter.jdbc.model.ViewResult;
 import cn.zhumingwu.starter.jdbc.model.ViewUpdate;
 import org.antlr.v4.runtime.CharStream;
@@ -27,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
+
 import java.text.SimpleDateFormat;
 import java.util.LinkedHashMap;
 import java.util.Locale;

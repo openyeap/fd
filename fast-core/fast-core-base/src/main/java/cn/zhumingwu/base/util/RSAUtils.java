@@ -1,11 +1,12 @@
 package cn.zhumingwu.base.util;
-
-import lombok.SneakyThrows;
-
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
@@ -32,9 +33,13 @@ public class RSAUtils {
      *
      * @return RSAKeyPair
      */
-    @SneakyThrows
     public static RSAKeyPair genKeyPair() {
-        KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(KEY_ALGORITHM);
+        KeyPairGenerator keyPairGen = null;
+        try {
+            keyPairGen = KeyPairGenerator.getInstance(KEY_ALGORITHM);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
         keyPairGen.initialize(KEY_SIZE);
         KeyPair keyPair = keyPairGen.generateKeyPair();
         RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
@@ -52,15 +57,44 @@ public class RSAUtils {
      * @param privateKey    私钥(BASE64编码)
      * @return byte[]
      */
-    @SneakyThrows
+
+
     public static byte[] decryptByPrivateKey(byte[] encryptedData, String privateKey) {
         byte[] keyBytes = Base64.getDecoder().decode(privateKey);
         PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
-        Key privateK = keyFactory.generatePrivate(pkcs8KeySpec);
-        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
-        cipher.init(Cipher.DECRYPT_MODE, privateK);
-        byte[] decryptedData = cipher.doFinal(encryptedData);
+        KeyFactory keyFactory = null;
+        try {
+            keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        Key privateK = null;
+        try {
+            privateK = keyFactory.generatePrivate(pkcs8KeySpec);
+        } catch (InvalidKeySpecException e) {
+            throw new RuntimeException(e);
+        }
+        Cipher cipher = null;
+        try {
+            cipher = Cipher.getInstance(keyFactory.getAlgorithm());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchPaddingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            cipher.init(Cipher.DECRYPT_MODE, privateK);
+        } catch (InvalidKeyException e) {
+            throw new RuntimeException(e);
+        }
+        byte[] decryptedData = new byte[0];
+        try {
+            decryptedData = cipher.doFinal(encryptedData);
+        } catch (IllegalBlockSizeException e) {
+            throw new RuntimeException(e);
+        } catch (BadPaddingException e) {
+            throw new RuntimeException(e);
+        }
         return decryptedData;
     }
 
@@ -71,7 +105,7 @@ public class RSAUtils {
      * @param privateKey 解密私钥
      * @return String
      */
-    @SneakyThrows
+
     public static String decryptByPrivateKey(String text, String privateKey) {
         byte[] result = decryptByPrivateKey(Base64.getDecoder().decode(text), privateKey);
         return new String(result);
@@ -84,15 +118,43 @@ public class RSAUtils {
      * @param publicKey     公钥(BASE64编码)
      * @return byte[]
      */
-    @SneakyThrows
+
     public static byte[] decryptByPublicKey(byte[] encryptedData, String publicKey) {
         byte[] keyBytes = Base64.getDecoder().decode(publicKey);
         X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
-        Key publicK = keyFactory.generatePublic(x509KeySpec);
-        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
-        cipher.init(Cipher.DECRYPT_MODE, publicK);
-        byte[] decryptedData = cipher.doFinal(encryptedData);
+        KeyFactory keyFactory = null;
+        try {
+            keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        Key publicK = null;
+        try {
+            publicK = keyFactory.generatePublic(x509KeySpec);
+        } catch (InvalidKeySpecException e) {
+            throw new RuntimeException(e);
+        }
+        Cipher cipher = null;
+        try {
+            cipher = Cipher.getInstance(keyFactory.getAlgorithm());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchPaddingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            cipher.init(Cipher.DECRYPT_MODE, publicK);
+        } catch (InvalidKeyException e) {
+            throw new RuntimeException(e);
+        }
+        byte[] decryptedData = new byte[0];
+        try {
+            decryptedData = cipher.doFinal(encryptedData);
+        } catch (IllegalBlockSizeException e) {
+            throw new RuntimeException(e);
+        } catch (BadPaddingException e) {
+            throw new RuntimeException(e);
+        }
         return decryptedData;
     }
 
@@ -103,7 +165,7 @@ public class RSAUtils {
      * @param publicKey 解密公钥
      * @return String
      */
-    @SneakyThrows
+
     public static String decryptByPublicKey(String text, String publicKey) {
         byte[] result = decryptByPrivateKey(Base64.getDecoder().decode(text), publicKey);
         return new String(result);
@@ -116,16 +178,44 @@ public class RSAUtils {
      * @param publicKey 公钥(BASE64编码)
      * @return byte[]
      */
-    @SneakyThrows
+
     public static byte[] encryptByPublicKey(byte[] data, String publicKey) {
         byte[] keyBytes = Base64.getDecoder().decode(publicKey);
         X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
-        Key publicK = keyFactory.generatePublic(x509KeySpec);
+        KeyFactory keyFactory = null;
+        try {
+            keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        Key publicK = null;
+        try {
+            publicK = keyFactory.generatePublic(x509KeySpec);
+        } catch (InvalidKeySpecException e) {
+            throw new RuntimeException(e);
+        }
         // 对数据加密
-        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
-        cipher.init(Cipher.ENCRYPT_MODE, publicK);
-        byte[] encryptedData = cipher.doFinal(data);
+        Cipher cipher = null;
+        try {
+            cipher = Cipher.getInstance(keyFactory.getAlgorithm());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchPaddingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            cipher.init(Cipher.ENCRYPT_MODE, publicK);
+        } catch (InvalidKeyException e) {
+            throw new RuntimeException(e);
+        }
+        byte[] encryptedData = new byte[0];
+        try {
+            encryptedData = cipher.doFinal(data);
+        } catch (IllegalBlockSizeException e) {
+            throw new RuntimeException(e);
+        } catch (BadPaddingException e) {
+            throw new RuntimeException(e);
+        }
         return encryptedData;
     }
 
@@ -136,7 +226,7 @@ public class RSAUtils {
      * @param publicKey 加密公钥
      * @return String
      */
-    @SneakyThrows
+
     public static String encryptByPublicKey(String text, String publicKey) {
         byte[] result = encryptByPublicKey(Base64.getDecoder().decode(text), publicKey);
         return new String(result);
@@ -149,16 +239,45 @@ public class RSAUtils {
      * @param privateKey 私钥(BASE64编码)
      * @return byte[]
      */
-    @SneakyThrows
+
+
     public static byte[] encryptByPrivateKey(byte[] data, String privateKey) {
         byte[] keyBytes = Base64.getDecoder().decode(privateKey);
         PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
-        Key privateK = keyFactory.generatePrivate(pkcs8KeySpec);
-        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
-        cipher.init(Cipher.ENCRYPT_MODE, privateK);
+        KeyFactory keyFactory = null;
+        try {
+            keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        Key privateK = null;
+        try {
+            privateK = keyFactory.generatePrivate(pkcs8KeySpec);
+        } catch (InvalidKeySpecException e) {
+            throw new RuntimeException(e);
+        }
+        Cipher cipher = null;
+        try {
+            cipher = Cipher.getInstance(keyFactory.getAlgorithm());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchPaddingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            cipher.init(Cipher.ENCRYPT_MODE, privateK);
+        } catch (InvalidKeyException e) {
+            throw new RuntimeException(e);
+        }
 
-        byte[] encryptedData = cipher.doFinal(data);
+        byte[] encryptedData = new byte[0];
+        try {
+            encryptedData = cipher.doFinal(data);
+        } catch (IllegalBlockSizeException e) {
+            throw new RuntimeException(e);
+        } catch (BadPaddingException e) {
+            throw new RuntimeException(e);
+        }
 
         return encryptedData;
     }
@@ -170,7 +289,7 @@ public class RSAUtils {
      * @param privateKey 加密私钥
      * @return String
      */
-    @SneakyThrows
+
     public static String encryptByPrivateKey(String text, String privateKey) {
         byte[] result = encryptByPrivateKey(Base64.getDecoder().decode(text), privateKey);
         return new String(result);
@@ -183,17 +302,44 @@ public class RSAUtils {
      * @param privateKey 私钥(BASE64编码)
      * @return String
      */
-    @SneakyThrows
+
     public static String sign(byte[] data, String privateKey) {
 
         byte[] keyBytes = Base64.getDecoder().decode(privateKey);
         PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
-        PrivateKey privateK = keyFactory.generatePrivate(pkcs8EncodedKeySpec);
-        Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
-        signature.initSign(privateK);
-        signature.update(data);
-        return Base64.getEncoder().encodeToString(signature.sign());
+        KeyFactory keyFactory = null;
+        try {
+            keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        PrivateKey privateK = null;
+        try {
+            privateK = keyFactory.generatePrivate(pkcs8EncodedKeySpec);
+        } catch (InvalidKeySpecException e) {
+            throw new RuntimeException(e);
+        }
+        Signature signature = null;
+        try {
+            signature = Signature.getInstance(SIGNATURE_ALGORITHM);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            signature.initSign(privateK);
+        } catch (InvalidKeyException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            signature.update(data);
+        } catch (SignatureException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            return Base64.getEncoder().encodeToString(signature.sign());
+        } catch (SignatureException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -215,16 +361,43 @@ public class RSAUtils {
      * @param sign            数字签名
      * @return boolean
      */
-    @SneakyThrows
+
     public static boolean verify(byte[] data, String publicKeyString, String sign) {
         byte[] keyBytes = Base64.getDecoder().decode(publicKeyString);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
-        PublicKey publicKey = keyFactory.generatePublic(keySpec);
-        Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
-        signature.initVerify(publicKey);
-        signature.update(data);
-        return signature.verify(Base64.getDecoder().decode(sign));
+        KeyFactory keyFactory = null;
+        try {
+            keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        PublicKey publicKey = null;
+        try {
+            publicKey = keyFactory.generatePublic(keySpec);
+        } catch (InvalidKeySpecException e) {
+            throw new RuntimeException(e);
+        }
+        Signature signature = null;
+        try {
+            signature = Signature.getInstance(SIGNATURE_ALGORITHM);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            signature.initVerify(publicKey);
+        } catch (InvalidKeyException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            signature.update(data);
+        } catch (SignatureException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            return signature.verify(Base64.getDecoder().decode(sign));
+        } catch (SignatureException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -235,7 +408,7 @@ public class RSAUtils {
      * @param sign      数字签名
      * @return boolean
      */
-    @SneakyThrows
+
     public static boolean verify(String data, String publicKey, String sign) {
         return verify(Base64.getDecoder().decode(data), publicKey, sign);
     }

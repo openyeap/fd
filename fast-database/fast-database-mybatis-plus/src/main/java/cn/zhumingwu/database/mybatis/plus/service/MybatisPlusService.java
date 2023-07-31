@@ -1,19 +1,17 @@
 package cn.zhumingwu.database.mybatis.plus.service;
 
-import lombok.var;
 import cn.zhumingwu.database.entity.BaseEntity;
 import cn.zhumingwu.database.entity.Status;
 import cn.zhumingwu.database.mybatis.plus.mapper.reader.ReadMapper;
 import cn.zhumingwu.database.mybatis.plus.mapper.writer.WriteMapper;
 import cn.zhumingwu.database.service.DataAccessService;
 import cn.zhumingwu.database.sql.conditions.Condition;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;

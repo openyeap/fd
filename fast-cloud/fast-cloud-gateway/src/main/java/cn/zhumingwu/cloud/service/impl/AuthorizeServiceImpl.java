@@ -4,7 +4,7 @@ import cn.zhumingwu.cloud.service.AuthorizeService;
 import com.netflix.appinfo.InstanceInfo;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.event.InstanceRegisteredEvent;

@@ -1,6 +1,6 @@
 package cn.zhumingwu.database.sql.testsupport;
 
-import lombok.var;
+
 import cn.zhumingwu.database.sql.columns.Column;
 import cn.zhumingwu.database.sql.columns.ColumnBuilder;
 import cn.zhumingwu.database.sql.domain.BuildingContext;

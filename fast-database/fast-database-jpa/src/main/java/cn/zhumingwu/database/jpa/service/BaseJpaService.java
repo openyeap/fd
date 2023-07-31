@@ -7,7 +7,7 @@ import cn.zhumingwu.database.jpa.repository.writer.WriteRepository;
 import cn.zhumingwu.database.service.DataAccessService;
 import cn.zhumingwu.database.sql.conditions.Condition;
 import com.google.common.collect.Lists;
-import lombok.var;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

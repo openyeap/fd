@@ -1,6 +1,6 @@
 package cn.zhumingwu.database.utils;
 
-import lombok.var;
+
 import cn.zhumingwu.database.model.EntityInfo;
 import cn.zhumingwu.database.model.FieldInfo;
 import org.springframework.util.ReflectionUtils;

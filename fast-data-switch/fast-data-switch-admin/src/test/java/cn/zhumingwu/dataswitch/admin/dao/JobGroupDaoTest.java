@@ -1,6 +1,6 @@
 package cn.zhumingwu.dataswitch.admin.dao;
 
-import lombok.var;
+
 import cn.zhumingwu.dataswitch.admin.service.impl.JobService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -78,7 +78,6 @@ public class HomeController {
 
 
     @RequestMapping(value = "/file", method = RequestMethod.POST)
-    @SneakyThrows
     public void upload(
             @RequestPart("file") FilePart filePart,
             @RequestPart("bucketName") String bucketName,

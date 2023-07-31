@@ -8,7 +8,7 @@ import cn.zhumingwu.database.sql.domain.Plain;
 import cn.zhumingwu.database.sql.functions.Function;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.var;
+
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

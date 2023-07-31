@@ -5,7 +5,7 @@ import com.fasterxml.jackson.dataformat.javaprop.JavaPropsMapper;
 import com.googlecode.aviator.Expression;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.dataswitch.core.container.Plugin;
 import cn.zhumingwu.dataswitch.core.model.Column;
 import cn.zhumingwu.dataswitch.core.model.Record;

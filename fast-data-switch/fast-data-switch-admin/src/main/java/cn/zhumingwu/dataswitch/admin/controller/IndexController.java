@@ -1,6 +1,6 @@
 package cn.zhumingwu.dataswitch.admin.controller;
 
-import lombok.var;
+
 import cn.zhumingwu.base.model.Result;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Controller;

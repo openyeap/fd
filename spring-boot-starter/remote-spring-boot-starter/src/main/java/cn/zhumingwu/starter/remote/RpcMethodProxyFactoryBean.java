@@ -5,7 +5,7 @@ import cn.zhumingwu.starter.remote.hessian.HessianTraceConnectionFactory;
 import com.caucho.hessian.client.HessianProxyFactory;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.base.event.ServiceDiscoveredEvent;
 import cn.zhumingwu.base.service.InstanceInfo;
 import org.springframework.beans.factory.FactoryBean;

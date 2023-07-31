@@ -2,7 +2,7 @@ package cn.zhumingwu.client.controller;
 
 import cn.zhumingwu.client.service.SayService;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.api.service.HiService;
 import cn.zhumingwu.base.context.ApplicationContextHolder;
 import cn.zhumingwu.base.event.RefreshedEvent;

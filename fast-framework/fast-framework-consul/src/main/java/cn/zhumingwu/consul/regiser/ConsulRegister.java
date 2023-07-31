@@ -1,7 +1,7 @@
 package cn.zhumingwu.consul.regiser;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.base.context.ApplicationContextHolder;
 import org.springframework.context.annotation.Role;
 import org.springframework.core.annotation.AnnotationUtils;

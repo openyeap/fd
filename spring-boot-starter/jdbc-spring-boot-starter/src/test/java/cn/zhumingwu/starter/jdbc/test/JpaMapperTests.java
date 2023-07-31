@@ -2,7 +2,7 @@ package cn.zhumingwu.starter.jdbc.test;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.starter.jdbc.mappers.TestMapper;
 import cn.zhumingwu.starter.jdbc.sql.SingleSql;
 import org.junit.Test;

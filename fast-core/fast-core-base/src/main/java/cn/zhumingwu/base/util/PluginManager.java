@@ -3,7 +3,7 @@ package cn.zhumingwu.base.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +45,7 @@ public class PluginManager {
         Class<?> cls = this.loadPluginClass(className);
         if (required.isAssignableFrom(cls)) {
             try {
-                return (T) cls.newInstance();
+                return (T) cls.getDeclaredConstructor().newInstance();
             } catch (Exception e) {
                 throw new IllegalArgumentException("can not newInstance class:" + className, e);
             }

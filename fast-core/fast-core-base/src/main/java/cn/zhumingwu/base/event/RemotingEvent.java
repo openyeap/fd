@@ -3,7 +3,7 @@ package cn.zhumingwu.base.event;
 import cn.zhumingwu.base.serializer.JsonSerializer;
 import cn.zhumingwu.base.serializer.Serializer;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.springframework.context.ApplicationEvent;
 
 @Slf4j

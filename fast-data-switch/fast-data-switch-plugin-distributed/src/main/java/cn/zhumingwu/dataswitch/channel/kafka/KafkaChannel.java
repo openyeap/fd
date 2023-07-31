@@ -2,7 +2,7 @@ package cn.zhumingwu.dataswitch.channel.kafka;
 
 import cn.zhumingwu.dataswitch.channel.http.HttpClient;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.dataswitch.core.model.Record;
 import cn.zhumingwu.dataswitch.core.pipeline.Channel;
 import okhttp3.MediaType;

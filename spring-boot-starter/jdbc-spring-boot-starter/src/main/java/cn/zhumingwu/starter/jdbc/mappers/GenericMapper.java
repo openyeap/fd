@@ -1,10 +1,12 @@
 package cn.zhumingwu.starter.jdbc.mappers;
 
 import lombok.SneakyThrows;
-import lombok.var;
+
 import org.springframework.jdbc.core.RowMapper;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class GenericMapper<T> implements RowMapper<T> {
     private Class<T> clazz;
@@ -17,14 +19,34 @@ public class GenericMapper<T> implements RowMapper<T> {
     }
 
 
-    @SneakyThrows
+
     @Override
     public T mapRow(ResultSet rs, int rowNum) {
-        T o = clazz.newInstance();
+        T o = null;
+        try {
+            o = clazz.getDeclaredConstructor( ).newInstance();
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
         for (var f : clazz.getFields()) {
             var name = f.getName();
-            var value = rs.getObject(name);
-            f.set(o, value);
+            Object value = null;
+            try {
+                value = rs.getObject(name);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            try {
+                f.set(o, value);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
         }
         return o;
     }

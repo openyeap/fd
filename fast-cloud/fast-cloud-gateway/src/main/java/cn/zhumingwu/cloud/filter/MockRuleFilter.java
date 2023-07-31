@@ -1,7 +1,7 @@
 package cn.zhumingwu.cloud.filter;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.cloud.constant.Constant;
 import cn.zhumingwu.cloud.service.IMockRuleService;
 import cn.zhumingwu.cloud.service.impl.MockRuleServiceImpl;

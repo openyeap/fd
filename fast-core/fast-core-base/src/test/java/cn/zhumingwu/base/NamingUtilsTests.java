@@ -1,7 +1,7 @@
 package cn.zhumingwu.base;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.base.config.ProjectAutoConfiguration;
 import cn.zhumingwu.base.util.NamingUtils;
 import cn.zhumingwu.base.util.YamlUtils;

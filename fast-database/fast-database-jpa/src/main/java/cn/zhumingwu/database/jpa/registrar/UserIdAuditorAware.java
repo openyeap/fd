@@ -1,12 +1,12 @@
 package cn.zhumingwu.database.jpa.registrar;
 
 import com.google.common.base.Strings;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.AuditorAware;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @Slf4j

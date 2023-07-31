@@ -3,7 +3,7 @@ package cn.zhumingwu.redis.thread;
 import cn.zhumingwu.redis.properties.RedisConfigProperties;
 import cn.zhumingwu.redis.register.NewService;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.base.context.ApplicationContextHolder;
 import cn.zhumingwu.base.event.RefreshedEvent;
 import cn.zhumingwu.base.event.RemotingEvent;

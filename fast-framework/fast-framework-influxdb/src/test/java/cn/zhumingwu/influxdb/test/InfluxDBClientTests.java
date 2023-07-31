@@ -7,7 +7,7 @@ import cn.zhumingwu.influxdb.test.service.PersonService;
 import com.google.common.geometry.S2CellId;
 import com.google.common.geometry.S2LatLng;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

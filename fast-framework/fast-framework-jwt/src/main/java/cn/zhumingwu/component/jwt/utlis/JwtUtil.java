@@ -11,7 +11,7 @@ import cn.zhumingwu.web.utils.HttpServletUtil;
 import cn.zhumingwu.web.utils.ToolUtil;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 
-import javax.servlet.http.HttpServletRequest;
+
 import java.util.Calendar;
 import java.util.Date;
 

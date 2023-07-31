@@ -3,13 +3,12 @@ package cn.zhumingwu.starter.logger.config;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.db.DBAppender;
-import ch.qos.logback.core.db.DriverManagerConnectionSource;
 import ch.qos.logback.core.util.Duration;
 import cn.zhumingwu.starter.logger.interceptor.LogInterceptor;
+import cn.zhumingwu.starter.logger.jdbc.JdbcAppender;
 import cn.zhumingwu.starter.logger.properties.LoggingProperties;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.base.util.NamingUtils;
 import net.logstash.logback.appender.LogstashTcpSocketAppender;
 import net.logstash.logback.encoder.LogstashEncoder;
@@ -52,15 +51,8 @@ public class LoggingAutoConfiguration implements WebMvcConfigurer, InitializingB
             var datasource = this.properties.getDatasource();
             if (datasource != null && Strings.isNotEmpty(datasource.getUrl()) && logger.getAppender("DB") == null) {
                 NamingUtils.formatLog(log, "Logging Factory DB");
-                var connSource = new DriverManagerConnectionSource();
-                connSource.setDriverClass(datasource.getDriverClassName());
-                connSource.setUrl(datasource.getUrl());
-                connSource.setUser(datasource.getUsername());
-                connSource.setPassword(datasource.getPassword());
-                connSource.setContext(context);
-                connSource.start();
-                DBAppender dbAppender = new DBAppender();
-                dbAppender.setConnectionSource(connSource);
+
+                JdbcAppender dbAppender = new JdbcAppender();
                 dbAppender.setContext(context);
                 dbAppender.setName("DB");
                 dbAppender.start();

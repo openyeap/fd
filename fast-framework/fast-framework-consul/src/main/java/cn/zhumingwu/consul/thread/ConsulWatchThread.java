@@ -13,7 +13,7 @@ import com.ecwid.consul.v1.health.HealthServicesRequest;
 import com.ecwid.consul.v1.health.model.HealthService;
 import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.base.context.ApplicationContextHolder;
 import cn.zhumingwu.base.event.RefreshedEvent;
 import cn.zhumingwu.base.event.RemotingEvent;

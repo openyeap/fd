@@ -1,7 +1,7 @@
 package cn.zhumingwu.database.sql;
 
 import cn.zhumingwu.database.sql.functions.Function;
-import lombok.var;
+
 import cn.zhumingwu.database.sql.dialect.Dialects;
 import cn.zhumingwu.database.sql.queries.Queries;
 import cn.zhumingwu.database.sql.schema.Table;

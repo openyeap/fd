@@ -1,6 +1,6 @@
 package cn.zhumingwu.starter.jdbc.mappers;//package cn.zhumingwu.starter.jdbc.mappers;
 
-import lombok.var;
+
 import cn.zhumingwu.starter.jdbc.pojo.DefaultDyno;
 import org.springframework.util.ClassUtils;
 

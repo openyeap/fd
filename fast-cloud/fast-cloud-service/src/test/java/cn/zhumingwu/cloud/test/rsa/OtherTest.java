@@ -2,7 +2,7 @@ package cn.zhumingwu.cloud.test.rsa;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.context.properties.ConfigurationProperties;

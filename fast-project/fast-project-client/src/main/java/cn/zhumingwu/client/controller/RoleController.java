@@ -1,7 +1,7 @@
 package cn.zhumingwu.client.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
+
 import cn.zhumingwu.client.mybatis.entity.Role;
 import cn.zhumingwu.client.mybatis.plus.service.RoleService;
 import cn.zhumingwu.database.entity.Status;

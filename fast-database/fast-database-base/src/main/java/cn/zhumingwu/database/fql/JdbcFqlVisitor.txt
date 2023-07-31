@@ -1,6 +1,6 @@
 package cn.zhumingwu.database.fql;
 
-import lombok.var;
+
 import columns.sql.database.cn.zhumingwu.Column;
 import conditions.sql.database.cn.zhumingwu.Condition;
 import domain.sql.database.cn.zhumingwu.LikeType;

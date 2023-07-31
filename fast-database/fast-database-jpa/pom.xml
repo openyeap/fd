@@ -27,10 +27,6 @@
             <version>0.1.0</version>
         </dependency>
         <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>javax.persistence-api</artifactId>
-        </dependency>
-        <dependency>
             <groupId>cn.zhumingwu</groupId>
             <artifactId>fast-core-base</artifactId>
         </dependency>

@@ -1,6 +1,6 @@
 package cn.zhumingwu.database.repository;
 
-import lombok.var;
+
 import cn.zhumingwu.database.sql.columns.Column;
 import cn.zhumingwu.database.sql.schema.Table;
 
