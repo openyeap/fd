@@ -10,7 +10,7 @@ import cn.zhumingwu.dataswitch.core.job.model.TriggerParam;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
+
 
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;

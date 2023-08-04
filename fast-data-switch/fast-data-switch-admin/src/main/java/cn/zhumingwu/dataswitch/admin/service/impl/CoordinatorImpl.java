@@ -13,7 +13,7 @@ import cn.zhumingwu.dataswitch.admin.context.CoordinatorContext;
 
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 

@@ -9,6 +9,7 @@ import cn.zhumingwu.base.util.RSAUtils;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Calendar;
 
 /**
@@ -36,19 +37,25 @@ public class LicenseClientUtils {
     }
 
 
-    public static boolean generatePKI(String root) {
+    public static boolean generatePKI(String root) throws IOException {
         var kp = RSAUtils.genKeyPair();
         String privateKey = kp.getPrivateKey();
         String publicKey = kp.getPublicKey();
         String filePath = root + "/public.pem";
         File writeFile = new File(filePath);
         if (!writeFile.exists()) {
-            writeFile.createNewFile();
+            try {
+                writeFile.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         try (FileWriter fileWriter = new FileWriter(writeFile);
              BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
             bufferedWriter.write(publicKey);
             bufferedWriter.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         filePath = root + "/private.pem";

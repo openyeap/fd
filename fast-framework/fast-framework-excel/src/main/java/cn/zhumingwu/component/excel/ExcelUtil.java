@@ -2,7 +2,7 @@ package cn.zhumingwu.component.excel;
 
 import cn.zhumingwu.component.excel.annotation.Excel;
 import cn.zhumingwu.component.excel.enums.ExcelType;
-import cn.zhumingwu.web.utils.HttpServletUtil;
+import cn.zhumingwu.web.util.HttpServletUtil;
 import org.apache.logging.log4j.util.Strings;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.openxml4j.util.ZipSecureFile;

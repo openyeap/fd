@@ -2,11 +2,11 @@ package cn.zhumingwu.koffer;
 
 import cn.zhumingwu.koffer.key.XKey;
 
-import javax.crypto.Cipher;
-import javax.crypto.CipherInputStream;
-import javax.crypto.CipherOutputStream;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
+import jakarta.crypto.Cipher;
+import jakarta.crypto.CipherInputStream;
+import jakarta.crypto.CipherOutputStream;
+import jakarta.crypto.spec.IvParameterSpec;
+import jakarta.crypto.spec.SecretKeySpec;
 import java.io.*;
 
 /**

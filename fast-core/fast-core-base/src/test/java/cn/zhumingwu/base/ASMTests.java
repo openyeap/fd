@@ -10,8 +10,8 @@
 // import cn.zhumingwu.core.support.MyClassLoader;
 // import cn.zhumingwu.core.support.TestClass;
 // import cn.zhumingwu.core.util.NamingUtils;
-// import org.junit.Test;
-// import org.junit.runner.RunWith;
+// 
+// 
 // import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.boot.test.context.SpringBootTest;
 // import org.springframework.context.ApplicationContext;
@@ -22,7 +22,7 @@
 // import java.io.FileOutputStream;
 
 // @Slf4j
-// @RunWith(SpringRunner.class)
+// 
 // @SpringBootTest
 // @ContextConfiguration(classes = ProjectAutoConfiguration.class)
 // public class ASMTests {

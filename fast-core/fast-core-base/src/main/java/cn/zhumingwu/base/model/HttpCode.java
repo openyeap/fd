@@ -435,15 +435,21 @@ public enum HttpCode implements ResultCode {
      * @see <a href="https://tools.ietf.org/html/rfc6585#section-6">Additional HTTP Status Codes</a>
      */
     NETWORK_AUTHENTICATION_REQUIRED(511, "Network Authentication Required");
-    @Getter
-    private int code;
-    @Getter
-    private String message;
+
+    private final int code;
+
+    private final String message;
 
     HttpCode(int code, String description) {
         this.code = code;
         this.message = description;
     }
-
-
+    @Override
+    public int getCode() {
+        return code;
+    }
+    @Override
+    public String getMessage() {
+        return message;
+    }
 }

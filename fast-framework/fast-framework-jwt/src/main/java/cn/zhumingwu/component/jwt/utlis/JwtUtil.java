@@ -7,8 +7,8 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import cn.zhumingwu.component.jwt.enums.JwtResultEnums;
 import cn.zhumingwu.web.exception.ResultException;
-import cn.zhumingwu.web.utils.HttpServletUtil;
-import cn.zhumingwu.web.utils.ToolUtil;
+import cn.zhumingwu.web.util.HttpServletUtil;
+import cn.zhumingwu.base.util.ToolUtil;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 
 

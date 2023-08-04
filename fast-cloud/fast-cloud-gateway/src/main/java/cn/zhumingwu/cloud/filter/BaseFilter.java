@@ -2,6 +2,7 @@ package cn.zhumingwu.cloud.filter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -28,7 +29,7 @@ public abstract class BaseFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         this.fullPath = request.getPath().pathWithinApplication().value();
-        if (StringUtils.isEmpty(fullPath)) {
+        if (Strings.isNullOrEmpty(fullPath)) {
             return chain.filter(exchange);
         }
         if (!fullPath.endsWith("/")) {

@@ -3,6 +3,8 @@ package cn.zhumingwu.dataswitch.core.util;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import com.google.common.base.Strings;
+
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,7 +57,7 @@ public class StrUtil {
         while (matcher.find()) {
             String variable = matcher.group(2);
             String value = System.getProperty(variable);
-            if (StringUtils.isEmpty(value)) {
+            if (Strings.isNullOrEmpty(value)) {
                 value = matcher.group();
             }
             mapping.put(matcher.group(), value);

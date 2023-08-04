@@ -1,0 +1,28 @@
+
+server:
+  port: 8081
+spring:
+  application:
+    name: client
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: ${database.master.driver}
+    url: ${database.master.url}
+    username: ${database.master.username}
+    password: ${database.master.password}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "info,health,prometheus,druid"
+  endpoint:
+    health:
+      show-details: always
+logging:
+  path: /var/log/${spring.application.name}-${server.port}
+  level:
+    web: INFO
+    cn.zhumingwu: DEBUG
+  pattern:
+    console: '[%highlight(%-4level)] %msg%n'

@@ -1,8 +1,7 @@
 package cn.zhumingwu.cloud.service.impl;
 
+import cn.zhumingwu.cloud.model.ServiceInfo;
 import cn.zhumingwu.cloud.service.AuthorizeService;
-import com.netflix.appinfo.InstanceInfo;
-
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @Slf4j
-public class AuthorizeServiceImpl implements ApplicationListener<InstanceRegisteredEvent<InstanceInfo>>, AuthorizeService {
+public class AuthorizeServiceImpl implements ApplicationListener<InstanceRegisteredEvent<ServiceInfo>>, AuthorizeService {
 
     private static ConcurrentHashMap<String, String> authList = new ConcurrentHashMap<String, String>();
     @Autowired
@@ -55,12 +54,7 @@ public class AuthorizeServiceImpl implements ApplicationListener<InstanceRegiste
     }
 
     @Override
-    public void onApplicationEvent(InstanceRegisteredEvent<InstanceInfo> event) {
-        var config = event.getConfig();
-        var map = (Map<String, String>) config.getMetadata();
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            authList.put(entry.getKey(), entry.getValue());
-        }
-
+    public void onApplicationEvent(InstanceRegisteredEvent<ServiceInfo> event) {
+//todo
     }
 }

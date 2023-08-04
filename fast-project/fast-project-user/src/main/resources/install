@@ -1,0 +1,39 @@
+
+#! /bin/sh
+# chkconfig: 2345 10 90
+# description: service for app
+
+
+# 配置app path
+APPPATH=./bin/linux/gateway
+
+# 当前脚本路径
+SCRIPT="$0"
+# 当前脚本名称
+APPNAME=`basename "$SCRIPT"`
+
+# 当前工作目录
+HOME=`dirname "$SCRIPT"`
+
+install()
+{
+  chmod +x "$APPPATH"
+  "$APPPATH" install
+}
+uninstall()
+{
+  echo 'uninstall service'
+  "$APPPATH" uninstall
+}
+case "$1" in
+install)
+  install
+  ;;
+uninstall)
+  uninstall
+  ;;
+*)  
+  printf 'Usage: %s {install|uninstall}\n' "$APPNAME"
+  exit 1  
+  ;;  
+esac

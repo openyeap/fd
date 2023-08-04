@@ -1,6 +1,6 @@
 package cn.zhumingwu.starter.logger.interceptor;
 
-import cn.zhumingwu.web.utils.TraceUtils;
+import cn.zhumingwu.web.util.TraceUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;

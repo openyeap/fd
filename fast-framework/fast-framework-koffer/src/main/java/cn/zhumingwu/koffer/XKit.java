@@ -7,8 +7,8 @@ import cn.zhumingwu.koffer.key.XKey;
 import cn.zhumingwu.koffer.key.XSecureRandom;
 import cn.zhumingwu.koffer.key.XSymmetricSecureKey;
 
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
+import jakarta.crypto.KeyGenerator;
+import jakarta.crypto.SecretKey;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

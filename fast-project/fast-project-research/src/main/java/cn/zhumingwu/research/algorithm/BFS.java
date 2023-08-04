@@ -42,7 +42,7 @@ public class BFS {
     String do_computer() {
         int level = 0;
         String person = this.queue.poll();
-        while (!StringUtils.isEmpty(person)) {
+        while (!Strings.isNullOrEmpty(person)) {
             level++;
             if (this.is_satisfied(person)) {
                 return String.format("get satisfied person:%s,at level:%d", person, level);

@@ -1,10 +1,9 @@
 package cn.zhumingwu.base.util;
 
-import javax.imageio.stream.FileImageInputStream;
-import javax.imageio.stream.FileImageOutputStream;
 
 import lombok.extern.slf4j.Slf4j;
 
+import javax.imageio.stream.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;

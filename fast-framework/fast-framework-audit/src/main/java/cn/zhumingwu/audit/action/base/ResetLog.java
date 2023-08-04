@@ -4,8 +4,8 @@ import cn.zhumingwu.audit.annotation.EntityParam;
 import cn.zhumingwu.base.model.Result;
 import lombok.Data;
 import cn.zhumingwu.web.enums.BusinessResult;
-import cn.zhumingwu.web.utils.EntityBeanUtil;
-import cn.zhumingwu.web.utils.ShiroUtil;
+import cn.zhumingwu.base.util.EntityBeanUtil;
+import cn.zhumingwu.web.util.ShiroUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 

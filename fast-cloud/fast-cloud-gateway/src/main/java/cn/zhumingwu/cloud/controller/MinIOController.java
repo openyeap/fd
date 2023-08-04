@@ -1,5 +1,6 @@
 package cn.zhumingwu.cloud.controller;
 
+import com.google.common.base.Strings;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import cn.zhumingwu.cloud.constant.Constant;
@@ -12,13 +13,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.multipart.FilePart;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +33,7 @@ public class MinIOController {
 
     @PostMapping("/bucket/{bucketName}")
     public Mono<ResponseEntity<Object>> makeBucket(@PathVariable String bucketName) {
-        if (StringUtils.isEmpty(bucketName)) {
+        if (Strings.isNullOrEmpty(bucketName)) {
             return Mono.just((new ResponseEntity<Object>(HttpStatus.BAD_REQUEST)));
         }
         minIOService.makeBucket(bucketName);
@@ -41,7 +42,7 @@ public class MinIOController {
 
     @DeleteMapping("/bucket/{bucketName}")
     public Mono<ResponseEntity<Object>> removeBucket(@PathVariable String bucketName) {
-        if (StringUtils.isEmpty(bucketName)) {
+        if (Strings.isNullOrEmpty(bucketName)) {
             return Mono.just((new ResponseEntity<Object>(HttpStatus.BAD_REQUEST)));
         }
         minIOService.removeBucket(bucketName);
@@ -51,11 +52,11 @@ public class MinIOController {
     @PostMapping(value = "/file/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Mono<ResponseEntity<Object>> upload(@RequestPart("file") FilePart filePart, @RequestPart String bucketName, @RequestPart String path) {
         Map<String, String> map = new HashMap<>();
-        if (StringUtils.isEmpty(bucketName)) {
+        if (Strings.isNullOrEmpty(bucketName)) {
             bucketName = Constant.Default_Bucket_Name;
         }
         String bkName = bucketName;
-        if (StringUtils.isEmpty(path)) {
+        if (Strings.isNullOrEmpty(path)) {
             path = "";
         } else {
             if (!path.endsWith("/")) {
@@ -63,9 +64,14 @@ public class MinIOController {
             }
         }
         String objectName = path + filePart.filename();
-        String fileId = Constant.MinIO_Prefix
-                + Constant.MinIO_Split + bucketName
-                + Constant.MinIO_Split + Base64.getUrlEncoder().encodeToString(objectName.getBytes(Constant.UTF8));
+        String fileId = null;
+        try {
+            fileId = Constant.MinIO_Prefix
+                    + Constant.MinIO_Split + bucketName
+                    + Constant.MinIO_Split + Base64.getUrlEncoder().encodeToString(objectName.getBytes(Constant.UTF8));
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
         map.put("fileId", fileId);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         DataBufferUtils.write(filePart.content(), outputStream)
@@ -87,7 +93,7 @@ public class MinIOController {
     public Mono<ResponseEntity<Object>> download(String fileId) {
 
         try {
-            if (StringUtils.isEmpty(fileId)) {
+            if (Strings.isNullOrEmpty(fileId)) {
                 return Mono.just((new ResponseEntity<Object>(HttpStatus.BAD_REQUEST)));
             }
             String[] split = fileId.split("\\" + Constant.MinIO_Split);

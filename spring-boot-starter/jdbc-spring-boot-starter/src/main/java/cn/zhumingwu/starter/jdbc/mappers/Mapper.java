@@ -62,12 +62,12 @@
 //
 //    private static synchronized TableInfo initTableInfo(Class<?> clazz) {
 //        var tableName = clazz.getName();
-//        var table = clazz.getAnnotation(javax.annotation.sql.DataSourceDefinition.class);
+//        var table = clazz.getAnnotation(jakarta.annotation.sql.DataSourceDefinition.class);
 //        if (table != null)
 //            tableName = table.name();
 //        for (var f : clazz.getFields()) {
 //            var fieldName = f.getName();
-//            var  field = f.getAnnotation(javax.annotation.sql.DataSourceDefinition.class);
+//            var  field = f.getAnnotation(jakarta.annotation.sql.DataSourceDefinition.class);
 //            if (field != null) {
 //                fieldName = field.name();
 //            }

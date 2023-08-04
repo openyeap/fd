@@ -3,7 +3,7 @@ package cn.zhumingwu.dataswitch.core;
 import lombok.extern.slf4j.Slf4j;
 
 import cn.zhumingwu.dataswitch.core.util.CRCUtil;
-import org.junit.Test;
+
 
 import java.util.*;
 

@@ -19,7 +19,7 @@ import cn.zhumingwu.data.hub.core.rdb.api.Configuration;
 import cn.zhumingwu.data.hub.core.serializer.Serializer;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
+
 
 import java.awt.*;
 import java.io.ByteArrayInputStream;

@@ -55,7 +55,7 @@ public class StrUtil {
         while (matcher.find()) {
             String variable = matcher.group(2);
             String value = System.getProperty(variable);
-            if (StringUtils.isEmpty(value)) {
+            if (Strings.isNullOrEmpty(value)) {
                 value = matcher.group();
             }
             mapping.put(matcher.group(), value);

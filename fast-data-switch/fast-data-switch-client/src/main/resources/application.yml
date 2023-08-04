@@ -60,7 +60,7 @@ spring:
   mail.properties.mail.smtp.auth: true
   mail.properties.mail.smtp.starttls.enable: true
   mail.properties.mail.smtp.starttls.required: true
-  mail.properties.mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
+  mail.properties.mail.smtp.socketFactory.class: jakarta.net.ssl.SSLSocketFactory
 
 hibernate.dialect: org.hibernate.dialect.SQLiteDialect
 

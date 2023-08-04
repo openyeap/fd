@@ -1,5 +1,6 @@
 package cn.zhumingwu.base.util;
 
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;

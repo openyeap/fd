@@ -1,0 +1,14 @@
+
+database:
+  master:
+    driver: org.postgresql.Driver
+    url: jdbc:postgresql://localhost/dev?
+    username: postgres
+    password: postgres
+logging:
+  path: /var/log/${spring.application.name}-${server.port}
+  level:
+    cn.zhumingwu: INFO
+  pattern:
+#    console: '[%highlight(%-4level)] %msg%n'
+    console: '[%highlight(%-4level)] [%20.20logger] %msg%n'

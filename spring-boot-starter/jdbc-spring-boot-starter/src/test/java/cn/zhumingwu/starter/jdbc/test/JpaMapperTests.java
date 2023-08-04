@@ -5,8 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import cn.zhumingwu.starter.jdbc.mappers.TestMapper;
 import cn.zhumingwu.starter.jdbc.sql.SingleSql;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-@RunWith(SpringRunner.class)
+
 //@SpringBootTest
 public class JpaMapperTests {
 

@@ -8,8 +8,8 @@ import cn.zhumingwu.research.service.CsvFileRead;
 import cn.zhumingwu.research.service.Neo4jServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest(classes = ResearchApplication.class)
-@RunWith(SpringRunner.class)
+
 @Slf4j
 public class Neo4jTest {
     @Autowired

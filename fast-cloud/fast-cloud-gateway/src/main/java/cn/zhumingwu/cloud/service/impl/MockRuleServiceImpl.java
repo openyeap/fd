@@ -1,26 +1,22 @@
 package cn.zhumingwu.cloud.service.impl;
- 
+
 import cn.zhumingwu.cloud.constant.MockHandleTypeEnum;
 import cn.zhumingwu.cloud.model.MockRule;
 import cn.zhumingwu.cloud.model.MockRuleConsul;
 import cn.zhumingwu.cloud.service.IMockRuleService;
 import cn.zhumingwu.cloud.util.DateTimeUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Strings;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -39,7 +35,7 @@ public class MockRuleServiceImpl implements IMockRuleService {
 
     public List<MockRule> getMockRuleList(String requestPathKeyword) throws Exception {
 
-        if (StringUtils.isBlank(requestPathKeyword)) {
+        if (Strings.isNullOrEmpty(requestPathKeyword)) {
 
             return new ArrayList<MockRule>(mockRuleMap.values());
 
@@ -200,16 +196,16 @@ public class MockRuleServiceImpl implements IMockRuleService {
         String resultData = "";
 
         //获取总体数据
-        if (StringUtils.isNotBlank(rule.getResponseData())) {
+        if (!Strings.isNullOrEmpty(rule.getResponseData())) {
             resultData = rule.getResponseData();
         } else {
-            if (StringUtils.isBlank(rule.getMockUrl())) {
+            if (Strings.isNullOrEmpty(rule.getMockUrl())) {
                 return "";
             }
             resultData = restTemplate.getForObject(rule.getMockUrl(), String.class);
         }
 
-        if (StringUtils.isBlank(resultData)) {
+        if (Strings.isNullOrEmpty(resultData)) {
             return "";
         }
 
@@ -243,7 +239,7 @@ public class MockRuleServiceImpl implements IMockRuleService {
         try {
             if (MockHandleTypeEnum.RANDOM.getCode() == rule.getHandleType()) {
                 //随机模式
-                result = new ObjectMapper().writeValueAsString(jsonArray.get(RandomUtils.nextInt(size)));
+                result = new ObjectMapper().writeValueAsString(jsonArray.get(new Random().nextInt(size)));
 
             } else if (MockHandleTypeEnum.ROLL.getCode() == rule.getHandleType()) {
                 //轮询模式

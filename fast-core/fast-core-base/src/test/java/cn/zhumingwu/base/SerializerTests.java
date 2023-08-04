@@ -12,8 +12,9 @@ import cn.zhumingwu.base.serializer.HessianSerializer;
 import cn.zhumingwu.base.serializer.JavaSerializer;
 import cn.zhumingwu.base.serializer.JsonSerializer;
 import cn.zhumingwu.base.serializer.KryoSerializer;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -27,7 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-@RunWith(SpringRunner.class)
+
 @SpringBootTest
 @ContextConfiguration(classes = ProjectAutoConfiguration.class)
 public class SerializerTests {

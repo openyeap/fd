@@ -3,8 +3,7 @@ package cn.zhumingwu.cloud.test.rsa;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.io.IOException;
@@ -35,10 +34,6 @@ public class OtherTest {
      * 3、获取IP
      * String ip_ = inetUtils.findFirstNonLoopbackHostInfo().getIpAddress();
      */
-
-    @Before
-    public void setUp() throws Exception {
-    }
 
     @Test
     public void test() {

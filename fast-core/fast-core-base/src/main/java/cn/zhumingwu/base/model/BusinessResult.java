@@ -15,6 +15,8 @@ public enum BusinessResult implements ResultCode {
     SUCCESS(200, "成功"),
     ERROR(400, "错误"),
 
+    NONE(-1, "无"),
+
     /**
      * 账户问题
      */

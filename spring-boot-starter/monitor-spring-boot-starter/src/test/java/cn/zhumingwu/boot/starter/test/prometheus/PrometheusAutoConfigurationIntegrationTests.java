@@ -1,7 +1,7 @@
 package cn.zhumingwu.boot.starter.test.prometheus;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
+
 @SpringBootTest(
         classes = PrometheusAutoConfigurationIntegrationTests.TestConfig.class,
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,

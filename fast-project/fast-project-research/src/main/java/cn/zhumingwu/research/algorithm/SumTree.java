@@ -58,11 +58,11 @@ public class SumTree {
 
         String result2 = hasPathSum(root.right, sum);
         String result = "";
-        if (!StringUtils.isEmpty(result1) && result1.length() > 0) {
+        if (!Strings.isNullOrEmpty(result1) && result1.length() > 0) {
             result += root.val + "," + result1 + "；";
         }
 
-        if (!StringUtils.isEmpty(result2) && result2.length() > 0) {
+        if (!Strings.isNullOrEmpty(result2) && result2.length() > 0) {
             result += root.val + "," + result2 + "；";
         }
         return result;

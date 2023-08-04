@@ -11,7 +11,7 @@ import io.debezium.engine.DebeziumEngine;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.kafka.connect.data.*;
-import org.junit.Test;
+
 
 import java.io.IOException;
 import java.math.BigDecimal;

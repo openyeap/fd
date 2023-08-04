@@ -2,6 +2,7 @@ package cn.zhumingwu.cloud.jwt.impl;
 
 import cn.zhumingwu.cloud.jwt.IJwtToken;
 import cn.zhumingwu.cloud.jwt.JwtProperties;
+import com.google.common.base.Strings;
 import io.jsonwebtoken.*;
 import cn.zhumingwu.cloud.jwt.model.JwtResult;
 import cn.zhumingwu.cloud.jwt.model.JwtValidationResult;
@@ -54,7 +55,7 @@ public class JwtTokenImpl implements IJwtToken, InitializingBean {
     public JwtValidationResult validate(String token) {
         JwtValidationResult validationResult = new JwtValidationResult();
         try {
-            if (StringUtils.isEmpty(token)) {
+            if (Strings.isNullOrEmpty(token)) {
                 validationResult.setResultType(JwtValidationResultType.TOKEN_INVALID_SIGNATURE);
                 return validationResult;
             }

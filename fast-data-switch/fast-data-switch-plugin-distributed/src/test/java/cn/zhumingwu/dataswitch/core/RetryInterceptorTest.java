@@ -5,8 +5,8 @@ import cn.zhumingwu.dataswitch.channel.http.RetryInterceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.StandardEnvironment;
@@ -19,7 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-@RunWith(SpringRunner.class)
+
 @SpringBootTest
 @ContextConfiguration(classes = {String.class})
 @Slf4j

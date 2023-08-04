@@ -2,15 +2,15 @@ package cn.zhumingwu.dataswitch.admin.dao;
 
 import cn.zhumingwu.dataswitch.admin.entity.JobLog;
 import cn.zhumingwu.dataswitch.admin.repository.JobLogRepository;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.Date;
 
-@RunWith(SpringRunner.class)
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class JobLogDaoTest {
 

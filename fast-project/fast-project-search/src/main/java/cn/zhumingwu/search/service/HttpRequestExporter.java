@@ -3,7 +3,7 @@ package cn.zhumingwu.search.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.HttpRequestHandler;
 
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletException;
 
 
 import java.io.IOException;

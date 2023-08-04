@@ -24,7 +24,7 @@ import cn.zhumingwu.dataswitch.core.util.LongPacker;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Test;
+
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

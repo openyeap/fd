@@ -14,7 +14,7 @@ import cn.zhumingwu.database.utils.PlaceHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.sql.DataSource;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;

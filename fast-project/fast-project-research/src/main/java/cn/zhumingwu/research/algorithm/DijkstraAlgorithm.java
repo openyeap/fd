@@ -69,7 +69,7 @@ public class DijkstraAlgorithm {
         String pathString = this.path.get("t");
 
         String printString = "t";
-        while (!StringUtils.isEmpty(pathString)) {
+        while (!Strings.isNullOrEmpty(pathString)) {
             printString = pathString + " > " + printString;
             pathString = this.path.get(pathString);
         }

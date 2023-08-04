@@ -1,20 +1,14 @@
 package cn.zhumingwu.shiro;
 
-import cn.zhumingwu.shiro.module.User;
-import cn.zhumingwu.web.utils.ShiroUtil;
+import cn.zhumingwu.web.util.ShiroUtil;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.codec.CodecSupport;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.util.ByteSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 
-import javax.annotation.PostConstruct;
-import java.util.Set;
+import jakarta.annotation.PostConstruct;
 
 /**
  
@@ -47,7 +41,7 @@ public class AuthRealm extends AuthorizingRealm {
 //            role.getMenus().forEach(menu -> {
 //                String perms = menu.getPerms();
 //                if (menu.getStatus().equals(StatusEnum.OK.getCode())
-//                        && !StringUtils.isEmpty(perms) && !perms.contains("*")) {
+//                        && !Strings.isNullOrEmpty(perms) && !perms.contains("*")) {
 //                    info.addStringPermission(perms);
 //                }
 //            });

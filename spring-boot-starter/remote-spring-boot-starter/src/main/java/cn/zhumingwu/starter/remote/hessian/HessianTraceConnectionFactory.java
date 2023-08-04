@@ -1,6 +1,6 @@
 package cn.zhumingwu.starter.remote.hessian;
 
-import cn.zhumingwu.web.utils.TraceUtils;
+import cn.zhumingwu.web.util.TraceUtils;
 import com.caucho.hessian.client.HessianConnection;
 import com.caucho.hessian.client.HessianURLConnectionFactory;
 

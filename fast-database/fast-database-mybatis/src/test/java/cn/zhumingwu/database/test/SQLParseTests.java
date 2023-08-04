@@ -9,14 +9,14 @@ import cn.zhumingwu.database.sql.queries.Queries;
 import cn.zhumingwu.database.sql.schema.Table;
 import cn.zhumingwu.database.sql.utils.Indentation;
 import cn.zhumingwu.database.utils.PlaceHolder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @Slf4j
-@RunWith(SpringRunner.class)
+
 @SpringBootTest
 @ContextConfiguration(classes = PlaceHolder.class)
 public class SQLParseTests {

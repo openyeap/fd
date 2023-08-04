@@ -81,7 +81,7 @@ spring:
   mail.properties.mail.smtp.auth: true
   mail.properties.mail.smtp.starttls.enable: true
   mail.properties.mail.smtp.starttls.required: true
-  mail.properties.mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
+  mail.properties.mail.smtp.socketFactory.class: jakarta.net.ssl.SSLSocketFactory
 ### , access token
 project.job.accessToken:
 ### , i18n (default empty as chinese, "en" as english)

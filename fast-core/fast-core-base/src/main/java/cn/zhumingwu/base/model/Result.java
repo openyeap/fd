@@ -4,7 +4,6 @@ import lombok.Data;
 
 /**
  * 响应数据(结果)最外层对象
- *
  */
 @Data
 public class Result<T> {
@@ -32,7 +31,19 @@ public class Result<T> {
         this.data = data;
     }
 
+    public boolean isOk() {
+        return code == 200 || code == 0;
+    }
 
+    public static <T> Result<T> none(String... message) {
+        if (message.length > 0) {
+            return new Result<T>(BusinessResult.NONE.getCode(), message[0], null);
+
+        }
+        return new Result<T>(BusinessResult.NONE.getCode(), BusinessResult.NONE.getMessage(), null);
+    }
+
+    @SafeVarargs
     public static <T> Result<T> success(T... data) {
         if (data.length > 0) {
             return new Result<T>(HttpCode.OK.getCode(), HttpCode.OK.getMessage(), data[0]);
@@ -40,6 +51,7 @@ public class Result<T> {
         return new Result<T>(HttpCode.OK.getCode(), HttpCode.OK.getMessage(), null);
     }
 
+    @SafeVarargs
     public static <T> Result<T> fail(int code, String message, T... data) {
         if (data.length > 0) {
             return new Result<T>(code, message, data[0]);
@@ -48,6 +60,7 @@ public class Result<T> {
         return new Result<T>(code, message, null);
     }
 
+    @SafeVarargs
     public static <T> Result<T> fail(HttpCode code, T... data) {
         if (data.length > 0) {
             return new Result<T>(code.getCode(), code.getMessage(), data[0]);
@@ -55,6 +68,7 @@ public class Result<T> {
         return new Result<T>(code.getCode(), code.getMessage(), null);
     }
 
+    @SafeVarargs
     public static <T> Result<T> fail(BusinessResult code, T... data) {
         if (data.length > 0) {
             return new Result<T>(code.getCode(), code.getMessage(), data[0]);
@@ -62,6 +76,7 @@ public class Result<T> {
         return new Result<T>(code.getCode(), code.getMessage(), null);
     }
 
+    @SafeVarargs
     public static <T> Result<T> fail(ResultCode code, T... data) {
         if (data.length > 0) {
             return new Result<T>(code.getCode(), code.getMessage(), data[0]);

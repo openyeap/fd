@@ -18,7 +18,7 @@ package cn.zhumingwu.data.hub.core.rdb.impl;
 import cn.zhumingwu.data.hub.core.rdb.api.Configuration;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
+
 
 public class TestStorageCache {
 

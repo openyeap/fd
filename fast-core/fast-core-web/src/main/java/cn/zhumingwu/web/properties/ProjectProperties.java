@@ -1,5 +1,6 @@
 package cn.zhumingwu.web.properties;
 
+import com.google.common.base.Strings;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -51,7 +52,7 @@ public class ProjectProperties {
          * @return string
          */
         public String getExcludes() {
-            if (!StringUtils.isEmpty(excludes.trim())) {
+            if (!Strings.isNullOrEmpty(excludes.trim())) {
                 return defaultExcludes + "," + excludes;
             }
             return defaultExcludes;

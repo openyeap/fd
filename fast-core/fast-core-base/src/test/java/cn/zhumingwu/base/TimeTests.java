@@ -2,8 +2,7 @@ package cn.zhumingwu.base;
 
 import lombok.extern.slf4j.Slf4j;
 import cn.zhumingwu.base.config.ProjectAutoConfiguration;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +13,6 @@ import java.time.Duration;
 
 
 @Slf4j
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @ContextConfiguration(classes = ProjectAutoConfiguration.class)
 @EnableConfigurationProperties(InnerClass.class)

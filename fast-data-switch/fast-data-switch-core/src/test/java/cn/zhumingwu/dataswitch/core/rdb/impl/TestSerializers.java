@@ -20,7 +20,7 @@ import cn.zhumingwu.dataswitch.core.serializer.Serializers;
 import cn.zhumingwu.dataswitch.core.util.DataInputOutput;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
+
 
 import java.awt.*;
 import java.io.DataInput;

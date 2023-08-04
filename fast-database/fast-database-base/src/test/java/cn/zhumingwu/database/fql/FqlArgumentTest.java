@@ -10,8 +10,9 @@ import cn.zhumingwu.database.service.JdbcApiService;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -25,7 +26,7 @@ import javax.sql.DataSource;
 @EnableAutoConfiguration(exclude = ProjectAutoConfiguration.class)
 @SpringBootTest
 @SpringBootConfiguration
-@RunWith(SpringRunner.class)
+
 public class FqlArgumentTest {
     @Autowired
     DataSource dataSource;
@@ -33,7 +34,7 @@ public class FqlArgumentTest {
     JdbcApiProperties properties;
 
     @Test
-    public void testIntArgument() {
+    public void testIntArgument() throws Exception {
         String query = "{\n" +
                 "  user : t_user(user_id_eq:1) {\n" +
                 "    name\n" +
@@ -51,7 +52,7 @@ public class FqlArgumentTest {
     }
 
     @Test
-    public void testStringArgument() {
+    public void testStringArgument() throws Exception {
         String query = "{\n" +
                 "  hero : t_user(user_id_eq:\"1\") {\n" +
                 "    name\n" +
@@ -65,7 +66,7 @@ public class FqlArgumentTest {
     }
 
     @Test
-    public void testFloatArgument() {
+    public void testFloatArgument() throws Exception {
         String query = "{\n" +
                 "  user : t_user(user_id_eq:1.0) {\n" +
                 "    name\n" +
@@ -80,7 +81,7 @@ public class FqlArgumentTest {
     }
 
 
-    public void test(CharStream input) {
+    public void test(CharStream input) throws Exception {
         var lexer = new FqlLexer(input);
         var tokens = new CommonTokenStream(lexer);
         var parser = new FqlParser(tokens);

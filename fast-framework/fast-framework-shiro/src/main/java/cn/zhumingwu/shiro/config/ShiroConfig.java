@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
-import javax.servlet.Filter;
+import jakarta.servlet.Filter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -59,7 +59,7 @@ public class ShiroConfig {
         // 通过yml配置文件方式配置的[anon]忽略规则
         String[] excludes = properties.getExcludes().split(",");
         for (String exclude : excludes) {
-            if (!StringUtils.isEmpty(exclude.trim())) {
+            if (!Strings.isNullOrEmpty(exclude.trim())) {
                 filterMap.put(exclude, "anon");
             }
         }

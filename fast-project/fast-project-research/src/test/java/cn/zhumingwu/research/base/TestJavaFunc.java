@@ -1,8 +1,8 @@
 package cn.zhumingwu.research.base;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+
 import org.springframework.test.context.junit4.SpringRunner;
 
 
@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @description:
  * @since 2020-10-28
  */
-@RunWith(SpringRunner.class)
+
 @Slf4j
 public class TestJavaFunc {
     @FunctionalInterface

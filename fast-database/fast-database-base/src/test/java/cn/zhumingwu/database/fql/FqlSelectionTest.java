@@ -9,8 +9,9 @@ import cn.zhumingwu.database.service.JdbcApiService;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -20,14 +21,14 @@ import javax.sql.DataSource;
 
 @Slf4j
 @SpringBootTest
-@RunWith(SpringRunner.class)
+
 public class FqlSelectionTest {
     @Autowired
     DataSource dataSource;
     @Autowired
     JdbcApiProperties properties;
     @Test
-    public void testSelectTwo() {
+    public void testSelectTwo() throws Exception {
         String query = "{\n" +
                 "  ... : t_user(user_id_gt:0) {\n" +
                 "    ...\n" +
@@ -38,7 +39,7 @@ public class FqlSelectionTest {
         doTest(input);
     }
     @Test
-    public void testSelectInner() {
+    public void testSelectInner() throws Exception {
         String query = "{\n" +
                 "  user : t_user(user_id_eq:1) {\n" +
                 "  name\n" +
@@ -57,7 +58,7 @@ public class FqlSelectionTest {
 
 
     @Test
-    public void testSelectThree() {
+    public void testSelectThree() throws Exception {
         String query = "{\n" +
                 "    user : t_user(user_id_eq:1) {\n" +
                 "        ...\n" +
@@ -72,7 +73,7 @@ public class FqlSelectionTest {
         doTest(input);
     }
 
-    public void doTest(CharStream input) {
+    public void doTest(CharStream input) throws Exception {
         var lexer = new FqlLexer(input);
         var tokens = new CommonTokenStream(lexer);
         var parser = new FqlParser(tokens);

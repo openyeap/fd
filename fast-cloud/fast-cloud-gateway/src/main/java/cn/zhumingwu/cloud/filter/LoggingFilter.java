@@ -29,7 +29,7 @@ public class LoggingFilter implements GlobalFilter, Ordered {
 
         String param = "";
 
-        if ("GET".equals(serverHttpRequest.getMethodValue())) {
+        if ("GET".equals(serverHttpRequest.getMethod().name())) {
             param = serverHttpRequest.getQueryParams().toString();
 
         } else {

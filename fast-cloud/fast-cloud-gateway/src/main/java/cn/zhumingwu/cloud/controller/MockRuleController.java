@@ -2,9 +2,9 @@ package cn.zhumingwu.cloud.controller;
 
 import cn.zhumingwu.cloud.model.MockRule;
 import cn.zhumingwu.cloud.service.IMockRuleService;
+import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
 import cn.zhumingwu.cloud.service.impl.MockRuleServiceImpl;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ public class MockRuleController {
     public Mono<ResponseEntity<Object>> addOrUpdateMockRule(@RequestBody MockRule mockRule) {
 
 
-        if (StringUtils.isBlank(mockRule.getRequestPath())) {
+        if (Strings.isNullOrEmpty(mockRule.getRequestPath())) {
             return Mono.just((new ResponseEntity<Object>(HttpStatus.BAD_REQUEST)));
         }
         Map<String, MockRule> mockRuleMap = MockRuleServiceImpl.mockRuleMap;
@@ -45,7 +45,7 @@ public class MockRuleController {
     @DeleteMapping("/deleteMockRule")
     public Mono<ResponseEntity<Object>> deleteMockRule(@RequestBody MockRule mockRule) {
         String requestPath = mockRule.getRequestPath();
-        if (StringUtils.isEmpty(requestPath)) {
+        if (Strings.isNullOrEmpty(requestPath)) {
             return Mono.just((new ResponseEntity<Object>(HttpStatus.BAD_REQUEST)));
         }
         Map<String, MockRule> mockRuleMap = MockRuleServiceImpl.mockRuleMap;

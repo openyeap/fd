@@ -5,8 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import cn.zhumingwu.base.config.ProjectAutoConfiguration;
 import cn.zhumingwu.base.util.NamingUtils;
 import cn.zhumingwu.base.util.YamlUtils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -15,7 +14,6 @@ import java.io.IOException;
 
 
 @Slf4j
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @ContextConfiguration(classes = ProjectAutoConfiguration.class)
 public class NamingUtilsTests {
@@ -44,11 +42,12 @@ public class NamingUtilsTests {
 
     @Test
     public void Test_Yaml() throws IOException {
-        var payload = "spring:\n" +
-                "  application:\n" +
-                "    name: gateWay\n" +
-                "pro:\n" +
-                "  name: test";
+        var payload = """
+                spring:
+                  application:
+                    name: gateWay
+                pro:
+                  name: test""";
         for (var item : YamlUtils.load(payload).entrySet()) {
             log.info("{}:{}", item.getKey(), item.getValue());
         }

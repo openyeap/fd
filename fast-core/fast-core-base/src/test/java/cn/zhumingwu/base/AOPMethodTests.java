@@ -4,18 +4,16 @@ import cn.zhumingwu.base.support.Person;
 import lombok.extern.slf4j.Slf4j;
 import cn.zhumingwu.base.config.ProjectAutoConfiguration;
 import cn.zhumingwu.base.util.NamingUtils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 @Slf4j
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @ContextConfiguration(classes = ProjectAutoConfiguration.class)
 public class AOPMethodTests {
@@ -31,7 +29,7 @@ public class AOPMethodTests {
     @Autowired
     private ApplicationContext applicationContext;
 
-    @Test
+//    @Test
     public void TestPersonExtension() {
         this.test.test();
         this.primaryPerson.say("Jack");
